@@ -1,0 +1,44 @@
+<div class="form-block">
+
+<div class="block-header">Настройки аккаунта</div>
+<div class="block-line"></div>
+
+    <div class="navbar">
+        <div class="navbar-inner">
+			<a class="brand" href="#"><?php echo $player; ?></a>
+            <ul class="nav">
+               <li class="active"><a href="#tab1" data-toggle="tab">Информация</a></li>
+               <li><a href="#tab2" data-toggle="tab">Настройки</a></li>
+            </ul>
+        </div>
+    </div>
+
+	<div class="tabbable" style="display: inline-block;"><div class="tab-content">
+	  
+		<div class="tab-pane active" id="tab1" style="margin-top: 6px;">
+			
+			<?php echo $profile_info ?>
+			
+		</div>        
+
+		<div class="tab-pane" id="tab2" >
+		
+		<form autocomplete="off" id="profile-update" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
+
+            <input type="hidden" name="method" value="profile" /> 
+
+            <?php echo $profile_inputs ?>
+                
+             <div class="control-group">
+               <div class="controls">
+                 <input id="profile-button" class="btn" type="submit" onclick="UpdateProfile(); return false" value="Изменить" />
+               </div>
+             </div> 
+			 
+        </form>
+		
+		</div>	
+		
+	</div></div>	
+	
+</div>

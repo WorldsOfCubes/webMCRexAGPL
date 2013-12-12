@@ -1,0 +1,21 @@
+<script language="JavaScript" type="text/javascript">
+	function cGetName(pl) {
+		
+		var item = GetById('comment-add-text')		
+		if (!item) return false		
+		    item.innerHTML += '[b]' + pl.innerHTML + '[/b]'
+			item.onclick()
+		  
+		return false
+	}
+</script>
+
+<!--<div style="padding: 6px;"><a href="#">Удалить все комментарии</a></div>-->
+
+<div id="comments-main">
+	
+	<?php echo $comments_html ?>
+	
+</div>
+
+<?php echo $arrows_html ?>

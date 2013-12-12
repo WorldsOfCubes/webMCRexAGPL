@@ -3,7 +3,7 @@
  - **Автор** : NC22 (modified by WorldsOfCubes Group)
  - **Версия** : 1.235b
  - **Сайт** : [WorldsOfCubes.ru](http://WorldsOfCubes.ru)
- - **Вики** : [github.com/NC22/webMCR/wiki](https://github.com/WorldsOfCubes/webMCRex/wiki)
+ - **Вики** : [github.com/WorldsOfCubes/webMCRex/wiki](https://github.com/WorldsOfCubes/webMCRex/wiki)
 
 ## Лицензия 
 

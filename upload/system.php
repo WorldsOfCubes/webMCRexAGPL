@@ -12,6 +12,7 @@ if (!file_exists(MCR_ROOT.'config.php')) { header("Location: install/install.php
 
 require(MCR_ROOT.'instruments/locale/'.MCR_LANG.'.php');
 require(MCR_ROOT.'config.php');
+require(MCR_ROOT.'config-donate.php');
 
 require(MCR_ROOT.'instruments/auth/'.$config['p_logic'].'.php');
 
@@ -20,7 +21,6 @@ define('MCR_STYLE', MCR_ROOT.$site_ways['style']);
 
 define('STYLE_URL', $site_ways['style']); // deprecated
 define('DEF_STYLE_URL', STYLE_URL . View::def_theme . '/');
-// CUR_STYLE_URL - deleted; logic moved in base.class.php->View::GetURL 
 
 define('BASE_URL', $config['s_root']);
 
@@ -256,5 +256,5 @@ global $link, $bd_names;
 	}
 	
 	return true;					
-}
+} 
 ?>

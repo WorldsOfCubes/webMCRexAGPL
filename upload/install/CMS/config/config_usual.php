@@ -13,7 +13,7 @@ $bd_names = array (
 	'comments'			=> 'comments', 
 	'servers'			=> 'servers',
 	'action_log'		=> 'action_log',
-	'iconomy'			=> false,
+	'iconomy' => 'iconomy',
 );
 
 $config = array (
@@ -29,7 +29,7 @@ $config = array (
   
 	's_name'		=> 'MCR '.MCR,
 	's_about'		=> 'Личный кабинет для онлайн сервера игры Minecraft',
-	's_keywords'	=> 'сервер игра онлайн NC22 Minecraft',
+	's_keywords'	=> 'сервер игра онлайн NC22 STRELOK2022 WorldsOfCubes Minecraft',
 	's_dpage'		=> 'news', 
 	's_theme'		=> View::def_theme,	
 	's_root'		=> '/',
@@ -41,7 +41,7 @@ $config = array (
   
 /* system */
 
-	'timezone'	=> 'Asia/Vladivostok',
+	'timezone'	=> 'Asia/Moscow',
 	'sbuffer'	=> true,  
 	'skinposer'	=> false, 
 	'rewrite'	=> true,
@@ -71,7 +71,8 @@ $site_ways = array (
 
 $bd_money = array ( /* iconomy or some other plugin, just check names */
   'login' => 'username',
-  'money' => 'balance',
+  'money' => 'realmoney',
+  'balance' => 'balance',
 );
 
 $bd_users = array (

@@ -51,7 +51,12 @@ $player_email = $user->email(); if (empty($player_email)) $player_email = lng('N
 $player_group = $user->getGroupName();
 $player_money = $user->getMoney();
 
-	if ($user->group() == 4) $content_main .= View::ShowStaticPage('profile_verification.html', 'profile/', $player_email);
+	$result = BD("SELECT * FROM `{$bd_names['iconomy']}` WHERE `{$bd_money['login']}` ='". $user->name()."' LIMIT 1");
+	$result = mysql_fetch_assoc($result);
+	$player_econ = $result['balance'];
+	if(!$result) $player_econ = 0;
+
+if ($user->group() == 4) $content_main .= View::ShowStaticPage('profile_verification.html', 'profile/', $player_email);
 }
 
 $mode = $config['s_dpage'];

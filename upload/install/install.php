@@ -9,11 +9,11 @@ $mode = (!empty($_POST['mode']) or !empty($_GET['mode']))? ((empty($_GET['mode']
 $step = (!empty($_POST['step']))? (int) $_POST['step'] : $step = 1;
 
 switch ($mode) { /* Допустимые идентификаторы CMS */
-	case 'xenforo':		$main_cms = 'xenForo';				break; /* [+] */
-	case 'ipb':			$main_cms = 'Invision Power Board';	break; /* [+] */
-	case 'dle':			$main_cms = 'DataLife Engine';		break; /* [+] */
-	case 'wp':			$main_cms = 'WordPress';			break; /* [+] */	
-	case 'joomla':		$main_cms = 'Joomla!';				break; /* [+] */
+//	case 'xenforo':		$main_cms = 'xenForo';				break; /* [+] */
+//	case 'ipb':			$main_cms = 'Invision Power Board';	break; /* [+] */
+//	case 'dle':			$main_cms = 'DataLife Engine';		break; /* [+] */
+//	case 'wp':			$main_cms = 'WordPress';			break; /* [+] */	
+//	case 'joomla':		$main_cms = 'Joomla!';				break; /* [+] */
 	case 'xauth':		$main_cms = 'xAuth';				break; /* [+] */
 	case 'authme':		$main_cms = 'AuthMe';				break; /* [+] */
 	default :			$main_cms = false; $mode = 'usual';	break;

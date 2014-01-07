@@ -1,7 +1,7 @@
 <?php
 define('MCR', '1.235b Client+'); 
 define('PROGNAME', 'webMCRex '.MCR);
-define('FEEDBACK', '<a href="http://WorldsOfCubes.RU/go/webmcrex">'.PROGNAME.'</a> &copy; 2013 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.RU">WorldsOfCubes Group</a>');  
+define('FEEDBACK', '<a href="http://WorldsOfCubes.RU/go/webmcrex">'.PROGNAME.'</a> &copy; 2013-2014 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.RU">WorldsOfCubes Group</a>');  
 
 class Item extends View {
 

@@ -1,5 +1,5 @@
 <?php
-        class CubeAPI {
+        class WoCAPIl {
              
                 public $mcUsername = '';
                 public $sessionID = '';
@@ -11,11 +11,11 @@
                                 $mcOutput .= fgets($mcSocket, 128);
                         }
                         fclose($mcSocket);
-                        // Проверяем ответ сайта cubesworld.tk
+                        // Проверяем ответ сайта WorldsOfCubes.RU
                         if(strpos($mcOutput, 'Bad login') === false){
                                 $mcValues = explode(':', $mcOutput);
                                 if(count($mcValues) > 0){
-                                        // берем нужные нам данные из ответа сайта cubesworld.tk
+                                        // берем нужные нам данные из ответа сайта WorldsOfCubes.RU
                                         $this->mcUsername = $mcValues[2]; //Ник игрока
                                         $this->sessionID = $mcValues[3]; //Сессия
                                         return true;

@@ -5,8 +5,8 @@ require('./system.php');
 
 loadTool('ajax.php');
 loadTool('user.class.php');
-	loadTool('cubeapi.class.php');
-	$api = new CubeAPI();
+	loadTool('wocapil.class.php');
+	$api = new WoCAPIl();
 
 BDConnect('login');
 

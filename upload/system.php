@@ -12,7 +12,7 @@ if (!file_exists(MCR_ROOT.'config.php')) { header("Location: install/install.php
 
 require(MCR_ROOT.'instruments/locale/'.MCR_LANG.'.php');
 require(MCR_ROOT.'config.php');
-require(MCR_ROOT.'config-donate.php');
+require(MCR_ROOT.'donate.cfg.php');
 
 require(MCR_ROOT.'instruments/auth/'.$config['p_logic'].'.php');
 

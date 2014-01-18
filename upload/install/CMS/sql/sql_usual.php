@@ -35,3 +35,11 @@ BD("INSERT INTO `{$bd_names['groups']}`
 (3,'Администратор',15,1,1,1,1,1,1,1,1), 
 (4,'Непроверенный',1,1,0,0,0,0,0,0,0), 
 (5,'VIP Игрок',5,0,1,1,1,1,0,1,0);");
+BD("CREATE TABLE IF NOT EXISTS `iconomy` (
+`id` int(10) NOT NULL AUTO_INCREMENT,
+`username` varchar(20) CHARACTER SET utf8 NOT NULL,
+`balance` double(64,2) NOT NULL DEFAULT '0.00',
+`realmoney` double(64,2) NOT NULL DEFAULT '0.00',
+`bank` double(64,2) NOT NULL DEFAULT '0.00',
+PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 AUTO_INCREMENT=2 ;");

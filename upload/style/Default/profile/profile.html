@@ -37,11 +37,9 @@
              </div> 
 			 
         </form>
-		
-		</div>
-	  
-		<div class="tab-pane" id="tab3" style="margin-top: 6px;">
-<form action="<?php $faction ?>" method="post" class="form-horizontal">
+            <?php echo $profile_prefix ?>
+<form autocomplete="off" id="profile-update" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="method" value="prefix" /> 
 		<div class="control-group">
    <label class="control-label" for="oldpasswd">Настройки префикса:</label> 
     <div class="controls">
@@ -103,11 +101,15 @@
 </SELECT></div></div>
 <div class="control-group">
                <div class="controls">
-			   <INPUT TYPE="submit" name="prefix" VALUE="Установить префикс!" class="btn">
+			   <input id="profile-button" class="btn" type="submit" onclick="UpdateProfile(); return false" value="Изменить" />
 		
 			   <? elseif($user->lvl()>1): ?>У Вас недостаточно прав для того, чтобы изменить префикс. Если Вы хотите именить его, то купите права!<? endif; ?>
 </div>
 </div></form>
+		
+		</div>
+	  
+		<div class="tab-pane" id="tab3" style="margin-top: 6px;">
 			
 			
 <b>Ваш статус: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <?php echo $player_group ?><br>

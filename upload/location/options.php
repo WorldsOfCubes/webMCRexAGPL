@@ -54,12 +54,16 @@ if ($user->group() != 4 ) {
 	if ($user->getPermission('change_skin')   and !$user->defaultSkinTrigger()) 
 											  include View::Get('profile_del_skin.html', $prefix); 
 	if ($user->getPermission('change_cloak')) include View::Get('profile_cloak.html', $prefix);
+		else include View::Get('profile_cloak_buy.html', $prefix);
 	if ($user->getPermission('change_cloak')  and file_exists($user->getCloakFName())) 
 											  include View::Get('profile_del_cloak.html', $prefix);  
 	if ($user->getPermission('change_login')) include View::Get('profile_nik.html', $prefix);
 	if ($user->getPermission('change_pass'))  include View::Get('profile_pass.html', $prefix);
 
 	$profile_inputs = ob_get_clean();
+	if ($user->lvl() > $lvlvip) include View::Get('profile_prefix.html', $prefix);
+		else include View::Get('profile_prefix_buy.html', $prefix);
+	$profile_prefix = ob_get_clean();
 	
 	loadTool('profile.class.php'); $user_profile = new Profile($user, 'other/', 'profile', true);
 	$profile_info = $user_profile->Show(false); 

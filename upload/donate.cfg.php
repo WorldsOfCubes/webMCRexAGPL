@@ -11,8 +11,8 @@
 	$premiumcash = '80'; //цена premium
 	$prvipcash = '25'; // цена продления vip
 	$prpremiumcash = '40'; // цена продления premium
-	$numvip = 5; // Уровень доступа (lvl) vip
-	$numprem = 6; // Уровень доступа (lvl) premium
+	$lvlvip = 5; // Уровень доступа (lvl) vip
+	$lvlprem = 6; // Уровень доступа (lvl) premium
 	$idvip = 5; // ID группы vip
 	$idprem = 101; // ID группы premium
 	$unban = '25'; // цена первого разбана

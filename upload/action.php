@@ -6,17 +6,22 @@ $method = (isset($_POST['method']))? $_POST['method'] : $_GET['method'];
 
 switch ($method) {
 	case 'comment': 
-    case 'del_com':
+	case 'del_com':
 	case 'profile': 
+	case 'prefix': 
 	case 'restore': 
 	case 'load_info': 
 	case 'upload':
-	case 'like':	
-	case 'delete_file':	
+	case 'like':
+	case 'delete_file':
 	
 	require('./system.php');
 	loadTool('ajax.php');	
 	loadTool('user.class.php');
+	
+	
+	
+	
 	
 		if ($method == 'upload' or $method == 'delete_file')	loadTool('upload.class.php');
 	elseif ($method == 'profile')								loadTool('skin.class.php');
@@ -37,6 +42,20 @@ switch ($method) {
 	loadTool('upload.class.php');
 	
 	BDConnect('action_download');
+
+$player       = $user->name();
+$player_id    = $user->id();
+$player_lvl   = $user->lvl();
+$player_email = $user->email(); if (empty($player_email)) $player_email = lng('NOT_SET'); 
+$player_group = $user->getGroupName();
+$player_money = $user->getMoney();
+
+$result = BD("SELECT * FROM `{$bd_names['iconomy']}` WHERE `{$bd_money['login']}` ='". $user->name()."' LIMIT 1");
+$result = mysql_fetch_assoc($result);
+$player_econ = $result[$bd_money['money']];
+if(!$result) $player_econ = 0;
+	
+	
 	
 	break;
 	default: exit; break;
@@ -305,6 +324,25 @@ switch ($method) {
 		elseif (!$rnum)  aExit(100, $message ); //nothing changed
         else aExit(0, lng('PROFILE_COMPLITE'));  
 
+    break;
+	case 'prefix':
+		if($user->lvl()<$lvlvip ) {
+			aExit(4, "Ух ты какой хакер! Я не ожидал тебя тут увидеть :P" );
+		}
+		$pref = $_POST['pref'];
+		$textcolor = $_POST['textcolor'];
+		$nickcolor = $_POST['nickcolor'];
+		$prefcolor = $_POST['prefcolor'];
+		$d = '[';
+		$f = '] ';
+		$g = '';
+		$fineprefix = $prefcolor.$d.$pref.$f.$nickcolor;
+		$suffix = $textcolor.$g;
+		mysql_select_db($db_base);
+		mysql_query('set NAMES utf8');
+		mysql_query("DELETE FROM permissions_entity WHERE name='".$user->name()."'");
+		mysql_query("INSERT INTO permissions_entity VALUES (NULL, '".$user->name()."', '1', '$fineprefix', '$suffix', '0')")or aExit(4, ('Не удалось соединиться: ' . mysql_error()));
+		aExit(0, 'Теперь ваш ник будет отображаться в новом цвете');
     break;
 } 
 ?>

@@ -23,4 +23,5 @@
 	$ikshopid = '52975e09bf4efc181bdddef5'; //id вашего магазина (написан в ЛК intercassa)
 	$secret_key = 'lalka'; // ваш секретный ключ интеркассы
 	$secret_key_test = 'lalka'; // ваш тестовый секретный ключ интеркассы 
+	$ikTesting = true;// принимать ли тестовые платежи
 ?>

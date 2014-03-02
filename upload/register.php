@@ -73,7 +73,7 @@ if ($method == 2) {
 
 	exit(View::ShowStaticPage('mail_verification_ok.html', 'other/'));
 }
-
+aExit(11, "Регистрация временно заблокирована т.к. в ней много дыр.");
 RefreshBans();
 	
 $login  = $_POST['login'];
@@ -99,8 +99,8 @@ if (empty($login) || empty($pass) || empty($repass) || empty($_POST['email'])) a
 	if ((strlen($repass) < 4) or (strlen($repass) > 15)) $rcodes[] = 8;
     if (strlen($email) > 50)   							 $rcodes[] = 13;
 	if (strcmp($pass,$repass)) 							 $rcodes[] = 9;
-	
-	if($api->register($login, $pass, $repass, $female, $email)) {
+	$api->register($login, $pass, $repass, $female, $email);
+	//if() {
 		switch ($api->error) {
 			case "bad login": aExit(2, lng('INCORRECT').'. ('.lng('LOGIN').')');
 			case "bad pass": aExit(2, lng('INCORRECT').'. ('.lng('PASS').')');
@@ -116,8 +116,9 @@ if (empty($login) || empty($pass) || empty($repass) || empty($_POST['email'])) a
 			case "elogin": aExit(2, lng('AUTH_EXIST_LOGIN'));
 			case "email": aExit(2, lng('AUTH_EXIST_EMAIL'));
 			default : aExit(2, $api->error);
+			case "OK": ;
 		}
-	}
+	//}
 	
 
 	$tmp_user = new User(mysql_insert_id());
@@ -129,6 +130,6 @@ if (empty($login) || empty($pass) || empty($repass) || empty($_POST['email'])) a
 				
 		if ( $tmp_user->changeEmail($email, true) > 1 ) aExit(14, lng('MAIL_FAIL'));
 	
-	    aExit(0, lng('REG_COMPLETE') .'. '. lng('REG_CONFIRM_INFO'));
+	    aExit(0, lng('REG_COMPLETE') .'. '. lng('REG_CONFIRM_INFO'). $api->error);
 	unset($tmp_user);
 ?>

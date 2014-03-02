@@ -37,10 +37,13 @@ global $addition_events;
 }
 
 $menu = new Menu();
-
-if ($config['offline'] and (empty($user) or $user->group() != 3)) exit(View::ShowStaticPage('site_closed.html'));
-
 $content_main = ''; $content_side = ''; $addition_events = ''; $content_js = ''; $content_advice = GetRandomAdvice();
+$content_menu = $menu->Show(); $content_js .= InitJS();
+
+if ($config['offline'] and (empty($user) or $user->group() != 3)) {
+	include(View::Get('site_closed.html'));
+	exit;
+}
 
 if (!empty($user)) {
 
@@ -53,8 +56,8 @@ $player_money = $user->getMoney();
 
 	$result = BD("SELECT * FROM `{$bd_names['iconomy']}` WHERE `{$bd_money['login']}` ='". $user->name()."' LIMIT 1");
 	$result = mysql_fetch_assoc($result);
-	$player_econ = $result['balance'];
 	if(!$result) $player_econ = 0;
+		else $player_econ = $result[$bd_money['money']];
 
 if ($user->group() == 4) $content_main .= View::ShowStaticPage('profile_verification.html', 'profile/', $player_email);
 }
@@ -83,7 +86,6 @@ switch ($mode) {
 
 include('./location/side.php'); 
 
-$content_menu = $menu->Show(); $content_js .= InitJS();
 
 include View::Get('index.html');
 ?>

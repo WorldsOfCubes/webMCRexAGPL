@@ -61,6 +61,8 @@ if ($user->group() != 4 ) {
 	if ($user->getPermission('change_pass'))  include View::Get('profile_pass.html', $prefix);
 
 	$profile_inputs = ob_get_clean();
+	
+	ob_start(); 
 	if ($user->lvl() > $lvlvip) include View::Get('profile_prefix.html', $prefix);
 		else include View::Get('profile_prefix_buy.html', $prefix);
 	$profile_prefix = ob_get_clean();

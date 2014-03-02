@@ -66,13 +66,13 @@ $site_ways = array (
 	'mcraft'	=> 'MineCraft/',
 	'skins'		=> 'MinecraftSkins/',
 	'cloaks'	=> 'MinecraftCloaks/',
-	'distrib'	=> 'MinecraftDownload/',
+	'distrib'	=> 'clients/',
 );
 
 $bd_money = array ( /* iconomy or some other plugin, just check names */
   'login' => 'username',
-  'money' => 'realmoney',
-  'balance' => 'balance',
+  'money' => 'balance',
+  'bank' => 'realmoney',
 );
 
 $bd_users = array (

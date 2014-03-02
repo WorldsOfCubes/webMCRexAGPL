@@ -344,6 +344,43 @@ function UpdateProfile(admTrg) {
     return false
 }
 
+function UpdatePrefix(admTrg) {
+	
+    toggleButton('prefix-button')
+
+	var event = function (response) {
+
+		GetById('prefix-update').reset()
+		
+        GetById('main-error-text').className = 'alert alert-error'		
+		
+		if (response != null) {	
+
+            if (response['code'] == 0) GetById('main-error-text').className = 'alert alert-success'
+			if (response['code'] == 100) { 
+			toggleButton('prefix-button') 
+			BlockVisible('main-error',false)
+			return 
+			}
+			
+			GetById('main-error-text').innerHTML = nl2br(response['message'])
+			BlockVisible('main-error',true)
+		
+		} else {
+
+			GetById('main-error-text').innerHTML = err404 + req.status
+			BlockVisible('main-error',true)
+		
+		}
+        
+		
+			    toggleButton('prefix-button')
+	}
+	
+	sendFormByIFrame('prefix-update', event)
+    return false
+}
+
 function Login() {
 
 	var addition_post = '' 

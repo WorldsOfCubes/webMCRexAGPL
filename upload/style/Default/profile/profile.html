@@ -38,74 +38,6 @@
 			 
         </form>
             <?php echo $profile_prefix ?>
-<form autocomplete="off" id="profile-update" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="method" value="prefix" /> 
-		<div class="control-group">
-   <label class="control-label" for="oldpasswd">Настройки префикса:</label> 
-    <div class="controls">
-<? if ($user->lvl() >=$numvip): ?>
-<SELECT NAME="prefcolor" class="input-small" style="color:black">
-<OPTION value = "&0" style="background: black; color:white;">Черный
-<OPTION value = "&1" style="background: navy">Темно-синий
-<OPTION value = "&2" style="background: green">Темно-зеленый
-<OPTION value = "&3" style="background: teal">Голубой
-<OPTION value = "&4" style="background: maroon">Бордовый
-<OPTION value = "&5" style="background: purple">Пурпурный
-<OPTION value = "&6" style="background: olive">Хаки
-<OPTION value = "&7" style="background: silver">Светло-серый
-<OPTION value = "&8" style="background: gray">Темно-серый
-<OPTION value = "&9" style="background: BLUE">Синий
-<OPTION value = "&a" style="background: lime">Зеленый
-<OPTION value = "&b" style="background: aqua">Бирюзовый
-<OPTION value = "&c" style="background: red">Красный
-<OPTION value = "&d" style="background: fuchsia">Розовый
-<OPTION value = "&e" style="background: yellow">Желтый
-<OPTION value = "&f" style="background: white">Белый
-</SELECT>
-<INPUT TYPE="text" NAME="pref" SIZE="8" MAXLENGTH="10" class="input-small">
-<SELECT NAME="nickcolor" style="color:black" class="input-small">
-<OPTION value = "&0" style="background: black; color:white;">Черный
-<OPTION value = "&1" style="background: navy">Темно-синий
-<OPTION value = "&2" style="background: green">Темно-зеленый
-<OPTION value = "&3" style="background: teal">Голубой
-<OPTION value = "&4" style="background: maroon">Бордовый
-<OPTION value = "&5" style="background: purple">Пурпурный
-<OPTION value = "&6" style="background: olive">Хаки
-<OPTION value = "&7" style="background: silver">Светло-серый
-<OPTION value = "&8" style="background: gray">Темно-серый
-<OPTION value = "&9" style="background: BLUE">Синий
-<OPTION value = "&a" style="background: lime">Зеленый
-<OPTION value = "&b" style="background: aqua">Бирюзовый
-<OPTION value = "&c" style="background: red">Красный
-<OPTION value = "&d" style="background: fuchsia">Розовый
-<OPTION value = "&e" style="background: yellow">Желтый
-<OPTION value = "&f" style="background: white">Белый
-</SELECT>
-<SELECT NAME="textcolor" style="color:black" class="input-small">
-<OPTION value = "&0" style="background: black; color:white;">Черный
-<OPTION value = "&1" style="background: navy">Темно-синий
-<OPTION value = "&2" style="background: green">Темно-зеленый
-<OPTION value = "&3" style="background: teal">Голубой
-<OPTION value = "&4" style="background: maroon">Бордовый
-<OPTION value = "&5" style="background: purple">Пурпурный
-<OPTION value = "&6" style="background: olive">Хаки
-<OPTION value = "&7" style="background: silver">Светло-серый
-<OPTION value = "&8" style="background: gray">Темно-серый
-<OPTION value = "&9" style="background: BLUE">Синий
-<OPTION value = "&a" style="background: lime">Зеленый
-<OPTION value = "&b" style="background: aqua">Бирюзовый
-<OPTION value = "&c" style="background: red">Красный
-<OPTION value = "&d" style="background: fuchsia">Розовый
-<OPTION value = "&e" style="background: yellow">Желтый
-<OPTION value = "&f" style="background: white">Белый
-</SELECT></div></div>
-<div class="control-group">
-               <div class="controls">
-			   <input id="profile-button" class="btn" type="submit" onclick="UpdateProfile(); return false" value="Изменить" />
-		
-			   <? elseif($user->lvl()>1): ?>У Вас недостаточно прав для того, чтобы изменить префикс. Если Вы хотите именить его, то купите права!<? endif; ?>
-</div>
-</div></form>
 		
 		</div>
 	  
@@ -114,10 +46,10 @@
 			
 <b>Ваш статус: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <?php echo $player_group ?><br>
 <b>Донат-счет: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <?php echo $player_money ?> руб.<br> 
-<b>Игровой счет:</b>&nbsp; <?php echo $player_econ ?> ст.<br> <? if($user->lvl() <=$numprem): ?><center>
+<b>Игровой счет:</b>&nbsp; <?php echo $player_econ ?> ст.<br> <? if($user->lvl() <=$lvlprem): ?><center>
 			<div class="well" style="text-align: center; width=100%;">
 
-			<? if ($user->lvl() < $numvip): ?><form  method="post"><INPUT TYPE="submit" name="govip" VALUE="Купить VIP за <?php echo ($vipcash); ?>" class="btn btn-inverse"></form><? else: if($user->lvl() == $numvip): ?><form  method="post"><INPUT TYPE="submit" name="prvip" VALUE="Продлить VIP за <?php echo ($vipcash/2); ?>" class="btn btn-inverse"></form><? endif; ?><? endif; ?><? if ($user->lvl() < $numprem): ?><form  method="post"><INPUT TYPE="submit" name="goprem" VALUE="Купить Premium за <?php echo ($premiumcash); ?>" class="btn btn-inverse"></form><? else: if($user->lvl() == $numprem): ?><form  method="post"><INPUT TYPE="submit" name="prpem" VALUE="Продлить Premium за <?php echo ($premiumcash/2); ?>" class="btn btn-inverse"></form><? endif; ?><? endif; ?><form  method="post"><INPUT TYPE="submit" name="razban" VALUE="Разбаниться" class="btn btn-inverse"></form>
+			<? if ($user->lvl() < $lvlvip): ?><form  method="post"><INPUT TYPE="submit" name="govip" VALUE="Купить VIP за <?php echo ($vipcash); ?>" class="btn btn-inverse"></form><? else: if($user->lvl() == $lvlvip): ?><form  method="post"><INPUT TYPE="submit" name="prvip" VALUE="Продлить VIP за <?php echo ($vipcash/2); ?>" class="btn btn-inverse"></form><? endif; ?><? endif; ?><? if ($user->lvl() < $lvlprem): ?><form  method="post"><INPUT TYPE="submit" name="goprem" VALUE="Купить Premium за <?php echo ($premiumcash); ?>" class="btn btn-inverse"></form><? else: if($user->lvl() == $lvlprem): ?><form  method="post"><INPUT TYPE="submit" name="prpem" VALUE="Продлить Premium за <?php echo ($premiumcash/2); ?>" class="btn btn-inverse"></form><? endif; ?><? endif; ?><form  method="post"><INPUT TYPE="submit" name="razban" VALUE="Разбаниться" class="btn btn-inverse"></form>
 			</div></center><br><? endif; ?>
     <a href="#donate" role="button" class="btn" data-toggle="modal">Пополнить счет</a>
     <div class="modal hide fade" id="donate" tabindex="-1" role="dialog" aria-labelledby="donateLabel" aria-hidden="true" style="display:none">
@@ -161,7 +93,7 @@
 </form>
     </div><br>
 <p style="color:red"> <b>Внимание!</b> В случае вайпа администрация за утерянные деньги/статусы ответственности не несет и не возмещает их!
-<p> Подробнее о VIP и Premium статусах можно узнать на специальной <a href= "/go/donate">странице</a>.
+<p> Подробнее о VIP и Premium статусах можно узнать на специальной <a href= "go/donate">странице</a>.
 <p> Продление статуса в 2 раза дешевле его покупки!
 			
 		</div>   

@@ -34,11 +34,12 @@ BD("INSERT INTO `{$bd_names['groups']}`
 (2,'Заблокированный',0,1,0,0,0,0,0,0,0), 
 (3,'Администратор',15,1,1,1,1,1,1,1,1), 
 (4,'Непроверенный',1,1,0,0,0,0,0,0,0), 
-(5,'VIP Игрок',5,0,1,1,1,1,0,1,0);");
+(5,'VIP',5,0,1,1,0,1,0,1,0),
+(6,'Premium',6,0,1,1,0,1,0,1,0);");
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['iconomy']}` (
 `id` int(10) NOT NULL AUTO_INCREMENT,
 `{$bd_money['login']}` varchar(20) CHARACTER SET utf8 NOT NULL,
-`{$bd_money['balance']}` double(64,2) NOT NULL DEFAULT '0.00',
+`{$bd_money['bank']}` double(64,2) NOT NULL DEFAULT '0.00',
 `{$bd_money['money']}` double(64,2) NOT NULL DEFAULT '0.00',
 `bank` double(64,2) NOT NULL DEFAULT '0.00',
 PRIMARY KEY (`id`)

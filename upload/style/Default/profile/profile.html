@@ -24,7 +24,7 @@
 
 		<div class="tab-pane" id="tab2" >
 		
-		<form autocomplete="off" id="profile-update" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
+		<form id="profile-update" autocomplete="off" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
 
             <input type="hidden" name="method" value="profile" /> 
 
@@ -46,12 +46,42 @@
 			
 <b>Ваш статус: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <?php echo $player_group ?><br>
 <b>Донат-счет: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <?php echo $player_money ?> руб.<br> 
-<b>Игровой счет:</b>&nbsp; <?php echo $player_econ ?> ст.<br> <? if($user->lvl() <=$lvlprem): ?><center>
+<b>Игровой счет:</b>&nbsp; <?php echo $player_econ ?>$
+<br> 
+<? if($user->lvl() <=$lvlprem): ?>
+    <center>
 			<div class="well" style="text-align: center; width=100%;">
 
-			<? if ($user->lvl() < $lvlvip): ?><form  method="post"><INPUT TYPE="submit" name="govip" VALUE="Купить VIP за <?php echo ($vipcash); ?>" class="btn btn-inverse"></form><? else: if($user->lvl() == $lvlvip): ?><form  method="post"><INPUT TYPE="submit" name="prvip" VALUE="Продлить VIP за <?php echo ($vipcash/2); ?>" class="btn btn-inverse"></form><? endif; ?><? endif; ?><? if ($user->lvl() < $lvlprem): ?><form  method="post"><INPUT TYPE="submit" name="goprem" VALUE="Купить Premium за <?php echo ($premiumcash); ?>" class="btn btn-inverse"></form><? else: if($user->lvl() == $lvlprem): ?><form  method="post"><INPUT TYPE="submit" name="prpem" VALUE="Продлить Premium за <?php echo ($premiumcash/2); ?>" class="btn btn-inverse"></form><? endif; ?><? endif; ?><form  method="post"><INPUT TYPE="submit" name="razban" VALUE="Разбаниться" class="btn btn-inverse"></form>
-			</div></center><br><? endif; ?>
-    <a href="#donate" role="button" class="btn" data-toggle="modal">Пополнить счет</a>
+			<? if ($user->lvl() < $lvlvip): ?>
+        <form  method="post" id="priv-update" autocomplete="off" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="method" value="userpriv" /> 
+            <input type="hidden" name="action" name="govip" /> 
+            <INPUT TYPE="submit" VALUE="Купить VIP за <?php echo ($vipcash); ?>" class="btn btn-inverse" onclick="UpdatePriv();">
+        </form><? else: if($user->lvl() == $lvlvip): ?>
+        <form  method="post" id="priv-update" autocomplete="off" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="method" value="userpriv" /> 
+            <input type="hidden" name="action"  name="prvip"/> 
+            <INPUT TYPE="submit" VALUE="Продлить VIP за <?php echo ($vipcash/2); ?>" class="btn btn-inverse" onclick="UpdatePriv();">
+        </form><? endif; ?><? endif; ?>
+        <? if ($user->lvl() < $lvlprem): ?>
+        <form  method="post" id="priv-update" autocomplete="off" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="method" value="userpriv" /> 
+            <input type="hidden" name="action" name="goprem" /> 
+            <INPUT TYPE="submit" VALUE="Купить Premium за <?php echo ($premiumcash); ?>" class="btn btn-inverse" onclick="UpdatePriv();">
+        </form><? else: if($user->lvl() == $lvlprem): ?>
+        <form  method="post" id="priv-update" autocomplete="off" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="method" value="userpriv" /> 
+            <input type="hidden" name="action" name="prpem" /> 
+            <INPUT TYPE="submit" VALUE="Продлить Premium за <?php echo ($premiumcash/2); ?>" class="btn btn-inverse" onclick="UpdatePriv();">
+        </form><? endif; ?><? endif; ?>
+        <form  method="post" id="priv-update" autocomplete="off" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="method" value="userpriv" /> 
+            <input type="hidden" name="action" name="unban" /> 
+            <INPUT TYPE="submit" VALUE="Разбаниться" class="btn btn-inverse" onclick="UpdatePriv();">
+        </form>
+			</div></center><? endif; ?>
+    <center><a href="#donate" role="button" class="btn" data-toggle="modal">Пополнить счет</a>
+<a href="#exchange" role="button" class="btn" data-toggle="modal">Обмен валют</a></center>
     <div class="modal hide fade" id="donate" tabindex="-1" role="dialog" aria-labelledby="donateLabel" aria-hidden="true" style="display:none">
     <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -73,7 +103,6 @@
     </div>
 </form>
     </div>
-<a href="#exchange" role="button" class="btn" data-toggle="modal">Обмен валют</a>
     <div class="modal hide fade" id="exchange" tabindex="-1" role="dialog" aria-labelledby="exchangeLabel" aria-hidden="true" style="display:none">
     <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

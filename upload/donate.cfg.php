@@ -8,13 +8,11 @@
 	$db_base = $config['db_name']; // база данных игры
 	$db_econ = 'iConomy'; // таблица плагина экономики
 	$vipcash = '50'; //цена vip
-	$premiumcash = '80'; //цена premium
-	$prvipcash = '25'; // цена продления vip
-	$prpremiumcash = '40'; // цена продления premium
+	$premiumcash = '80'; //цена premiums
 	$lvlvip = 5; // Уровень доступа (lvl) vip
 	$lvlprem = 6; // Уровень доступа (lvl) premium
 	$idvip = 5; // ID группы vip
-	$idprem = 101; // ID группы premium
+	$idprem = 6; // ID группы premium
 	$unban = '25'; // цена первого разбана
 	$exchangehow = '100'; //сколько монет давать за 1р
 	$dbbonussize = '3'; //размер бонуса за голосование

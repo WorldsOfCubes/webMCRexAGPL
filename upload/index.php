@@ -52,12 +52,8 @@ $player_id    = $user->id();
 $player_lvl   = $user->lvl();
 $player_email = $user->email(); if (empty($player_email)) $player_email = lng('NOT_SET'); 
 $player_group = $user->getGroupName();
+$player_econ = $user->getEcon();
 $player_money = $user->getMoney();
-
-	$result = BD("SELECT * FROM `{$bd_names['iconomy']}` WHERE `{$bd_money['login']}` ='". $user->name()."' LIMIT 1");
-	$result = mysql_fetch_assoc($result);
-	if(!$result) $player_econ = 0;
-		else $player_econ = $result[$bd_money['money']];
 
 if ($user->group() == 4) $content_main .= View::ShowStaticPage('profile_verification.html', 'profile/', $player_email);
 }

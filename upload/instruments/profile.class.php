@@ -76,14 +76,14 @@ class Profile extends View {
 		$user_info['create_time'] = array(($tmpParam) ? $tmpParam : 'Неизвестно', 'Дата регистрации');    			
 
 		$user_info['comments_num']  = array((int) $statistic['comments_num'], 'Комментарии');
-		$user_info['undress_times'] = array((int) $statistic['undress_times'], 'Перевоплощения');
+		
+		$tmpParam = $this->user->email();
+		$user_info['email'] = array(($tmpParam) ? $tmpParam : lng('NOT_SET'), 'Почта');
+		
+		$user_info['money'] = array($this->user->getMoney() . ' руб.', 'Донат-счет');
+		$user_info['econ'] = array($this->user->getEcon() . '$', 'Игровой баланс');
 
 		if ( $this->admin_mode && !$this->self_ignore ) {
-		
-			$tmpParam = $this->user->email();
-			$user_info['email'] = array(($tmpParam) ? $tmpParam : lng('NOT_SET'), 'Почта');
-			
-			$user_info['money'] = array($this->user->getMoney() . ' руб.', 'Баланс');
 			$user_info['ip'] = array($this->user->ip(), 'IP');
 		}
 		

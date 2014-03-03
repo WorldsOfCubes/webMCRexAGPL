@@ -343,6 +343,38 @@ function UpdateProfile(admTrg) {
 	sendFormByIFrame('profile-update', event)
     return false
 }
+function UpdatePriv(admTrg) {
+	
+
+	var event = function (response) {
+
+		
+		
+        GetById('main-error-text').className = 'alert alert-error'		
+		
+		if (response != null) {	
+
+            if (response['code'] == 0) GetById('main-error-text').className = 'alert alert-success'
+			if (response['code'] == 100) { 
+			BlockVisible('main-error',false)
+			return 
+			}
+			
+			GetById('main-error-text').innerHTML = nl2br(response['message'])
+			BlockVisible('main-error',true)
+		
+		} else {
+
+			GetById('main-error-text').innerHTML = err404 + req.status
+			BlockVisible('main-error',true)
+		
+		}
+        
+	}
+	
+	sendFormByIFrame('priv-update', event)
+    return false
+}
 
 function UpdatePrefix(admTrg) {
 	

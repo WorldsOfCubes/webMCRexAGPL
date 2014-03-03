@@ -285,6 +285,27 @@ private $deadtry;
 	
 		if ($bd_names['iconomy']) {
 		
+			$result  = BD("SELECT `{$bd_money['bank']}` FROM `{$bd_names['iconomy']}` WHERE `{$bd_money['login']}`='".TextBase::SQLSafe($this->name())."'");
+			if (!mysql_num_rows( $result )) {
+			
+			$result = BD("INSERT INTO `{$bd_names['iconomy']}` (`{$bd_money['login']}`) values ('".TextBase::SQLSafe($this->name())."')");	
+			return 0;			
+			}
+			
+			$line = mysql_fetch_array($result, MYSQL_NUM);
+			
+		return floatval($line[0]);			
+		} 
+       
+    return 0;
+    }
+    public function getEcon() {
+    global $bd_names, $bd_money;
+	
+    if (!$this->id) return 0;
+	
+		if ($bd_names['iconomy']) {
+		
 			$result  = BD("SELECT `{$bd_money['money']}` FROM `{$bd_names['iconomy']}` WHERE `{$bd_money['login']}`='".TextBase::SQLSafe($this->name())."'");
 			if (!mysql_num_rows( $result )) {
 			

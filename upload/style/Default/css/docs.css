@@ -94,13 +94,13 @@ hr.soften {
   color: #fff;
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
-  background: #58D3F7; /* Old browsers */
-  background: -moz-linear-gradient(45deg,  #58D3F7 0%, #0B4C5F 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#020031), color-stop(100%,#0B4C5F)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(45deg,  #58D3F7 0%,#0B4C5F 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(45deg,  #58D3F7 0%,#0B4C5F 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(45deg,  #58D3F7 0%,#0B4C5F 100%); /* IE10+ */
-  background: linear-gradient(45deg,  #58D3F7 0%,#0B4C5F 100%); /* W3C */
+  background: #000040; /* Old browsers */
+  background: -moz-linear-gradient(45deg,  #0000a4 0%, #000040 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#0000a4), color-stop(100%,#000040)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(45deg,  #0000a4 0%,#000040 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(45deg,  #0000a4 0%,#000040 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(45deg,  #0000a4 0%,#000040 100%); /* IE10+ */
+  background: linear-gradient(45deg,  #0000a4 0%,#000040 100%); /* W3C */
 }
 .jumbotron h1 {
   font-size: 80px;

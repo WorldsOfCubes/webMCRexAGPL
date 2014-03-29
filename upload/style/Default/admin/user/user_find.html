@@ -7,15 +7,15 @@
 <input type="hidden" name="do" value="search" />
 
 <p class="muted">Найти пользователя (<a href="?mode=control&do=search&sby=lvl&input=banned">Бан-лист</a>)</p>
-<p>
+	<select class="form-control" name="sby" style="width: 25%;float:right">
+		<option value="name" selected>по нику</option>
+		<option value="ip">по IP</option>
+	</select>
+<div class="input-group" style="width: 41.6667%;display:inline-block;height:20px">
 
-<select class="input-small" name="sby">
-  <option value="name" selected>по нику</option>
-  <option value="ip">по IP</option>
-</select>
-
-	<input class="input-medium" type="text" name="input" />
-	<input type="submit" class="btn" value="Найти" />
-</p>
-
+	<input class="form-control" type="text" name="input" style="display:inline" />
+	<span class="input-group-btn">
+		<input type="submit" class="btn btn-default" value="Найти" />
+	</span>
+</div>
 </form>

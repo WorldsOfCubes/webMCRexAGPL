@@ -6,30 +6,30 @@
 	
 	<div class="block-line"></div>
 	
-	<form action="index.php?mode=news_add" name="adminform" method="post">
+	<form action="go/news_add" name="adminform" method="post">
 	
 	<input type="hidden" name="editMode" value="<?php echo $editMode ?>">
-	
-	<div class="input-prepend">
-	
-		<span class="add-on">Заголовок:</span>
-		
-		<input type="text" name="title" class="span12" value="<?php echo $editTitle ?>" />
-		
-	</div> 
 
-	<div class="input-prepend" style="float: right;">
-		<span class="add-on">Категория:</span>
-		<select name="cid" ><?php echo $cat_list; ?></select>
-	</div>   
+	<div class="input-group col-md-5" style="float: right;height:20px">
+		<span class="input-group-addon">Категория:</span>
+		<select name="cid" class="form-control" style="display:inline"><?php echo $cat_list; ?></select>
+	</div>  
+	
+	<div class="input-group col-md-5" style="height:20px">
+	
+		<span class="input-group-addon">Заголовок:</span>
+		
+		<input type="text" name="title" class="form-control" style="display: inline" value="<?php echo $editTitle ?>" />
+		
+	</div>  
 	
 	<label>Вводная часть:</label>
 	
-	<textarea class="span11 tinymce" style="height:100px;" name="message"><?php echo $editMessage; ?></textarea>
+	<textarea class="form-control" style="height:100px;" name="message"><?php echo $editMessage; ?></textarea>
 	
 	<label style="padding-top: 10px;">Подробное описание: </label>
 	
-	<textarea class="span11 tinymce" style="height:200px;" name="message_full"><?php echo $editMessage_Full; ?></textarea>
+	<textarea class="form-control" style="height:200px;" name="message_full"><?php echo $editMessage_Full; ?></textarea>
 	
 	<div class="block-line"></div>
 	
@@ -48,7 +48,7 @@
 	</label>
 	
 	<div style="float: right;">	
-		<input class="btn" type="submit" value="<?php echo $editorButton; ?>" />
+		<input class="btn btn-default" type="submit" value="<?php echo $editorButton; ?>" />
 	</div>
 	
 	</form>	

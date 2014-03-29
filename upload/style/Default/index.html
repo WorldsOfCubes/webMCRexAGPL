@@ -8,7 +8,10 @@
 	
 	<base href="<?php echo BASE_URL ?>"> 
 	
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
     <meta name="description" content="<?php echo $config['s_about'] ?>">
     <meta name="author" content="NC22"><!-- first version of stylesheet was developed by KillerProst -->
 
@@ -36,15 +39,15 @@
 
   <div class="container">
 
-	    <div class="container-fluid">
-			<div class="row-fluid">
-			    <div class="span9">					
+	    <div class="container">
+			<div class="row">
+			    <div class="col-md-9">					
 					<h1><?php echo $config['s_name'] ?></h1>
 					<p class="lead"><?php echo $config['s_about'] ?></p>
 				</div>
 
-				<div class="span3" style="padding-top: 30px;">	
-                    <p class="lead" ><a href="index.php?mode=start">СКАЧАТЬ КЛИЕНТ</a></p>
+				<div class="col-md-3" style="padding-top: 30px;">	
+                    <p class="lead" ><a href="go/start"><b>СКАЧАТЬ ЛОНЧЕР</b></a></p>
 				</div>	
 				
 			</div>
@@ -57,27 +60,28 @@
   <div class="container">
     <ul class="bs-docs-social-buttons">
       <li>
-        <b style="color:#999999;">Совет: </b><?php echo $content_advice; ?>
+        <?php echo $content_advice; ?>
 		<div id="debug"></div>
       </li>
     </ul>
   </div>
 </div>
 
-<div class="navbar navbar-fixed-top">
+<div class="navbar navbar-default navbar-fixed-top" role="navigation" >
 
-      <div class="navbar-inner">
+      <div class="navbar-header">
         <div class="container">
 		
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+			<span class="sr-only">Показать навигацию</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
 		  
-          <a class="brand" href=""><?php echo $config['s_name'] ?></a>
+          <a class="navbar-brand" href=""><?php echo $config['s_name'] ?></a>
 		  
-          <div class="nav-collapse collapse">
+          <div class="collapse navbar-collapse navbar-ex1-collapse">
 
 	         <?php echo $content_menu; ?>
 			 
@@ -90,10 +94,10 @@
 	
 <!-- END -->
 <div class="container">	
-    <div class="container-fluid">
-			<div class="row-fluid">
+    <div class="container">
+			<div class="row">
 			<!-- Левый контейнер -->
-				<div class="span4">		
+				<div class="col-md-4">		
 						
 					<?php echo $content_side ?>
 
@@ -103,7 +107,7 @@
 			<!-- /.Левый контейнер -->
 				
             <!-- Правый контейнер -->
-				<div class="span8">	
+				<div class="col-md-8">	
 
 				    <?php echo $content_main;?> 	
 		
@@ -132,6 +136,6 @@
 	<script src="<?php View::URL('js/monitoring.js') ?>"></script>
 	<script src="<?php View::URL('js/ajax.js') ?>"></script>
 	
-	<script src="<?php View::URL('js/bootstrap.min.js') ?>"></script>
+	<script src="<?php View::URL('js/bootstrap.js') ?>"></script>
   </body>
 </html>

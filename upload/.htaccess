@@ -4,6 +4,7 @@ DefaultLanguage ru-RU
 Options -Indexes
 
 php_flag register_globals off
+php_flag magic_quotes_gpc off
 
 <IfModule mod_rewrite.c>
 

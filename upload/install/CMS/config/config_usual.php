@@ -27,7 +27,7 @@ $config = array (
 
 /* site constants */
   
-	's_name'		=> 'MCR '.MCR,
+	's_name'		=> PROGNAME,
 	's_about'		=> 'Личный кабинет для онлайн сервера игры Minecraft',
 	's_keywords'	=> 'сервер игра онлайн NC22 STRELOK2022 WorldsOfCubes Minecraft',
 	's_dpage'		=> 'news', 

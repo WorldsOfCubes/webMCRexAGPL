@@ -1,10 +1,11 @@
 
 <form autocomplete="off" id="prefix-update" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="method" value="prefix" /> 
-		<div class="control-group">
-   <label class="control-label" for="oldpasswd">Настройки префикса:</label> 
-    <div class="controls">
-<SELECT NAME="prefcolor" class="input-small" style="color:black">
+		<div class="form-group">
+   <label class="col-lg-2 control-label" for="prefix">Настройки префикса:</label>
+   <div class="col-lg-10" id="prefix">
+   <div class="input-group">
+  <SELECT NAME="prefcolor" class="form-control" style="width:110px;color:black">
 <OPTION value = "&0" style="background: black; color:white;">Черный
 <OPTION value = "&1" style="background: navy">Темно-синий
 <OPTION value = "&2" style="background: green">Темно-зеленый
@@ -22,8 +23,9 @@
 <OPTION value = "&e" style="background: yellow">Желтый
 <OPTION value = "&f" style="background: white">Белый
 </SELECT>
-<INPUT TYPE="text" NAME="pref" SIZE="8" MAXLENGTH="10" class="input-small">
-<SELECT NAME="nickcolor" style="color:black" class="input-small">
+  <span class="input-group-addon">[</span>
+<INPUT TYPE="text" class="form-control" NAME="pref" SIZE="8" MAXLENGTH="10" style="width:90px;" placeholder="Префикс">
+  <span class="input-group-addon">]</span><SELECT NAME="nickcolor" class="form-control" style="width:110px;color:black">
 <OPTION value = "&0" style="background: black; color:white;">Черный
 <OPTION value = "&1" style="background: navy">Темно-синий
 <OPTION value = "&2" style="background: green">Темно-зеленый
@@ -41,7 +43,8 @@
 <OPTION value = "&e" style="background: yellow">Желтый
 <OPTION value = "&f" style="background: white">Белый
 </SELECT>
-<SELECT NAME="textcolor" style="color:black" class="input-small">
+  <span class="input-group-addon" style="width:100%">Ник</span>
+<SELECT NAME="textcolor" class="form-control" style="width:110px;color:black">
 <OPTION value = "&0" style="background: black; color:white;">Черный
 <OPTION value = "&1" style="background: navy">Темно-синий
 <OPTION value = "&2" style="background: green">Темно-зеленый
@@ -58,11 +61,15 @@
 <OPTION value = "&d" style="background: fuchsia">Розовый
 <OPTION value = "&e" style="background: yellow">Желтый
 <OPTION value = "&f" style="background: white">Белый
-</SELECT></div></div>
-<div class="control-group">
-               <div class="controls">
-			   <input id="prefix-button" class="btn" type="submit" onclick="UpdatePrefix(); return false" value="Изменить" />
-		
-			   
+</SELECT>
 </div>
-</div></form>
+
+
+</div></div>
+
+			<div class="form-group">
+               <div class="col-lg-offset-2 col-lg-10">
+                 <input id="prefix-button" class="btn btn-default" type="submit" onclick="UpdatePrefix(); return false" value="Изменить" />
+               </div>
+             </div>
+</form>

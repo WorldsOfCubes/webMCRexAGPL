@@ -12,39 +12,6 @@ $menu_items = array (
       'active' => false,
       'inner_html' => '',
     ),
-    'guide' => 
-    array (
-      'name' => 'Начать играть',
-      'url' => 'go/guide/',
-      'parent_id' => -1,
-      'lvl' => -1,
-      'permission' => -1,
-      'active' => false,
-      'inner_html' => '',
-    ),
-    'rules' => 
-    array (
-      'name' => 'Правила',
-      'url' => 'go/rules/',
-      'parent_id' => -1,
-      'lvl' => -1,
-      'permission' => -1,
-      'active' => false,
-      'inner_html' => '',
-    ),
-    'options' => 
-    array (
-      'name' => 'Настройки',
-      'url' => 'go/options/',
-      'parent_id' => -1,
-      'lvl' => 1,
-      'permission' => -1,
-      'active' => false,
-      'inner_html' => '',
-    ),
-  ),
-  1 => 
-  array (
     'admin' => 
     array (
       'name' => 'Администрирование',
@@ -151,6 +118,39 @@ $menu_items = array (
       'url' => 'control/servers/',
       'parent_id' => 'admin',
       'lvl' => 15,
+      'permission' => -1,
+      'active' => false,
+      'inner_html' => '',
+    ),
+    'guide' => 
+    array (
+      'name' => 'Начать играть',
+      'url' => 'go/guide/',
+      'parent_id' => -1,
+      'lvl' => -1,
+      'permission' => -1,
+      'active' => false,
+      'inner_html' => '',
+    ),
+    'rules' => 
+    array (
+      'name' => 'Правила',
+      'url' => 'go/rules/',
+      'parent_id' => -1,
+      'lvl' => -1,
+      'permission' => -1,
+      'active' => false,
+      'inner_html' => '',
+    ),
+  ),
+  1 => 
+  array (
+    'options' => 
+    array (
+      'name' => 'Настройки',
+      'url' => 'go/options/',
+      'parent_id' => -1,
+      'lvl' => 1,
       'permission' => -1,
       'active' => false,
       'inner_html' => '',

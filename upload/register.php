@@ -21,12 +21,14 @@ $method = CheckPostComplect();
 if (!$method) exit;
 
 require('./system.php');
-
 loadTool('ajax.php');
+if ($config['offline']) {
+	aExit(2, lng('REG_BLOCKED_SITE'));
+}
 
 if (	$config['p_logic'] != 'usual' 
 	and $config['p_logic'] != 'xauth'
-	and $config['p_logic'] != 'authme') aExit(1,'Registration is blocked. Used auth script from main CMS');
+	and $config['p_logic'] != 'authme') aExit(1,lng('REG_BLOCKED_CMS'));
 
 BDConnect('register');
 

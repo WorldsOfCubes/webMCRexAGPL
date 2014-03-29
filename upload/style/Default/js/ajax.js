@@ -128,7 +128,7 @@ function Register() {
 	
     var event = function(response) {
 	
-	GetById('loginform-error-text').className = 'alert alert-error'	
+	GetById('loginform-error-text').className = 'alert alert-danger'	
 	
         if ( response['code'] == 0 ) { 
 
@@ -290,7 +290,7 @@ function UpdateProfile(admTrg) {
 		
 		GetById('profile-update').reset()
 		
-        GetById('main-error-text').className = 'alert alert-error'		
+        GetById('main-error-text').className = 'alert alert-danger'		
 		
 		if (response != null) {	
 
@@ -350,7 +350,7 @@ function UpdatePriv(admTrg) {
 
 		
 		
-        GetById('main-error-text').className = 'alert alert-error'		
+        GetById('main-error-text').className = 'alert alert-danger'		
 		
 		if (response != null) {	
 
@@ -384,7 +384,7 @@ function UpdatePrefix(admTrg) {
 
 		GetById('prefix-update').reset()
 		
-        GetById('main-error-text').className = 'alert alert-error'		
+        GetById('main-error-text').className = 'alert alert-danger'		
 		
 		if (response != null) {	
 

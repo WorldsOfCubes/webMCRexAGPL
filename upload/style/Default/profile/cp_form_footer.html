@@ -1,9 +1,13 @@
-<label>Код подтверждения:</label>
-				
-	<img src="<?php echo BASE_URL ?>instruments/captcha/captcha.php?refresh=<?php echo rand(1337,31337) ?>" alt="Код подтверждения" class="img-polaroid" width="70" height="30"/> 
-	<input type="text" name="antibot" placeholder="Код:" maxlength="4" class="antibot" style="top: 4px;" />
-		
-    <p style="margin-top: 12px;"><button type="submit" class="btn">Указать</button></p>
+<div class="form-group">
+   <label class="col-lg-2 control-label" for="code">Капча:</label>
+   <div class="col-lg-10" id="code">
+	<img src="<?php echo BASE_URL ?>instruments/captcha/captcha.php?refresh=<?php echo rand(1337,31337) ?>" alt="Код" class="img-thumbnail" width="70" height="30"/> 
+	<input class="form-control" type="text" name="antibot" maxlength="4" class="antibot" style="width:120px; margin-left:10px; display:inline-block" />
+   </div>
+</div>
+             <div class="form-group">
+               <div class="col-lg-offset-2 col-lg-10">
+    <button type="submit" class="btn btn-default">Указать</button></div></div>
   </fieldset>
 </form>
 

@@ -9,21 +9,21 @@ loadTool('user.class.php');
 MCRAuth::userLoad();
 
 function GetRandomAdvice() { return ($quotes = @file(View::Get('sovet.txt')))? $quotes[rand(0, sizeof($quotes)-1)] : "Советов нет"; }
-
+$addition_events = ''; $content_main = ''; $content_side = '';  $content_js = '';
 function LoadTinyMCE() {
 global $addition_events, $content_js;
  
 	if ( !file_exists(MCR_ROOT.'instruments/tiny_mce/tinymce.min.js') ) return false;
 
 	$tmce  = 'tinymce.init({';
-	$tmce .= 'selector: "textarea.tinymce",';
+	$tmce .= 'selector: "textarea.form-control",';
 	$tmce .= 'language : "ru",';
 	$tmce .= 'plugins: "code preview image link",';
 	$tmce .= 'toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | numlist bullist outdent indent | link image | preview",';
 	$tmce .= '});';
 
 	$addition_events .= $tmce;
-	$content_js .= '<script type="text/javascript" src="instruments/tiny_mce/tinymce.min.js"></script>';
+	$content_js .= '<script type="text/javascript" src="' . BASE_URL . 'instruments/tiny_mce/tinymce.min.js"></script>';
 	
 	return true;
 }
@@ -36,14 +36,21 @@ global $addition_events;
 	return '<script type="text/javascript">' . $init_js . '</script>' ;
 }
 
-$menu = new Menu();
-$content_main = ''; $content_side = ''; $addition_events = ''; $content_js = ''; $content_advice = GetRandomAdvice();
-$content_menu = $menu->Show(); $content_js .= InitJS();
+$content_advice = GetRandomAdvice();
 
 if ($config['offline'] and (empty($user) or $user->group() != 3)) {
-	include(View::Get('site_closed.html'));
+	$menu = new Menu();
+	$menu->SetItemActive('main');
+	$content_menu = $menu->Show();
+	$content_js .= InitJS();
+	$mode = 'closed';
+	$page = 'Технические работы';
+	$content_main = View::ShowStaticPage('site_closed.html');
+	include('./location/side.php');
+	include View::Get('index.html');
 	exit;
 }
+$menu = new Menu();
 
 if (!empty($user)) {
 
@@ -52,7 +59,7 @@ $player_id    = $user->id();
 $player_lvl   = $user->lvl();
 $player_email = $user->email(); if (empty($player_email)) $player_email = lng('NOT_SET'); 
 $player_group = $user->getGroupName();
-$player_econ = $user->getEcon();
+$player_econ  = $user->getEcon();
 $player_money = $user->getMoney();
 
 if ($user->group() == 4) $content_main .= View::ShowStaticPage('profile_verification.html', 'profile/', $player_email);
@@ -80,7 +87,9 @@ switch ($mode) {
 		include(MCR_ROOT.'/location/'.$mode.'.php'); break;
 } 
 
-include('./location/side.php'); 
+$content_menu = $menu->Show();
+$content_js .= InitJS(); 
+include('./location/side.php');
 
 
 include View::Get('index.html');

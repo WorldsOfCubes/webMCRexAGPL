@@ -6,15 +6,15 @@
  
 	<div style="text-align: center;">
 		 
-		<img id="profile-mini" class="img-polaroid" src="skin.php<?php echo $user->getSkinLink(true) ?>" width="86" height="86"/>
+		<img id="profile-mini" class="img-thumbnail" src="skin.php<?php echo $user->getSkinLink(true) ?>" width="86" height="86"/>
 			   
 		<div style="float: right; padding-left: 5px; padding-right:10px; text-align: left;">
 		 
-			<p><i class="icon-user"></i> <b>Логин:</b> <span id="profile-mini-name"><?php echo $player; ?></span></p>
+			<p><i class="glyphicon glyphicon-user"></i> <b>Логин:</b> <span id="profile-mini-name"><?php echo $player; ?></span></p>
 				
-			<p><i class="icon-list-alt"></i> <b>Группа:</b> <?php echo $player_group; ?></p>
+			<p><i class="glyphicon glyphicon-list-alt"></i> <b>Группа:</b> <?php echo $player_group; ?></p>
 			 
-			<p><a href="login.php?out=1" style="width: 128px;" class="btn btn-small" >Выход</a></p>
+			<p><a href="login.php?out=1" class="btn btn-default btn-sm btn-block" >Выход</a></p>
 		
 		</div>
 		 

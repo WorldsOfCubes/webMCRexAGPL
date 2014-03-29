@@ -333,8 +333,24 @@ private $deadtry;
 	$new_pl_money = $this->getMoney() + $num;		
 	if ($new_pl_money < 0 ) $new_pl_money = 0;
 		
-	BD("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['money']}`='".TextBase::SQLSafe($new_pl_money)."' WHERE `{$bd_money['login']}`='".TextBase::SQLSafe($this->name())."'");       
+	BD("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['bank']}`='".TextBase::SQLSafe($new_pl_money)."' WHERE `{$bd_money['login']}`='".TextBase::SQLSafe($this->name())."'");       
     return $new_pl_money;
+    }
+	
+    public function addEcon($num) {
+		global $bd_names, $bd_money;
+	
+		if (!$this->id) return false;
+		if (!$bd_names['iconomy']) return false;
+	
+		$num = (int) $num;
+		if (!$num) return $this->getEcon();
+	
+		$new_pl_emoney = $this->getEcon() + $num;		
+		if ($new_pl_emoney < 0 ) $new_pl_emoney = 0;
+		
+		BD("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['money']}`='".TextBase::SQLSafe($new_pl_money)."' WHERE `{$bd_money['login']}`='".TextBase::SQLSafe($this->name())."'");       
+		return $new_pl_money;
     }
 	
 	public function getSkinFName() {

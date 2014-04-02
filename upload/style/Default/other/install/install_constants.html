@@ -9,19 +9,19 @@
     <legend>3 / 3 Остальные настройки</legend>
 	
 	<label>Часовой пояс:</label>
-    <select name="site_timezone" class="input-xlarge"><?php echo TimezoneList(date_default_timezone_get()); ?></select>
+    <select name="site_timezone" class="form-control" style="width:300px" class="input-xlarge"><?php echo TimezoneList(date_default_timezone_get()); ?></select>
 	
 	<label>Название сайта:</label>
 	<span class="help-block">Название, отображаемое в заголовке и на страницах сайта. </span>
-    <input type="text" name="site_name" value="<?php echo $config['s_name']; ?>">
+    <input type="text" name="site_name" class="form-control" style="width:300px" value="<?php echo $config['s_name']; ?>">
 	
 	<label>Описание сайта:</label>
 	<span class="help-block">По умолчанию используется для индексации сайта поисковыми машинами. Так же отображается под названием сайта.</span>
-    <input type="text" name="site_about" value="<?php echo $config['s_about']; ?>">	
+    <input type="text" name="site_about" class="form-control" style="width:300px" value="<?php echo $config['s_about']; ?>">	
 	
 	<label>Ключевые слова:</label>
 	<span class="help-block">Используются для индексации сайта поисковыми машинами. Вводить через пробел, общая длинна не > 200 символов </span>
-    <input type="text" name="site_keyword" value="<?php echo $config['s_keywords']; ?>">
+    <input type="text" name="site_keyword" class="form-control" style="width:300px" value="<?php echo $config['s_keywords']; ?>">
 		
 	<label class="checkbox">
 	  <input type="checkbox" name="sbuffer" value="1" <?php echo ($config['sbuffer'])?'checked="checked"':'' ?>> Буферизация генерируемых изображений

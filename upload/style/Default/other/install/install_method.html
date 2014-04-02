@@ -3,7 +3,7 @@
 		  <fieldset>
 			<legend>Тип установки</legend>
 
-			<select name="mode">
+			<select name="mode" class="form-control" style="width:300px">
 				<option value="usual" <?php echo ($mode == 'usual')? 'selected' : '' ?> >Обычная установка</option>
 				<option value="xauth" <?php echo ($mode == 'xauth')? 'selected' : '' ?> >Совместимость с xAuth</option>
 				<option value="authme" <?php echo ($mode == 'authme')? 'selected' : '' ?> >Совместимость с AuthMe</option>

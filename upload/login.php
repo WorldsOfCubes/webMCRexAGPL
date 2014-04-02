@@ -29,7 +29,7 @@ if (isset($_GET['out'])) {
 	if (!$tmp_user->authenticate($pass)) { 
 	
 		$ajax_message['auth_fail_num'] = (int)$tmp_user->auth_fail_num();
-		aExit(1, lng('AUTH_FAIL').'.<br /> <a href="#" style="color: #656565;" onclick="RestoreStart(); return false;">'.lng('AUTH_RESTORE').' ?</a>'); 
+		aExit(1, lng('AUTH_FAIL')); 
 	}
 	
 	if ($tmp_user->lvl() <= 0) aExit(4, lng('USER_BANNED'));	

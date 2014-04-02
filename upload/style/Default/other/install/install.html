@@ -10,23 +10,23 @@
 	
 	<label>Адрес:</label>
 	<span class="help-block">Адрес MySQL сервера (доменное имя или ip-адрес) </span>
-    <input type="text" name="mysql_adress" value="<?php echo $config['db_host'] ?>">
+    <input type="text" class="form-control" style="width:300px" name="mysql_adress" value="<?php echo $config['db_host'] ?>">
 	
 	<label>Порт:</label>
 	<span class="help-block">Порт для подключения к MySQL серверу (3306 - порт по умолчанию)</span>
-    <input type="text" name="mysql_port" value="<?php echo $config['db_port'] ?>">	
+    <input type="text" class="form-control" style="width:300px" name="mysql_port" value="<?php echo $config['db_port'] ?>">	
 	
 	<label>Название базы:</label>
 	<span class="help-block">База данных, которую будет использовать <?php echo PROGNAME; ?></span>
-    <input type="text" name="mysql_bd" value="<?php echo $config['db_name'] ?>">	
+    <input type="text" class="form-control" style="width:300px" name="mysql_bd" value="<?php echo $config['db_name'] ?>">	
 	
 	<label>Пользователь</label>
 	<span class="help-block">Пользователь сервера MySQL</span>
-    <input type="text" name="mysql_user" value="<?php echo $config['db_login'] ?>">
+    <input type="text" class="form-control" style="width:300px" name="mysql_user" value="<?php echo $config['db_login'] ?>">
 	
 	<label>Пароль</label>
 	<span class="help-block">Пароль для авторизации пользователя</span>
-    <input type="text" name="mysql_password" value="<?php echo $config['db_passw'] ?>">
+    <input type="text" class="form-control" style="width:300px" name="mysql_password" value="<?php echo $config['db_passw'] ?>">
 	
 	<label class="checkbox">
 	  <input type="checkbox" name="mysql_rewrite" value="1"> Отчистить базу данных

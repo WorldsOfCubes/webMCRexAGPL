@@ -16,19 +16,19 @@
 	<?php } ?>
 	
 	<label>Таблица пользователей:</label>	
-    <input type="text" name="bd_accounts_mcms" value="<?php echo $bd_names['users'] ?>">
+    <input type="text" class="form-control" style="width:300px" name="bd_accounts_mcms" value="<?php echo $bd_names['users'] ?>">
 	<span class="help-block">Указано название таблицы используемое <?php echo $main_cms ?> по умолчанию, изменять только в случае если вы знаете, что делаете.</span>
 	
 	<label>Логин:</label>    
-	<input type="text" name="site_user" value="<?php echo ConfigPostStr('site_user') ?>">
+	<input type="text" class="form-control" style="width:300px" name="site_user" value="<?php echo ConfigPostStr('site_user') ?>">
 	<span class="help-block">Имя нового администратора</span>
 	
 	<label>Пароль:</label>
-	<input type="password" name="site_password">	
+	<input type="password" class="form-control" style="width:300px" name="site_password">	
 	<span class="help-block">Пароль для авторизации</span>    
 	
 	<label>Подтверждение:</label>    
-	<input type="password" name="site_repassword">
+	<input type="password" class="form-control" style="width:300px" name="site_repassword">
 	<span class="help-block">Повтор пароля</span>
 	
     <button type="submit" class="btn btn-default">Продолжить</button>

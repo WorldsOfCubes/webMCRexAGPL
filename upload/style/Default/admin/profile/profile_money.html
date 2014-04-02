@@ -1,7 +1,13 @@
-  <div class="control-group">
-    <label class="control-label" for="inputLogin">(<?php echo $ban_user->getMoney() ?>)</label>
-    <div class="controls">
-      <input name="new_money" type="text" id="inputLogin" size="16" maxlength="16" placeholder="Начисление денег">
+  <div class="form-group">
+    <label class="col-lg-2 control-label" for="inputLogin">Донат-счет (<?php echo $ban_user->getMoney() ?>)</label>
+    <div class="col-lg-10" id="inputLogin">
+      <input name="new_money" type="text" size="16" maxlength="16" class="form-control" style="width:300px" placeholder="Начисление денег">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-lg-2 control-label" for="inputLogin">Игровая валюта (<?php echo $ban_user->getEcon() ?>)</label>
+    <div class="col-lg-10" id="inputLogin">
+      <input name="new_econ" type="text" size="16" maxlength="16" class="form-control" style="width:300px" placeholder="Начисление денег">
     </div>
   </div>
   

@@ -4,27 +4,27 @@
     <legend>Настройки игры</legend> 
 	
 	<label>Категория новостей <a href="<?php echo $site_ways['mcraft'] ?>news.php">игровой новостной ленты</a>:</label>
-	<select name="game_news"><?php echo $cat_list ?></select>
+	<select name="game_news" class="form-control" style="width:300px"><?php echo $cat_list ?></select>
 	
-	<label>Cсылка на лаунчер (Windows):</label>
+	<label>Cсылка на лончер (Windows):</label>
 	<span class="help-block">Ссылка, выводимая в шаблоне (<?php echo MCR_STYLE; ?>start_game.html) (<a href="index.php?mode=start">Страница</a>)</span>
-    <input type="text" name="link_win" value="<?php echo sqlConfigGet('game-link-win') ?>">
+    <input type="text" class="form-control" style="width:300px" name="link_win" value="<?php echo sqlConfigGet('game-link-win') ?>">
 
-	<label>Cсылка на лаунчер (OS X):</label>
+	<label>Cсылка на лончер (OS X):</label>
 	<span class="help-block">Ссылка, выводимая в шаблоне (<?php echo MCR_STYLE; ?>start_game.html) (<a href="index.php?mode=start">Страница</a>)</span>
-    <input type="text" name="link_osx" value="<?php echo sqlConfigGet('game-link-osx') ?>">
+    <input type="text" class="form-control" style="width:300px" name="link_osx" value="<?php echo sqlConfigGet('game-link-osx') ?>">
 	
-	<label>Cсылка на лаунчер (Linux):</label>
+	<label>Cсылка на лончер (Linux):</label>
 	<span class="help-block">Ссылка, выводимая в шаблоне (<?php echo MCR_STYLE; ?>start_game.html) (<a href="index.php?mode=start">Страница</a>)</span>
-    <input type="text" name="link_lin" value="<?php echo sqlConfigGet('game-link-lin') ?>">	
+    <input type="text" class="form-control" style="width:300px" name="link_lin" value="<?php echo sqlConfigGet('game-link-lin') ?>">	
 	
-	<label>Build клиента:</label>
-	<span class="help-block">Настройка необходима для синхронизации обновлений в оригинальном лаунчере. </span>
-    <input type="text" name="build_set" value="<?php echo sqlConfigGet('latest-game-build') ?>">
+	<label>Версия клиента:</label>
+	<span class="help-block">Настройка необходима для синхронизации обновлений в оригинальном лончере. </span>
+    <input type="text" name="build_set" class="form-control" style="width:300px" value="<?php echo sqlConfigGet('latest-game-build') ?>">
 	
-	<label>Версия лаунчера:</label>
-	<span class="help-block">При запросе авторизации, лаунчер передает свою версию. При не совпадении версии лаунчера и заданной здесь, авторизация будет отклонена.</span>
-    <input type="text" name="launcher_set" value="<?php echo sqlConfigGet('launcher-version') ?>">	
+	<label>Версия лончера:</label>
+	<span class="help-block">При запросе авторизации, лончер передает свою версию. При несовпадении версии лончера и заданной здесь, авторизация будет отклонена.</span>
+    <input type="text" class="form-control" style="width:300px" name="launcher_set" value="<?php echo sqlConfigGet('launcher-version') ?>">	
 	
 	<br/>				 
 	

@@ -5,11 +5,11 @@
   <fieldset>
     <legend>Настройки категории [<?php echo $cat_name ?>]</legend>
 	<label>Название:</label>
-    <input type="text" name="name" value="<?php echo $cat_name ?>">
+    <input type="text" name="name" class="form-control" style="width:300px" value="<?php echo $cat_name ?>">
 	
 	<label>Приоритет:</label>
 	<span class="help-block">Чем выше приоритет, тем выше категория в списке категорий.</span>
-    <input type="text" name="lvl" value="<?php echo $cat_priority ?>">
+    <input type="text" name="lvl" class="form-control" style="width:300px" value="<?php echo $cat_priority ?>">
 	
     <span class="help-block">Описание:</span>
 	
@@ -17,7 +17,7 @@
 	 
 	 <div style="text-align: center;">
 	 
-		 <textarea id="description-text" maxlength="255" class="span11" style="height:100px" name="desc" onclick="return DrawLenInfo(event)" onchange="return DrawLenInfo(event)" onkeyup="return DrawLenInfo(event)" onkeypress="return DrawLenInfo(event)" ><?php echo $cat_desc ?></textarea></td>
+		 <textarea id="description-text" class="form-control" maxlength="255" class="span11" style="height:100px" name="desc" onclick="return DrawLenInfo(event)" onchange="return DrawLenInfo(event)" onkeyup="return DrawLenInfo(event)" onkeypress="return DrawLenInfo(event)" ><?php echo $cat_desc ?></textarea></td>
 	 
 	 </div>
 	 
@@ -29,4 +29,3 @@
 	</div>
   </fieldset>
 </form>
-

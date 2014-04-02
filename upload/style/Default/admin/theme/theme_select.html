@@ -31,18 +31,17 @@ function TDelete() {
 </script>
 
 <label>Стиль страниц:</label>
-	
-	<select name="theme_name" size="1" onchange="return TSelectTo(this.value)">
-	
-		<?php echo $html_theme_list ?>
-	
-	</select> 
-	
-	<!--<button type="button" class="btn btn-default" onclick="BlockVisible('theme-extended-info')" style="position: relative; bottom : 6px;">Описание</button>-->
-	<button type="button" class="btn btn-default" onclick="TDownloadTheme()" style="position: relative; bottom : 6px;">Скачать</button>
-	<button type="button" class="btn btn-default" onclick="BlockVisible('theme-install-info')" style="position: relative; bottom : 6px;">Добавить</button>
-	<button type="button" class="btn btn-default" onclick="TDelete()" style="position: relative; bottom : 6px;">Удалить</button>
-	
+	<div class="form-inline">
+		<select name="theme_name" class="form-control" style="width:300px" size="1" onchange="return TSelectTo(this.value)">
+		
+			<?php echo $html_theme_list ?>
+		
+		</select> 
+		
+		<button type="button" class="btn btn-default" onclick="TDownloadTheme()" style="position: relative;">Скачать</button>
+		<button type="button" class="btn btn-default" onclick="BlockVisible('theme-install-info')" style="position: relative;">Добавить</button>
+		<button type="button" class="btn btn-default" onclick="TDelete()" style="position: relative;">Удалить</button>
+	</div>
 	<input type="hidden" name="theme_delete" id="theme-item-delete" value="">
 	
 <div id="theme-install-info" style="display : none; margin-bottom: 12px;">

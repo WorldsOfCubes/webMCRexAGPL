@@ -227,6 +227,10 @@ switch ($method) {
 				
 				if ($mod_user->addMoney($_POST['new_money'])) $rcodes[] = 1;
 			}			
+			if (!empty($_POST['new_econ'])) {
+				
+				if ($mod_user->addEcon($_POST['new_money'])) $rcodes[] = 1;
+			}			
 			if (isset($_POST['new_gender'])) {
 			
 		        $newgender = (!(int)$_POST['new_gender'])? 0 : 1;

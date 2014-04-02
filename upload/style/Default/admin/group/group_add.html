@@ -3,22 +3,22 @@
     <legend>Создать новую группу</legend>
 	
 	<label>Название:</label>
-    <input type="text" name="name">
+    <input type="text" class="form-control" style="width:300px" name="name">
 	
 	<label>Размер файла: (Кб)</label>
 	<span class="help-block">Максимально допустимый размер файла изображения для загрузки, будь то образ персонажа или его плащ</span>
-    <input type="text" name="max_fsize" value="20">	
+    <input type="text" class="form-control" style="width:300px" name="max_fsize" value="20">	
 	
 	<label>Размер изображения:</label>
 	<span class="help-block">Максимально допустимое разрешение для графического файла<br/>Разрешение изображения образа | Разрешение изображения плаща</span>
-		<select name="max_ratio" size="1">
+		<select name="max_ratio" class="form-control" style="width:300px" size="1">
 			<?php echo $html_ratio ?>
 		</select>
 		
 	<label>Уровень доступа:</label>
 	
 	<span class="help-block">0 - Запрет авторизации. 1 - Авторизация на сайте. 2 - Авторизация в игре и на сайте. 15 - Доступ к панели управления. </span>
-    <input type="text" name="lvl" value="1">
+    <input type="text" class="form-control" style="width:300px" name="lvl" value="1">
     <span class="help-block">Дополнительные права для группы:</span>
 	
 	<?php if (isset($bd_names['sp_skins'])) { ?>

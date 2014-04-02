@@ -181,11 +181,11 @@ function refresh_users(){
 }
 </script>
 
-<div style="margin-top: 10px;">
   <label>Данные для подключения:</label>  
-  <input type="text" id="back_ip" name="IP" placeholder="IP" value="<?php echo $ip ?>">
-  <input type="password" id="back_pass" name="pass" placeholder="Password"> 
-  <input type="text" id="back_port" class="input-mini" name="port" placeholder="Port" value="<?php echo $port ?>">
+<div class="form-inline" style="margin-top: 10px;">
+  <input type="text" class="form-control" id="back_ip" name="IP" placeholder="IP" value="<?php echo $ip ?>">
+  <input type="password" class="form-control" id="back_pass" name="pass" placeholder="Password"> 
+  <input type="text" class="form-control" id="back_port" class="input-mini" name="port" placeholder="Port" value="<?php echo $port ?>">
     <div class="control-group">
     <div class="controls">
       <label class="checkbox">
@@ -196,7 +196,7 @@ function refresh_users(){
 </div>
 
 <div class="btn-group" style="margin-top: 10px; margin-bottom: 10px; clear: both; display: inline-block;">
-  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
     Игрок
     <span class="caret"></span>
   </a>
@@ -215,7 +215,7 @@ function refresh_users(){
   </ul>
 </div>
 <div class="btn-group" style="margin-top: 10px; margin-bottom: 10px; clear: both; display: inline-block;">
-  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
     Чат и информация
     <span class="caret"></span>
   </a>
@@ -232,7 +232,7 @@ function refresh_users(){
 </div>
 
 <div class="btn-group" style="margin-top: 10px; margin-bottom: 10px; clear: both; display: inline-block;">
-  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
     Настройка сервера
     <span class="caret"></span>
   </a>
@@ -251,7 +251,7 @@ function refresh_users(){
   </ul>
 </div>
 
-<!--<button type="submit" class="btn">Список игроков</button>-->
+<!--<button type="submit" class="btn btn-default">Список игроков</button>-->
 
 <div class="console_holder">
 	
@@ -273,7 +273,7 @@ function refresh_users(){
 					<input type="hidden" id="command_pass" name="pass"/>
 					<input type="hidden" id="command_port" name="port" />
 					<input type="hidden" id="command_save" name="save" />
-				    <p><input name="command" type="text" style="width: 80%;">&nbsp;<a href="#" id="command_send" class="btn" onclick="return command_send()" >SEND</a></p>
+				    <p><input name="command" class="form-control" type="text" style="width: 80%;">&nbsp;<a href="#" id="command_send" class="btn btn-default" onclick="return command_send()" >SEND</a></p>
 				</form>
 			</div>		
 		</div>   

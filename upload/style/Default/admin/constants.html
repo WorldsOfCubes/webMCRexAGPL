@@ -16,15 +16,15 @@
 			
 			<label>Название сайта:</label>
 			<span class="help-block">Название, отображаемое в заголовке и на страницах сайта. </span>
-			<input type="text" name="site_name" value="<?php echo $config['s_name']; ?>">
+			<input type="text" class="form-control" style="width:300px" name="site_name" value="<?php echo $config['s_name']; ?>">
 			
 			<label>Описание сайта:</label>
 			<span class="help-block">По умолчанию используется для индексации сайта поисковыми машинами. Так же отображается под названием сайта.</span>
-			<input type="text" name="site_about" value="<?php echo $config['s_about']; ?>">	
+			<input type="text" class="form-control" style="width:300px" name="site_about" value="<?php echo $config['s_about']; ?>">	
 
 			<label>Ключевые слова:</label>
 			<span class="help-block">Используются для индексации сайта поисковыми машинами. Вводить через пробел, общая длинна не > 200 символов </span>
-			<input type="text" name="site_keyword" value="<?php echo $config['s_keywords']; ?>">
+			<input type="text" class="form-control" style="width:300px" name="site_keyword" value="<?php echo $config['s_keywords']; ?>">
 			
 			<label class="checkbox">
 			  <input type="checkbox" name="comm_revers" value="1" <?php echo ($config['comm_revers'])?'checked="checked"':'' ?>> Комментарии в обратном порядке
@@ -46,14 +46,14 @@
 		<div class="tab-pane" id="tab2">
 		
 			<label>Имя отправителя:</label>
-			<input type="text" name="email_name" value="<?php echo sqlConfigGet('email-name') ?>">
+			<input type="text" class="form-control" style="width:300px" name="email_name" value="<?php echo sqlConfigGet('email-name') ?>">
 			
 			<label>Обратный адрес:</label>
-			<input type="text" name="email_mail" value="<?php echo sqlConfigGet('email-mail') ?>">
+			<input type="text" class="form-control" style="width:300px" name="email_mail" value="<?php echo sqlConfigGet('email-mail') ?>">
 			<span class="help-block">Обычно должен соответствовать адресу, прописаному в настройках php.ini или пользователю smtp. </span>
 			
 			<label>Отправить тестовое сообщение на:</label>
-			<input type="text" name="email_test">
+			<input type="text" class="form-control" style="width:300px" name="email_test">
 			
 			<label class="checkbox">
 			  <input type="checkbox" name="smtp" value="1" <?php echo ($config['smtp'])?'checked="checked"':'' ?>> Использовать заданые настройки smtp
@@ -61,20 +61,20 @@
 			<span class="help-block">В обход настроеной функции mail из файла php.ini вашего web сервера. </span>
 			
 			<label>Пользователь smtp:</label>
-			<input type="text" name="smtp_user" value="<?php echo sqlConfigGet('smtp-user') ?>">
+			<input type="text" class="form-control" style="width:300px" name="smtp_user" value="<?php echo sqlConfigGet('smtp-user') ?>">
 			
 			<label>Пароль пользователя:</label>
-			<input type="password" name="smtp_pass" value="<?php echo (sqlConfigGet('smtp-pass'))? '**defined**' : '' ?>">
+			<input type="password" name="smtp_pass" class="form-control" style="width:300px" value="<?php echo (sqlConfigGet('smtp-pass'))? '**defined**' : '' ?>">
 			
 			<label>Адрес сервера:</label>
-			<input type="text" name="smtp_host" value="<?php echo sqlConfigGet('smtp-host');  ?>">
+			<input type="text" class="form-control" style="width:300px" name="smtp_host" value="<?php echo sqlConfigGet('smtp-host');  ?>">
 			
 			<label>Порт:</label>
-			<input type="text" name="smtp_port" value="<?php echo sqlConfigGet('smtp-port');  ?>">	
+			<input type="text" class="form-control" style="width:300px" name="smtp_port" value="<?php echo sqlConfigGet('smtp-port');  ?>">	
 			
 			<label>Приветствие:</label>
 			
-			<input type="text" name="smtp_hello" value="<?php echo sqlConfigGet('smtp-hello');  ?>">	
+			<input type="text" class="form-control" style="width:300px" name="smtp_hello" value="<?php echo sqlConfigGet('smtp-hello');  ?>">	
 			<span class="help-block">Системное сообщение приветствия, как правило либо HELO либо EHLO . Не менять без необходимости</span>	
 			
 		</div>

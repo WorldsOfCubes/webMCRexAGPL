@@ -2,8 +2,8 @@
 
  - **Автор** : NC22 (modified by WorldsOfCubes Group)
  - **Версия** : 1.235b
- - **Сайт** : [WorldsOfCubes.ru](http://WorldsOfCubes.ru)
- - **Вики** : [github.com/WorldsOfCubes/webMCRex/wiki](https://github.com/WorldsOfCubes/webMCRex/wiki)
+ - **Сайт** : [WorldsOfCubes.NET](http://WorldsOfCubes.NET)
+ - **Вики** : [bitbucket.org/WorldsOfCubes/webmcrex/wiki](http://bitbucket.org/WorldsOfCubes/webmcrex/wiki)
 
 ## Лицензия 
 
@@ -19,7 +19,6 @@
  - Система мониторинга серверов (RCON, Query, Simple Query)
  - Загрузчик скинов / плащей (стандартные скины для мужского / женского персонажа)
  - Автодонат
- - Интеграция с системой WorldsOfCubes
 
 ## Установка
 

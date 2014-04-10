@@ -2,8 +2,8 @@
 
  - **Author** : NC22 (modified by WorldsOfCubes Group)
  - **Version** : 1.235b
- - **Website** : [WorldsOfCubes.ru](http://WorldsOfCubes.ru)
- - **Wiki** : [github.com/WorldsOfCubes/webMCRex/wiki](https://github.com/WorldsOfCubes/webMCRex/wiki)
+ - **Website** : [WorldsOfCubes.NET](http://WorldsOfCubes.NET)
+ - **Wiki** : [bitbucket.org/WorldsOfCubes/webmcrex/wiki](http://bitbucket.org/WorldsOfCubes/webmcrex/wiki)
 
 ## License 
 
@@ -19,4 +19,3 @@
  - Server monitoring system (RCON, Query, Simple Query)
  - Skin / Cloak uploader (default skin for male / female character)
  - Autodonate system
- - Integration with WorldsOfCubes system

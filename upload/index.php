@@ -8,6 +8,7 @@ BDConnect('index');
 loadTool('user.class.php');
 MCRAuth::userLoad();
 
+
 function GetRandomAdvice() { return ($quotes = @file(View::Get('sovet.txt')))? $quotes[rand(0, sizeof($quotes)-1)] : "Советов нет"; }
 $addition_events = ''; $content_main = ''; $content_side = '';  $content_js = '';
 function LoadTinyMCE() {
@@ -49,6 +50,20 @@ if ($config['offline'] and (empty($user) or $user->group() != 3)) {
 	include('./location/side.php');
 	include View::Get('index.html');
 	exit;
+}
+function accss_deny() {
+global $config, $content_js, $content_advice, $content_side;
+	$menu = new Menu();
+	$menu->SetItemActive('main');
+	$content_menu = $menu->Show();
+	$content_js .= InitJS();
+	$mode = 'denied';
+	$page = 'Доступ запрещен';
+	$content_main = View::ShowStaticPage('accsess_denied.html');
+	include('./location/side.php');
+	include View::Get('index.html');
+	exit;
+	return;
 }
 $menu = new Menu();
 

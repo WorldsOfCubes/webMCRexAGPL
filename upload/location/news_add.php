@@ -1,6 +1,6 @@
 <?php
 if (!defined('MCR')) exit;
-if (empty($user) or !$user->getPermission('add_news')) { header("Location: ".BASE_URL); exit; }
+if (empty($user) or !$user->getPermission('add_news')) { accss_deny(); }
 
 loadTool('upload.class.php');
 loadTool('catalog.class.php');

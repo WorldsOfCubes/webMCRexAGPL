@@ -1,6 +1,6 @@
 <?php
 if (!defined('MCR')) exit;
-if (empty($user) or $user->lvl() <= 0) { header("Location: ".BASE_URL); exit; }
+if (empty($user) or $user->lvl() <= 0) { accss_deny(); }
 
 /* Default vars */
 $page = lng('PAGE_OPTIONS');

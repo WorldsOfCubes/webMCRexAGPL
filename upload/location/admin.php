@@ -1,7 +1,7 @@
 <?php
 if (!defined('MCR')) exit;
  
-if (empty($user) or $user->lvl() < 15) { header("Location: ".BASE_URL); exit; }
+if (empty($user) or $user->lvl() < 15) { accss_deny(); }
 
 loadTool('catalog.class.php');
 loadTool('alist.class.php');

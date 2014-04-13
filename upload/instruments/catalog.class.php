@@ -475,7 +475,7 @@ private $category_id;
 		if (isset($_POST['title']) and isset($_POST['message']) and isset($_POST['cid'])) {
 
              ob_start();
-			 $state = 'error';
+			 $state = 'danger';
 			
 			if (empty($_POST['title']) or empty($_POST['message']) or empty($_POST['cid'])) 
 			

@@ -65,7 +65,7 @@ if ($user->group() != 4 ) {
 			BD("UPDATE permissions SET value=value+2678400 WHERE name='$player'");
 			$message = '<div style="margin-top: 10px;" class="alert alert-success">Вы успешно продлили Premium! Спасибо за помощь проекту!</div>';
 		}else{
-			$message = '<div style="margin-top: 10px;" class="alert alert-danger">К сожалению у вас недостаточно средств, пополните счет!</div>';
+			$message = '<div style="margin-top: 10px;" class="alert alert-danger">К сожалению, у вас недостаточно средств, пополните счет!</div>';
 		}
 	}
 
@@ -75,7 +75,7 @@ if ($user->group() != 4 ) {
 			BD("UPDATE permissions SET value=value+2678400 WHERE name='$player'");
 			$message = '<div style="margin-top: 10px;" class="alert alert-success">Вы успешно продлили VIP! Спасибо за помощь проекту!</div>';
 		}else{
-			$message = '<div style="margin-top: 10px;" class="alert alert-danger">К сожалению у вас недостаточно средств или вы не пермиум!</div>';
+			$message = '<div style="margin-top: 10px;" class="alert alert-danger">К сожалению, у вас недостаточно средств или вы не пермиум!</div>';
 		}
 	}
 

@@ -68,7 +68,7 @@
             <INPUT TYPE="submit" VALUE="Купить Premium за <?php echo ($premiumcash); ?>" class="btn btn-default">
         </form><? else: if($user->lvl() == $lvlprem): ?>
         <form  method="post" enctype="multipart/form-data">
-            <input type="hidden" name="prpem" value="1" />
+            <input type="hidden" name="prprem" value="1" />
             <INPUT TYPE="submit" VALUE="Продлить Premium за <?php echo ($premiumcash/2); ?>" class="btn btn-default">
         </form><? endif; ?><? endif; ?>
         <form method="post" enctype="multipart/form-data">

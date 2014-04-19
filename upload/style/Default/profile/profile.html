@@ -1,3 +1,4 @@
+<?php echo $message ?>
 <div class="form-block">
 
 <div class="block-header">Настройки аккаунта</div>
@@ -51,33 +52,30 @@
 <? if($user->lvl() <=$lvlprem): ?>
     <center>
 			<div class="well" style="text-align: center; width=100%;">
+<div class="btn-group">
 			<? if ($user->lvl() < $lvlvip): ?>
-        <form  method="post" id="priv-update" autocomplete="off" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="method" value="userpriv" /> 
-            <input type="hidden" name="action" name="govip" /> 
-            <INPUT TYPE="submit" VALUE="Купить VIP за <?php echo ($vipcash); ?>" class="btn btn-default btn btn-default-inverse" onclick="UpdatePriv();">
+        <form  method="post" enctype="multipart/form-data">
+            <input type="hidden" name="govip" value="1" /> 
+            <INPUT TYPE="submit" VALUE="Купить VIP за <?php echo ($vipcash); ?>" class="btn btn-default">
         </form><? else: if($user->lvl() == $lvlvip): ?>
-        <form  method="post" id="priv-update" autocomplete="off" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="method" value="userpriv" /> 
-            <input type="hidden" name="action"  name="prvip"/> 
-            <INPUT TYPE="submit" VALUE="Продлить VIP за <?php echo ($vipcash/2); ?>" class="btn btn-default btn btn-default-inverse" onclick="UpdatePriv();">
+        <form  method="post" enctype="multipart/form-data">
+            <input type="hidden" name="prvip" value="1" /> 
+            <INPUT TYPE="submit" VALUE="Продлить VIP за <?php echo ($vipcash/2); ?>" class="btn btn-default">
         </form><? endif; ?><? endif; ?>
         <? if ($user->lvl() < $lvlprem): ?>
-        <form  method="post" id="priv-update" autocomplete="off" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="method" value="userpriv" /> 
-            <input type="hidden" name="action" name="goprem" /> 
-            <INPUT TYPE="submit" VALUE="Купить Premium за <?php echo ($premiumcash); ?>" class="btn btn-default btn btn-default-inverse" onclick="UpdatePriv();">
+        <form  method="post" enctype="multipart/form-data">
+            <input type="hidden" name="goprem" value="1" /> 
+            <INPUT TYPE="submit" VALUE="Купить Premium за <?php echo ($premiumcash); ?>" class="btn btn-default">
         </form><? else: if($user->lvl() == $lvlprem): ?>
-        <form  method="post" id="priv-update" autocomplete="off" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="method" value="userpriv" /> 
-            <input type="hidden" name="action" name="prpem" /> 
-            <INPUT TYPE="submit" VALUE="Продлить Premium за <?php echo ($premiumcash/2); ?>" class="btn btn-default btn btn-default-inverse" onclick="UpdatePriv();">
+        <form  method="post" enctype="multipart/form-data">
+            <input type="hidden" name="prpem" value="1" />
+            <INPUT TYPE="submit" VALUE="Продлить Premium за <?php echo ($premiumcash/2); ?>" class="btn btn-default">
         </form><? endif; ?><? endif; ?>
-        <form  method="post" id="priv-update" autocomplete="off" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="method" value="userpriv" /> 
-            <input type="hidden" name="action" name="unban" /> 
-            <INPUT TYPE="submit" VALUE="Разбаниться" class="btn btn-default btn btn-default-inverse" onclick="UpdatePriv();">
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="unban" value="1" /> 
+            <INPUT TYPE="submit" VALUE="Разбаниться" class="btn btn-default">
         </form>
+</div>
 			</div></center><? endif; ?>
     <center><div class="btn-group"><a href="#donate" role="button" class="btn btn-default" data-toggle="modal">Пополнить счет</a>
 <a href="#exchange" role="button" class="btn btn-default" data-toggle="modal">Обмен валют</a></div></center>

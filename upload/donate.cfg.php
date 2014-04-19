@@ -1,14 +1,7 @@
 <?php
 	if (!defined('MCR')) exit;
-	$faction = $_SERVER['REQUEST_URI']; // не трогать
-	$url = $_SERVER['HTTP_HOST']; // не трогать
-	$db_host = $config['db_host']; //хост базы данных
-	$db_user = $config['db_login']; // юзер базы данных
-	$db_pass = $config['db_passw']; // пароль базы данных
-	$db_base = $config['db_name']; // база данных игры
-	$db_econ = 'iConomy'; // таблица плагина экономики
-	$vipcash = '50'; //цена vip
-	$premiumcash = '80'; //цена premiums
+	$vipcash = 50; //цена vip
+	$premiumcash = 80; //цена premium
 	$lvlvip = 5; // Уровень доступа (lvl) vip
 	$lvlprem = 6; // Уровень доступа (lvl) premium
 	$idvip = 5; // ID группы vip

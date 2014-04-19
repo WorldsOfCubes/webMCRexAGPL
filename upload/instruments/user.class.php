@@ -349,8 +349,8 @@ private $deadtry;
 		$new_pl_emoney = $this->getEcon() + $num;		
 		if ($new_pl_emoney < 0 ) $new_pl_emoney = 0;
 		
-		BD("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['money']}`='".TextBase::SQLSafe($new_pl_money)."' WHERE `{$bd_money['login']}`='".TextBase::SQLSafe($this->name())."'");       
-		return $new_pl_money;
+		BD("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['money']}`='".TextBase::SQLSafe($new_pl_emoney)."' WHERE `{$bd_money['login']}`='".TextBase::SQLSafe($this->name())."'");       
+		return $new_pl_emoney;
     }
 	
 	public function getSkinFName() {

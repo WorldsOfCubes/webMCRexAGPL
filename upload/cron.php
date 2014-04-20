@@ -1,14 +1,21 @@
 <?php
-include ('system.php');
-$query = BD("SELECT * FROM `{$bd_names['users']}` WHERE `{$bd_users['group']}` = {$vipG} OR `{$bd_users['group']}` = {$premG};",$sql) or die(mysql_error());
+require ('system.php');
+loadTool('user.class.php');
+
+BDConnect('cron');
+
+$query = BD("SELECT * FROM `permissions` WHERE `permission` = 'group-vip-until' OR `permission` = 'group-premium-until';");
 $current_time = time();
+$i = 0;
 while($result = mysql_fetch_assoc($query))
 {
-    if($result['duration'] < $current_time) {
-        mysql_query("DELETE FROM `permissions_inheritance` WHERE child='{$result['name']}';",$sql);
-        mysql_query("DELETE FROM `permissions_entity` WHERE `name`='{$result['name']}';",$sql);
-        mysql_query("UPDATE `{$bd_names['users']}` SET  `{$bd_users['group']}`='1' WHERE `name`='{$result[$bd_users['login']]}';",$sql);
-        $path = $cloak_path.$result['name'].'.png';
-        if(file_exists($path)) unlink($path);
+    if($result['value'] < $current_time) {
+        BD("DELETE FROM `permissions_inheritance` WHERE child='{$result['name']}';");
+        BD("DELETE FROM `permissions_entity` WHERE `name`='{$result['name']}';");
+        BD("DELETE FROM `permissions` WHERE `name`='{$result['name']}';");
+        $tmp_user = new User($result['name'], $bd_users['login']);
+        $tmp_user->changeGroup(1);
+        $i++;
     }
 }
+echo("Снято $i статусов");

@@ -138,6 +138,8 @@ if ($user->group() != 4 ) {
 			$expdate = date('d-m-Y H:i:s', $pexdate);
 			if(!$user->changeGroup($idvip)) exit("Неверно указан ид группы в настройках!");
 			$player_group = "VIP";
+			BD("DELETE FROM `permissions_inheritance` WHERE child='{$result['name']}';");
+			BD("DELETE FROM `permissions` WHERE `name`='{$result['name']}';");
 			BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-vip-until', ' ', '$pexdate')");
 			BD("INSERT INTO permissions_inheritance (id, child, parent, type, world) VALUES (NULL, '$player', 'VIP', '1', NULL)");
 			$user->addMoney(0 - $vipcash);
@@ -157,6 +159,8 @@ if ($user->group() != 4 ) {
 			$expdate = date('d-m-Y H:i:s', $pexdate);
 			if(!$user->changeGroup($idprem)) exit("Неверно указан ид группы в настройках!");
 			$player_group = "Premium";
+			BD("DELETE FROM `permissions_inheritance` WHERE child='{$result['name']}';");
+			BD("DELETE FROM `permissions` WHERE `name`='{$result['name']}';");
 			BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-premium-until', ' ', '$pexdate')");
 			BD("INSERT INTO permissions_inheritance (id, child, parent, type, world) VALUES (NULL, '$player', 'Premium', '1', NULL)");
 			$user->addMoney(0 - $premiumcash);

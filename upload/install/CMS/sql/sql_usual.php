@@ -41,7 +41,6 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['iconomy']}` (
 `{$bd_money['login']}` varchar(20) CHARACTER SET utf8 NOT NULL,
 `{$bd_money['bank']}` double(64,2) NOT NULL DEFAULT '0.00',
 `{$bd_money['money']}` double(64,2) NOT NULL DEFAULT '0.00',
-`bank` double(64,2) NOT NULL DEFAULT '0.00',
 PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 AUTO_INCREMENT=2 ;
 

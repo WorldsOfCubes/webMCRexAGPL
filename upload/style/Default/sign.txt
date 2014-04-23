@@ -1,5 +1,5 @@
 name=Default; 
-version=1.0; 
+version=2.0; 
 author=STRELOK2022, KillerProst; 
 about=Базовая тема, распоространяется по лицензии GPLv3<br /> Сайт обратной связи<br /> http://worldsofcubes.net; 
 editable=no; 

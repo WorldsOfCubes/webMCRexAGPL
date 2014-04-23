@@ -28,14 +28,14 @@ $secretKey = $secret_key;
 if($ikTesting and ($paySystem == "test_interkassa_test_xts")){
 	$secretKey = $secret_key_test;
 } elseif($paySystem == "test_interkassa_test_xts") {
-	Logs::write($ik_payment_timestamp."\t$paymentId произвел тестовый платеж на $summ руб");
+	Logs::write($ik_payment_timestamp."\t$paymentId не произвел тестовый платеж на $summ руб");
 	exit("OK");
 }
 
 if($kassaId != $ikshopid) exit("Неверный ID кассы");
 if($sign != ikSign($_REQUEST, $secretKey)) {
 	Logs::write($ik_payment_timestamp."\tНеверная подпись: $sign $summ ");
-	exit("Неверная подпись");
+	exit("Bad sign");
 }
 BD("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['bank']}`=`{$bd_money['bank']}`+$summ WHERE `{$bd_money['login']}`='$paymentId'");
 

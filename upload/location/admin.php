@@ -242,8 +242,8 @@ if ($do) {
 	break;
 	case 'update':
 	
-		$new_build  = (!empty($_POST['build_set']))? (int)$_POST['build_set'] : false;
-		$new_version_l = (!empty($_POST['launcher_set']))? (int)$_POST['launcher_set'] : false;
+		$protection_key  = (!empty($_POST['protection_key_set']))? $_POST['protection_key_set'] : false;
+		$new_version_l = (!empty($_POST['launcher_set']))? $_POST['launcher_set'] : false;
 		
 		$link_win  = InputGet('link_win', 'POST', 'str');
 		$link_osx  = InputGet('link_osx', 'POST', 'str');
@@ -259,17 +259,17 @@ if ($do) {
 			elseif (CategoryManager::ExistByID($game_news)) $config['game_news'] = $game_news;
 		}
 		
-		if ($new_build) sqlConfigSet('latest-game-build', $new_build);
+		if ($protection_key) sqlConfigSet('protection-key', $protection_key);
 			
 		if ($new_version_l) sqlConfigSet('launcher-version', $new_version_l);
 			
-		if ($link_win or $link_osx or $link_lin or $game_news or $new_build or $new_version_l) 
+		if ($link_win or $link_osx or $link_lin or $game_news) 
 			
 			if (MainConfig::SaveOptions()) $info .= lng('OPTIONS_COMPLETE');
 			else $info .= lng('WRITE_FAIL').' ( '.MCR_ROOT.'config.php )';
 					
-        $game_lver  = sqlConfigGet('launcher-version');
-        $game_build = sqlConfigGet('latest-game-build');
+        $game_lver  = sqlConfigGet('protection_key_set');
+        $protection_key = sqlConfigGet('protection-key');
 		$cat_list = '<option value="-1">'.lng('NEWS_LAST').'</option>';	
 		$cat_list .= CategoryManager::GetList($config['game_news']);	
 		
@@ -575,6 +575,25 @@ if ($do) {
 	$theme_selector = $theme_manager->ShowThemeSelector();
 	
 	include View::Get('constants.html', $st_subdir); 
+    break;	
+    case 'donate':  	
+
+	if (isset($_POST['new_unban'])) {
+	$donate['vipcash']				= InputGet('new_vipcash', 'POST', 'int');
+	$donate['premiumcash']			= InputGet('new_premiumcash', 'POST', 'int');
+	$donate['unban']				= InputGet('new_unban', 'POST', 'int');
+	$donate['exchangehow']			= InputGet('new_exchangehow', 'POST', 'int');
+	$donate['vote']					= InputGet('new_vote', 'POST', 'int');
+	$donate['vote10']				= InputGet('new_vote10', 'POST', 'int');
+	$donate['shop_id']				= InputGet('new_shop_id', 'POST', 'str');
+	$donate['secret_key']			= InputGet('new_secret_key', 'POST', 'str');
+	$donate['ik_secret_key_test']		= InputGet('new_ik_secret_key_test', 'POST', 'str');
+	$donate['ik_testing']			= InputGet('new_ik_testing', 'POST', 'bool');
+	
+	if (DonateConfig::SaveOptions()) $info .= lng('OPTIONS_COMPLETE');
+	else $info .= lng('WRITE_FAIL').' ( '.MCR_ROOT.'donate.cfg.php )';
+	}
+	include View::Get('donate.html', $st_subdir); 
     break;	
     case 'profile':  
 	if ($ban_user) {

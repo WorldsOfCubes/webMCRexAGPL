@@ -49,27 +49,27 @@
 <b>Донат-счет: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <?php echo $player_money ?> руб.<br> 
 <b>Игровой счет:</b>&nbsp; <?php echo $player_econ ?>$
 <br> 
-<? if($user->lvl() <=$lvlprem): ?>
+<? if($user->lvl() <=6): ?>
     <center>
 			<div class="well" style="text-align: center; width=100%;">
 <div class="btn-group">
-			<? if ($user->lvl() < $lvlvip): ?>
+			<? if ($user->lvl() < 5): ?>
         <form  method="post" enctype="multipart/form-data">
             <input type="hidden" name="govip" value="1" /> 
-            <INPUT TYPE="submit" VALUE="Купить VIP за <?php echo ($vipcash); ?>" class="btn btn-default">
-        </form><? else: if($user->lvl() == $lvlvip): ?>
+            <INPUT TYPE="submit" VALUE="Купить VIP за <?php echo ($donate['vipcash']); ?>" class="btn btn-default">
+        </form><? else: if($user->lvl() == 5): ?>
         <form  method="post" enctype="multipart/form-data">
             <input type="hidden" name="prvip" value="1" /> 
-            <INPUT TYPE="submit" VALUE="Продлить VIP за <?php echo ($vipcash/2); ?>" class="btn btn-default">
+            <INPUT TYPE="submit" VALUE="Продлить VIP за <?php echo ($donate['vipcash']/2); ?>" class="btn btn-default">
         </form><? endif; ?><? endif; ?>
-        <? if ($user->lvl() < $lvlprem): ?>
+        <? if ($user->lvl() < 6): ?>
         <form  method="post" enctype="multipart/form-data">
             <input type="hidden" name="goprem" value="1" /> 
-            <INPUT TYPE="submit" VALUE="Купить Premium за <?php echo ($premiumcash); ?>" class="btn btn-default">
-        </form><? else: if($user->lvl() == $lvlprem): ?>
+            <INPUT TYPE="submit" VALUE="Купить Premium за <?php echo ($donate['premiumcash']); ?>" class="btn btn-default">
+        </form><? else: if($user->lvl() == 6): ?>
         <form  method="post" enctype="multipart/form-data">
             <input type="hidden" name="prprem" value="1" />
-            <INPUT TYPE="submit" VALUE="Продлить Premium за <?php echo ($premiumcash/2); ?>" class="btn btn-default">
+            <INPUT TYPE="submit" VALUE="Продлить Premium за <?php echo ($donate['premiumcash']/2); ?>" class="btn btn-default">
         </form><? endif; ?><? endif; ?>
         <form method="post" enctype="multipart/form-data">
             <input type="hidden" name="unban" value="1" /> 
@@ -88,7 +88,7 @@
         </div>
         <form target="_blank" name="payment" method="post" action="https://sci.interkassa.com/" enctype="utf-8">
             <div class="modal-body">
-                <input type="hidden" name="ik_co_id" value="<?php echo ($ikshopid); ?>">
+                <input type="hidden" name="ik_co_id" value="<?php echo ($donate['shop_id']); ?>">
                 <div class="input-group">
                     <input class="input-medium form-control" id="appendedPrependedInput" size="16" type="number" name="ik_am"><span class="input-group-addon">р.</span>
                 </div>
@@ -113,7 +113,7 @@
     </div>
 <form method="post">
     <div class="modal-body">
-1 рубль = <?php echo ($exchangehow); ?> стивлингов<br>
+1 рубль = <?php echo ($donate['exchangehow']); ?> стивлингов<br>
 <div class="input-group">
     <input class="input-medium form-control" id="appendedPrependedInput" size="16" type="number" name="wantby" placeholder="Сумма с донат счета"><span class="input-group-addon">р.</span>
 </div>

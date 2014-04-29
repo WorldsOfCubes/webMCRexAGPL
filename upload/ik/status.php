@@ -23,16 +23,16 @@ $paySystem = trim($_REQUEST['ik_pw_via']);
 $payStatus = trim($_REQUEST['ik_inv_st']);
 $sign = trim($_REQUEST['ik_sign']);
 $ik_payment_timestamp = trim($_REQUEST['ik_inv_prc']);
-$secretKey = $secret_key;
+$secretKey = $donate['secret_key'];
 // тестирование
-if($ikTesting and ($paySystem == "test_interkassa_test_xts")){
-	$secretKey = $secret_key_test;
+if($donate['ik_testing'] and ($paySystem == "test_interkassa_test_xts")){
+	$secretKey = $donate['ik_secret_key_test'];
 } elseif($paySystem == "test_interkassa_test_xts") {
-	Logs::write($ik_payment_timestamp."\t$paymentId не произвел тестовый платеж на $summ руб");
+	vtxtlog($ik_payment_timestamp."\t$paymentId не произвел тестовый платеж на $summ руб");
 	exit("OK");
 }
 
-if($kassaId != $ikshopid) exit("Ќеверный ID кассы");
+if($kassaId != $donate['shop_id']) exit("Ќеверный ID кассы");
 if($sign != ikSign($_REQUEST, $secretKey)) {
 	Logs::write($ik_payment_timestamp."\tЌеверна€ подпись: $sign $summ ");
 	exit("Bad sign");
@@ -40,5 +40,5 @@ if($sign != ikSign($_REQUEST, $secretKey)) {
 BD("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['bank']}`=`{$bd_money['bank']}`+$summ WHERE `{$bd_money['login']}`='$paymentId'");
 
 
-	Logs::write($ik_payment_timestamp."\t$paymentId произвел платеж на $summ руб");
+	vtxtlog($ik_payment_timestamp."\t$paymentId произвел платеж на $summ руб");
 echo "ok";

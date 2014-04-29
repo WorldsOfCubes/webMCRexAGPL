@@ -18,13 +18,13 @@
 	<span class="help-block">Ссылка, выводимая в шаблоне (<?php echo MCR_STYLE; ?>start_game.html) (<a href="index.php?mode=start">Страница</a>)</span>
     <input type="text" class="form-control" style="width:300px" name="link_lin" value="<?php echo sqlConfigGet('game-link-lin') ?>">	
 	
-	<label>Версия клиента:</label>
-	<span class="help-block">Настройка необходима для синхронизации обновлений в оригинальном лончере. </span>
-    <input type="text" name="build_set" class="form-control" style="width:300px" value="<?php echo sqlConfigGet('latest-game-build') ?>">
-	
 	<label>Версия лончера:</label>
 	<span class="help-block">При запросе авторизации, лончер передает свою версию. При несовпадении версии лончера и заданной здесь, авторизация будет отклонена.</span>
     <input type="text" class="form-control" style="width:300px" name="launcher_set" value="<?php echo sqlConfigGet('launcher-version') ?>">	
+	
+	<label>Ключ защиты сессии лончера:</label>
+	<span class="help-block">Необходим защиты паролей и сессии в лончере. </span>
+    <input type="text" name="protection_key_set" class="form-control" style="width:300px" value="<?php echo sqlConfigGet('protection-key') ?>">
 	
 	<br/>				 
 	

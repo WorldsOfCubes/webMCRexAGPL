@@ -91,6 +91,7 @@ if ($mode == 'side') $mode = $config['s_dpage'];
 switch ($mode) {
     case 'start': $page = 'Начать игру'; $content_main = View::ShowStaticPage('start_game.html');  break;
 	case 'register': 
+	case 'restorepassword': 
 	case 'news':	  include('./location/news.php');		break;
 	case 'news_full': include('./location/news_full.php');	break;
     case 'options':   include('./location/options.php');	break;
@@ -103,8 +104,8 @@ switch ($mode) {
 } 
 
 $content_menu = $menu->Show();
-$content_js .= InitJS(); 
 include('./location/side.php');
+$content_js .= InitJS(); 
 
 
 include View::Get('index.html');

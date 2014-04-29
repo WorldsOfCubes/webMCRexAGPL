@@ -9,7 +9,6 @@ BD("DROP TABLE IF EXISTS `{$bd_names['ip_banning']}`,
 						 `{$bd_names['news']}`,
 						 `{$bd_names['news_categorys']}`,
 						 `{$bd_names['likes']}`,
-                         `{$bd_names['groups']}`,
 						 `{$bd_names['data']}`,
 						 `{$bd_names['comments']}`,
 						 `{$bd_names['files']}`,
@@ -137,8 +136,8 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['data']}` (
 BD("INSERT INTO `{$bd_names['news_categorys']}` (`id`,`name`) VALUES (1,'Без категории');");
 
 BD("INSERT INTO `{$bd_names['data']}` (`property`, `value`) VALUES
-('latest-game-build', '10746'),
-('launcher-version', '13'),
+('protection-key', 'lalka'),
+('launcher-version', '1'),
 ('next-reg-time', '2'),
 ('email-verification', '0'),
 ('rcon-port', '0'),

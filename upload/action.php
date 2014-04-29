@@ -326,7 +326,7 @@ switch ($method) {
 
     break;
 	case 'prefix':
-		if($user->lvl()<$lvlvip ) {
+		if($user->lvl()<6 ) {
 			aExit(4, "Ух ты какой хакер! Я не ожидал тебя тут увидеть :P" );
 		}
 		$pref = $_POST['pref'];
@@ -338,10 +338,8 @@ switch ($method) {
 		$g = '';
 		$fineprefix = $prefcolor.$d.$pref.$f.$nickcolor;
 		$suffix = $textcolor.$g;
-		mysql_select_db($db_base);
-		mysql_query('set NAMES utf8');
-		mysql_query("DELETE FROM permissions_entity WHERE name='".$user->name()."'");
-		mysql_query("INSERT INTO permissions_entity VALUES (NULL, '".$user->name()."', '1', '$fineprefix', '$suffix', '0')")or aExit(4, ('Не удалось соединиться: ' . mysql_error()));
+		BD("DELETE FROM permissions_entity WHERE name='".$user->name()."'");
+		BD("INSERT INTO permissions_entity VALUES (NULL, '".$user->name()."', '1', '$fineprefix', '$suffix', '0')")or aExit(4, ('Не удалось соединиться: ' . mysql_error() . " Сообщите полный текст этого сообщения администраторам для устранения ошибки."));
 		aExit(0, 'Теперь ваш ник будет отображаться в новом цвете');
     break;
 } 

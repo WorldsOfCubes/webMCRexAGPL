@@ -1,6 +1,6 @@
 <?php 
 if ($mysql_rewrite) 
-BD("DROP TABLE IF EXISTS `{$bd_names['users']}`;");
+BD("DROP TABLE IF EXISTS `{$bd_names['users']}`, `unbans`, {$bd_names['groups']}, `permissions`, `permissions_entity`, `permissions_inheritance`, `banlist`, `banlistip`;");
 
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['users']}` (
   `{$bd_users['id']}` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -34,15 +34,15 @@ BD("INSERT INTO `{$bd_names['groups']}`
 (2,'Заблокированный',0,1,0,0,0,0,0,0,0), 
 (3,'Администратор',15,1,1,1,1,1,1,1,1), 
 (4,'Непроверенный',1,1,0,0,0,0,0,0,0), 
-(5,'VIP',5,0,1,1,0,1,0,1,0),
-(6,'Premium',6,0,1,1,0,1,0,1,0);");
+(5,'VIP',5,1,1,1,0,1,0,1,0),
+(6,'Premium',6,1,1,1,0,1,0,1,0);");
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['iconomy']}` (
 `id` int(10) NOT NULL AUTO_INCREMENT,
 `{$bd_money['login']}` varchar(20) CHARACTER SET utf8 NOT NULL,
 `{$bd_money['bank']}` double(64,2) NOT NULL DEFAULT '0.00',
 `{$bd_money['money']}` double(64,2) NOT NULL DEFAULT '0.00',
 PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=cp1251 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   `world` varchar(50) DEFAULT NULL,
   `value` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=192 ;
+) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `permissions_entity` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `permissions_entity` (
   `default` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `default` (`default`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
+) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `permissions_inheritance` (
   `id` int(11) NOT NULL auto_increment,
@@ -75,4 +75,28 @@ CREATE TABLE IF NOT EXISTS `permissions_inheritance` (
   UNIQUE KEY `child` (`child`,`parent`,`type`,`world`),
   KEY `child_2` (`child`,`type`),
   KEY `parent` (`parent`,`type`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;");
+) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;
+
+CREATE TABLE `unbans` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `numofban` varchar(3) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `banlist` (
+`name` varchar(32) NOT NULL,
+`reason` text NOT NULL,
+`admin` varchar(32) NOT NULL,
+`time` bigint(20) NOT NULL,
+`temptime` bigint(20) NOT NULL,
+`id` int(11) NOT NULL AUTO_INCREMENT,
+`type` int(1) NOT NULL DEFAULT '0',
+PRIMARY KEY (`id`)
+) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `banlistip` (
+`name` varchar(32) NOT NULL,
+`lastip` tinytext NOT NULL,
+PRIMARY KEY (`name`)
+) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;");

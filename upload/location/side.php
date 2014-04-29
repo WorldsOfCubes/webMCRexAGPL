@@ -5,13 +5,14 @@ ob_start();
 
 if (!empty($user)) {
   
-   if ($mode == 'control') 
+   if ((($mode == 'control') or ($mode == 'news_add')) and ($user->lvl() >=15)) 
    include View::Get('side.html', 'admin/');  
    include View::Get('mini_profile.html');    
 	
 } else {
 	
 	if ($mode == 'register') $addition_events .= "BlockVisible('reg-box',true); BlockVisible('login-box',false);";
+	if ($mode == 'restorepassword') $addition_events .= "RestoreStart();";
 
 	include View::Get('login.html');		    
 }

@@ -1,0 +1,52 @@
+<form action="control/donate/" method="post" id="updateform" enctype="multipart/form-data">
+  <fieldset>
+  
+    <legend>Настройки автодоната</legend> 
+	
+	<label>Стоимость VIP:</label>
+	<span class="help-block">Сколько будут стоить VIP привелегиии.</span>
+    <input type="text" class="form-control" style="width:300px" name="new_vipcash" value="<?php echo $donate['vipcash'] ?>">
+
+	<label>Стоимость Premium:</label>
+	<span class="help-block">Сколько будут стоить Premium привелегиии.</span>
+    <input type="text" class="form-control" style="width:300px" name="new_premiumcash" value="<?php echo $donate['premiumcash'] ?>">
+
+	<label>Стоимость первого разбана:</label>
+	<span class="help-block">Сколько будет стоить первый разбан. В дальнейшем умножается на общее количество разбанов.</span>
+    <input type="text" class="form-control" style="width:300px" name="new_unban" value="<?php echo $donate['unban'] ?>">
+
+	<label>Курс обмена валюты:</label>
+	<span class="help-block">Сколько будет стоить рубль с донат-счета в игровой валюте.</span>
+    <input type="text" class="form-control" style="width:300px" name="new_exchangehow" value="<?php echo $donate['exchangehow'] ?>">
+
+	<label>Бонус за голосование:</label>
+	<span class="help-block">Сколько будут игроки получать за каждый голос.</span>
+    <input type="text" class="form-control" style="width:300px" name="new_vote" value="<?php echo $donate['vote'] ?>">
+
+	<label>Бонус за каждое десятое голосование:</label>
+	<span class="help-block">Сколько будут игроки получать за каждый десятый голос.</span>
+    <input type="text" class="form-control" style="width:300px" name="new_vote10" value="<?php echo $donate['vote10'] ?>">
+
+	<label>ID магазина в Интеркассе:</label>
+	<span class="help-block">Можно узать в личном кабинете Интеркассы.</span>
+    <input type="text" class="form-control" style="width:300px" name="new_shop_id" value="<?php echo $donate['shop_id'] ?>">
+
+	<label>Секретный ключ Интеркассы:</label>
+	<span class="help-block">Можно узать в личном кабинете Интеркассы.</span>
+    <input type="password" class="form-control" style="width:300px" name="new_secret_key" value="<?php echo $donate['secret_key'] ?>">
+
+	<label>Секретный ключ Интеркассы для тестовых платежей:</label>
+	<span class="help-block">Можно узать в личном кабинете Интеркассы.</span>
+    <input type="password" class="form-control" style="width:300px" name="new_ik_secret_key_test" value="<?php echo $donate['ik_secret_key_test'] ?>">
+	
+	<label class="checkbox">
+			  <input type="checkbox" name="new_ik_testing" value="1" <?php echo ($donate['ik_testing'])?'checked="checked"':'' ?>> Принимать тестовые платежи
+			</label>
+			<span class="help-block">Принимать тестовые платежи Интеркассы (рекомендуется отключить после пуска проекта).</span>	
+	
+	<br/>				 
+	
+  <button type="submit" class="btn btn-default">Изменить</button>
+  
+  </fieldset>  
+</form>

@@ -73,7 +73,7 @@ class ItemType {  // stock types
 		
 		'json-verification-salt',
 		
-		'latest-game-build',
+		'protection-key',
 		'launcher-version',
 	
 		'game-link-win',

@@ -3,16 +3,20 @@
 <div class="block-line"></div>
 <ul class="nav nav-list">
   <!--class="active"-->
-  <li><a href="<?php echo Rewrite::GetURL(array('control', 'user')) ?>">Пользователи</a></li>  
+  <li><a href="<?php echo Rewrite::GetURL(array('news_add')) ?>">Добавить новость</a></li>  
   <li><a href="<?php echo Rewrite::GetURL(array('control', 'category')) ?>">Категории новостей</a></li>
+  <li><a href="<?php echo Rewrite::GetURL(array('control', 'filelist')) ?>">Файлы</a></li> 
+  <li class="divider"></li>
+  <li><a href="<?php echo Rewrite::GetURL(array('control', 'user')) ?>">Пользователи</a></li>  
   <li><a href="<?php echo Rewrite::GetURL(array('control', 'ipbans')) ?>">Регистрация</a></li>
   <li><a href="<?php echo Rewrite::GetURL(array('control', 'group')) ?>">Группы</a></li> 
-  <li><a href="<?php echo Rewrite::GetURL(array('control', 'filelist')) ?>">Файлы</a></li> 
-  <li><a href="<?php echo Rewrite::GetURL(array('control', 'constants')) ?>">Сайт</a></li> 
   <li class="divider"></li>
-  <li><a href="<?php echo Rewrite::GetURL(array('control', 'rcon')) ?>">RCON</a></li>
-  <li><a href="<?php echo Rewrite::GetURL(array('control', 'update')) ?>">Настройки игры</a></li>  
+  <li><a href="<?php echo Rewrite::GetURL(array('control', 'constants')) ?>">Настройки сайта</a></li> 
+  <li><a href="<?php echo Rewrite::GetURL(array('control', 'donate')) ?>">Настройки доната</a></li> 
+  <li class="divider"></li>
+  <li><a href="<?php echo Rewrite::GetURL(array('control', 'update')) ?>">Настройки лончера</a></li>  
   <li><a href="<?php echo Rewrite::GetURL(array('control', 'servers')) ?>">Мониторинг серверов</a></li>  
+  <li><a href="<?php echo Rewrite::GetURL(array('control', 'rcon')) ?>">RCON</a></li>
 </ul>
 
 </div>

@@ -32,20 +32,30 @@ $menu_items = array (
       'active' => false,
       'inner_html' => '',
     ),
-    'control' => 
+    'category_news' => 
     array (
-      'name' => 'Пользователи',
-      'url' => 'control/user/',
+      'name' => 'Категории новостей',
+      'url' => 'control/category/',
       'parent_id' => 'admin',
       'lvl' => 15,
       'permission' => -1,
       'active' => false,
       'inner_html' => '',
     ),
-    'category_news' => 
+    'file_edit' => 
     array (
-      'name' => 'Категории новостей',
-      'url' => 'control/category/',
+      'name' => 'Файлы',
+      'url' => 'control/filelist/',
+      'parent_id' => 'admin',
+      'lvl' => 15,
+      'permission' => -1,
+      'active' => false,
+      'inner_html' => '',
+    ),
+    'control' => 
+    array (
+      'name' => 'Пользователи',
+      'url' => 'control/user/',
       'parent_id' => 'admin',
       'lvl' => 15,
       'permission' => -1,
@@ -72,20 +82,20 @@ $menu_items = array (
       'active' => false,
       'inner_html' => '',
     ),
-    'file_edit' => 
+    'site_edit' => 
     array (
-      'name' => 'Файлы',
-      'url' => 'control/filelist/',
+      'name' => 'Настройки сайта',
+      'url' => 'control/constants/',
       'parent_id' => 'admin',
       'lvl' => 15,
       'permission' => -1,
       'active' => false,
       'inner_html' => '',
     ),
-    'site_edit' => 
+    'donate_edit' => 
     array (
-      'name' => 'Сайт',
-      'url' => 'control/constants/',
+      'name' => 'Настройки доната',
+      'url' => 'control/donate/',
       'parent_id' => 'admin',
       'lvl' => 15,
       'permission' => -1,
@@ -104,7 +114,7 @@ $menu_items = array (
     ),
     'game_edit' => 
     array (
-      'name' => 'Настройки игры',
+      'name' => 'Настройки лончера',
       'url' => 'control/update/',
       'parent_id' => 'admin',
       'lvl' => 15,

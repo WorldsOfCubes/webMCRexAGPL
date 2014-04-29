@@ -60,8 +60,8 @@ if ($user->group() != 4 ) {
 	
 	
 	if(isset($_POST['prprem']) && $user->lvl() == 6) {
-		if($player_money >= $premiumcash/2){
-			$user->addMoney(0 - $premiumcash/2);
+		if($player_money >= $donate['premiumcash']/2){
+			$user->addMoney(0 - $donate['premiumcash']/2);
 			BD("UPDATE permissions SET value=value+2678400 WHERE name='$player'");
 			$message = '<div style="margin-top: 10px;" class="alert alert-success">Вы успешно продлили Premium! Спасибо за помощь проекту!</div>';
 		}else{
@@ -70,8 +70,8 @@ if ($user->group() != 4 ) {
 	}
 
 	if(isset($_POST['prvip']) && $user->lvl() == 5) {
-		if($player_money >= $vipcash/2){
-			$user->addMoney(0 - $vipcash/2);
+		if($player_money >= $donate['vipcash']/2){
+			$user->addMoney(0 - $donate['vipcash']/2);
 			BD("UPDATE permissions SET value=value+2678400 WHERE name='$player'");
 			$message = '<div style="margin-top: 10px;" class="alert alert-success">Вы успешно продлили VIP! Спасибо за помощь проекту!</div>';
 		}else{
@@ -81,41 +81,41 @@ if ($user->group() != 4 ) {
 
 	if(isset($_POST['unban'])) {
 		$sql2 = BD("SELECT name FROM banlist WHERE name='$player'");
-		$query2 = mysql_result($sql2,0);
+		if($sql2) $query2 = mysql_fetch_array($sql2)['name']; else $query2 = false;
 		$sql = BD("SELECT numofban FROM unbans WHERE name='$player'");
-		$query = mysql_result($sql,0);
+		if($sql) $query = mysql_fetch_array($sql)['numofban']; else $query = false;
 		if($query == ''){
 			if($query2 != ''){
-				if($player_money >= $unban){
+				if($player_money >=  $donate['unban']){
 					BD("INSERT INTO unbans VALUES (NULL, '$player', '1')");
 					BD("DELETE FROM banlist WHERE name='$player'");
-					$user->addMoney(0 - $unban);
-					$message = "<div class='alert alert-success'>Это ваш первый разбан, не нарушайте правила сервера!</div>";
+					$user->addMoney(0 - $donate['unban']);
+					$message = "<div style='margin-top: 10px;' class='alert alert-success'>Это ваш первый разбан, не нарушайте правила сервера!</div>";
 				}else{
-					$message = "<div class='alert alert-error'>У вас недостаточно средств для разбана!</div>";
+					$message = "<div style='margin-top: 10px;' class='alert alert-danger'>У вас недостаточно средств для разбана!</div>";
 				}
 			}else{
-				$message = "<div class='alert alert-error'>Вы не забанены!</div>";
+				$message = "<div style='margin-top: 10px;' class='alert alert-danger'>Вы не забанены!</div>";
 			}
 		}elseif($query >= 1){
 			if($query2 != ''){
-				if($player_money >= $unban*$query) {
+				if($player_money >=  $donate['unban']*$query) {
 					BD("UPDATE unbans SET numofban=numofban+1 WHERE name='$player'");
 					BD("DELETE FROM banlist WHERE name='$player'");
-					$user->addMoney(0 - $unban*$query);
-					$message = "<div class='alert alert-block'>Это ваш очередной разбан, может пора себя хорошо вести?! :)</div>";
+					$user->addMoney(0 - $donate['unban']*$query);
+					$message = "<div style='margin-top: 10px;' class='alert alert-warning'>Это ваш очередной разбан, может пора себя хорошо вести?!</div>";
 				}else{
-					$message = '<div class="alert alert-error">У вас недостаточно средств для разбана!</div>';
+					$message = "<div style='margin-top: 10px;' class='alert alert-danger'>У вас недостаточно средств для разбана!</div>";
 				}
 			}else{
-				$message = "<div class='alert alert-error'>Вы не забанены!</div>";
+				$message = "<div style='margin-top: 10px;' class='alert alert-danger'>Вы не забанены!</div>";
 			}
 		}
 	}
 
 	if(isset($_POST['buym'])) {
 		$wantbuy = $_POST['wantby'];
-		$gamemoneyadd = ($wantbuy*$exchangehow);
+		$gamemoneyadd = ($wantbuy*$donate['exchangehow']);
 		if($wantbuy == '' || $wantbuy < 1) $mes = "<div style='margin-top: 10px;' class='alert alert-danger'>Вы не ввели сумму!</div>";
 			else{
 				if($player_money >= $wantbuy){
@@ -130,20 +130,20 @@ if ($user->group() != 4 ) {
 		}
 	}
 	if(isset($_POST['govip'])) {
-		if($player_money >= $vipcash){
+		if($player_money >= $donate['vipcash']){
 			$unixtime = time();
 			$A=$unixtime;
 			$B=2678400;
 			$pexdate=$A+$B;
 			$expdate = date('d-m-Y H:i:s', $pexdate);
-			if(!$user->changeGroup($idvip)) exit("Неверно указан ид группы в настройках!");
+			$user->changeGroup(5);
 			$player_group = "VIP";
-			BD("DELETE FROM `permissions_inheritance` WHERE child='{$result['name']}';");
-			BD("DELETE FROM `permissions` WHERE `name`='{$result['name']}';");
+			BD("DELETE FROM `permissions_inheritance` WHERE child='$player';");
+			BD("DELETE FROM `permissions` WHERE `name`='$player';");
 			BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-vip-until', ' ', '$pexdate')");
 			BD("INSERT INTO permissions_inheritance (id, child, parent, type, world) VALUES (NULL, '$player', 'VIP', '1', NULL)");
-			$user->addMoney(0 - $vipcash);
-			$player_money -= $vipcash;
+			$user->addMoney(0 - $donate['vipcash']);
+			$player_money -= $donate['vipcash'];
 			$message = '<div style="margin-top: 10px;" class="alert alert-success">Вы успешно купили VIP! Спасибо за помощь проекту!</div>';
 		}else{
 			$message = '<div style="margin-top: 10px;" class="alert alert-danger">К сожалению у вас недостаточно средств, пополните счет!</div>';
@@ -151,20 +151,20 @@ if ($user->group() != 4 ) {
 	}
 
 	if(isset($_POST['goprem'])) {
-		if($player_money >= $premiumcash){
+		if($player_money >= $donate['premiumcash']){
 			$unixtime = time();
 			$A=$unixtime;
 			$B=2678400;
 			$pexdate=$A+$B;
 			$expdate = date('d-m-Y H:i:s', $pexdate);
-			if(!$user->changeGroup($idprem)) exit("Неверно указан ид группы в настройках!");
+			$user->changeGroup(6);
 			$player_group = "Premium";
-			BD("DELETE FROM `permissions_inheritance` WHERE child='{$result['name']}';");
-			BD("DELETE FROM `permissions` WHERE `name`='{$result['name']}';");
+			BD("DELETE FROM `permissions_inheritance` WHERE child='$player';");
+			BD("DELETE FROM `permissions` WHERE `name`='$player';");
 			BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-premium-until', ' ', '$pexdate')");
 			BD("INSERT INTO permissions_inheritance (id, child, parent, type, world) VALUES (NULL, '$player', 'Premium', '1', NULL)");
-			$user->addMoney(0 - $premiumcash);
-			$player_money -= $premiumcash;
+			$user->addMoney(0 - $donate['premiumcash']);
+			$player_money -= $donate['premiumcash'];
 			$message = '<div style="margin-top: 10px;" class="alert alert-success">Вы успешно купили Premium! Спасибо за помощь проекту!</div>';
 		}else{
 			$message = '<div style="margin-top: 10px;" class="alert alert-danger">К сожалению у вас недостаточно средств, пополните счет!</div>';
@@ -187,7 +187,7 @@ if ($user->group() != 4 ) {
 	$profile_inputs = ob_get_clean();
 	
 	ob_start(); 
-	if ($user->lvl() > $lvlvip) include View::Get('profile_prefix.html', $prefix);
+	if ($user->lvl() > 6) include View::Get('profile_prefix.html', $prefix);
 		else include View::Get('profile_prefix_buy.html', $prefix);
 	$profile_prefix = ob_get_clean();
 	

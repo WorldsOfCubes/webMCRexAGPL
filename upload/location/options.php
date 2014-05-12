@@ -81,9 +81,15 @@ if ($user->group() != 4 ) {
 
 	if(isset($_POST['unban'])) {
 		$sql2 = BD("SELECT name FROM banlist WHERE name='$player'");
-		if($sql2) $query2 = mysql_fetch_array($sql2)['name']; else $query2 = false;
+		if($sql2) {
+			$query2 = mysql_fetch_array($sql2);
+			$query2 = $query2['name'];
+		} else $query2 = false;
 		$sql = BD("SELECT numofban FROM unbans WHERE name='$player'");
-		if($sql) $query = mysql_fetch_array($sql)['numofban']; else $query = false;
+		if($sql) {
+			$query = mysql_fetch_array($sql);
+			$query = $query['numofban'];
+		} else $query = false;
 		if($query == ''){
 			if($query2 != ''){
 				if($player_money >=  $donate['unban']){

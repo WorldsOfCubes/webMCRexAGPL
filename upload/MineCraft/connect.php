@@ -1,96 +1,79 @@
 <?php
-//TODO ÐŸÐµÑ€ÐµÐ¿Ð¸ÑÐ°Ñ‚ÑŒ Ð²ÑÐµ Ð°Ð´ÐµÐºÐ²Ð°Ñ‚Ð½Ð¾
 	if(!defined('INCLUDE_CHECK')) die("You don't have permissions to run this");
-	/* ÐœÐµÑ‚Ð¾Ð´ Ñ…ÐµÑˆÐ¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ Ð¿Ð°Ñ€Ð¾Ð»Ñ Ð´Ð»Ñ Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ð¸ Ñ Ñ€Ð°Ð·Ð»Ð¸Ñ‡Ð½Ð¸Ð¼Ð¸ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð°Ð¼Ð¸/ÑÐ°Ð¹Ñ‚Ð°Ð¼Ð¸/cms/Ñ„Ð¾Ñ€ÑƒÐ¼Ð°Ð¼Ð¸
-	'hash_md5' 			- md5 Ñ…ÐµÑˆÐ¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ
-	'hash_authme'   	- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð¾Ð¼ AuthMe
-	'hash_cauth' 		- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð¾Ð¼ Cauth
-	'hash_xauth' 		- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð¾Ð¼ xAuth
-	'hash_joomla' 		- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ Joomla (v1.6 - v1.7)
-	'hash_joomla_new' 	- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ Joomla (v2.x - v3.x)
-	'hash_ipb' 			- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ IPB
-	'hash_xenforo' 		- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ XenForo
-	'hash_wordpress' 	- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ WordPress
-	'hash_vbulletin' 	- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ vBulletin
-	'hash_punbb'	   	- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ punBB
-	'hash_dle' 			- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ DLE
-	'hash_drupal'     	- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ Drupal (v.7)
-	'hash_imagecms'    	- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ ImageCMS Corporate
-	'hash_launcher'		- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ Ð»Ð°ÑƒÐ½Ñ‡ÐµÑ€Ð¾Ð¼ sashok724 (Ð ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ñ Ñ‡ÐµÑ€ÐµÐ· Ð»Ð°ÑƒÐ½Ñ‡ÐµÑ€)
+	/* Ìåòîä õåøèðîâàíèÿ ïàðîëÿ äëÿ èíòåãðàöèè ñ ðàçëè÷íèìè ïëàãèíàìè/ñàéòàìè/cms/ôîðóìàìè
+	'hash_md5' 			- md5 õåøèðîâàíèå
+	'hash_authme'   	- èíòåãðàöèÿ ñ ïëàãèíîì AuthMe
+	'hash_cauth' 		- èíòåãðàöèÿ ñ ïëàãèíîì Cauth
+	'hash_xauth' 		- èíòåãðàöèÿ ñ ïëàãèíîì xAuth
+	'hash_joomla' 		- èíòåãðàöèÿ ñ Joomla (v1.6- v1.7)
+	'hash_ipb' 			- èíòåãðàöèÿ ñ IPB
+	'hash_xenforo' 		- èíòåãðàöèÿ ñ XenForo
+	'hash_wordpress' 	- èíòåãðàöèÿ ñ WordPress
+	'hash_vbulletin' 	- èíòåãðàöèÿ ñ vBulletin
+	'hash_dle' 			- èíòåãðàöèÿ ñ DLE
+	'hash_drupal'     	- èíòåãðàöèÿ ñ Drupal (v.7)
+	'hash_launcher'		- èíòåãðàöèÿ ñ ëàóí÷åðîì sashok724 (Ðåãèñòðàöèÿ ÷åðåç ëàóí÷åð)
 	*/
-require('../system.php');
-	$crypt                          = 'hash_md5';
-
-	$db_host                        =  $config['db_host']; // Ip-Ð°Ð´Ñ€ÐµÑ MySQL
-	$db_port                        = $config['db_port']; // ÐŸÐ¾Ñ€Ñ‚ Ð±Ð°Ð·Ñ‹ Ð´Ð°Ð½Ð½Ñ‹Ñ…
-	$db_user                        = $config['db_login']; // ÐŸÐ¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ Ð±Ð°Ð·Ñ‹ Ð´Ð°Ð½Ð½Ñ‹Ñ…
-	$db_pass                        = $config['db_passw']; // ÐŸÐ°Ñ€Ð¾Ð»ÑŒ Ð±Ð°Ð·Ñ‹ Ð´Ð°Ð½Ð½Ñ‹Ñ…
-	$db_database            = $config['db_name']; //Ð‘Ð°Ð·Ð° Ð´Ð°Ð½Ð½Ñ‹Ñ…
-
-	$db_table               = $bd_names['users']; //Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑÐ¼Ð¸
-	$db_group           = 'group'; //Ð”Ð»Ñ webmcr (Ð¼Ð¸Ð½Ð¸Ñ„Ð¸ÐºÑ)
-	$db_columnId            = $bd_users['id']; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ ID Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹
-	$db_columnUser          = $bd_users['login']; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ Ð¸Ð¼ÐµÐ½Ð°Ð¼Ð¸ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹
-	$db_columnPass          = $bd_users['password']; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ Ð¿Ð°Ñ€Ð¾Ð»ÑÐ¼Ð¸ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹
-	$db_tableOther          = 'xf_user_authenticate'; //Ð”Ð¾Ð¿Ð¾Ð»Ð½Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð°Ñ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ð° Ð´Ð»Ñ XenForo, Ð½Ðµ Ñ‚Ñ€Ð¾Ð³Ð°Ð¹Ñ‚Ðµ
-	$db_columnSesId         = $bd_users['session']; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ ÑÐµÑÑÐ¸ÑÐ¼Ð¸ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹, Ð½Ðµ Ñ‚Ñ€Ð¾Ð³Ð°Ð¹Ñ‚Ðµ
-	$db_columnServer        = $bd_users['server']; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ ÑÐµÑ€Ð²ÐµÑ€Ð°Ð¼Ð¸ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹, Ð½Ðµ Ñ‚Ñ€Ð¾Ð³Ð°Ð¹Ñ‚e
-	$db_columnSalt          = 'members_pass_salt'; //ÐÐ°ÑÑ‚Ñ€Ð°Ð¸Ð²Ð°ÐµÑ‚ÑÑ Ð´Ð»Ñ IPB Ð¸ vBulletin: , IPB - members_pass_salt, vBulletin - salt
-	$db_columnIp                = $bd_users['server']; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ IP Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹
-
-	$db_columnDatareg   = $bd_users['ctime']; // ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ð´Ð°Ñ‚Ñ‹ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ð¸
-	$db_columnMail      = $bd_users['email']; // ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° mail
-
-
-	$banlist            = 'banlist'; //Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° Ð¿Ð»Ð°Ð³Ð¸Ð½Ð° Ultrabans
-	$noactive           = '1'; //ÐÐ¾Ð¼ÐµÑ€ Ð³Ñ€ÑƒÐ¿Ð¿Ñ‹ Ð½Ðµ Ð°ÐºÑ‚Ð¸Ð²Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ñ‹Ñ…
+	require('../system.php');
+	BDConnect('auth');
+	$crypt 				= 'hash_md5';
 	
-	$useban             =  true; //Ð‘Ð° Ð½Ð° Ð½Ð° ÑÐµÑ€Ð²ÐµÑ€Ðµ = Ð±Ð°Ð½ Ð² Ð»Ð°ÑƒÐ½Ñ‡ÐµÑ€Ðµ, Ultrabans Ð¿Ð»Ð°Ð³Ð¸Ð½
-	$useantibrut        =  true; //Ð—Ð°Ñ‰Ð¸Ñ‚Ð° Ð¾Ñ‚ Ñ‡Ð°ÑÑ‚Ñ‹Ñ… Ð¿Ð¾Ð´Ð±Ð¾Ñ€Ð¾Ð² Ð¿Ð°Ñ€Ð¾Ð»Ñ (ÐŸÐ°ÑƒÐ·Ð° 1 Ð¼Ð¸Ð½ÑƒÑ‚Ð° Ð¿Ñ€Ð¸ Ð½ÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾Ð¼ Ð¿Ð°Ñ€Ð¾Ð»Ðµ)
-		$link = mysql_connect($db_host.':'.$db_port,$db_user,$db_pass) or die(mysql_error());
-		mysql_select_db($db_database,$link);
-		$dat = mysql_query("SELECT `value` FROM `data` WHERE `property`='launcher-version'");
-		$row = mysql_fetch_assoc($dat);
-	$masterversion          = $row['value'];
+	$db_host			=  $config['db_host']; // Ip-àäðåñ MySQL
+	$db_port			= $config['db_port']; // Ïîðò áàçû äàííûõ
+	$db_user			= $config['db_login']; // Ïîëüçîâàòåëü áàçû äàííûõ
+	$db_pass			= $config['db_passw']; // Ïàðîëü áàçû äàííûõ
+	$db_database		= $config['db_name']; //Áàçà äàííûõ
+	
+	$db_table       	= $bd_names['users']; //Òàáëèöà ñ ïîëüçîâàòåëÿìè
+	$db_group           = $bd_users['group']; //Äëÿ webmcr (ìèíèôèêñ)
+	$db_columnId  		= $bd_users['id']; //Êîëîíêà ñ ID ïîëüçîâàòåëåé
+	$db_columnUser  	= $bd_users['login']; //Êîëîíêà ñ èìåíàìè ïîëüçîâàòåëåé
+	$db_columnPass  	= $bd_users['password']; //Êîëîíêà ñ ïàðîëÿìè ïîëüçîâàòåëåé
+	$db_tableOther 		= 'xf_user_authenticate'; //Äîïîëíèòåëüíàÿ òàáëèöà äëÿ XenForo, íå òðîãàéòå
+	$db_columnSesId	 	= $bd_users['session']; //Êîëîíêà ñ ñåññèÿìè ïîëüçîâàòåëåé, íå òðîãàéòå
+	$db_columnServer	= $bd_users['server']; //Êîëîíêà ñ ñåðâåðàìè ïîëüçîâàòåëåé, íå òðîãàéòe
+	$db_columnSalt  	= 'members_pass_salt'; //Íàñòðàèâàåòñÿ äëÿ IPB è vBulletin: , IPB - members_pass_salt, vBulletin - salt
+    $db_columnIp  		= $bd_users['ip']; //Êîëîíêà ñ IP ïîëüçîâàòåëåé
+	
+	$db_columnDatareg   = $bd_users['ctime']; // Êîëîíêà äàòû ðåãèñòðàöèè
+	$db_columnMail      = $bd_users['email']; // Êîëîíêà mail
 
-	$protectionKey		= '1234567890'; //ÐšÐ»ÑŽÑ‡ Ð·Ð°Ñ‰Ð¸Ñ‚Ñ‹ ÑÐµÑÑÐ¸Ð¸. ÐÐ¸ÐºÐ¾Ð¼Ñƒ ÐµÐ³Ð¾ Ð½Ðµ Ð³Ð¾Ð²Ð¾Ñ€Ð¸Ñ‚Ðµ.
+	$banlist            = 'banlist'; //Òàáëèöà ïëàãèíà Ultrabans
+	$noactive           = '1'; //Íîìåð ãðóïïû íå àêòèâèðîâàííûõ
+	
+	$useban             =  false; //Áàíà íà ñåðâåðå = áàí â ëàóí÷åðå, Ultrabans ïëàãèí
+	$useactivate        =  true; //Àêòèâàöèÿ àêêàóíòà ïî mail
+	$masterversion  	= sqlConfigGet('launcher-version'); //Ìàñòåð-âåðñèÿ ëàóí÷åðà
+	$protectionKey		= sqlConfigGet('protection-key'); //Êëþ÷ çàùèòû ñåññèè. Íèêîìó åãî íå ãîâîðèòå.
 
-//========================= ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Ð›Ðš =======================//	
 
-	$db_columnMoney		= 'realmoney'; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ Ð´ÐµÐ½ÑŒÐ³Ð°Ð¼Ð¸
+//========================= Íàñòðîéêè ËÊ =======================//	
+
+	$db_columnMoney		= 'realmoney'; //Êîëîíêà ñ äåíüãàìè
 	
-	$db_tableMoneyKeys  = 'sashok724_launcher_keys'; //Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° Ñ ÐºÐ»ÑŽÑ‡Ð°Ð¼Ð¸
-	$db_columnKey		= 'key'; 	//ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ ÐºÐ»ÑŽÑ‡Ð°Ð¼Ð¸
-	$db_columnAmount	= 'amount'; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ Ñ†ÐµÐ½Ð°Ð¼Ð¸ ÐºÐ»ÑŽÑ‡ÐµÐ¹
+	$db_tableMoneyKeys  = 'launcher_keys'; //Òàáëèöà ñ êëþ÷àìè
+	$db_columnKey		= 'key'; 	//Êîëîíêà ñ êëþ÷àìè
+	$db_columnAmount	= 'amount'; //Êîëîíêà ñ öåíàìè êëþ÷åé
 	
-	$uploaddirs = 'MinecraftSkins';  //ÐŸÐ°Ð¿ÐºÐ° ÑÐºÐ¸Ð½Ð¾Ð²
-	$uploaddirp = 'MinecraftCloaks'; //ÐŸÐ°Ð¿ÐºÐ° Ð¿Ð»Ð°Ñ‰ÐµÐ¹
+	$uploaddirs = $site_ways['skins'];  //Ïàïêà ñêèíîâ
+	$uploaddirp = $site_ways['cloaks']; //Ïàïêà ïëàùåé
 	
-	$usePersonal 		=  true; //Ð˜ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ð»Ð¸Ñ‡Ð½Ñ‹Ð¹ ÐºÐ°Ð±Ð¸Ð½ÐµÑ‚
-	$canUploadSkin		=  true; //ÐœÐ¾Ð¶Ð½Ð¾ Ð»Ð¸ Ð·Ð°Ð»Ð¸Ð²Ð°Ñ‚ÑŒ ÑÐºÐ¸Ð½Ñ‹
-	$canUploadCloak		=  true; //ÐœÐ¾Ð¶Ð½Ð¾ Ð»Ð¸ Ð·Ð°Ð»Ð¸Ð²Ð°Ñ‚ÑŒ Ð¿Ð»Ð°Ñ‰Ð¸
-	$canBuyVip			=  true; //ÐœÐ¾Ð¶Ð½Ð¾ Ð»Ð¸ Ð¿Ð¾ÐºÑƒÐ¿Ð°Ñ‚ÑŒ VIP
-	$canBuyPremium		=  true; //ÐœÐ¾Ð¶Ð½Ð¾ Ð»Ð¸ Ð¿Ð¾ÐºÑƒÐ¿Ð°Ñ‚ÑŒ Premium
-	$canBuyUnban		=  true; //ÐœÐ¾Ð¶Ð½Ð¾ Ð»Ð¸ Ð¿Ð¾ÐºÑƒÐ¿Ð°Ñ‚ÑŒ Ñ€Ð°Ð·Ð±Ð°Ð½
-	$canActivateVaucher =  true; //ÐœÐ¾Ð¶Ð½Ð¾ Ð»Ð¸ Ð°ÐºÑ‚Ð¸Ð²Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð²Ð°ÑƒÑ‡ÐµÑ€
-	$canExchangeMoney   =  true; //ÐœÐ¾Ð¶Ð½Ð¾ Ð»Ð¸ Ð¾Ð±Ð¼ÐµÐ½Ð¸Ð²Ð°Ñ‚ÑŒ Realmoney -> IConomy
-	$canUseJobs			=  true; //ÐœÐ¾Ð¶Ð½Ð¾ Ð»Ð¸ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹
-	$usecheck			=  false; //ÐœÐ¾Ð¶Ð½Ð¾ Ð»Ð¸ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸ÑŽ Ð² Ð»Ð°ÑƒÐ½Ñ‡ÐµÑ€Ðµ
+	$usePersonal 		=  true; //Èñïîëüçîâàòü ëè÷íûé êàáèíåò
+	$canUploadSkin		=  true; //Ìîæíî ëè çàëèâàòü ñêèíû
+	$canUploadCloak		=  true; //Ìîæíî ëè çàëèâàòü ïëàùè
+	$canBuyVip			=  true; //Ìîæíî ëè ïîêóïàòü VIP
+	$canBuyPremium		=  true; //Ìîæíî ëè ïîêóïàòü Premium
+	$canBuyUnban		=  true; //Ìîæíî ëè ïîêóïàòü ðàçáàí
+	$canActivateVaucher =  true; //Ìîæíî ëè àêòèâèðîâàòü âàó÷åð
+	$canExchangeMoney   =  true; //Ìîæíî ëè îáìåíèâàòü Realmoney -> IConomy
+	$canUseJobs			=  true; //Ìîæíî ëè èñïîëüçîâàòü ðàáîòû
+	$usecheck			=  true; //Ìîæíî ëè èñïîëüçîâàòü ðåãèñòðàöèþ â ëàóí÷åðå
 	
-	$cloakPrice			=  0;   //Ð¦ÐµÐ½Ð° Ð¿Ð»Ð°Ñ‰Ð° (Ð’ Ñ€ÑƒÐ±Ð»ÑÑ…)
-	$vipPrice			=  100;  //Ð¦ÐµÐ½Ð° Ð²Ð¸Ð¿Ð° (Ð’ Ñ€ÑƒÐ±/Ð¼ÐµÑ)
-	$premiumPrice		=  250;  //Ð¦ÐµÐ½Ð° Ð¿Ñ€ÐµÐ¼Ð¸ÑƒÐ¼Ð° (Ð’ Ñ€ÑƒÐ±/Ð¼ÐµÑ)
-	$unbanPrice			=  150;  //Ð¦ÐµÐ½Ð° Ñ€Ð°Ð·Ð±Ð°Ð½Ð° (Ð’ Ñ€ÑƒÐ±Ð»ÑÑ…)
+	$cloakPrice			=  0;   //Öåíà ïëàùà (Â ðóáëÿõ)
+	$vipPrice			=  100;  //Öåíà âèïà (Â ðóá/ìåñ)
+	$premiumPrice		=  250;  //Öåíà ïðåìèóìà (Â ðóá/ìåñ)
+	$unbanPrice			=  150;  //Öåíà ðàçáàíà (Â ðóáëÿõ)
 	
-	$initialIconMoney	=  30;  //Ð¡ÐºÐ¾Ð»ÑŒÐºÐ¾ Ð´ÐµÐ½ÐµÐ³ Ð´Ð°ÐµÑ‚ÑÑ Ð¿Ñ€Ð¸ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ð¸ Ð² IConomy
-	$exchangeRate		=  200; //ÐšÑƒÑ€Ñ Ð¾Ð±Ð¼ÐµÐ½Ð° Realmoney -> IConomy
-	
-	//Ð’Ð¡Ð• Ð§Ð¢Ðž ÐÐ˜Ð–Ð• - ÐÐ• Ð¢Ð ÐžÐ“ÐÐ¢Ð¬!
-	try {
-		$db = new PDO("mysql:host=$db_host;port=$db_port;dbname=$db_database", $db_user, $db_pass);
-		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$db->exec("set names utf8");
-	} catch(PDOException $pe) {
-		die("errorsql".$logger->WriteLine($log_date.$pe));  //Ð²Ñ‹Ð²Ð¾Ð´ Ð¾ÑˆÐ¸Ð±Ð¾Ðº MySQL Ð² m.log
-	}
+	$initialIconMoney	=  0;  //Ñêîëüêî äåíåã äàåòñÿ ïðè ðåãèñòðàöèè â IConomy
+	$exchangeRate		=  100; //Êóðñ îáìåíà Realmoney -> IConomy
 ?>

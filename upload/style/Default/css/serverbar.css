@@ -54,7 +54,7 @@ div .progressbar_meter {
   font-size: 12px;
   font-weight: bold; 
   color: #fff; 
-  line-height: 16px; 
+  line-height: 20px; 
   text-shadow: 0px 0px 3px #000;
   text-indent: 2px;
   white-space: nowrap;
@@ -77,7 +77,7 @@ div .progressbar_overlay {
   color: #fff; 
   line-height: 20px; 
   text-shadow: 0px 0px 3px #000;
-  margin-top: 1px;
+  margin-top: 4px;
   float:left; 
   display: block; 
   text-align:center; 

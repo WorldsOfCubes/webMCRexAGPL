@@ -27,6 +27,10 @@
 	<span class="help-block">Сколько будут игроки получать за каждый десятый голос.</span>
     <input type="text" class="form-control" style="width:300px" name="new_vote10" value="<?php echo $donate['vote10'] ?>">
 
+	<label>Секретный ключ MCTop:</label>
+	<span class="help-block">Можно узать в личном кабинете MCTop.</span>
+    <input type="password" class="form-control" style="width:300px" name="new_vote_mct_secret_key" value="<?php echo $donate['vote_mct_secret_key'] ?>">
+
 	<label class="checkbox">
 			  <input type="checkbox" name="new_ik_testing" value="1" <?php echo ($donate['vote_real'])?'checked="checked"':'' ?>> Бонус на донат-счет
 			</label>

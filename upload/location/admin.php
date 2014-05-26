@@ -585,6 +585,7 @@ if ($do) {
 	$donate['exchangehow']			= InputGet('new_exchangehow', 'POST', 'int');
 	$donate['vote']					= InputGet('new_vote', 'POST', 'int');
 	$donate['vote10']				= InputGet('new_vote10', 'POST', 'int');
+	$donate['vote_real']			= InputGet('new_vote_real', 'POST', 'bool');
 	$donate['shop_id']				= InputGet('new_shop_id', 'POST', 'str');
 	$donate['secret_key']			= InputGet('new_secret_key', 'POST', 'str');
 	$donate['ik_secret_key_test']		= InputGet('new_ik_secret_key_test', 'POST', 'str');

@@ -1,8 +1,8 @@
 /* Настройка прогресс бара - Красный */
 
 div .redbar {  
-  border: 1px solid #9d2104; 
-  background-color: #646464;
+  border: 0px; 
+  background-color: #D9534F;
   width: 120px;
   float: right; 
   margin-right: 6px;
@@ -12,50 +12,46 @@ div .redbar {
   -webkit-border-radius: 4px;
 }
 
-div .redbar div {
-  background: url('../img/serverstate/bg_red.gif') 0px 0px repeat;
-}
+/* Настройка прогресс бара - Синий */
 
 div .bluebar { 
-  border: 1px solid #326193; 
-  background-color: #efefef;
+  border: 0px; 
+  background-color: #5BC0DE;
   width: 124px;
   float: right; 
   margin-right: 6px;
-  border-radius: 3px;
-  -o-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
+  border-radius: 4px;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 
-div .bluebar div {
-  background: url('../img/serverstate/bg_blue.gif') 0px 0px repeat;
-}
 
-/* Настройка прогресс бара - Синий */
+/* Настройка прогресс бара - Зеленый */
 
 div .greenbar { 
-  border: 1px solid #326193; 
+  border: 0px; 
   background-color: #e0e0e0;
   width: 124px;
   float: right; 
   margin-right: 6px;
-  border-radius: 3px;
-  -o-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
+  border-radius: 4px;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
 }
 
 div .greenbar div {
-  background: url('../img/serverstate/bg_green.gif') 0px 0px repeat;
+  background: #5CB85C;
 }
+
 
 /* Настройка прогресс бара - Основная настройка - родитель */
 
 div .progressbar_meter {
-  height: 16px;
+  height: 20px;
   text-align: center;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: bold; 
   color: #fff; 
   line-height: 16px; 
@@ -76,7 +72,7 @@ div .progressbar_meter {
 
 div .progressbar_overlay {
   text-align: center;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: bold; 
   color: #fff; 
   line-height: 20px; 

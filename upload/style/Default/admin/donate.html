@@ -27,6 +27,11 @@
 	<span class="help-block">Сколько будут игроки получать за каждый десятый голос.</span>
     <input type="text" class="form-control" style="width:300px" name="new_vote10" value="<?php echo $donate['vote10'] ?>">
 
+	<label class="checkbox">
+			  <input type="checkbox" name="new_ik_testing" value="1" <?php echo ($donate['vote_real'])?'checked="checked"':'' ?>> Бонус на донат-счет
+			</label>
+			<span class="help-block">В противном случае он идет на игровую валюту.</span>	
+
 	<label>ID магазина в Интеркассе:</label>
 	<span class="help-block">Можно узать в личном кабинете Интеркассы.</span>
     <input type="text" class="form-control" style="width:300px" name="new_shop_id" value="<?php echo $donate['shop_id'] ?>">
@@ -38,7 +43,7 @@
 	<label>Секретный ключ Интеркассы для тестовых платежей:</label>
 	<span class="help-block">Можно узать в личном кабинете Интеркассы.</span>
     <input type="password" class="form-control" style="width:300px" name="new_ik_secret_key_test" value="<?php echo $donate['ik_secret_key_test'] ?>">
-	
+
 	<label class="checkbox">
 			  <input type="checkbox" name="new_ik_testing" value="1" <?php echo ($donate['ik_testing'])?'checked="checked"':'' ?>> Принимать тестовые платежи
 			</label>

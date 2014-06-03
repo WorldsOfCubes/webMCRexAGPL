@@ -1,8 +1,7 @@
 <?php
-    header('Content-Type: text/html; charset=cp1251');
+    header('Content-Type: text/html; charset=utf8');
 	define('INCLUDE_CHECK',true);
 	include("connect.php");
-	include("loger.php");
 	$login 		= mysql_real_escape_string($_POST['login']);
 	$postPass	= mysql_real_escape_string($_POST['password']);
 	$client 	= mysql_real_escape_string($_POST['client']);
@@ -17,65 +16,10 @@
 		
 	exit;
     }	
-	
-	if($crypt == 'hash_md5' || $crypt == 'hash_authme' || $crypt == 'hash_xauth' || $crypt == 'hash_cauth' || $crypt == 'hash_joomla' || $crypt == 'hash_wordpress' || $crypt == 'hash_dle' || $crypt == 'hash_launcher' || $crypt == 'hash_drupal' )
-	{
-	    if($useactivate)
-        {
-		 $query = BD("SELECT $db_columnUser,$db_columnPass,$db_columnMoney,$db_group FROM $db_table WHERE $db_columnUser='$login'") or die("error.".$logger->WriteLine($log_date.mysql_error()));  //вывод ошибок MySQL в m.log
-		}
-		else
-		{
-		 $query = BD("SELECT $db_columnUser,$db_columnPass,$db_columnMoney FROM $db_table WHERE $db_columnUser='$login'") or die("error.".$logger->WriteLine($log_date.mysql_error()));  //вывод ошибок MySQL в m.log
-		}
-		$row = mysql_fetch_assoc($query);
-		$realPass = $row[$db_columnPass];
-		$realUser = $row[$db_columnUser];
-	} else if ($crypt == 'hash_ipb' || $crypt == 'hash_vbulletin')
-	{
-		$row = mysql_fetch_assoc(BD("SELECT $db_columnUser,$db_columnPass,$db_columnSalt,$db_columnMoney FROM $db_table WHERE $db_columnUser='$login'")) or die("error.".$logger->WriteLine($log_date.mysql_error())); //вывод ошибок MySQL в m.log
-		$realPass = $row[$db_columnPass];
-		$salt = $row[$db_columnSalt];
-		$realUser = $row[$db_columnUser];
-	} else if($crypt == 'hash_xenforo')
-	{
-	    $query = "SELECT $db_table.$db_columnId,$db_table.$db_columnUser,$db_tableOther.$db_columnId,$db_tableOther.$db_columnPass FROM $db_table, $db_tableOther WHERE $db_table.$db_columnId = $db_tableOther.$db_columnId AND $db_table.$db_columnUser='{$login}'";
-		$result = BD($query)or die("error.".$logger->WriteLine($log_date.mysql_error())); //вывод ошибок MySQL в m.log
-		$row = mysql_fetch_assoc($result);
-		$realPass = substr($row[$db_columnPass],22,64);
-		$realUser = $row[$db_columnUser];
-		$salt = substr($row[$db_columnPass],105,64);
-	} else die("badhash"); $checkPass = $crypt();
-    if ($login !== $realUser)
-    {
-    exit (errorLogin);
-    }
-	if(!strcmp($realPass,$checkPass) == 0 || !$realPass) die("errorLogin");
-	
-if($useactivate)
-{	
-	if($row[$db_group] == $noactive)	
-	{
-    exit ("Ваш аккаунт не активирован!");
-    }
-}
-if($useban)
-{
-   $time = time();
-   $tipe = '2';
-   $result = BD("Select name From $banlist Where name='$login' And type<'$tipe' And temptime>'$time'") or die ("Ошибка");
-   if(mysql_num_rows($result) == 1)
-    {
-      $result2 = BD("Select name,temptime From $banlist Where name='$login' And type<'$tipe' And temptime>'$time'") or die ("Ошибка");
-      $row = mysql_fetch_assoc($result2);
-      exit ('Временный бан до '.date('d.m.Yг. H:i', $row['temptime'])." по времени сервера");
-    }
-      $result = BD("Select name From $banlist Where name='$login' And type<'$tipe' And temptime='0'") or die ("Ошибка");
-      if(mysql_num_rows($result) == 1)
-    {
-      exit ("Вечный бан");
-    }
-}
+	$user = new User($name, (strpos($name, '@') === false)? $bd_users['login'] : $bd_users['email']);
+	if(!$user->id()) exit("errorLogin");
+	if($user->lvl() <=1) exit("Аккаунт заблокирован или не активирован")
+	if(!$auth_user->authenticate($postPass)) die("errorLogin");
 
 
 
@@ -89,16 +33,6 @@ if($useban)
 	if($action == 'buyunban' && !$canBuyUnban) die("Функция недоступна");
 	if($action == 'exchange' && !$canExchangeMoney) die("Функция недоступна");
 	if($action == 'activatekey' && !$canActivateVaucher) die("Функция недоступна");
-
-	if($action == 'exchange' || $action == 'getpersonal')
-	{
-		$rowicon = mysql_fetch_assoc(BD("SELECT username,balance FROM iConomy WHERE username='$login'"));
-		$iconregistered = true;
-		if(!$rowicon['balance'])
-		{
-			BD("INSERT INTO `iConomy` (`username`, `balance`, `status`) VALUES ('$login', '$initialIconMoney.00', '0');") or $iconregistered = false;
-		}
-	}
     
 	if($action == 'auth')
 	{

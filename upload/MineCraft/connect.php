@@ -37,23 +37,12 @@
 	
 	$db_columnDatareg   = $bd_users['ctime']; // Колонка даты регистрации
 	$db_columnMail      = $bd_users['email']; // Колонка mail
-
-	$banlist            = 'banlist'; //Таблица плагина Ultrabans
-	$noactive           = '1'; //Номер группы не активированных
 	
-	$useban             =  false; //Бана на сервере = бан в лаунчере, Ultrabans плагин
-	$useactivate        =  true; //Активация аккаунта по mail
 	$masterversion  	= sqlConfigGet('launcher-version'); //Мастер-версия лаунчера
 	$protectionKey		= sqlConfigGet('protection-key'); //Ключ защиты сессии. Никому его не говорите.
 
 
 //========================= Настройки ЛК =======================//	
-
-	$db_columnMoney		= 'realmoney'; //Колонка с деньгами
-	
-	$db_tableMoneyKeys  = 'launcher_keys'; //Таблица с ключами
-	$db_columnKey		= 'key'; 	//Колонка с ключами
-	$db_columnAmount	= 'amount'; //Колонка с ценами ключей
 	
 	$uploaddirs = $site_ways['skins'];  //Папка скинов
 	$uploaddirp = $site_ways['cloaks']; //Папка плащей
@@ -64,9 +53,9 @@
 	$canBuyVip			=  true; //Можно ли покупать VIP
 	$canBuyPremium		=  true; //Можно ли покупать Premium
 	$canBuyUnban		=  true; //Можно ли покупать разбан
-	$canActivateVaucher =  true; //Можно ли активировать ваучер
+	$canActivateVaucher =  false; //Можно ли активировать ваучер
 	$canExchangeMoney   =  true; //Можно ли обменивать Realmoney -> IConomy
-	$canUseJobs			=  true; //Можно ли использовать работы
+	$canUseJobs			=  false; //Можно ли использовать работы
 	$usecheck			=  true; //Можно ли использовать регистрацию в лаунчере
 	
 	$cloakPrice			=  0;   //Цена плаща (В рублях)

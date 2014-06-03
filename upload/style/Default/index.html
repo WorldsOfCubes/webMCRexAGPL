@@ -64,18 +64,6 @@
   </div>
   
 </header>
-
-<div class="bs-docs-social">
-  <div class="container">
-    <ul class="bs-docs-social-buttons">
-      <li>
-        <?php echo $content_advice; ?>
-		<div id="debug"></div>
-      </li>
-    </ul>
-  </div>
-</div>
-
 <div class="navbar navbar-default navbar-fixed-top" role="navigation" >
 
       <div class="navbar-header">
@@ -99,10 +87,9 @@
         </div>
       </div>
 	  
-</div>
-	
+</div>	
 <!-- END -->
-<div class="container">	
+<div class="container" style="margin-bottom: 50px;">	
     <div class="container">
 			<div class="row">
 			<!-- Левый контейнер -->
@@ -111,12 +98,18 @@
 					<?php echo $content_side ?>
 
 					<?php echo $content_servers ?>
+
 										
 				</div>
 			<!-- /.Левый контейнер -->
 				
             <!-- Правый контейнер -->
 				<div class="col-md-8">	
+				<div style="margin-top: 12px;"> 
+				  <ul class="breadcrumb">
+        <li style="text-align: center;"><?php echo $content_advice; ?></li>
+		</ul>
+  </div>
 
 				    <?php echo $content_main;?> 	
 		
@@ -130,8 +123,7 @@
     </div> 
 </div>
 	<!-- /container -->
-	
-    <footer class="footer-block">	
+	<footer class="footer-block">	
 
 		   <div style="float: right;"><?php echo FEEDBACK; ?></div>
            Полное или частичное копирование сайта <?php echo $config['s_name'] ?>  запрещено.

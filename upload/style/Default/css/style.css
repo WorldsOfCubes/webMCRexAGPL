@@ -1,7 +1,6 @@
 /* style css
 -------------------------------------------------- */
 @import url("bootstrap.css");
-@import url("bootstrap-responsive.css");
 @import url("docs.css");
 /*@import url("../skinPoser/style.css");*/
 
@@ -27,11 +26,9 @@ textarea {
   padding: 8px 15px;
   margin: 0 0 20px;
   list-style: none;
-  border: 1px dashed #e0edf1; 
+  border: 1px solid #ddd;
   background-color: #f5f5f5;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
+  border-radius:0px;
 }
 
 .breadcrumb li {
@@ -192,13 +189,14 @@ textarea {
 .female-input a{
   padding: 2px 6px 3px 6px;
   text-decoration: none;
-  color: #5b5b5b;
+  color: #000;
   font-weight: bold;
+  text-decoration: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
 }
 
 .female-input a:hover{
-  color: #333;
-  background: #aed0d9; 
+  color:#cc;
+  text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
 }
 
 .server-info {
@@ -223,17 +221,16 @@ textarea {
 
 .news-box {
   margin-top: 10px;
-  border: 2px solid #0000a4;
-  border-radius: 3px;
+  border: 1px solid #ddd;
+  border-radius: 0px;
 }
 
 .news-box .divider {
   padding: 0 5px;
-  color: aqua;
 }
 a.news-link-f {
   text-decoration: none;
-  color: #247dda;
+  color: #000;
   text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
   -webkit-transition: all .2s linear;
      -moz-transition: all .2s linear;
@@ -241,13 +238,13 @@ a.news-link-f {
 }
 
 a.news-link-f:hover{
-  color:white;
+  color:#898989;
   text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
 }
 
 a.news-link {
   text-decoration: none;
-  color: inherit;
+  color: #000;
   text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
   -webkit-transition: all .2s linear;
      -moz-transition: all .2s linear;
@@ -255,15 +252,15 @@ a.news-link {
 }
 
 a.news-link:hover{
-  color:inherit;
+  color:#898989;
   text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
 }
 
 .news-header {
-  background-color: #000040;
+  background-color: #f5f5f5;
   padding: 6px;
   font-size: 18px;
-  border-bottom: 1px dashed #e0edf1; 
+  border-bottom: 1px solid #ddd;
 }
 .news-header {
   color: #247dda;
@@ -273,16 +270,16 @@ a.news-link:hover{
           transition: all .2s linear;
 }
 .news-header.full {
-  color: white;
+  color: #000;
 }
 .news-header:hover {
-  color:white;
+  color:#898989;
   text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
 }
 
 .news-text {
   font-size: 14px;
-  padding: 10px;
+  padding: 15px;
 
   white-space: pre-line;
   white-space: -moz-pre-line;
@@ -291,11 +288,11 @@ a.news-link:hover{
 }
 
 .news-footer {
-  color:white;
+  color:#000;
   padding: 6px;
   border: 0;
-  background-color: #000055;
-  border-top: 1px dashed #e0edf1; 
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
 }
 
 /* Комментарии */
@@ -362,8 +359,10 @@ a.news-link:hover{
 .footer-block {
   padding: 10px 10px 10px;
   margin-top: 10px;
-  background-color: #f5f5f5;
-  border: 1px solid #e5e5e5;
+  background:#2e2e2e;
+  color:#e2e2e2;
+  border: 0px solid rgb(70, 70, 70);
+  border-top-width: 1px;
 }
 
 .footer-block:before,
@@ -382,7 +381,7 @@ a.news-link:hover{
 .form-block-rl {
   padding: 0 10px 0;
   margin-top: 10px;
-  background-color: #f5f5f5;
+  background-color: #fff;
   border: 1px solid #e5e5e5;
 }
 
@@ -437,8 +436,8 @@ a.news-link:hover{
 .form-block {
   padding: 0 10px 10px;
   margin-top: 10px;
-  background-color: #f5f5f5;
-  border: 1px solid #e5e5e5;
+  background-color: #fff;
+  border: 1px solid #ddd;
 }
 
 .form-block:before,
@@ -454,18 +453,19 @@ a.news-link:hover{
 
 .block-header {
   display: block;
-  padding: 3px;
-  font-size: 12px;
-  font-weight: bold;
+  padding: 10px 15px;
+  font-size: 16px;
   line-height: 20px;
-  color: #999999;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  color: #000;
   text-transform: uppercase;
+  border-bottom: 1px solid #ddd;
+  margin:0px -10px;
+  background: #f5f5f5;
 }
 
 .block-line {
   margin: 0 0 10px 0;
   border: 0;
-  border-top: 1px solid #eeeeee;
-  border-bottom: 1px solid #ffffff;
+  border-top: 1px solid rgba(255, 255, 255, 0);
+  border-bottom: 1px solid rgba(255, 255, 255, 0);
 }

@@ -1,8 +1,10 @@
 <div class="inform-block" style="display: none;" id="loginform-error"><div class="alert alert-danger" id="loginform-error-text">Вы не авторизованы</div></div>
 
-<div id="login-box" class="form-block-rl" style="padding-bottom: 10px">
-<div class="block-header">Авторизация</div>
-<div class="block-line"></div>
+<div id="login-box" class="panel panel-default" style="border-radius: 0px;margin-top:12px;padding-bottom: 10px">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> Авторизация</h3>
+  </div>
+  <div class="panel-body">
 <form action="login.php" method="post" id="loginform">
 <div style="text-align: center;">
 
@@ -27,6 +29,7 @@
 	
 </div>
 </form>
+</div>
 </div>
 
 <script type="text/javascript">
@@ -71,11 +74,12 @@ return false
 }
 </script>
 
-<div id="reg-box" style= "display: none;" class="form-block-rl" style="padding-bottom: 10px">
+<div id="reg-box" style= "display: none;border-radius: 0px;margin-top:12px;padding-bottom: 10px;" class="panel panel-default">
 
-<div class="block-header">Регистрация</div>
-
-<div class="block-line"></div>
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> Регистрация</h3>
+  </div>
+  <div class="panel-body">
 
 <form autocomplete="off" action="reg.php" method="post" id="regform" style="margin-bottom: 10px;">
 		
@@ -99,12 +103,14 @@ return false
 </form>
 	
 </div>
+</div>
 
-<div id="restore-box" style= "display: none;" style="padding-bottom: 10px" class="form-block-rl">
+<div id="restore-box" style= "display: none;border-radius: 0px;margin-top:12px;padding-bottom: 10px;" class="panel panel-default">
 
-<div class="block-header">Восстановление пароля</div>
-
-<div class="block-line"></div>
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> Восстановление пароля</h3>
+  </div>
+  <div class="panel-body">
 
 <form autocomplete="off" action="action.php" method="post" id="restoreform" style="margin-bottom: 10px;">
 	
@@ -128,4 +134,5 @@ return false
 
 </form>
 	
+</div>
 </div>

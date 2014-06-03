@@ -17,6 +17,8 @@
 
     <link href="<?php View::URL('css/style.css') ?>" rel="stylesheet">
 	<link href="<?php View::URL('css/serverbar.css') ?>" rel="stylesheet">
+	<link href="<?php View::URL('css/topmenu.css') ?>" rel="stylesheet">
+	<link href="<?php View::URL('css/footer.css') ?>" rel="stylesheet">
 	
 	<script src="<?php View::URL('js/jquery.js') ?>"></script>
 	<script src="<?php View::URL('js/smiles.js') ?>"></script>	
@@ -64,18 +66,6 @@
   </div>
   
 </header>
-
-<div class="bs-docs-social">
-  <div class="container">
-    <ul class="bs-docs-social-buttons">
-      <li>
-        <?php echo $content_advice; ?>
-		<div id="debug"></div>
-      </li>
-    </ul>
-  </div>
-</div>
-
 <div class="navbar navbar-default navbar-fixed-top" role="navigation" >
 
       <div class="navbar-header">
@@ -99,10 +89,9 @@
         </div>
       </div>
 	  
-</div>
-	
+</div>	
 <!-- END -->
-<div class="container">	
+<div class="container" style="margin-bottom: 50px;">	
     <div class="container">
 			<div class="row">
 			<!-- Левый контейнер -->
@@ -111,12 +100,27 @@
 					<?php echo $content_side ?>
 
 					<?php echo $content_servers ?>
+
+<div class="panel panel-default" style="border-radius: 0px;margin-top:10px;">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="glyphicon glyphicon-info-sign"></i> Твиттер</h3>
+  </div>
+  <div class="panel-body">
+    <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/WorldsOfCubes" data-widget-id="473814078654128128">Твиты пользователя @WorldsOfCubes</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  </div>
+</div>
 										
 				</div>
 			<!-- /.Левый контейнер -->
 				
             <!-- Правый контейнер -->
 				<div class="col-md-8">	
+				<div style="margin-top: 12px;"> 
+				  <ul class="breadcrumb">
+        <li style="text-align: center;"><?php echo $content_advice; ?></li>
+		</ul>
+  </div>
 
 				    <?php echo $content_main;?> 	
 		
@@ -130,8 +134,7 @@
     </div> 
 </div>
 	<!-- /container -->
-	
-    <footer class="footer-block">	
+				    <footer class="footer-block">	
 
 		   <div style="float: right;"><?php echo FEEDBACK; ?></div>
            Полное или частичное копирование сайта <?php echo $config['s_name'] ?>  запрещено.

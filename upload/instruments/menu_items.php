@@ -4,7 +4,7 @@ $menu_items = array (
   array (
     'main' => 
     array (
-      'name' => 'Главная',
+      'name' => '<i class="glyphicon glyphicon-home"></i> Главная',
       'url' => '',
       'parent_id' => -1,
       'lvl' => -1,
@@ -14,7 +14,7 @@ $menu_items = array (
     ),
     'admin' => 
     array (
-      'name' => 'Администрирование',
+      'name' => '<i class="glyphicon glyphicon-wrench"></i> Администрирование',
       'url' => '',
       'parent_id' => -1,
       'lvl' => 15,
@@ -134,7 +134,7 @@ $menu_items = array (
     ),
     'guide' => 
     array (
-      'name' => 'Начать играть',
+      'name' => '<i class="glyphicon glyphicon-send"></i> Начать играть',
       'url' => 'go/guide/',
       'parent_id' => -1,
       'lvl' => -1,
@@ -144,7 +144,7 @@ $menu_items = array (
     ),
     'rules' => 
     array (
-      'name' => 'Правила',
+      'name' => '<i class="glyphicon glyphicon-book"></i> Правила',
       'url' => 'go/rules/',
       'parent_id' => -1,
       'lvl' => -1,
@@ -157,7 +157,7 @@ $menu_items = array (
   array (
     'options' => 
     array (
-      'name' => 'Настройки',
+      'name' => '<i class="glyphicon glyphicon-cog"></i> Настройки',
       'url' => 'go/options/',
       'parent_id' => -1,
       'lvl' => 1,
@@ -167,7 +167,7 @@ $menu_items = array (
     ),
     'exit' => 
     array (
-      'name' => 'Выход',
+      'name' => '<i class="glyphicon glyphicon-log-out"></i> Выход',
       'url' => 'login.php?out=1',
       'parent_id' => -1,
       'lvl' => 1,

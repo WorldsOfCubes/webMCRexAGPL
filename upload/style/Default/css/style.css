@@ -354,6 +354,7 @@ a.news-link:hover{
   font-size: 12px;
 }
 
+
 /* блок */
 
 .footer-block {
@@ -363,6 +364,15 @@ a.news-link:hover{
   color:#e2e2e2;
   border: 0px solid rgb(70, 70, 70);
   border-top-width: 1px;
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+}
+.footer-block  a {
+  color:#e2e2e2;
+}
+.footer-block  a:hover {
+  color:rgba(226, 226, 226, 0.61);
 }
 
 .footer-block:before,

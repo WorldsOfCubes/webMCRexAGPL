@@ -355,22 +355,24 @@ a.news-link:hover{
 }
 
 
-/* footer */
+/* блок */
+
 .footer-block {
   padding: 10px 10px 10px;
   margin-top: 10px;
-  background-color: #222;
-  z-index: 3000;
-  bottom: 0px;
+  background:#2e2e2e;
+  color:#e2e2e2;
+  border: 0px solid rgb(70, 70, 70);
+  border-top-width: 1px;
+  bottom: 0;
   position: fixed;
   width: 100%;
-  color: #898989;
 }
-.footer-block a{
-  color: #898989;
+.footer-block  a {
+  color:#e2e2e2;
 }
-.footer-block a:hover{
-  color: #fff;
+.footer-block  a:hover {
+  color:rgba(226, 226, 226, 0.61);
 }
 
 .footer-block:before,
@@ -383,7 +385,8 @@ a.news-link:hover{
 .footer-block:after {
   clear: both;
 }
-/* endfooter */
+
+/* end блок */
 
 .form-block-rl {
   padding: 0 10px 0;

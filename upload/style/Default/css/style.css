@@ -354,6 +354,37 @@ a.news-link:hover{
   font-size: 12px;
 }
 
+
+/* footer */
+.footer-block {
+  padding: 10px 10px 10px;
+  margin-top: 10px;
+  background-color: #222;
+  z-index: 3000;
+  bottom: 0px;
+  position: fixed;
+  width: 100%;
+  color: #898989;
+}
+.footer-block a{
+  color: #898989;
+}
+.footer-block a:hover{
+  color: #fff;
+}
+
+.footer-block:before,
+.footer-block:after {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+
+.footer-block:after {
+  clear: both;
+}
+/* endfooter */
+
 .form-block-rl {
   padding: 0 10px 0;
   margin-top: 10px;

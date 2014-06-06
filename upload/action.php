@@ -336,8 +336,8 @@ switch ($method) {
 		$d = '[';
 		$f = '] ';
 		$g = '';
-		$fineprefix = $prefcolor.$d.$pref.$f.$nickcolor;
-		$suffix = $textcolor.$g;
+		$fineprefix = TextBase::SQLSafe($prefcolor.$d.$pref.$f.$nickcolor);
+		$suffix = TextBase::SQLSafe($textcolor.$g);
 		BD("DELETE FROM permissions_entity WHERE name='".$user->name()."'");
 		BD("INSERT INTO permissions_entity VALUES (NULL, '".$user->name()."', '1', '$fineprefix', '$suffix', '0')")or aExit(4, ('Не удалось соединиться: ' . mysql_error() . " Сообщите полный текст этого сообщения администраторам для устранения ошибки."));
 		aExit(0, 'Теперь ваш ник будет отображаться в новом цвете');

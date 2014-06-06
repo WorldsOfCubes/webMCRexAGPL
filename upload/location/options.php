@@ -120,7 +120,7 @@ if ($user->group() != 4 ) {
 	}
 
 	if(isset($_POST['buym'])) {
-		$wantbuy = $_POST['wantby'];
+		$wantbuy = (int)$_POST['wantby'];
 		$gamemoneyadd = ($wantbuy*$donate['exchangehow']);
 		if($wantbuy == '' || $wantbuy < 1) $mes = "<div style='margin-top: 10px;' class='alert alert-danger'>Вы не ввели сумму!</div>";
 			else{

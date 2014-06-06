@@ -79,6 +79,7 @@ class Profile extends View {
 		
 		$tmpParam = $this->user->email();
 		$user_info['email'] = array(($tmpParam) ? $tmpParam : lng('NOT_SET'), 'Почта');
+		$user_info['email'] = array(($this->user->voted() . " раз", 'Голосовал');
 		
 		$user_info['money'] = array($this->user->getMoney() . ' руб.', 'Донат-счет');
 		$user_info['econ'] = array($this->user->getEcon() . '$', 'Игровой баланс');

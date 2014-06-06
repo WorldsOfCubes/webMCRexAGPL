@@ -21,6 +21,7 @@ private $gender;
 private $female;
 
 private $deadtry;
+private $vote;
 
 	/** @const */
 	public static $date_statistic = array (
@@ -55,7 +56,8 @@ private $deadtry;
 					   `{$bd_users['email']}`,
 					   `{$bd_users['deadtry']}`,
 					   `{$bd_users['female']}`,
-					   `{$bd_users['group']}` FROM `{$this->db}` WHERE `".TextBase::SQLSafe($method)."`='".TextBase::SQLSafe($input)."'";
+					   `{$bd_users['group']}`,
+					   `vote` FROM `{$this->db}` WHERE `".TextBase::SQLSafe($method)."`='".TextBase::SQLSafe($input)."'";
 						   
 		$result = BD($sql);			
 		if ( !$result or mysql_num_rows( $result ) != 1 ) { $this->id = false; return false; }		
@@ -74,6 +76,7 @@ private $deadtry;
             
 		$this->email  = $line[$bd_users['email']];
 		$this->deadtry  = (int)$line[$bd_users['deadtry']];
+		$this->vote  = (int)$line['vote'];
 		
 		/* Пол персонажа */
 		$gender = $line[$bd_users['female']]; 
@@ -784,6 +787,10 @@ private $deadtry;
 
 	public function id() {
 		return $this->id;
+	}
+
+	public function voted() {
+		return $this->vote;
 	}
 	
 	public function lvl() {

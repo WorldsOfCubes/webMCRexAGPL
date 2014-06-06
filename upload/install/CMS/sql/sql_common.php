@@ -144,13 +144,15 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['data']}` (
 BD("INSERT INTO `{$bd_names['news_categorys']}` (`id`,`name`) VALUES (1,'Без категории');");
 
 BD("INSERT INTO `{$bd_names['data']}` (`property`, `value`) VALUES
-('protection-key', 'lalka'),
 ('launcher-version', '1'),
 ('next-reg-time', '2'),
 ('email-verification', '0'),
 ('rcon-port', '0'),
 ('rcon-pass', '0'),
 ('rcon-serv', '0');");
+
+BD("INSERT INTO `{$bd_names['data']}` (`property`, `value`) VALUES
+('protection-key', 'lalka');");
 
 BD("INSERT INTO `{$bd_names['data']}` (`property`, `value`) VALUES
 ('smtp-user', ''),
@@ -166,7 +168,7 @@ BD("INSERT INTO `{$bd_names['data']}` (`property`, `value`) VALUES
 ('email-name', 'Info'),
 ('email-mail', 'noreply@noreply.ru');");
 
-/* 2.05 UPDATE */
+/* webMCR 2.05 UPDATE */
 
 if (!BD_ColumnExist($bd_names['ip_banning'], 'ban_type'))
 
@@ -176,7 +178,7 @@ if (!BD_ColumnExist($bd_names['ip_banning'], 'reason'))
 
 BD("ALTER TABLE `{$bd_names['ip_banning']}`  ADD `reason` varchar(255) DEFAULT NULL;");
 	
-/* 2.1 UPDATE */
+/* webMCR 2.1 UPDATE */
 
 if (!BD_ColumnExist($bd_names['news'], 'user_id')) {
 
@@ -194,19 +196,19 @@ BD("ALTER TABLE `{$bd_names['comments']}`	ADD KEY `user_id` (`user_id`),
 BD("ALTER TABLE `{$bd_names['users']}`	ADD	KEY `group_id` (`{$bd_users['group']}`);");	
 }	
 
-/* 2.15 UPDATE */
+/* webMCR 2.15 UPDATE */
 if (!BD_ColumnExist($bd_names['users'], $bd_users['deadtry'])) {
 
 BD("ALTER TABLE `{$bd_names['users']}`	ADD `{$bd_users['deadtry']}` tinyint(1) DEFAULT 0;");	
 }
 
-/* 2.25b UPDATE */
+/* webMCR 2.25b UPDATE */
 if (!BD_ColumnExist($bd_names['users'], $bd_users['clientToken'])) {
 
 BD("ALTER TABLE `{$bd_names['users']}` ADD `{$bd_users['clientToken']}` varchar(255) DEFAULT NULL;");	
 }
 
-/* 2.3 UPDATE */
+/* webMCR 2.3 UPDATE */
 if (!BD_ColumnExist($bd_names['servers'], 'service_user')) {
 
 BD("ALTER TABLE `{$bd_names['servers']}` ADD `service_user` char(64) default NULL;");
@@ -217,7 +219,7 @@ if (!BD_ColumnExist($bd_names['news'], 'hide_vote'))
 
 BD("ALTER TABLE `{$bd_names['news']}` ADD `hide_vote` tinyint(1) NOT NULL DEFAULT 0;");	
 
-/* 2.31 UPDATE */
+/* webMCR 2.31 UPDATE */
 if (!BD_ColumnExist($bd_names['comments'], 'item_type')) {
 
 BD("ALTER TABLE `{$bd_names['comments']}` ADD `item_type` smallint(3) DEFAULT ". ItemType::News .";");
@@ -227,6 +229,12 @@ BD("ALTER TABLE `{$bd_names['comments']}` ADD KEY `uniq_item` (`item_id`, `item_
 BD("ALTER TABLE `{$bd_names['news']}` CHANGE COLUMN `hide_vote` `vote` tinyint(1) NOT NULL DEFAULT 1;");
 BD("ALTER TABLE `{$bd_names['news']}` ADD `discus` tinyint(1) NOT NULL DEFAULT 1;");
 BD("ALTER TABLE `{$bd_names['news']}` ADD `comments` int(10) NOT NULL DEFAULT 0;");
+}
+
+/* webMCR 2.35 and webMCRex 1.235b_r1- UPDATE */
+if (!BD_ColumnExist($bd_names['users'], 'vote')) {
+
+BD("ALTER TABLE `{$bd_names['comments']}` ADD `vote` smallint(10) DEFAULT 0;");
 }
 
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['action_log']}` (
@@ -246,6 +254,7 @@ BD("INSERT INTO `{$bd_names['groups']}`
 (4,'Непроверенный',1,1,0,0,0,0,0,0,0), 
 (5,'VIP',5,1,1,1,0,1,0,1,0),
 (6,'Premium',6,1,1,1,0,1,0,1,0);");
+
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['iconomy']}` (
 `id` int(10) NOT NULL AUTO_INCREMENT,
 `{$bd_money['login']}` varchar(20) CHARACTER SET utf8 NOT NULL,

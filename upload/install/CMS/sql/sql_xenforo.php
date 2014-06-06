@@ -31,6 +31,7 @@ BD($bd_alter_users."ADD `active_last` datetime NOT NULL DEFAULT '0000-00-00 00:0
 BD($bd_alter_users."ADD `play_times` int(10) NOT NULL DEFAULT 0;");
 BD($bd_alter_users."ADD `undress_times` int(10) NOT NULL DEFAULT 0;");
 BD($bd_alter_users."ADD `default_skin` tinyint(1) NOT NULL DEFAULT '1';");
+BD($bd_alter_users."ADD `vote` int(10) NOT NULL DEFAULT 0;");
 
 /* Права для групп. Нет возможности изменить пароль */
 
@@ -40,4 +41,5 @@ BD("INSERT INTO `{$bd_names['groups']}`
 (2,'Заблокированный',0,1,0,0,0,0,0,0,0), 
 (3,'Администратор',15,1,1,0,1,1,1,1,1), 
 (4,'Непроверенный',1,1,0,0,0,0,0,0,0), 
-(5,'VIP Игрок',5,0,1,0,0,1,0,1,0);");
+(5,'VIP Игрок',5,1,1,0,0,1,0,1,0);
+(6,'Premum Игрок',6,1,1,0,0,1,0,1,0);");

@@ -41,28 +41,5 @@
 	$masterversion  	= sqlConfigGet('launcher-version'); //Мастер-версия лаунчера
 	$protectionKey		= sqlConfigGet('protection-key'); //Ключ защиты сессии. Никому его не говорите.
 
-
-//========================= Настройки ЛК =======================//	
-	
-	$uploaddirs = $site_ways['skins'];  //Папка скинов
-	$uploaddirp = $site_ways['cloaks']; //Папка плащей
-	
-	$usePersonal 		=  true; //Использовать личный кабинет
-	$canUploadSkin		=  true; //Можно ли заливать скины
-	$canUploadCloak		=  true; //Можно ли заливать плащи
-	$canBuyVip			=  true; //Можно ли покупать VIP
-	$canBuyPremium		=  true; //Можно ли покупать Premium
-	$canBuyUnban		=  true; //Можно ли покупать разбан
-	$canActivateVaucher =  false; //Можно ли активировать ваучер
-	$canExchangeMoney   =  true; //Можно ли обменивать Realmoney -> IConomy
-	$canUseJobs			=  false; //Можно ли использовать работы
 	$usecheck			=  true; //Можно ли использовать регистрацию в лаунчере
-	
-	$cloakPrice			=  0;   //Цена плаща (В рублях)
-	$vipPrice			=  100;  //Цена випа (В руб/мес)
-	$premiumPrice		=  250;  //Цена премиума (В руб/мес)
-	$unbanPrice			=  150;  //Цена разбана (В рублях)
-	
-	$initialIconMoney	=  0;  //Сколько денег дается при регистрации в IConomy
-	$exchangeRate		=  100; //Курс обмена Realmoney -> IConomy
 ?>

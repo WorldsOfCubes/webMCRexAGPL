@@ -52,7 +52,16 @@ if ($config['offline'] and (empty($user) or $user->group() != 3)) {
 	exit;
 }
 function accss_deny() {
-global $config, $content_js, $content_advice, $content_side;
+global $config, $content_js, $content_advice, $content_side, $user;
+	if (!empty($user)) {
+		$player       = $user->name();
+		$player_id    = $user->id();
+		$player_lvl   = $user->lvl();
+		$player_email = $user->email(); if (empty($player_email)) $player_email = lng('NOT_SET'); 
+		$player_group = $user->getGroupName();
+		$player_econ  = $user->getEcon();
+		$player_money = $user->getMoney();
+	}
 	$menu = new Menu();
 	$menu->SetItemActive('main');
 	$content_menu = $menu->Show();

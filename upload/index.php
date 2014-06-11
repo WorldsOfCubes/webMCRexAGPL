@@ -116,6 +116,11 @@ $content_menu = $menu->Show();
 include('./location/side.php');
 $content_js .= InitJS(); 
 
-
+ob_start();
 include View::Get('index.html');
+$html_page = ob_get_clean();
+loadTool("template.class.php");
+$parser = new TemplateParser();
+$html_page = $parser->parse($html_page);
+echo $html_page;
 ?>

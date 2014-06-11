@@ -1,7 +1,7 @@
 # webMCR
 
  - **Author** : NC22 (modified by WorldsOfCubes Group)
- - **Version** : 1.235b
+ - **Version** : 1.235pre
  - **Website** : [WorldsOfCubes.NET](http://WorldsOfCubes.NET)
  - **Wiki** : [bitbucket.org/WorldsOfCubes/webmcrex/wiki](http://bitbucket.org/WorldsOfCubes/webmcrex/wiki)
 

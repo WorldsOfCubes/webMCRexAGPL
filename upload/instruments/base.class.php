@@ -1,6 +1,6 @@
 <?php
-define('MCR', '1.235+'); 
-define('EX', '1'); 
+define('MCR', '2.0b'); 
+define('EX', '2'); 
 define('PROGNAME', 'webMCRex '.MCR);
 define('FEEDBACK', '<a href="http://WorldsOfCubes.NET/go/webmcrex">'.PROGNAME.'</a> &copy; 2013-2014 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.NET">WorldsOfCubes Group</a>');  
 

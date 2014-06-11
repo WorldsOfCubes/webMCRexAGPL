@@ -107,7 +107,7 @@ switch ($mode) {
 	case 'news_add':  include('./location/news_add.php');	break;
     case 'control':   include('./location/admin.php');		break; 
     default: 
-		if (!preg_match("/^[a-zA-Z0-9_-]+$/", $mode) or !file_exists(MCR_ROOT.'/location/'.$mode.'.php')) $mode = $config['s_dpage']; 
+		if (!preg_match("/^[a-zA-Z0-9_-]+$/", $mode) or !file_exists(MCR_ROOT.'/location/'.$mode.'.php')) $mode = "404"; 
 
 		include(MCR_ROOT.'/location/'.$mode.'.php'); break;
 } 

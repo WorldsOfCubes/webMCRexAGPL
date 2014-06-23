@@ -232,9 +232,9 @@ BD("ALTER TABLE `{$bd_names['news']}` ADD `comments` int(10) NOT NULL DEFAULT 0;
 }
 
 /* webMCRex 1.235b_r2 UPDATE */
-if (!BD_ColumnExist($bd_names['comments'], 'vote')) {
+if (!BD_ColumnExist($bd_names['users'], 'vote')) {
 
-BD("ALTER TABLE `{$bd_names['comments']}` ADD `vote` smallint(10) DEFAULT 0;");
+BD("ALTER TABLE `{$bd_names['users']}` ADD `vote` smallint(10) DEFAULT 0;");
 }
 
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['action_log']}` (

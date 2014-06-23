@@ -231,8 +231,8 @@ BD("ALTER TABLE `{$bd_names['news']}` ADD `discus` tinyint(1) NOT NULL DEFAULT 1
 BD("ALTER TABLE `{$bd_names['news']}` ADD `comments` int(10) NOT NULL DEFAULT 0;");
 }
 
-/* webMCR 2.35 and webMCRex 1.235b_r1- UPDATE */
-if (!BD_ColumnExist($bd_names['users'], 'vote')) {
+/* webMCRex 1.235b_r2 UPDATE */
+if (!BD_ColumnExist($bd_names['comments'], 'vote')) {
 
 BD("ALTER TABLE `{$bd_names['comments']}` ADD `vote` smallint(10) DEFAULT 0;");
 }

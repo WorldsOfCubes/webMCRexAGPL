@@ -91,7 +91,7 @@ if ($user->group() == 4) $content_main .= View::ShowStaticPage('profile_verifica
 
 $mode = $config['s_dpage'];
 
-	if (isset($_GET['id'])) $mode = 'news_full'; 
+	if (isset($_GET['id']) and !isset($_GET['mode'])) $mode = 'news_full'; 
 elseif (isset($_GET['mode'])) $mode = $_GET['mode']; 
 elseif (isset($_POST['mode'])) $mode = $_POST['mode']; 
 

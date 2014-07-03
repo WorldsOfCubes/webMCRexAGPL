@@ -12,7 +12,7 @@ $menu->SetItemActive('admin');
 /* Default vars */
 
 $st_subdir = 'admin/';
-$default_do = 'user';
+$default_do = 'category';
 
 $page    = lng('PAGE_ADMIN');
 
@@ -322,13 +322,13 @@ if ($do) {
 	
 	if (!$id and isset($_POST['name'])) {  
 		$new_group = new Group();
-		if ($new_group->Create($_POST['name'], $_POST)) $info .= lng('GROUP_COMPLITE');
+		if ($new_group->Create($_POST['name'], $_POST['pex_name'], $_POST)) $info .= lng('GROUP_COMPLITE');
 		else  $info .= lng('GROUP_EXIST');
 		
 	} elseif ($id and isset($_POST['edit']) and isset($_POST['name'])) { 
 	
 		$new_group = new Group($id);
-		if ($new_group->Edit($_POST['name'], $_POST)) $info .= lng('GROUP_UPDATED');
+		if ($new_group->Edit($_POST['name'], $_POST['pex_name'], $_POST)) $info .= lng('GROUP_UPDATED');
 		else  $info .= lng('GROUP_EXIST');
 		
 	} elseif ($id and isset($_POST['delete'])) {  
@@ -348,6 +348,7 @@ if ($do) {
 	
 		$group_i = new Group($id);		
 		$group      = $group_i->GetAllPermissions();
+		$group_pex  = $group_i->GetPexName();
 		$html_ratio = RatioList($group['max_ratio']);
 		$group_name = $group_i->GetName();
 		

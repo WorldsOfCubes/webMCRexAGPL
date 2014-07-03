@@ -99,6 +99,7 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['servers']}` (
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['groups']}` (
   `id`      int(10) NOT NULL AUTO_INCREMENT,
   `name`   char(64) NOT NULL,
+  `pex_name`   char(64) NOT NULL,
   `lvl`     int(10) NOT NULL DEFAULT 1,
   `system` tinyint(1) NOT NULL DEFAULT 0,
   `change_skin` tinyint(1) NOT NULL DEFAULT 0,  
@@ -231,10 +232,16 @@ BD("ALTER TABLE `{$bd_names['news']}` ADD `discus` tinyint(1) NOT NULL DEFAULT 1
 BD("ALTER TABLE `{$bd_names['news']}` ADD `comments` int(10) NOT NULL DEFAULT 0;");
 }
 
-/* webMCR 2.35 and webMCRex 1.235b_r1- UPDATE */
+/* webMCRex 1.235b_r2 UPDATE */
 if (!BD_ColumnExist($bd_names['users'], 'vote')) {
 
-BD("ALTER TABLE `{$bd_names['comments']}` ADD `vote` smallint(10) DEFAULT 0;");
+BD("ALTER TABLE `{$bd_names['users']}` ADD `vote` smallint(10) DEFAULT 0;");
+}
+
+/* webMCRex 2.0 UPDATE */
+if (!BD_ColumnExist($bd_names['groups'], 'pex_name')) {
+
+BD("ALTER TABLE `{$bd_names['groups']}` ADD `pex_name` char(64) NOT NULL;");
 }
 
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['action_log']}` (
@@ -245,15 +252,6 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['action_log']}` (
   `info` varchar(255) NOT NULL,
   PRIMARY KEY (`IP`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-
-BD("INSERT INTO `{$bd_names['groups']}` 
-(`id`,`name`,`lvl`,`system`,`change_skin`,`change_pass`,`change_login`,`change_cloak`,`add_news`,`add_comm`,`adm_comm`) VALUES 
-(1,'Пользователь',2,1,1,1,0,0,0,1,0), 
-(2,'Заблокированный',0,1,0,0,0,0,0,0,0), 
-(3,'Администратор',15,1,1,1,1,1,1,1,1), 
-(4,'Непроверенный',1,1,0,0,0,0,0,0,0), 
-(5,'VIP',5,1,1,1,0,1,0,1,0),
-(6,'Premium',6,1,1,1,0,1,0,1,0);");
 
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['iconomy']}` (
 `id` int(10) NOT NULL AUTO_INCREMENT,

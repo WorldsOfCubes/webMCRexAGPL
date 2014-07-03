@@ -35,10 +35,11 @@ BD($bd_alter_users."ADD `vote` int(10) NOT NULL DEFAULT 0;");
 /* Права для групп. Нет возможности изменить пароль */
 
 BD("INSERT INTO `{$bd_names['groups']}` 
-(`id`,`name`,`lvl`,`system`,`change_skin`,`change_pass`,`change_login`,`change_cloak`,`add_news`,`add_comm`,`adm_comm`) VALUES 
-(1,'Пользователь',2,1,1,0,0,0,0,1,0), 
-(2,'Заблокированный',0,1,0,0,0,0,0,0,0), 
-(3,'Администратор',15,1,1,0,1,1,1,1,1), 
-(4,'Непроверенный',1,1,0,0,0,0,0,0,0), 
-(5,'VIP Игрок',5,1,1,0,0,1,0,1,0);
-(6,'Premum Игрок',6,1,1,0,0,1,0,1,0);");
+(`id`,`name`,`pex_name`,`lvl`,`system`,`change_skin`,`change_pass`,`change_login`,`change_cloak`,`add_news`,`add_comm`,`adm_comm`) VALUES 
+(1,'Пользователь','Default',2,1,1,0,0,0,0,1,0), 
+(2,'Заблокированный','Default',0,1,0,0,0,0,0,0,0), 
+(3,'Администратор','admin',15,1,1,1,1,1,1,1,1), 
+(4,'Непроверенный','Default',1,1,0,0,0,0,0,0,0), 
+(5,'VIP Игрок','vip',5,1,1,0,0,1,0,1,0),
+(6,'Premum Игрок','premium',6,1,1,0,0,1,0,1,0),
+(8,'Модератор','moder',8,1,1,0,0,1,0,1,0);");

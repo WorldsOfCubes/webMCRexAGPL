@@ -144,10 +144,8 @@ if ($user->group() != 4 ) {
 			$expdate = date('d-m-Y H:i:s', $pexdate);
 			$user->changeGroup(5);
 			$player_group = "VIP";
-			BD("DELETE FROM `permissions_inheritance` WHERE child='$player';");
 			BD("DELETE FROM `permissions` WHERE `name`='$player';");
 			BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-vip-until', ' ', '$pexdate')");
-			BD("INSERT INTO permissions_inheritance (id, child, parent, type, world) VALUES (NULL, '$player', 'VIP', '1', NULL)");
 			$user->addMoney(0 - $donate['vipcash']);
 			$player_money -= $donate['vipcash'];
 			$message = '<div style="margin-top: 10px;" class="alert alert-success">Вы успешно купили VIP! Спасибо за помощь проекту!</div>';
@@ -165,10 +163,8 @@ if ($user->group() != 4 ) {
 			$expdate = date('d-m-Y H:i:s', $pexdate);
 			$user->changeGroup(6);
 			$player_group = "Premium";
-			BD("DELETE FROM `permissions_inheritance` WHERE child='$player';");
 			BD("DELETE FROM `permissions` WHERE `name`='$player';");
 			BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-premium-until', ' ', '$pexdate')");
-			BD("INSERT INTO permissions_inheritance (id, child, parent, type, world) VALUES (NULL, '$player', 'Premium', '1', NULL)");
 			$user->addMoney(0 - $donate['premiumcash']);
 			$player_money -= $donate['premiumcash'];
 			$message = '<div style="margin-top: 10px;" class="alert alert-success">Вы успешно купили Premium! Спасибо за помощь проекту!</div>';

@@ -565,7 +565,11 @@ private $vote;
 		
 		if ( !mysql_num_rows( $result ) ) return false;
 		
-		BD("UPDATE {$this->db} SET `{$bd_users['group']}`='".TextBase::SQLSafe($newgroup)."' WHERE `{$bd_users['id']}`='".$this->id."'"); 
+		BD("UPDATE {$this->db} SET `{$bd_users['group']}`='".TextBase::SQLSafe($newgroup)."' WHERE `{$bd_users['id']}`='".$this->id."'");
+		
+		$group = new Group($newgroup);
+		BD("DELETE FROM `permissions_inheritance` WHERE child='".$this->name."';");
+		BD("INSERT INTO permissions_inheritance (id, child, parent, type, world) VALUES (NULL, '".$this->name."', '".TextBase::SQLSafe($group->GetPexName())."', '1', NULL)");
 		
 		$this->group = $newgroup;
 		$this->permissions['lvl'] = null;
@@ -898,7 +902,7 @@ private $pavailable;
 		return false;
 	}
 	
-	public function Create($name, &$permissions) {
+	public function Create($name, $pex_name, &$permissions) {
 
 		if ($this->id) return false; 
 		
@@ -923,7 +927,7 @@ private $pavailable;
 			if ($sql_vars)  $sql_vars  .= ",'$value'"; else $sql_vars .= "'$value'"; 
 		  }
 
-		$result = BD("INSERT INTO `{$this->db}` (`name`,$sql_names) values ('".TextBase::SQLSafe($name)."',$sql_vars)");	
+		$result = BD("INSERT INTO `{$this->db}` (`name`, `pex_name`,$sql_names) values ('".TextBase::SQLSafe($name)."','".TextBase::SQLSafe($pex_name)."',$sql_vars)");	
 		if ($result and mysql_affected_rows()) $this->id = mysql_insert_id();
 		else return false;
 	 
@@ -940,6 +944,17 @@ private $pavailable;
 		return $line[0];		
     }
 	
+	public function GetPexName() {
+
+		$result = BD("SELECT `pex_name` FROM `{$this->db}` WHERE `id`='".$this->id."'"); 
+
+		if ( mysql_num_rows( $result ) != 1 ) {
+			return false;
+		}
+        $line = mysql_fetch_array( $result, MYSQL_NUM );
+		return $line[0];		
+    }
+	
 	public function IsSystem() {
 
 		$result = BD("SELECT `system` FROM `{$this->db}` WHERE `id`='".$this->id."'"); 
@@ -950,7 +965,7 @@ private $pavailable;
 		return ($line[0])? true : false;		
     }	
 	
-	public function Edit($name, &$permissions) {
+	public function Edit($name, $pex_name, &$permissions) {
 		
 		if (!$this->id) return false; 	
 		if (!$name or !TextBase::StringLen($name)) return false;
@@ -979,7 +994,8 @@ private $pavailable;
 		
 		if (!$sql) $sql = '';
 		
-		    $result = BD("UPDATE `{$this->db}` SET `name`='".TextBase::SQLSafe($name)."'$sql WHERE `id`='".$this->id."'"); 
+		$result = BD("UPDATE `{$this->db}` SET `name`='".TextBase::SQLSafe($name)."'$sql WHERE `id`='".$this->id."'"); 
+		$result = BD("UPDATE `{$this->db}` SET `pex_name`='".TextBase::SQLSafe($pex_name)."'$sql WHERE `id`='".$this->id."'"); 
 		if ($result and mysql_affected_rows()) return true;
 		
 		return true; 

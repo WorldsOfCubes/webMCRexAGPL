@@ -23,7 +23,7 @@ $config = array (
 	'db_port'		=> 3306,
 	'db_login'		=> 'root',
 	'db_passw'		=> '',
-	'db_name'		=> 'mcraft',
+	'db_name'		=> 'ex',
 
 /* site constants */
   

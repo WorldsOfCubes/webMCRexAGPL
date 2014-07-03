@@ -28,3 +28,13 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['users']}` (
   UNIQUE KEY `Login` (`{$bd_users['login']}`),
   KEY `group_id` (`{$bd_users['group']}`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
+
+BD("INSERT INTO `{$bd_names['groups']}` 
+(`id`,`name`,`pex_name`,`lvl`,`system`,`change_skin`,`change_pass`,`change_login`,`change_cloak`,`add_news`,`add_comm`,`adm_comm`) VALUES 
+(1,'Пользователь','Default',2,1,1,1,0,0,0,1,0), 
+(2,'Заблокированный','Default',0,1,0,0,0,0,0,0,0), 
+(3,'Администратор','admin',15,1,1,1,1,1,1,1,1), 
+(4,'Непроверенный','Default',1,1,0,0,0,0,0,0,0), 
+(5,'VIP','vip',5,1,1,1,0,1,0,1,0),
+(6,'Premium','premium',6,1,1,1,0,1,0,1,0),
+(8,'Модератор','moder',8,1,1,1,0,1,0,1,0);");

@@ -34,6 +34,18 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['likes']}` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;");
 
+BD("CREATE TABLE `reqests` (
+	`id` INT(255) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(30) NOT NULL COLLATE 'utf8_unicode_ci',
+	`realname` VARCHAR(30) NOT NULL COLLATE 'utf8_unicode_ci',
+	`surname` VARCHAR(255) NOT NULL,
+	`old` VARCHAR(20) NOT NULL COLLATE 'utf8_unicode_ci',
+	`skype` VARCHAR(20) NOT NULL,
+	`answer` VARCHAR(5) NOT NULL DEFAULT '1',
+	`comment` VARCHAR(500) NOT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;");
+
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['files']}` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_word` char(255) DEFAULT NULL,

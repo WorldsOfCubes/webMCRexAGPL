@@ -25,7 +25,7 @@ $menu_items = array (
     'add_news' => 
     array (
       'name' => 'Добавить новость',
-      'url' => 'go/news_add/',
+      'url' => Rewrite::GetURL(array('go', 'news_add')),
       'parent_id' => 'admin',
       'lvl' => 1,
       'permission' => 'add_news',
@@ -35,7 +35,7 @@ $menu_items = array (
     'category_news' => 
     array (
       'name' => 'Категории новостей',
-      'url' => 'control/category/',
+      'url' => Rewrite::GetURL(array('control', 'category')),
       'parent_id' => 'admin',
       'lvl' => 15,
       'permission' => -1,
@@ -45,7 +45,7 @@ $menu_items = array (
     'file_edit' => 
     array (
       'name' => 'Файлы',
-      'url' => 'control/filelist/',
+      'url' => Rewrite::GetURL(array('control', 'filelist')),
       'parent_id' => 'admin',
       'lvl' => 15,
       'permission' => -1,
@@ -55,9 +55,19 @@ $menu_items = array (
     'control' => 
     array (
       'name' => 'Пользователи',
-      'url' => 'control/user/',
+      'url' => Rewrite::GetURL(array('control', 'user')),
       'parent_id' => 'admin',
       'lvl' => 15,
+      'permission' => -1,
+      'active' => false,
+      'inner_html' => '',
+    ),
+    'reqests' => 
+    array (
+      'name' => 'Заявки модераторов',
+      'url' => Rewrite::GetURL(array('go', 'reqests')),
+      'parent_id' => 'admin',
+      'lvl' => 1,
       'permission' => -1,
       'active' => false,
       'inner_html' => '',
@@ -65,7 +75,7 @@ $menu_items = array (
     'reg_edit' => 
     array (
       'name' => 'Регистрация',
-      'url' => 'control/ipbans/',
+      'url' => Rewrite::GetURL(array('control', 'ipbans')),
       'parent_id' => 'admin',
       'lvl' => 15,
       'permission' => -1,
@@ -75,7 +85,7 @@ $menu_items = array (
     'group_edit' => 
     array (
       'name' => 'Группы',
-      'url' => 'control/group/',
+      'url' => Rewrite::GetURL(array('control', 'group')),
       'parent_id' => 'admin',
       'lvl' => 15,
       'permission' => -1,
@@ -85,7 +95,7 @@ $menu_items = array (
     'site_edit' => 
     array (
       'name' => 'Настройки сайта',
-      'url' => 'control/constants/',
+      'url' => Rewrite::GetURL(array('control', 'constants')),
       'parent_id' => 'admin',
       'lvl' => 15,
       'permission' => -1,
@@ -95,7 +105,7 @@ $menu_items = array (
     'donate_edit' => 
     array (
       'name' => 'Настройки доната',
-      'url' => 'control/donate/',
+      'url' => Rewrite::GetURL(array('control', 'donate')),
       'parent_id' => 'admin',
       'lvl' => 15,
       'permission' => -1,
@@ -105,7 +115,7 @@ $menu_items = array (
     'rcon' => 
     array (
       'name' => 'RCON',
-      'url' => 'control/rcon/',
+      'url' => Rewrite::GetURL(array('control', 'rcon')),
       'parent_id' => 'admin',
       'lvl' => 15,
       'permission' => -1,
@@ -115,7 +125,7 @@ $menu_items = array (
     'game_edit' => 
     array (
       'name' => 'Настройки лончера',
-      'url' => 'control/update/',
+      'url' => Rewrite::GetURL(array('control', 'update')),
       'parent_id' => 'admin',
       'lvl' => 15,
       'permission' => -1,
@@ -125,7 +135,7 @@ $menu_items = array (
     'serv_edit' => 
     array (
       'name' => 'Мониторинг серверов',
-      'url' => 'control/servers/',
+      'url' => Rewrite::GetURL(array('control', 'servers')),
       'parent_id' => 'admin',
       'lvl' => 15,
       'permission' => -1,
@@ -135,7 +145,7 @@ $menu_items = array (
     'guide' => 
     array (
       'name' => '<i class="glyphicon glyphicon-send"></i> Начать играть',
-      'url' => 'go/guide/',
+      'url' => Rewrite::GetURL(array('go', 'guide')),
       'parent_id' => -1,
       'lvl' => -1,
       'permission' => -1,
@@ -145,7 +155,7 @@ $menu_items = array (
     'rules' => 
     array (
       'name' => '<i class="glyphicon glyphicon-book"></i> Правила',
-      'url' => 'go/rules/',
+      'url' => Rewrite::GetURL(array('go', 'rules')),
       'parent_id' => -1,
       'lvl' => -1,
       'permission' => -1,
@@ -158,7 +168,7 @@ $menu_items = array (
     'options' => 
     array (
       'name' => '<i class="glyphicon glyphicon-cog"></i> Настройки',
-      'url' => 'go/options/',
+      'url' => Rewrite::GetURL(array('go', 'options')),
       'parent_id' => -1,
       'lvl' => 1,
       'permission' => -1,

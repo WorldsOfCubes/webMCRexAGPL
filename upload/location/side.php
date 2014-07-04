@@ -4,10 +4,10 @@ if (!defined('MCR')) exit;
 ob_start();
 
 if (!empty($user)) {
-  
-   if ((($mode == 'control') or ($mode == 'news_add')) and ($user->lvl() >=15)) 
-   include View::Get('side.html', 'admin/');  
-   include View::Get('mini_profile.html');    
+
+	if ((($mode == 'control') or ($mode == 'news_add') or ($mode == 'reqests')) and ($user->lvl() >=15)) 
+		include View::Get('side.html', 'admin/');  
+	include View::Get('mini_profile.html');    
 	
 } else {
 	

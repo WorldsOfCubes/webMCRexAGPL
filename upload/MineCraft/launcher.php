@@ -30,6 +30,14 @@
 		   die("Ошибка: клиент $client не найден");
 		   
 	    
+	if($action == 'getpersonal') die("Использование ЛК выключено в webMCRex");
+	if($action == 'uploadskin') die("Функция недоступна");
+	if($action == 'uploadcloak') die("Функция недоступна");
+	if($action == 'buyvip') die("Функция недоступна");
+	if($action == 'buypremium') die("Функция недоступна");
+	if($action == 'buyunban') die("Функция недоступна");
+	if($action == 'exchange') die("Функция недоступна");
+	if($action == 'activatekey') die("Функция недоступна");
 	    $chars="0123456789abcdef";
         $max=32;
         $size=StrLen($chars)-1;

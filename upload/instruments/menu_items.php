@@ -162,6 +162,16 @@ $menu_items = array (
       'active' => false,
       'inner_html' => '',
     ),
+    'users' => 
+    array (
+      'name' => '<i class="glyphicon glyphicon-user"></i> Игроки',
+      'url' => Rewrite::GetURL(array('go', 'users')),
+      'parent_id' => -1,
+      'lvl' => -1,
+      'permission' => -1,
+      'active' => false,
+      'inner_html' => '',
+    ),
   ),
   1 => 
   array (

@@ -254,6 +254,9 @@ BD("ALTER TABLE `{$bd_names['users']}` ADD `vote` smallint(10) DEFAULT 0;");
 if (!BD_ColumnExist($bd_names['groups'], 'pex_name')) {
 
 BD("ALTER TABLE `{$bd_names['groups']}` ADD `pex_name` char(64) NOT NULL;");
+BD("ALTER TABLE `{$bd_names['users']}` ADD `warn_lvl` smallint(10) DEFAULT 0;");
+BD("ALTER TABLE `{$bd_names['users']}` ADD `topics` smallint(10) DEFAULT 0;");
+BD("ALTER TABLE `{$bd_names['users']}` ADD `posts` smallint(10) DEFAULT 0;");
 }
 
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['action_log']}` (

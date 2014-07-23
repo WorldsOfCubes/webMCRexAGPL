@@ -10,18 +10,22 @@ private $id;
 private $tmp;
 private $permissions;
 
-private $ip;				
+private $ip;
 private $name;
-private $email;	
+private $email;
 
 private $lvl;
-private $group;	
+private $warn_lvl;
+private $group;
 
-private $gender;	
+private $gender;
 private $female;
 
 private $deadtry;
 private $vote;
+
+private $topics;
+private $posts;
 
 	/** @const */
 	public static $date_statistic = array (
@@ -50,14 +54,17 @@ private $vote;
 		}		
 		
 		$sql = "SELECT `{$bd_users['login']}`,
-		               `{$bd_users['id']}`,
+					   `{$bd_users['id']}`,
 					   `{$bd_users['tmp']}`,
 					   `{$bd_users['ip']}`,
 					   `{$bd_users['email']}`,
 					   `{$bd_users['deadtry']}`,
 					   `{$bd_users['female']}`,
 					   `{$bd_users['group']}`,
-					   `vote` FROM `{$this->db}` WHERE `".TextBase::SQLSafe($method)."`='".TextBase::SQLSafe($input)."'";
+					   `vote`,
+					   `posts`,
+					   `topics`,
+					   `warn_lvl` FROM `{$this->db}` WHERE `".TextBase::SQLSafe($method)."`='".TextBase::SQLSafe($input)."'";
 						   
 		$result = BD($sql);			
 		if ( !$result or mysql_num_rows( $result ) != 1 ) { $this->id = false; return false; }		
@@ -70,6 +77,7 @@ private $vote;
 		$this->name   = $line[$bd_users['login']];
         $this->group  = (int)$line[$bd_users['group']];
 		$this->lvl    = $this->getPermission('lvl');
+		$this->warn_lvl  = (int)$line['warn_lvl'];
 			
 		$this->tmp    = $line[$bd_users['tmp']];
 		$this->ip     = $line[$bd_users['ip']];
@@ -77,6 +85,9 @@ private $vote;
 		$this->email  = $line[$bd_users['email']];
 		$this->deadtry  = (int)$line[$bd_users['deadtry']];
 		$this->vote  = (int)$line['vote'];
+		
+		$this->topics  = (int)$line['topics'];
+		$this->posts  = (int)$line['posts'];
 		
 		/* Пол персонажа */
 		$gender = $line[$bd_users['female']]; 
@@ -808,6 +819,18 @@ private $vote;
 	public function ip() {
 		return $this->ip;
 	}	
+	
+	public function topics() {
+		return $this->topics;
+	}
+	
+	public function posts() {
+		return $this->posts;
+	}
+	
+	public function warnLVL() {
+		return $this->warn_lvl;
+	}
 	
 	public function email() {
 		return $this->email;

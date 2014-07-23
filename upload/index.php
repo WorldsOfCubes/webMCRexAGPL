@@ -48,7 +48,13 @@ if ($config['offline'] and (empty($user) or $user->group() != 3)) {
 	$page = 'Технические работы';
 	$content_main = View::ShowStaticPage('site_closed.html');
 	include('./location/side.php');
+	ob_start();
 	include View::Get('index.html');
+	$html_page = ob_get_clean();
+	loadTool("template.class.php");
+	$parser = new TemplateParser();
+	$html_page = $parser->parse($html_page);
+	echo $html_page;
 	exit;
 }
 function accss_deny() {
@@ -70,9 +76,14 @@ global $config, $content_js, $content_advice, $content_side, $user;
 	$page = 'Доступ запрещен';
 	$content_main = View::ShowStaticPage('accsess_denied.html');
 	include('./location/side.php');
+	ob_start();
 	include View::Get('index.html');
+	$html_page = ob_get_clean();
+	loadTool("template.class.php");
+	$parser = new TemplateParser();
+	$html_page = $parser->parse($html_page);
+	echo $html_page;
 	exit;
-	return;
 }
 $menu = new Menu();
 
@@ -96,6 +107,7 @@ elseif (isset($_GET['mode'])) $mode = $_GET['mode'];
 elseif (isset($_POST['mode'])) $mode = $_POST['mode']; 
 
 if ($mode == 'side') $mode = $config['s_dpage'];
+if ($mode == 'users') $mode = 'user';
 
 switch ($mode) {
     case 'start': $page = 'Начать игру'; $content_main = View::ShowStaticPage('start_game.html');  break;

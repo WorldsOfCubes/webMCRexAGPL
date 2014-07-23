@@ -163,7 +163,7 @@ Class View {
 	} 
 
     public function arrowsGenerator($link, $curpage, $itemsnum, $per_page, $prefix = false) { 
-		
+		global $config;
 		if ( !$prefix ) { // Default arrows style
 			
 			$prefix = 'common';

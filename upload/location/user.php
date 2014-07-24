@@ -1,6 +1,8 @@
 <?php 
 if (empty($user) or $user->lvl() < 1) { accss_deny(); }
 
+$menu->SetItemActive('users');
+
 $num_by_page = 25;
 
 if (isset($_GET['do'])) $do = $_GET['do'];
@@ -24,6 +26,7 @@ if ($do == 'full' or isset($_GET['name']) or isset($_POST['name'])) {
 		exit;
 	}
 	$page = lng('USER_POFILE') . " - " . $name;
+	$stat = $pl->getStatistic();
 	ob_start();
 		include View::Get('user_profile.html', $path);
 	$content_main = ob_get_clean();

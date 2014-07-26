@@ -1,5 +1,5 @@
 <?php 
-if (empty($user) or $user->lvl() < 1) { accss_deny(); }
+//if (empty($user) or $user->lvl() < 1) { accss_deny(); }
 
 $menu->SetItemActive('users');
 
@@ -14,22 +14,14 @@ if ($do == 'full' or isset($_GET['name']) or isset($_POST['name'])) {
 		elseif (isset($_POST['name'])) $name = $_POST['name'];
 	$pl = new User($name, $bd_users['login']);
 	if(!$pl->id()) {
-		$page = 'Страница не найдена';
-		$content_main = View::ShowStaticPage('404.html');
+		include(MCR_ROOT.'/location/404.php');
+	} else {
+		$page = lng('USER_POFILE') . " - " . $name;
+		$stat = $pl->getStatistic();
 		ob_start();
-		include View::Get('index.html');
-		$html_page = ob_get_clean();
-		loadTool("template.class.php");
-		$parser = new TemplateParser();
-		$html_page = $parser->parse($html_page);
-		echo $html_page;
-		exit;
+			include View::Get('user_profile.html', $path);
+		$content_main = ob_get_clean();
 	}
-	$page = lng('USER_POFILE') . " - " . $name;
-	$stat = $pl->getStatistic();
-	ob_start();
-		include View::Get('user_profile.html', $path);
-	$content_main = ob_get_clean();
 } else {
 	$page = lng('USERS_LIST');
 	$first = ((int) $do - 1) * $num_by_page;
@@ -38,10 +30,9 @@ if ($do == 'full' or isset($_GET['name']) or isset($_POST['name'])) {
 				FROM `{$bd_names['users']}`
 				LEFT JOIN `{$bd_names['groups']}`
 				ON `{$bd_names['groups']}`.id = `{$bd_names['users']}`.`{$bd_users['group']}`
-				ORDER BY `{$bd_names['users']}`.`{$bd_users['id']}` ASC
+				ORDER BY `{$bd_names['users']}`.`{$bd_users['login']}` ASC
 				LIMIT $first, $last");
 	$content_list = '';
-	print(mysql_error());
 	$num = $first + 1;
 	while($tmp_user = mysql_fetch_assoc($query,0)) {
 		ob_start();
@@ -56,5 +47,5 @@ if ($do == 'full' or isset($_GET['name']) or isset($_POST['name'])) {
 	$result = BD("SELECT COUNT(*) FROM `{$bd_names['users']}`");
 	$line = mysql_fetch_array($result);
 	$view = new View("users/");
-	$content_main .= $view->arrowsGenerator(Rewrite::GetURL(array('go', 'users')), $do, $line[0], $num_by_page, "pagin");
+	$content_main .= $view->arrowsGenerator(Rewrite::GetURL('users'), $do, $line[0], $num_by_page, "pagin");
 }

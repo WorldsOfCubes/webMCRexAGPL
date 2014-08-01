@@ -4,7 +4,7 @@ $menu_items = array (
 	array (
 		'main' => 
 		array (
-			'name' => '<i class="glyphicon glyphicon-home"></i> Главная',
+			'name' => '<i class="glyphicon glyphicon-home"></i> ' . lng('HOME'),
 			'url' => '',
 			'parent_id' => -1,
 			'lvl' => -1,
@@ -14,7 +14,7 @@ $menu_items = array (
 		),
 		'admin' => 
 		array (
-			'name' => '<i class="glyphicon glyphicon-wrench"></i> Администрирование',
+			'name' => '<i class="glyphicon glyphicon-wrench"></i> ' . lng('ADM'),
 			'url' => '',
 			'parent_id' => -1,
 			'lvl' => 15,
@@ -24,7 +24,7 @@ $menu_items = array (
 		),
 		'add_news' => 
 		array (
-			'name' => 'Добавить новость',
+			'name' => lng('ADM_NEW'),
 			'url' => Rewrite::GetURL('news_add'),
 			'parent_id' => 'admin',
 			'lvl' => 1,
@@ -34,7 +34,7 @@ $menu_items = array (
 		),
 		'category_news' => 
 		array (
-			'name' => 'Категории новостей',
+			'name' => lng('ADM_CAT'),
 			'url' => Rewrite::GetURL(array('control', 'category')),
 			'parent_id' => 'admin',
 			'lvl' => 15,
@@ -44,7 +44,7 @@ $menu_items = array (
 		),
 		'file_edit' => 
 		array (
-			'name' => 'Файлы',
+			'name' => lng('ADM_FILES'),
 			'url' => Rewrite::GetURL(array('control', 'filelist')),
 			'parent_id' => 'admin',
 			'lvl' => 15,
@@ -54,7 +54,7 @@ $menu_items = array (
 		),
 		'control' => 
 		array (
-			'name' => 'Пользователи',
+			'name' => lng('ADM_USER'),
 			'url' => Rewrite::GetURL(array('control', 'user')),
 			'parent_id' => 'admin',
 			'lvl' => 15,
@@ -64,7 +64,7 @@ $menu_items = array (
 		),
 		'reqests' => 
 		array (
-			'name' => 'Заявки модераторов',
+			'name' => lng('ADM_REQ'),
 			'url' => Rewrite::GetURL('reqests'),
 			'parent_id' => 'admin',
 			'lvl' => 1,
@@ -74,7 +74,7 @@ $menu_items = array (
 		),
 		'reg_edit' => 
 		array (
-			'name' => 'Регистрация',
+			'name' => lng('ADM_REG'),
 			'url' => Rewrite::GetURL(array('control', 'ipbans')),
 			'parent_id' => 'admin',
 			'lvl' => 15,
@@ -84,7 +84,7 @@ $menu_items = array (
 		),
 		'group_edit' => 
 		array (
-			'name' => 'Группы',
+			'name' => lng('ADM_GROUP'),
 			'url' => Rewrite::GetURL(array('control', 'group')),
 			'parent_id' => 'admin',
 			'lvl' => 15,
@@ -94,7 +94,7 @@ $menu_items = array (
 		),
 		'site_edit' => 
 		array (
-			'name' => 'Настройки сайта',
+			'name' => lng('ADM_SITE'),
 			'url' => Rewrite::GetURL(array('control', 'constants')),
 			'parent_id' => 'admin',
 			'lvl' => 15,
@@ -104,7 +104,7 @@ $menu_items = array (
 		),
 		'donate_edit' => 
 		array (
-			'name' => 'Настройки доната',
+			'name' => lng('ADM_DONATE'),
 			'url' => Rewrite::GetURL(array('control', 'donate')),
 			'parent_id' => 'admin',
 			'lvl' => 15,
@@ -114,7 +114,7 @@ $menu_items = array (
 		),
 		'rcon' => 
 		array (
-			'name' => 'RCON',
+			'name' => lng('ADM_RCON'),
 			'url' => Rewrite::GetURL(array('control', 'rcon')),
 			'parent_id' => 'admin',
 			'lvl' => 15,
@@ -124,7 +124,7 @@ $menu_items = array (
 		),
 		'game_edit' => 
 		array (
-			'name' => 'Настройки лончера',
+			'name' => lng('ADM_LAUNCH'),
 			'url' => Rewrite::GetURL(array('control', 'update')),
 			'parent_id' => 'admin',
 			'lvl' => 15,
@@ -134,7 +134,7 @@ $menu_items = array (
 		),
 		'serv_edit' => 
 		array (
-			'name' => 'Мониторинг серверов',
+			'name' => lng('ADM_SRV'),
 			'url' => Rewrite::GetURL(array('control', 'servers')),
 			'parent_id' => 'admin',
 			'lvl' => 15,
@@ -142,9 +142,9 @@ $menu_items = array (
 			'active' => false,
 			'inner_html' => '',
 		),
-		'guide' => 
+		'info' => 
 		array (
-			'name' => '<i class="glyphicon glyphicon-send"></i> Начать играть',
+			'name' => '<i class="glyphicon glyphicon-info-sign"></i> ' . lng('INFO'),
 			'url' => Rewrite::GetURL('guide'),
 			'parent_id' => -1,
 			'lvl' => -1,
@@ -152,10 +152,30 @@ $menu_items = array (
 			'active' => false,
 			'inner_html' => '',
 		),
+		'guide' => 
+		array (
+			'name' => lng('GUIDE'),
+			'url' => Rewrite::GetURL('guide'),
+			'parent_id' => 'info',
+			'lvl' => -1,
+			'permission' => -1,
+			'active' => false,
+			'inner_html' => '',
+		),
 		'rules' => 
 		array (
-			'name' => '<i class="glyphicon glyphicon-book"></i> Правила',
+			'name' => lng('RULES'),
 			'url' => Rewrite::GetURL('rules'),
+			'parent_id' => 'info',
+			'lvl' => -1,
+			'permission' => -1,
+			'active' => false,
+			'inner_html' => '',
+		),
+		'accs' => 
+		array (
+			'name' => '<i class="glyphicon glyphicon-user"></i> ' . lng('USERS_LIST'),
+			'url' => Rewrite::GetURL('users'),
 			'parent_id' => -1,
 			'lvl' => -1,
 			'permission' => -1,
@@ -164,9 +184,9 @@ $menu_items = array (
 		),
 		'users' => 
 		array (
-			'name' => '<i class="glyphicon glyphicon-user"></i> Игроки',
+			'name' => lng('USERS_ALL'),
 			'url' => Rewrite::GetURL('users'),
-			'parent_id' => -1,
+			'parent_id' => 'accs',
 			'lvl' => -1,
 			'permission' => -1,
 			'active' => false,
@@ -174,9 +194,9 @@ $menu_items = array (
 		),
 		'banlist' => 
 		array (
-			'name' => '<i class="glyphicon glyphicon-ban-circle"></i> Банлист',
+			'name' => lng('BANLIST'),
 			'url' => Rewrite::GetURL('banlist'),
-			'parent_id' => -1,
+			'parent_id' => 'accs',
 			'lvl' => -1,
 			'permission' => -1,
 			'active' => false,
@@ -187,7 +207,7 @@ $menu_items = array (
 	array (
 		'options' => 
 		array (
-			'name' => '<i class="glyphicon glyphicon-cog"></i> Настройки',
+			'name' => '<i class="glyphicon glyphicon-cog"></i> ' . lng('USER_OPT'),
 			'url' => Rewrite::GetURL('options'),
 			'parent_id' => -1,
 			'lvl' => 1,
@@ -197,7 +217,7 @@ $menu_items = array (
 		),
 		'exit' => 
 		array (
-			'name' => '<i class="glyphicon glyphicon-log-out"></i> Выход',
+			'name' => '<i class="glyphicon glyphicon-log-out"></i> ' . lng('EXIT'),
 			'url' => 'login.php?out=1',
 			'parent_id' => -1,
 			'lvl' => 1,

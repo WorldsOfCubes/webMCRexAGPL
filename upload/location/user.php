@@ -23,6 +23,7 @@ if ($do == 'full' or isset($_GET['name']) or isset($_POST['name'])) {
 		$content_main = ob_get_clean();
 	}
 } else {
+	if ($do == 0) $do = 1;
 	$page = lng('USERS_LIST');
 	$first = ((int) $do - 1) * $num_by_page;
 	$last  = (int) $do * $num_by_page;

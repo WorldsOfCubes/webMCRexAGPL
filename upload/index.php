@@ -39,6 +39,19 @@ global $addition_events;
 
 $content_advice = GetRandomAdvice();
 
+if (!empty($user)) {
+
+$player       = $user->name();
+$player_id    = $user->id();
+$player_lvl   = $user->lvl();
+$player_email = $user->email(); if (empty($player_email)) $player_email = lng('NOT_SET'); 
+$player_group = $user->getGroupName();
+$player_econ  = $user->getEcon();
+$player_money = $user->getMoney();
+
+if ($user->group() == 4) $content_main .= View::ShowStaticPage('profile_verification.html', 'profile/', $player_email);
+}
+
 if ($config['offline'] and (empty($user) or $user->group() != 3)) {
 	$menu = new Menu();
 	$menu->SetItemActive('main');
@@ -87,18 +100,6 @@ global $config, $content_js, $content_advice, $content_side, $user;
 }
 $menu = new Menu();
 
-if (!empty($user)) {
-
-$player       = $user->name();
-$player_id    = $user->id();
-$player_lvl   = $user->lvl();
-$player_email = $user->email(); if (empty($player_email)) $player_email = lng('NOT_SET'); 
-$player_group = $user->getGroupName();
-$player_econ  = $user->getEcon();
-$player_money = $user->getMoney();
-
-if ($user->group() == 4) $content_main .= View::ShowStaticPage('profile_verification.html', 'profile/', $player_email);
-}
 
 $mode = $config['s_dpage'];
 

@@ -470,6 +470,7 @@ if ($do) {
 	
 	$site_name		= InputGet('site_name', 'POST', 'str');
 	$site_offline	= InputGet('site_offline', 'POST', 'bool');
+	$site_install	= InputGet('site_install', 'POST', 'bool');
 	$smtp			= InputGet('smtp', 'POST', 'bool');
 	
 	$site_about  = (isset($_POST['site_about']))? TextBase::HTMLDestruct($_POST['site_about']) : '';
@@ -542,6 +543,7 @@ if ($do) {
 	$config['log']			= $log			;
 	$config['comm_revers']	= $comm_revers	;
 	$config['offline']		= $site_offline	;
+	$config['install']		= $site_install	;
 	$config['smtp']			= $smtp			;
 	
 	if (MainConfig::SaveOptions()) $info .= lng('OPTIONS_COMPLETE');

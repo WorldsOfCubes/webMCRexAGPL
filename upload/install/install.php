@@ -217,7 +217,24 @@ function ConfigPostStr($postKey){
 }
 
 function ConfigPostInt($postKey){
- return (isset( $_POST[$postKey]))? (int)$_POST[$postKey] : 0;
+ return (isset( $_POST[$postKey]))? (int)$_POST[$postKey] : false;
+}
+
+function GetRealIp(){
+
+	if (!empty($_SERVER['HTTP_CLIENT_IP'])) 
+	
+	$ip = $_SERVER['HTTP_CLIENT_IP']; 
+	 
+	elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) 
+	
+	$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	 
+	else 
+	 
+	$ip = $_SERVER['REMOTE_ADDR'];
+ 
+return substr($ip, 0, 16);
 }
 
 function CreateAdmin($site_user) {
@@ -225,19 +242,22 @@ global $config,$bd_names,$bd_users,$info;
 
 	$site_password   = ConfigPostStr('site_password');
 	$site_repassword = ConfigPostStr('site_repassword');
+	$site_email = ConfigPostStr('site_email');
+	$site_gender = ConfigPostStr('site_gender');
 	$result = false;
 	
 		if ( !TextBase::StringLen($site_password)	) $info = 'Введите пароль.';
 	elseif ( !TextBase::StringLen($site_repassword)	) $info = 'Введите повтор пароля.';
+	elseif ( !TextBase::StringLen($site_email)		) $info = 'Введите е-мейл.';
+	elseif ( !TextBase::StringLen($site_gender)		) $info = 'Подмена значения пола.';
 	elseif ( strcmp($site_password,$site_repassword)) $info = 'Пароли не совпадают.';
 	else {
 
 		$result = BD("SELECT `{$bd_users['login']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='$site_user'");			  
-		if ( mysql_num_rows($result) ) BD("DELETE FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='$site_user'");
-					
+		if ( mysql_num_rows($result) ) 
+			BD("DELETE FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='$site_user'");
 		require_once(MCR_ROOT.'instruments/auth/'.$config['p_logic'].'.php');
-				
-		BD("INSERT INTO `{$bd_names['users']}` (`{$bd_users['login']}`,`{$bd_users['password']}`,`{$bd_users['ip']}`,`{$bd_users['group']}`) VALUES('$site_user','".MCRAuth::createPass($site_password)."','127.0.0.1',3)");	
+		BD("INSERT INTO `{$bd_names['users']}` (`{$bd_users['login']}`,`{$bd_users['password']}`,`{$bd_users['ip']}`,`{$bd_users['group']}`,`{$bd_users['ctime']}`,`{$bd_users['email']}`,`{$bd_users['female']}`) VALUES('$site_user','".MCRAuth::createPass($site_password)."','".TextBase::SQLSafe(GetRealIp())."',3,NOW(),'$site_email',$site_gender)");	
 		$result = true;
 	}
 

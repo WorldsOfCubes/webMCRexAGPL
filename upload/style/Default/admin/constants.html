@@ -90,6 +90,14 @@
 			</div>
 			
 			<label class="checkbox">
+			  <input type="checkbox" name="site_install" value="1" <?php echo ($config['install'])?'checked="checked"':'' ?>> Активировать инсталлятор
+			</label>
+
+			<div class="alert alert-danger">
+			<b>Внимание!</b> Этот режим дает возможность повторно провести инсталляцию движка, например, при обновлении. Ни в коем случае не активируйте инсталлятор без необходимости иначе сайт может быть взломан! После установки инсталлятор автоматически деактивируется.
+			</div>
+			
+			<label class="checkbox">
 			  <input type="checkbox" name="log" value="1" <?php echo ($config['log'])?'checked="checked"':'' ?>> Запись лога (<a href="index.php?mode=control&do=log">Просмотр</a>)
 			</label>
 			<span class="help-block">Запись сообщений об ошибках веб приложения в файл <?php echo MCR_ROOT.'log.txt' ?> . Обнуление файла при размере > 50мб</span>	

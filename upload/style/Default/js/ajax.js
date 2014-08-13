@@ -473,3 +473,9 @@ function Login() {
 	SendByXmlHttp('login.php', 'login=' + encodeURIComponent(login) + '&pass=' + encodeURIComponent(pass) + '&save=' + encodeURIComponent(save_session) + addition_post, event)	
 	return false
 }
+$(document).ready(function(){
+	jQuery(document).on('click', '.spoiler-tlink', function (e) {
+		e.preventDefault()
+		$(this).parent().parent().children('.spoiler-ttext').collapse('toggle')
+	});
+});

@@ -1,0 +1,145 @@
+<script language="JavaScript" type="text/javascript">
+function CheckLen() {
+
+  var s = GetById('message-add-text').value
+      s = s.replace(/\r\n/g, "22222")
+      s = s.replace(/\n/g, "22222")
+	  s = s.replace(/\'/g, "222222")
+	  s = s.replace(/\"/g, "222222")
+	  
+     return 1024-s.length
+}
+
+function DrawLenInfo(e) {
+
+  var code = -1
+  
+  if (e) {
+  
+  e = e || window.event  
+  code   = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode)
+  }
+  
+  var used = CheckLen()
+
+  if ( used <= 0 ) GetById('message-length').style.color = '#aa2f17' 
+  else             GetById('message-length').style.color = '#17aa4e' 
+
+  GetById('message-length').innerHTML = used
+
+	switch (code){
+        /*case 13:*/
+        case 8:
+        case 9:
+        case 46:
+        case 37:
+        case 38:
+		case 116:
+        case 40:
+        return true;
+    }
+  if ( used <= 0 ) return false
+  else             return true
+  
+}
+
+function tag_insert(obj, str1, str2){
+
+obj.focus()
+
+if(document.selection) {
+
+	var s = document.selection.createRange()
+ 
+	if(s.text) s.text = str1 + s.text + str2
+	else obj.value = obj.value + str1 + str2
+ 
+return true
+
+} else if (typeof(obj.selectionStart) == "number") { // Opera, FireFox
+ 
+if (obj.selectionStart != obj.selectionEnd) {
+ 
+	var start	= obj.selectionStart
+	var end		= obj.selectionEnd
+	
+	s = obj.value.substr(start,end-start)
+  
+	obj.value = obj.value.substr(0, start) + str1 + s + str2 + obj.value.substr(end)
+	
+} else 
+  
+	obj.value = obj.value + str1 + str2
+	
+	return true;
+}
+	
+return false;
+}
+
+function bbcode(bb) {
+
+ var rep = [];
+ 
+ rep[0]="b";
+ rep[1]="i";
+ rep[2]="u";
+ rep[3]='[url="http://www.example.com"]Открыть[/url]';
+ rep[4]='[quote="Имя"][/quote]'; 
+ rep[5]='[spoiler=Имя][/spoiler]'; 
+ 
+ if (bb <= 2) tag_insert(GetById('message-add-text'), '[' + rep[bb] + ']', '[/' + rep[bb] + ']')
+ else if (bb == 3) tag_insert(GetById('message-add-text'), '[url="', '"]Открыть[/url]')
+ else if (bb == 5) tag_insert(GetById('message-add-text'), '[spoiler=Открыть спойлер]', '[/spoiler]')
+ else GetById('message-add-text').value = GetById('message-add-text').value + rep[bb]
+ 
+ var used = CheckLen()
+ GetById('message-length').innerHTML = used
+ if ( used <= 0 ) GetById('message-length').style.color = '#aa2f17' 
+ else             GetById('message-length').style.color = '#17aa4e'  
+ 
+ return false;
+ 
+}
+</script>
+
+<?php echo $info ?>
+
+<div class="form-block">
+
+<div class="block-header">Написать ЛС</div>
+
+<div class="block-line"></div>
+
+<form method="post" class="form-horizontal" style="text-align: center;">
+
+<p><input type="text" name="name" class="form-control" placeholder="Получатель" value="<? echo $name ?>">
+<p><input type="text" name="topic" class="form-control" placeholder="Тема сообщения" value="<? echo $topic ?>">
+<input type="hidden" name="submit" class="form-control" value="1">
+
+<div class="btn-group" align="center">
+	<button class="btn btn-default" onclick="return bbcode(0)"><b>b</b></button>
+	<button class="btn btn-default" onclick="return bbcode(1)"><i>i</i></button>
+	<button class="btn btn-default" onclick="return bbcode(2)"><u>u</u></button>
+	<button class="btn btn-default" onclick="return bbcode(3)">Ссылка</button>
+	<button class="btn btn-default" onclick="return bbcode(4)">Цитата</button>
+	<button class="btn btn-default" onclick="return bbcode(5)">Спойлер</button>
+</div>
+ 
+<div class="block-line"></div>
+ 
+<div>
+ 
+     <textarea placeholder="Текст сообщения" id="message-add-text" maxlength="1024" class="form-control" style="height:100px" name="message" onclick="return DrawLenInfo(event)" onchange="return DrawLenInfo(event)" onkeyup="return DrawLenInfo(event)" onkeypress="return DrawLenInfo(event)" ><? echo $message ?></textarea>
+ 
+</div>
+
+<div class="block-line"></div>
+
+  <div style="float: left; margin-left: 24px;">Осталось <div id="message-length" style="display: inline-block; color: #17aa4e;">1024</div> символов</div>
+  <div class="pull-right">
+	<input id="message-button" class="btn btn-default" type="submit" value="Добавить" />
+  
+  </div>
+</form>	
+</div>

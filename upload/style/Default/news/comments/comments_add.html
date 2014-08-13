@@ -86,9 +86,11 @@ function bbcode(bb) {
  rep[2]="u";
  rep[3]='[url="http://www.example.com"]Открыть[/url]';
  rep[4]='[quote="Имя"][/quote]'; 
+ rep[5]='[spoiler=Имя][/spoiler]'; 
  
  if (bb <= 2) tag_insert(GetById('comment-add-text'), '[' + rep[bb] + ']', '[/' + rep[bb] + ']')
  else if (bb == 3) tag_insert(GetById('comment-add-text'), '[url="', '"]Открыть[/url]')
+ else if (bb == 5) tag_insert(GetById('comment-add-text'), '[spoiler=Открыть спойлер]', '[/spoiler]')
  else GetById('comment-add-text').value = GetById('comment-add-text').value + rep[bb]
  
  var used = CheckLen()
@@ -157,6 +159,7 @@ return false
 	<div class="btn-group">
 	  <button class="btn btn-default" onclick="return bbcode(3)">Ссылка</button>
 	  <button class="btn btn-default" onclick="return bbcode(4)">Цитата</button>
+	  <button class="btn btn-default" onclick="return bbcode(5)">Спойлер</button>
 	</div>
 	
 	<div class="btn-group">

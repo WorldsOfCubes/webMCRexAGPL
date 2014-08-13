@@ -23,6 +23,9 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['users']}` (
   `{$bd_users['session']}` varchar(255) default NULL,
   `{$bd_users['clientToken']}` varchar(255) default NULL,
   `{$bd_users['server']}` varchar(255) default NULL,  
+  `warn_lvl` smallint(10) DEFAULT '0',
+  `topics` smallint(10) DEFAULT '0',
+  `posts` smallint(10) DEFAULT '0',
 
   PRIMARY KEY (`{$bd_users['id']}`),
   UNIQUE KEY `Login` (`{$bd_users['login']}`),
@@ -31,10 +34,10 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['users']}` (
 
 BD("INSERT INTO `{$bd_names['groups']}` 
 (`id`,`name`,`pex_name`,`lvl`,`system`,`change_skin`,`change_pass`,`change_login`,`change_cloak`,`add_news`,`add_comm`,`adm_comm`) VALUES 
-(1,'Пользователь','Default',2,1,1,1,0,0,0,1,0), 
-(2,'Заблокированный','Default',0,1,0,0,0,0,0,0,0), 
-(3,'Администратор','admin',15,1,1,1,1,1,1,1,1), 
-(4,'Непроверенный','Default',1,1,0,0,0,0,0,0,0), 
+(1,'РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ','Default',2,1,1,1,0,0,0,1,0), 
+(2,'Р—Р°Р±Р»РѕРєРёСЂРѕРІР°РЅРЅС‹Р№','Default',0,1,0,0,0,0,0,0,0), 
+(3,'РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ','admin',15,1,1,1,1,1,1,1,1), 
+(4,'РќРµРїСЂРѕРІРµСЂРµРЅРЅС‹Р№','Default',1,1,0,0,0,0,0,0,0), 
 (5,'VIP','vip',5,1,1,1,0,1,0,1,0),
 (6,'Premium','premium',6,1,1,1,0,1,0,1,0),
-(8,'Модератор','moder',8,1,1,1,0,1,0,1,0);");
+(8,'РњРѕРґРµСЂР°С‚РѕСЂ','moder',8,1,1,1,0,1,0,1,0);");

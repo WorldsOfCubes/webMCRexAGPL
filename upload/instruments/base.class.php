@@ -146,6 +146,11 @@ Class View {
 		echo self::GetURL($way);
 	}
 	
+	public static function Alert($text, $state = 'danger') {
+		
+		return "<div class=\"alert alert-$state\">$text</div>";
+	}
+	
 	public static function Get($way, $base_ = false) {
 	global $config;
 
@@ -424,7 +429,10 @@ Class Message {
 		$tmp = $text;
 		
 		while(strcmp($text=preg_replace("/\[quote=(?:&#039;|&quot;)(.*)(?:&#039;|&quot;)\](.+?)\[\/quote\]/Uis","<div class=\"comment-quote\"><div class=\"comment-quote-a\">\\1 сказал(a):</div><div class=\"comment-quote-c\">\\2</div></div>",$tmp),$tmp)!=0) 
-		 $tmp = $text; 
+			$tmp = $text; 
+		
+		while(strcmp($text=preg_replace("/\[spoiler=(.*)\](.*)\[\/spoiler]/Usi", "<div class=\"panel-group\"><div class=\"panel panel-default\"><div class=\"panel-heading\"><a class=\"spoiler-tlink\" data-toggle=\"collapse\" href=\"\"><strong>\\1</strong></a></div><div class=\"spoiler-ttext panel-collapse collapse\"><div class=\"panel-body\">\\2</div></div></div></div>", $tmp),$tmp)!=0) 
+			$tmp = $text; 
 
 		return $text;
 	}

@@ -12,7 +12,7 @@ $menu->SetItemActive('admin');
 /* Default vars */
 
 $st_subdir = 'admin/';
-$default_do = 'category';
+$default_do = 'user';
 
 $page    = lng('PAGE_ADMIN');
 

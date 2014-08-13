@@ -28,30 +28,30 @@ if ($realname != $check && $surname != $check && $old != $check && $skype != $ch
 				if ($resultsql2['name'] != $_SESSION['user_name'])
 				{
 
-			$content = '<div class="alert alert-success">Заявка отправлена</div>';
+			$content = View::Alert("Заявка отправлена</div>", 'success');
 			BD("INSERT INTO `reqests` (name, realname, surname, old, skype, comment) VALUES ('".$player."', '".TextBase::SQLSafe($realname)."', '".TextBase::SQLSafe($surname)."', '".TextBase::SQLSafe($old)."', '".TextBase::SQLSafe($skype)."', '".TextBase::SQLSafe($comment)."')");
 				}
 				elseif ($resultsql2['name'] == $_SESSION['user_name'])
 				{
-				$content = '<div class="alert alert-danger">Вы уже подали заявку!</div>';
+				$content = View::Alert("Вы уже подали заявку!");
 				}else $content ="дебаг";
 			}
 			else
 			{
 
-			$content = '<div class="alert alert-danger">Слишком длинные значения! Попробуйте написать короче!</div>';
+			$content = View::Alert("Слишком длинные значения! Попробуйте написать короче!");
 			}
 		}
 		else
 		{
 
-		$content = '<div class="alert alert-danger">Вы использовали запрещённые символы!</div>';
+		$content = View::Alert("Вы использовали запрещённые символы!");
 		}
 	}
 	else
 	{
 
-	$content = '<div class="alert alert-danger">Не все поля заполнены!</div>';
+	$content = View::Alert("Не все поля заполнены!");
 	}
 }
 
@@ -64,30 +64,15 @@ $content = '';
 }
 elseif ($resultsql2['answer'] == '1')
 {
-$content = '
-<div class="alert alert-info alert-block">
-		<button type="button" class="close" data-dismiss="alert"></button>
-	Твоя заявка на рассмотрении у администрации.
-</div>
-';
+$content = View::Alert("<button type=\"button\" class=\"close\" data-dismiss=\"alert\"></button>Твоя заявка на рассмотрении у администрации.", 'info');
 }
 elseif ($resultsql2['answer'] == 2)
 {
-$content = '
-<div class="alert alert-danger alert-block">
-		<button type="button" class="close" data-dismiss="alert"></button>
-		Твоя заявка отклонена администратором.
-</div>
-';
+$content = View::Alert("<button type=\"button\" class=\"close\" data-dismiss=\"alert\"></button>Твоя заявка отклонена администратором.");
 }
 elseif ($resultsql2['answer'] == 3)
 {
-$content = '
-<div class="alert alert-success alert-block">
-		<button type="button" class="close" data-dismiss="alert"></button>
-		Твою заявку приняли! Скоро в тебе в скайп отпишет администратор.
-</div>
-';
+$content = View::Alert("<button type=\"button\" class=\"close\" data-dismiss=\"alert\"></button>Твою заявку приняли.", 'success');
 }
 
 ob_start();

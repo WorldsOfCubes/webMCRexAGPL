@@ -257,5 +257,23 @@ global $link, $bd_names;
 	}
 	
 	return true;					
-} 
+}
+
+function CheckPM(){
+global $user;
+	$pm_count = BD("SELECT COUNT(*) FROM `pm` WHERE `reciver` = '" . $user->name() . "' AND `viewed`=0");
+	$pm_count = mysql_fetch_array($pm_count);
+	ob_start();
+	include View::Get("pm_new_modal.html", "pm/");
+	$message = ob_get_clean();
+	return ($pm_count['0']!=0)? $message : '';
+}
+
+function CheckPMMenu(){
+global $user;
+	if (empty($user)) return '';
+	$pm_count = BD("SELECT COUNT(*) FROM `pm` WHERE `reciver` = '" . $user->name() . "' AND `viewed`=0");
+	$pm_count = mysql_fetch_array($pm_count);
+	return ($pm_count['0']!=0)? "&nbsp;({$pm_count['0']})" : '';
+}
 ?>

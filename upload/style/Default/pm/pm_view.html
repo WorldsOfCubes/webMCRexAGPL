@@ -1,0 +1,26 @@
+<div class="form-block">
+	<div class="block-header">
+		<div class="row">
+			<div class="col-md-3">
+				<a href="go/user/profile/<? echo $pl->name(); ?>"><? echo $pl->name(); ?></a>
+			</div>
+			<div class="col-md-9">
+				<div class="pull-right"><? echo $pm['date']; ?></div>
+				<? echo $pm['topic']; ?>
+			</div>
+		</div>
+	</div>
+	<div class="block-line"></div>
+	<div class="tab-pane" id="launcher">
+		<div class="row">
+			<div class="col-md-3" align="center">
+				<a href="go/user/profile/<? echo $pl->name(); ?>"><img src="skin.php?mini=<? echo $pl->id(); ?>" width="80%" alt="<? echo $pl->name(); ?>"></a><br />
+				<? echo $pl->getGroupName(); ?><br />
+				Предупрежениия: <? echo $pl->warnLVL(); ?>%
+			</div>
+			<div class="col-md-9">
+				<? echo $pm['text']; ?>
+			</div>
+		</div>
+	</div>
+</div>

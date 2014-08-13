@@ -34,6 +34,17 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['likes']}` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;");
 
+BD("CREATE TABLE `pm` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `date` datetime DEFAULT NULL,
+  `sender` char(32) DEFAULT NULL,
+  `reciver` char(32) DEFAULT NULL,
+  `viewed` int(11) NOT NULL DEFAULT '0',
+  `topic` char(255) DEFAULT NULL,
+  `text` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;");
+
 BD("CREATE TABLE `reqests` (
 	`id` INT(255) NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(30) NOT NULL COLLATE 'utf8_unicode_ci',

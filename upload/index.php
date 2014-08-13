@@ -128,7 +128,7 @@ switch ($mode) {
 $content_menu = $menu->Show();
 include('./location/side.php');
 $content_js .= InitJS(); 
-
+if(!empty($user) and $mode != 'pm') $content_side .= CheckPM();
 ob_start();
 include View::Get('index.html');
 $html_page = ob_get_clean();

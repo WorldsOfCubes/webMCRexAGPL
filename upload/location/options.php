@@ -11,11 +11,11 @@ $user_img_get = $user->getSkinLink().'&amp;refresh='.rand(1000, 9999);
 $menu->SetItemActive('options');
 if (isset($_GET['result'])) {
 	if ($_GET['result'] == "success") {
-		$message = '<div style="margin-top: 10px;" class="alert alert-success">Вы успешно пополнили донат-счет! Спасибо за помощь проекту!</div>';
+		$message = View::Alert("Вы успешно пополнили донат-счет! Спасибо за помощь проекту!", 'success');
 	} elseif ($_GET['result'] == "fail") {
-		$message = '<div style="margin-top: 10px;" class="alert alert-danger">К сожалению, платеж не прошел.</div>';
+		$message = View::Alert("К сожалению, платеж не прошел.");
 	} elseif ($_GET['result'] == "wait") {
-		$message = '<div style="margin-top: 10px;" class="alert alert-info">Платеж ожидает проведение</div>';
+		$message = View::Alert("Платеж ожидает проведение", 'info');
 	}
 }
 
@@ -63,9 +63,9 @@ if ($user->group() != 4 ) {
 		if($player_money >= $donate['premiumcash']/2){
 			$user->addMoney(0 - $donate['premiumcash']/2);
 			BD("UPDATE permissions SET value=value+2678400 WHERE name='$player'");
-			$message = '<div style="margin-top: 10px;" class="alert alert-success">Вы успешно продлили Premium! Спасибо за помощь проекту!</div>';
+			$message = View::Alert("Вы успешно продлили Premium! Спасибо за помощь проекту!", 'success');
 		}else{
-			$message = '<div style="margin-top: 10px;" class="alert alert-danger">К сожалению, у вас недостаточно средств, пополните счет!</div>';
+			$message = View::Alert("К сожалению, у вас недостаточно средств, пополните счет!");
 		}
 	}
 
@@ -73,9 +73,9 @@ if ($user->group() != 4 ) {
 		if($player_money >= $donate['vipcash']/2){
 			$user->addMoney(0 - $donate['vipcash']/2);
 			BD("UPDATE permissions SET value=value+2678400 WHERE name='$player'");
-			$message = '<div style="margin-top: 10px;" class="alert alert-success">Вы успешно продлили VIP! Спасибо за помощь проекту!</div>';
+			$message = View::Alert("Вы успешно продлили VIP! Спасибо за помощь проекту!", 'success');
 		}else{
-			$message = '<div style="margin-top: 10px;" class="alert alert-danger">К сожалению, у вас недостаточно средств или вы не пермиум!</div>';
+			$message = View::Alert("К сожалению, у вас недостаточно средств или вы не пермиум!");
 		}
 	}
 
@@ -96,12 +96,12 @@ if ($user->group() != 4 ) {
 					BD("INSERT INTO unbans VALUES (NULL, '$player', '1')");
 					BD("DELETE FROM banlist WHERE name='$player'");
 					$user->addMoney(0 - $donate['unban']);
-					$message = "<div style='margin-top: 10px;' class='alert alert-success'>Это ваш первый разбан, не нарушайте правила сервера!</div>";
+					$message = View::Alert("Это ваш первый разбан, не нарушайте правила сервера!", 'success');
 				}else{
-					$message = "<div style='margin-top: 10px;' class='alert alert-danger'>У вас недостаточно средств для разбана!</div>";
+					$message = View::Alert("У вас недостаточно средств для разбана!");
 				}
 			}else{
-				$message = "<div style='margin-top: 10px;' class='alert alert-danger'>Вы не забанены!</div>";
+				$message = View::Alert("Вы не забанены!");
 			}
 		}elseif($query >= 1){
 			if($query2 != ''){
@@ -109,12 +109,12 @@ if ($user->group() != 4 ) {
 					BD("UPDATE unbans SET numofban=numofban+1 WHERE name='$player'");
 					BD("DELETE FROM banlist WHERE name='$player'");
 					$user->addMoney(0 - $donate['unban']*$query);
-					$message = "<div style='margin-top: 10px;' class='alert alert-warning'>Это ваш очередной разбан, может пора себя хорошо вести?!</div>";
+					$message = View::Alert("Это ваш очередной разбан, может, пора себя хорошо вести?!", 'warning');
 				}else{
-					$message = "<div style='margin-top: 10px;' class='alert alert-danger'>У вас недостаточно средств для разбана!</div>";
+					$message = View::Alert("У вас недостаточно средств для разбана!");
 				}
 			}else{
-				$message = "<div style='margin-top: 10px;' class='alert alert-danger'>Вы не забанены!</div>";
+				$message = View::Alert("Вы не забанены!");
 			}
 		}
 	}
@@ -122,16 +122,16 @@ if ($user->group() != 4 ) {
 	if(isset($_POST['buym'])) {
 		$wantbuy = (int)$_POST['wantby'];
 		$gamemoneyadd = ($wantbuy*$donate['exchangehow']);
-		if($wantbuy == '' || $wantbuy < 1) $mes = "<div style='margin-top: 10px;' class='alert alert-danger'>Вы не ввели сумму!</div>";
+		if($wantbuy == '' || $wantbuy < 1) $message = View::Alert("Вы не ввели сумму!");
 			else{
 				if($player_money >= $wantbuy){
 					$user->addEcon($gamemoneyadd);
 					$player_econ += $gamemoneyadd;
 					$user->addMoney(0 - $wantbuy);
 					$player_money -= $wantbuy;
-					$message = "<div style='margin-top: 10px;' class='alert alert-success'>На ваш счет зачислено $gamemoneyadd монет!</div>";
+					$message = View::Alert("На ваш счет зачислено $gamemoneyadd монет!", 'success');
 				}else{
-					$message = "<div style='margin-top: 10px;' class='alert alert-danger'>На вашем счету недостаточно средств!</div>";
+					$message = View::Alert("На вашем счету недостаточно средств!");
 				}
 		}
 	}
@@ -148,9 +148,9 @@ if ($user->group() != 4 ) {
 			BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-vip-until', ' ', '$pexdate')");
 			$user->addMoney(0 - $donate['vipcash']);
 			$player_money -= $donate['vipcash'];
-			$message = '<div style="margin-top: 10px;" class="alert alert-success">Вы успешно купили VIP! Спасибо за помощь проекту!</div>';
+			$message = View::Alert("Вы успешно купили VIP! Спасибо за помощь проекту", 'success');
 		}else{
-			$message = '<div style="margin-top: 10px;" class="alert alert-danger">К сожалению у вас недостаточно средств, пополните счет!</div>';
+			$message = View::Alert("К сожалению у вас недостаточно средств, пополните счет!");
 		}
 	}
 
@@ -167,9 +167,9 @@ if ($user->group() != 4 ) {
 			BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-premium-until', ' ', '$pexdate')");
 			$user->addMoney(0 - $donate['premiumcash']);
 			$player_money -= $donate['premiumcash'];
-			$message = '<div style="margin-top: 10px;" class="alert alert-success">Вы успешно купили Premium! Спасибо за помощь проекту!</div>';
+			$message = View::Alert("Вы успешно купили Premium! Спасибо за помощь проекту!", 'success');
 		}else{
-			$message = '<div style="margin-top: 10px;" class="alert alert-danger">К сожалению у вас недостаточно средств, пополните счет!</div>';
+			$message = View::Alert("К сожалению у вас недостаточно средств, пополните счет!");
 		}
 	}
 	

@@ -205,6 +205,46 @@ $menu_items = array (
 	),
 	1 => 
 	array (
+		'pm' => 
+		array (
+			'name' => '<i class="glyphicon glyphicon-envelope"></i>' . CheckPMMenu(),
+			'url' => Rewrite::GetURL('pm'),
+			'parent_id' => -1,
+			'lvl' => 1,
+			'permission' => -1,
+			'active' => false,
+			'inner_html' => '',
+		),
+		'pm_new' => 
+		array (
+			'name' => lng('PM_NEW'),
+			'url' => Rewrite::GetURL('pm/write'),
+			'parent_id' => 'pm',
+			'lvl' => 1,
+			'permission' => -1,
+			'active' => false,
+			'inner_html' => '',
+		),
+		'pm_inbox' => 
+		array (
+			'name' => lng('PM_INBOX'),
+			'url' => Rewrite::GetURL('pm/inbox'),
+			'parent_id' => 'pm',
+			'lvl' => 1,
+			'permission' => -1,
+			'active' => false,
+			'inner_html' => '',
+		),
+		'pm_outbox' => 
+		array (
+			'name' => lng('PM_OUTBOX'),
+			'url' => Rewrite::GetURL('pm/outbox'),
+			'parent_id' => 'pm',
+			'lvl' => 1,
+			'permission' => -1,
+			'active' => false,
+			'inner_html' => '',
+		),
 		'options' => 
 		array (
 			'name' => '<i class="glyphicon glyphicon-cog"></i> ' . lng('USER_OPT'),

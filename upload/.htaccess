@@ -35,8 +35,10 @@ RewriteRule ^go/user/profile/([^/]+)/?$ index.php?mode=user&name=$1 [L,NE]
 RewriteRule ^go/users/([^/]+)/?$ index.php?mode=user&do=$1 [L,NE]
 RewriteRule ^go/users/profile/([^/]+)/?$ index.php?mode=user&do=full&name=$1 [L,NE]
 
-RewriteRule ^go/pm/([^/]+)/?$ index.php?mode=pm&page=$1 [L,NE]
-RewriteRule ^go/pm/write/([^/]+)/?$ index.php?mode=pm&do=write&id=$1 [L,NE]
+RewriteRule ^go/pm/([^/]+)/?$ index.php?mode=pm&do=$1 [L,NE]
+RewriteRule ^go/pm/inbox/([^/]+)/?$ index.php?mode=pm&do=inbox&page=$1 [L,NE]
+RewriteRule ^go/pm/outbox/([^/]+)/?$ index.php?mode=pm&do=outbox&page=$1 [L,NE]
+RewriteRule ^go/pm/write/([^/]+)/?$ index.php?mode=pm&do=write&name=$1 [L,NE]
 RewriteRule ^go/pm/delete/([^/]+)/?$ index.php?mode=pm&do=delete&id=$1 [L,NE]
 RewriteRule ^go/pm/view/([^/]+)/?$ index.php?mode=pm&do=view&id=$1 [L,NE]
 

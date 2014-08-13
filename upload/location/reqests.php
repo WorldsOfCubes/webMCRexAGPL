@@ -28,25 +28,25 @@ $helperresult = mysql_fetch_array($helperinfo,0);
 	if ($helperresult['name'] != $check)
 	{
 		if ($answer == 'yes') {
-			$content = '<div class="alert alert-success">Заявка успешно принята!</div>';
+			$content = View::Alert("Заявка успешно принята!</div>", 'success');
 			BD("UPDATE `reqests` SET `answer`=3 WHERE `id`='".$userid."'")or die(mysql_error());
 		} elseif ($answer == 'no') {
-			$content = '<div class="alert alert-success">Заявка успешно отклонена!</div>';
+			$content = View::Alert("Заявка успешно отклонена!</div>", 'success');
 			BD("UPDATE `reqests` SET `answer`=2 WHERE `id`='".$userid."'")or die(mysql_error());
 		} elseif ($answer == 'un') {
-			$content = '<div class="alert alert-success">Заявка успешно помечена непрочитанной!</div>';
+			$content = View::Alert("Заявка успешно помечена непрочитанной!", 'success');
 			BD("UPDATE `reqests` SET `answer`=1 WHERE `id`='".$userid."'")or die(mysql_error());
 		} elseif ($answer == 'del' && $user->lvl() >= 15) {
-			$content = '<div class="alert alert-success">Заявка успешно удалена!</div>';
+			$content = View::Alert("Заявка успешно удалена!", 'success');
 			BD("DELETE FROM `reqests` WHERE `id` = '".$userid."'")or die(mysql_error());
 		} else {
-			$content = '<div class="alert alert-danger">Подмена запроса Answer</div>';
+			$content = View::Alert("Подмена запроса Answer", 'success');
 		}
 	}
 }
 else
 {
-	$content = '<div class="alert alert-danger">Выбери отказать или принять!</div>';
+	$content = View::Alert("Выбери отказать или принять!");
 }
 }
 }
@@ -65,12 +65,7 @@ $content .= '';
 }
 elseif($checkanswers != $check)
 {
-	$content .= '
-		<div class="alert alert-info">
-			<button type="button" class="close" data-dismiss="alert"></button>
-			Есть необработанные заявки!
-		</div>
-	';
+	$content .=  View::Alert("<button type=\"button\" class=\"close\" data-dismiss=\"alert\"></button>Есть необработанные заявки!", 'warning');
 }
 
 $table_items = '';

@@ -8,7 +8,6 @@ $path = 'pm/';
 if (isset($_GET['do'])) $do = $_GET['do'];
 	elseif (isset($_POST['do'])) $do = $_POST['do'];
 	else $do = 'inbox';
-
 switch($do){
 case 'write':
 	$menu->SetItemActive('pm_new');
@@ -17,7 +16,7 @@ case 'write':
 		else $name = false;
 	if (isset($_POST['topic'])) $topic = TextBase::HTMLDestruct(TextBase::SQLSafe($_POST['topic']));
 		else $topic = false;
-	if (isset($_POST['message'])) $message = TextBase::HTMLDestruct(TextBase::SQLSafe($_POST['message']));
+	if (isset($_POST['message'])) $message = TextBase::HTMLDestruct($_POST['message']);
 		else $message = false;
 	$info = '';
 	if (isset($_POST['submit'])){
@@ -28,7 +27,7 @@ case 'write':
 		if ((mb_strlen($topic, "utf-8") < 4) or (mb_strlen($topic, "utf-8") > 128)) $info .= lng('INCORRECT_LEN_TOPIC');
 		$pl = new User($name,  $bd_users['login']);
 		if(!$pl->id()) $info .= lng('INCORRECT_UNAME');
-		if(!(strlen($info) > 0))BD("INSERT INTO `pm` (`date`, `sender`, `reciver`, `topic`, `text`) VALUES (NOW(), '" . $user->name() . "', '" . $pl->name() . "', '$topic', '$message');");
+		if(!(strlen($info) > 0))BD("INSERT INTO `pm` (`date`, `sender`, `reciver`, `topic`, `text`) VALUES (NOW(), '" . $user->name() . "', '" . $pl->name() . "', '$topic', '" . TextBase::SQLSafe($message) . "');");
 		if((strlen($info) > 0)) $info = View::Alert($info);
 			else $info = View::Alert(lng('SENT_SUCCESS'), 'success');
 	}
@@ -46,8 +45,8 @@ case 'view':
 	$query = BD("SELECT * FROM `pm` WHERE `id`=$id");
 	if(!mysql_num_rows($query)) accss_deny();
 	$pm = mysql_fetch_assoc($query,0);
-	$pm['text'] = Message::BBDecode($pm['text']);
-	$pm['text'] = nl2br($pm['text']);
+	$pm['stext'] = Message::BBDecode($pm['text']);
+	$pm['stext'] = nl2br($pm['stext']);
 	if(($user->name() != $pm['reciver']) and ($user->name() != $pm['sender']))
 		accss_deny();
 	if(($user->name() == $pm['reciver']) and (1 != $pm['viewed']))

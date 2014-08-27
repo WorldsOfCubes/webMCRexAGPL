@@ -1,71 +1,75 @@
-
+<script src="<?php View::URL('js/prefix.js') ?>"></script>
 <form autocomplete="off" id="prefix-update" class="form-horizontal" action="action.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="method" value="prefix" /> 
 		<div class="form-group">
-   <label class="col-lg-2 control-label" for="prefix">Настройки префикса:</label>
-   <div class="col-lg-10" id="prefix">
+   <label class="col-lg-2 control-label" for="prefix_set">Настройки префикса:</label>
+   <div class="col-lg-10" id="prefix_set">
    <div class="input-group">
-  <SELECT NAME="prefcolor" class="form-control" style="width:110px;color:black">
-<OPTION value = "&0" style="background: black; color:white;">Черный
-<OPTION value = "&1" style="background: navy">Темно-синий
-<OPTION value = "&2" style="background: green">Темно-зеленый
-<OPTION value = "&3" style="background: teal">Голубой
-<OPTION value = "&4" style="background: maroon">Бордовый
-<OPTION value = "&5" style="background: purple">Пурпурный
-<OPTION value = "&6" style="background: olive">Хаки
-<OPTION value = "&7" style="background: silver">Светло-серый
-<OPTION value = "&8" style="background: gray">Темно-серый
-<OPTION value = "&9" style="background: BLUE">Синий
-<OPTION value = "&a" style="background: lime">Зеленый
-<OPTION value = "&b" style="background: aqua">Бирюзовый
-<OPTION value = "&c" style="background: red">Красный
-<OPTION value = "&d" style="background: fuchsia">Розовый
-<OPTION value = "&e" style="background: yellow">Желтый
-<OPTION value = "&f" style="background: white">Белый
+  <SELECT NAME="prefcolor" id="prefix_color" class="form-control" style="width:110px;color:black">
+<OPTION value = "&amp;0" style="background: black; color:white;">Черный
+<OPTION value = "&amp;1" style="background: navy">Темно-синий
+<OPTION value = "&amp;2" style="background: green">Темно-зеленый
+<OPTION value = "&amp;3" style="background: teal">Голубой
+<OPTION value = "&amp;4" style="background: maroon">Бордовый
+<OPTION value = "&amp;5" style="background: purple">Пурпурный
+<OPTION value = "&amp;6" style="background: olive">Хаки
+<OPTION value = "&amp;7" style="background: silver">Светло-серый
+<OPTION value = "&amp;8" style="background: gray">Темно-серый
+<OPTION value = "&amp;9" style="background: BLUE">Синий
+<OPTION value = "&amp;a" style="background: lime">Зеленый
+<OPTION value = "&amp;b" style="background: aqua">Бирюзовый
+<OPTION value = "&amp;c" style="background: red">Красный
+<OPTION value = "&amp;d" style="background: fuchsia">Розовый
+<OPTION value = "&amp;e" style="background: yellow">Желтый
+<OPTION value = "&amp;f" style="background: white">Белый
 </SELECT>
   <span class="input-group-addon">[</span>
-<INPUT TYPE="text" class="form-control" NAME="pref" SIZE="8" MAXLENGTH="10" style="width:90px;" placeholder="Префикс">
-  <span class="input-group-addon">]</span><SELECT NAME="nickcolor" class="form-control" style="width:110px;color:black">
-<OPTION value = "&0" style="background: black; color:white;">Черный
-<OPTION value = "&1" style="background: navy">Темно-синий
-<OPTION value = "&2" style="background: green">Темно-зеленый
-<OPTION value = "&3" style="background: teal">Голубой
-<OPTION value = "&4" style="background: maroon">Бордовый
-<OPTION value = "&5" style="background: purple">Пурпурный
-<OPTION value = "&6" style="background: olive">Хаки
-<OPTION value = "&7" style="background: silver">Светло-серый
-<OPTION value = "&8" style="background: gray">Темно-серый
-<OPTION value = "&9" style="background: BLUE">Синий
-<OPTION value = "&a" style="background: lime">Зеленый
-<OPTION value = "&b" style="background: aqua">Бирюзовый
-<OPTION value = "&c" style="background: red">Красный
-<OPTION value = "&d" style="background: fuchsia">Розовый
-<OPTION value = "&e" style="background: yellow">Желтый
-<OPTION value = "&f" style="background: white">Белый
+<INPUT TYPE="text" class="form-control" NAME="pref" SIZE="8" MAXLENGTH="10" style="width:90px;" id="prefix" placeholder="Префикс">
+  <span class="input-group-addon">]</span><SELECT NAME="nickcolor" id="name_color" class="form-control" style="width:110px;color:black">
+<OPTION value = "&amp;0" style="background: black; color:white;">Черный
+<OPTION value = "&amp;1" style="background: navy">Темно-синий
+<OPTION value = "&amp;2" style="background: green">Темно-зеленый
+<OPTION value = "&amp;3" style="background: teal">Голубой
+<OPTION value = "&amp;4" style="background: maroon">Бордовый
+<OPTION value = "&amp;5" style="background: purple">Пурпурный
+<OPTION value = "&amp;6" style="background: olive">Хаки
+<OPTION value = "&amp;7" style="background: silver">Светло-серый
+<OPTION value = "&amp;8" style="background: gray">Темно-серый
+<OPTION value = "&amp;9" style="background: BLUE">Синий
+<OPTION value = "&amp;a" style="background: lime">Зеленый
+<OPTION value = "&amp;b" style="background: aqua">Бирюзовый
+<OPTION value = "&amp;c" style="background: red">Красный
+<OPTION value = "&amp;d" style="background: fuchsia">Розовый
+<OPTION value = "&amp;e" style="background: yellow">Желтый
+<OPTION value = "&amp;f" style="background: white">Белый
 </SELECT>
   <span class="input-group-addon" style="width:100%">Ник</span>
-<SELECT NAME="textcolor" class="form-control" style="width:110px;color:black">
-<OPTION value = "&0" style="background: black; color:white;">Черный
-<OPTION value = "&1" style="background: navy">Темно-синий
-<OPTION value = "&2" style="background: green">Темно-зеленый
-<OPTION value = "&3" style="background: teal">Голубой
-<OPTION value = "&4" style="background: maroon">Бордовый
-<OPTION value = "&5" style="background: purple">Пурпурный
-<OPTION value = "&6" style="background: olive">Хаки
-<OPTION value = "&7" style="background: silver">Светло-серый
-<OPTION value = "&8" style="background: gray">Темно-серый
-<OPTION value = "&9" style="background: BLUE">Синий
-<OPTION value = "&a" style="background: lime">Зеленый
-<OPTION value = "&b" style="background: aqua">Бирюзовый
-<OPTION value = "&c" style="background: red">Красный
-<OPTION value = "&d" style="background: fuchsia">Розовый
-<OPTION value = "&e" style="background: yellow">Желтый
-<OPTION value = "&f" style="background: white">Белый
+<SELECT NAME="textcolor" class="form-control" id="mess_color" style="width:110px;color:black">
+<OPTION value = "&amp;0" style="background: black; color:white;">Черный
+<OPTION value = "&amp;1" style="background: navy">Темно-синий
+<OPTION value = "&amp;2" style="background: green">Темно-зеленый
+<OPTION value = "&amp;3" style="background: teal">Голубой
+<OPTION value = "&amp;4" style="background: maroon">Бордовый
+<OPTION value = "&amp;5" style="background: purple">Пурпурный
+<OPTION value = "&amp;6" style="background: olive">Хаки
+<OPTION value = "&amp;7" style="background: silver">Светло-серый
+<OPTION value = "&amp;8" style="background: gray">Темно-серый
+<OPTION value = "&amp;9" style="background: BLUE">Синий
+<OPTION value = "&amp;a" style="background: lime">Зеленый
+<OPTION value = "&amp;b" style="background: aqua">Бирюзовый
+<OPTION value = "&amp;c" style="background: red">Красный
+<OPTION value = "&amp;d" style="background: fuchsia">Розовый
+<OPTION value = "&amp;e" style="background: yellow">Желтый
+<OPTION value = "&amp;f" style="background: white">Белый
 </SELECT>
 </div>
+       <div class="col-lg-10prev-pref">
+           <span id="prefix_view" style="color: black"></span>
+           <span id="nick_view" style="color: black"><? echo $player ?>:</span>
+           <span id="text_view" style="color: black"> Текст сообщения</span>
+       </div>
 
-
-</div></div>
+   </div></div>
 
 			<div class="form-group">
                <div class="col-lg-offset-2 col-lg-10">

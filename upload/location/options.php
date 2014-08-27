@@ -155,49 +155,73 @@ if ($user->group() != 4 ) {
 	}
 
 	if(isset($_POST['goprem'])) {
-		if($player_money >= $donate['premiumcash']){
-			$unixtime = time();
-			$A=$unixtime;
-			$B=2678400;
-			$pexdate=$A+$B;
-			$expdate = date('d-m-Y H:i:s', $pexdate);
-			$user->changeGroup(6);
-			$player_group = "Premium";
-			BD("DELETE FROM `permissions` WHERE `name`='$player';");
-			BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-premium-until', ' ', '$pexdate')");
-			$user->addMoney(0 - $donate['premiumcash']);
-			$player_money -= $donate['premiumcash'];
-			$message = View::Alert("Вы успешно купили Premium! Спасибо за помощь проекту!", 'success');
-		}else{
-			$message = View::Alert("К сожалению у вас недостаточно средств, пополните счет!");
+		if ($user->lvl()<5) {
+			if($player_money >= $donate['premiumcash']) {
+				$unixtime = time();
+				$A=$unixtime;
+				$B=2678400;
+				$pexdate=$A+$B;
+				$expdate = date('d-m-Y H:i:s', $pexdate);
+				$user->changeGroup(6);
+				$player_group = "Premium";
+				BD("DELETE FROM `permissions` WHERE `name`='$player';");
+				BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-premium-until', ' ', '$pexdate')");
+				$user->addMoney(0 - $donate['premiumcash']);
+				$player_money -= $donate['premiumcash'];
+				$message = View::Alert("Вы успешно купили Premium! Спасибо за помощь проекту!", 'success');
+			}else{
+				$message = View::Alert("К сожалению у вас недостаточно средств, пополните счет!");
+			}
+		} elseif ($user->lvl()==5) {
+			if($player_money >= $donate['premiumcash'] / 2) {
+				$unixtime = time();
+				$A=$unixtime;
+				$B=2678400;
+				$pexdate=$A+$B;
+				$expdate = date('d-m-Y H:i:s', $pexdate);
+				$user->changeGroup(6);
+				$player_group = "Premium";
+				BD("DELETE FROM `permissions` WHERE `name`='$player';");
+				BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-premium-until', ' ', '$pexdate')");
+				$user->addMoney(0 - ($donate['premiumcash'] / 2));
+				$player_money -= $donate['premiumcash'] / 2;
+				$message = View::Alert("Вы успешно купили Premium! Спасибо за помощь проекту!", 'success');
+			}else{
+				$message = View::Alert("К сожалению у вас недостаточно средств, пополните счет!");
+			}
 		}
 	}
-	
-	
-	ob_start();	
-	
+
+
+	ob_start();
+
 	if ($user->getPermission('change_skin'))  include View::Get('profile_skin.html', $prefix);
-	if ($user->getPermission('change_skin')   and !$user->defaultSkinTrigger()) 
-											  include View::Get('profile_del_skin.html', $prefix); 
-	if ($user->getPermission('change_cloak')) include View::Get('profile_cloak.html', $prefix);
-		else include View::Get('profile_cloak_buy.html', $prefix);
-	if ($user->getPermission('change_cloak')  and file_exists($user->getCloakFName())) 
-											  include View::Get('profile_del_cloak.html', $prefix);  
+	if ($user->getPermission('change_skin')   and !$user->defaultSkinTrigger())
+											  include View::Get('profile_del_skin.html', $prefix);
+	if ($user->getPermission('change_cloak')) {
+		include View::Get('profile_cloak.html', $prefix);
+	} else include View::Get('profile_cloak_buy.html', $prefix);
+	if ($user->getPermission('change_cloak')  and file_exists($user->getCloakFName()))
+											  include View::Get('profile_del_cloak.html', $prefix);
 	if ($user->getPermission('change_login')) include View::Get('profile_nik.html', $prefix);
 	if ($user->getPermission('change_pass'))  include View::Get('profile_pass.html', $prefix);
 
 	$profile_inputs = ob_get_clean();
-	
-	ob_start(); 
-	if ($user->lvl() > 6) include View::Get('profile_prefix.html', $prefix);
+
+	ob_start();
+	if ($user->lvl() >= 6) include View::Get('profile_prefix.html', $prefix);
 		else include View::Get('profile_prefix_buy.html', $prefix);
 	$profile_prefix = ob_get_clean();
-	
+	ob_start();
+	if ($user->lvl() == 6) include View::Get('profile_donate_buttons_premium.html', $prefix);
+		elseif ($user->lvl() == 5) include View::Get('profile_donate_buttons_vip.html', $prefix);
+		elseif ($user->lvl() == 2) include View::Get('profile_donate_buttons_default.html', $prefix);
+	$profile_donate_btns = ob_get_clean();
+
 	loadTool('profile.class.php'); $user_profile = new Profile($user, 'other/', 'profile', true);
-	$profile_info = $user_profile->Show(false); 
-	
+	$profile_info = $user_profile->Show(false);
+
 	ob_start(); include View::Get('profile.html', $prefix);
 
 	$content_main .= ob_get_clean();
-} 	
-?>
+}

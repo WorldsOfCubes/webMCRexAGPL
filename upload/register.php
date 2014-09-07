@@ -128,9 +128,10 @@ if (empty($login) || empty($pass) || empty($repass) || empty($_POST['email'])) a
 	if ($next_reg  > 0) 
 	BD("INSERT INTO `{$bd_names['ip_banning']}` (`IP`,`time_start`,`ban_until`) VALUES ('".TextBase::SQLSafe($_SERVER['REMOTE_ADDR'])."',NOW(),NOW()+INTERVAL $next_reg HOUR)");
 	
-	if (!$verification)
-		aExit(0, lng('REG_COMPLETE') . '. <a href="#" class="btn" onclick="Login();">'.lng('ENTER').'</a>');						   			    
-	else {	
+	if (!$verification) {
+		$tmp_user->changeEmail($email);
+		aExit(0, lng('REG_COMPLETE') . '. <a href="#" class="btn btn-success" onclick="Login();">'.lng('ENTER').'</a>');
+	} else {
 				
 		if ( $tmp_user->changeEmail($email, true) > 1 ) aExit(14, lng('MAIL_FAIL'));
 	

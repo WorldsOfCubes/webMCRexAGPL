@@ -152,7 +152,7 @@ switch ($method) {
 	     
 		$new_pass = randString(8);
 	   
-	    $subject = lng('RESTORE_TITLE');
+	    $subject = lng('RESTORE_TITLE') . ' - '. sqlConfigGet('email-name');
 		$message = '<html><body><p>'.lng('RESTORE_TITLE').'. '.lng('RESTORE_NEW').' '.lng('LOGIN').': '.$restore_user->name().'. '.lng('PASS').': '.$new_pass.'</p></body></html>';
 		
 		if ( !EMail::Send($email, $subject, $message) ) aExit(4, lng('MAIL_FAIL'));

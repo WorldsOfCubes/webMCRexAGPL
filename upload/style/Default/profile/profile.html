@@ -5,108 +5,108 @@
 <div class="block-header">Настройки аккаунта</div>
 <div class="block-line"></div>
 
-    <div class="navbar navbar-default" role="navigation">
-        <div class="navbar-header">
+	<div class="navbar navbar-default" role="navigation">
+		<div class="navbar-header">
 			<div class="navbar-brand"><?php echo $player; ?></div>
-            <ul class="nav navbar-nav">
-               <li class="active"><a href="#tab1" data-toggle="tab">Информация</a></li>
-               <li><a href="#tab2" data-toggle="tab">Настройки</a></li>
-               <li><a href="#tab3" data-toggle="tab">Донат</a></li>
-            </ul>
-        </div>
-    </div>
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="#tab1" data-toggle="tab">Информация</a></li>
+				<li><a href="#tab2" data-toggle="tab">Настройки</a></li>
+				<li><a href="#tab3" data-toggle="tab">Донат</a></li>
+			</ul>
+		</div>
+	</div>
 
 	<div class="tabbable" style="display: inline-block;"><div class="tab-content">
-	  
+
 		<div class="tab-pane active" id="tab1" style="margin-top: 6px;">
-			
+
 			<?php echo $profile_info ?>
-			
-		</div>        
+
+		</div>
 
 		<div class="tab-pane" id="tab2" >
-		
+
 		<form id="profile-update" autocomplete="off" action="action.php" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
 
-            <input type="hidden" name="method" value="profile" /> 
+			<input type="hidden" name="method" value="profile" />
 
-            <?php echo $profile_inputs ?>
-                
-             <div class="form-group">
-               <div class="col-lg-offset-2 col-lg-10">
-                 <input id="profile-button" class="btn btn-default" type="submit" onclick="UpdateProfile(); return false" value="Изменить" />
-               </div>
-             </div> 
-			 
-        </form>
-            <?php echo $profile_prefix ?>
-		
+			<?php echo $profile_inputs ?>
+
+			 <div class="form-group">
+				<div class="col-lg-offset-2 col-lg-10">
+					<input id="profile-button" class="btn btn-default" type="submit" onclick="UpdateProfile(); return false" value="Изменить" />
+				</div>
+			 </div>
+
+		</form>
+			<?php echo $profile_prefix ?>
+
 		</div>
-	  
+
 		<div class="tab-pane" id="tab3" style="margin-top: 6px;">
-			
-			
+
+
 <b>Ваш статус:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <?php echo $player_group ?><br>
 <b>Донат-счет:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <?php echo $player_money ?> руб.<br>
-<b>Игровой счет:</b>&nbsp;&nbsp;&nbsp;&nbsp; <?php echo $player_econ ?>$
+<b>Игровой счет:</b>&nbsp;&nbsp; <?php echo $player_econ ?>$
 <br>
 
-            <?php echo $profile_donate_btns ?>
-    <center><div class="btn-group"><a href="#donate" role="button" class="btn btn-default" data-toggle="modal">Пополнить счет</a>
+			<?php echo $profile_donate_btns ?>
+	<center><div class="btn-group"><a href="#donate" role="button" class="btn btn-default" data-toggle="modal">Пополнить счет</a>
 <a href="#exchange" role="button" class="btn btn-default" data-toggle="modal">Обмен валют</a></div></center>
-    <div class="modal fade" id="donate" tabindex="-1" role="dialog" aria-labelledby="donateLabel" aria-hidden="true" style="display:none">
+	<div class="modal fade" id="donate" tabindex="-1" role="dialog" aria-labelledby="donateLabel" aria-hidden="true" style="display:none">
   <div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="donateLabel">Укажите сумму</h3>
-        </div>
-        <form target="_blank" name="payment" method="post" action="https://sci.interkassa.com/" enctype="utf-8">
-            <div class="modal-body">
-                <input type="hidden" name="ik_co_id" value="<?php echo ($donate['shop_id']); ?>">
-                <div class="input-group">
-                    <input class="input-medium form-control" id="appendedPrependedInput" size="16" type="number" name="ik_am"><span class="input-group-addon">р.</span>
-                </div>
-                <input type="hidden" name="ik_pm_no" value="<?php echo ($user->name()); ?>">
-                <input type="hidden" name="ik_desc" value="Пополнение счета игрока"><br>
-                Внимание! Вы сейчас будете перенаправлены на сайт платежной системы Interkassa. Если деньги не пришли, обратитесь к онлайн-консультанту этой системы.
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal">Отмена</button>
-                <button class="btn btn-default btn-primary" value="Пополнить">Пополнить</button>
-            </div>
-        </form>
-    </div>
-    </div>
-    </div>
-    <div class="modal fade" id="exchange" tabindex="-1" role="dialog" aria-labelledby="exchangeLabel" aria-hidden="true">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="donateLabel">Укажите сумму</h3>
+		</div>
+		<form target="_blank" name="payment" method="post" action="https://sci.interkassa.com/" enctype="utf-8">
+			<div class="modal-body">
+				<input type="hidden" name="ik_co_id" value="<?php echo ($donate['shop_id']); ?>">
+				<div class="input-group">
+					<input class="input-medium form-control" id="appendedPrependedInput" size="16" type="number" name="ik_am"><span class="input-group-addon">р.</span>
+				</div>
+				<input type="hidden" name="ik_pm_no" value="<?php echo ($user->name()); ?>">
+				<input type="hidden" name="ik_desc" value="Пополнение счета игрока"><br>
+				Внимание! Вы сейчас будете перенаправлены на сайт платежной системы Interkassa. Если деньги не пришли, обратитесь к онлайн-консультанту этой системы.
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-default" data-dismiss="modal">Отмена</button>
+				<button class="btn btn-default btn-primary" value="Пополнить">Пополнить</button>
+			</div>
+		</form>
+	</div>
+	</div>
+	</div>
+	<div class="modal fade" id="exchange" tabindex="-1" role="dialog" aria-labelledby="exchangeLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
-    <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="exchangeLabel">Обмен на внутриигровую валюту</h3>
-    </div>
+	<div class="modal-content">
+	<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h3 id="exchangeLabel">Обмен на внутриигровую валюту</h3>
+	</div>
 <form method="post">
-    <div class="modal-body">
+	<div class="modal-body">
 1 рубль = <?php echo ($donate['exchangehow']); ?> $<br>
 <div class="input-group">
-    <input class="input-medium form-control" id="appendedPrependedInput" size="16" type="number" name="wantby" placeholder="Сумма с донат счета"><span class="input-group-addon">р.</span>
+	<input class="input-medium form-control" id="appendedPrependedInput" size="16" type="number" name="wantby" placeholder="Сумма с донат счета"><span class="input-group-addon">р.</span>
 </div>
-    </div>
-    <div class="modal-footer">
-    <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Отмена</button>
-    <input TYPE="submit" class="btn btn-primary" name="buym" value="Обмен">
-    </div>
+	</div>
+	<div class="modal-footer">
+	<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Отмена</button>
+	<input TYPE="submit" class="btn btn-primary" name="buym" value="Обмен">
+	</div>
 </form>
-    </div>
-    </div>
-    </div><br>
+	</div>
+	</div>
+	</div><br>
 <p style="color:red"> <b>Внимание!</b> В случае вайпа администрация за утерянные деньги/статусы ответственности не несет и не возмещает их!
 <p> Подробнее о VIP и Premium статусах можно узнать на специальной <a href= "go/donate">странице</a>.
 <p> Продление статуса в 2 раза дешевле его покупки!
-			
-		</div>   
-		
-	</div></div>	
-	
+
+		</div>
+
+	</div></div>
+
 </div>

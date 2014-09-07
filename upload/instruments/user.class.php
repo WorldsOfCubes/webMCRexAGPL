@@ -111,7 +111,7 @@ private $posts;
 		$last_active = $this->getStatisticTime('active_last');
 		if ( !$last_active ) return false;
 
-		if ( time() - strtotime($last) > 300 ) return false;
+		if ( time() - strtotime($last_active) > 300 ) return false;
 		
 		return true;
 	}
@@ -628,21 +628,21 @@ private $posts;
 		
 		if ($verification) {
 		
-			$subject = lng('REG_CONFIRM').' '.$_SERVER['SERVER_NAME'];
+			$subject = lng('MAIL_CONFIRM') . ' - '. sqlConfigGet('email-name');
 			$http_link = 'http://'.$_SERVER['SERVER_NAME'].BASE_URL.'register.php?id='.$this->id().'&verificate='.$this->getVerificationStr(); 
-			$message = '<html><body><p>'.lng('REG_CONFIRM_MES').'. <a href="'.$http_link.'">'.lng('OPEN').'</a></p></body></html>';
+			$message = '<html><body><p>'.lng('MAIL_CONFIRM_MES').'. <a href="'.$http_link.'">'.lng('OPEN').'</a></p><p>'.lng('MAIL_CONFIRM_MES_END').'</p></body></html>';
 		
 			$send_result = EMail::Send($email, $subject, $message);
 			
 			if ($verification and !$send_result) return 1903;
 		}
 
-		if ($email != $this->email) 
-			
-			BD("UPDATE {$this->db} SET `{$bd_users['email']}`='".TextBase::SQLSafe($email)."' WHERE `{$bd_users['id']}`='".$this->id."'"); 
+		if ($email != $this->email)
+
+			BD("UPDATE {$this->db} SET `{$bd_users['email']}`='".TextBase::SQLSafe($email)."' WHERE `{$bd_users['id']}`='".$this->id."'");
 		
-		$this->email = $email;		
-		
+		$this->email = $email;
+
 		return 1;
 	}
 	

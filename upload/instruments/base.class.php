@@ -624,7 +624,7 @@ private $menu_fname;
 		    $menu_content .= $this->ShowItem($value, 'menu/menu_item');
 		}
 		
-		$menu_align = ($i == 1) ? 'pull-right' : 'pull-left';
+		$menu_align = ($i == 1) ? 'navbar-right' : 'navbar-left';
 		
 		ob_start(); include $this->GetView('menu/menu.html');
 		

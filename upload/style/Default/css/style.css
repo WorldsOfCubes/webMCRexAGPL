@@ -5,7 +5,7 @@
 /*@import url("../skinPoser/style.css");*/
 
 body {
-    font-size: 13px; 
+    font-size: 13px;
     font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
     /*background: #f5f5f5 url(../img/bg0.png) repeat top left;*/
 }
@@ -22,7 +22,7 @@ textarea {
 /* Bootstrap mod */
 
 .breadcrumb {
-    font-size: 13px; 
+    font-size: 13px;
     padding: 8px 15px;
     margin: 0 0 20px;
     list-style: none;
@@ -60,7 +60,7 @@ textarea {
 
 .antibot {
     position: relative;
-    top: 5px; 
+    top: 5px;
     width: 35px;
 }
 
@@ -71,41 +71,41 @@ textarea {
 }
 
 .smile {
-    display: inline-block; 
+    display: inline-block;
     width: 60px;
     text-align: center;
 }
 
-.info { 
+.info {
     border-bottom: 1px solid #e5e5e5;
     margin-bottom: 2px;
     padding : 4px;
 }
 
-.info .iright { 
+.info .iright {
     display: inline-block;
     text-align : left;
-    width: 128px; 
+    width: 128px;
 }
 
-.info .ileft { 
+.info .ileft {
     display: inline-block;
     font-weight: bold;
     text-align : left;
-    width: 86px; 
+    width: 86px;
 }
 
-.info .longright { 
+.info .longright {
     display: inline-block;
     text-align : left;
-    width: 168px; 
+    width: 168px;
 }
 
-.info .longleft { 
+.info .longleft {
     display: inline-block;
     font-weight: bold;
     text-align : left;
-    width: 138px; 
+    width: 138px;
 }
 
 .skin-block {
@@ -128,14 +128,14 @@ textarea {
     background: #f0f0f0;
     overflow:hidden;
     color: #5e5e5e;
-    
-    position: absolute; 
+
+    position: absolute;
     top: 50%;
     left: 50%;
     margin-left: -320px;
     min-height: 280px;
     width: 640px;
-    
+
     border: 1px solid #868686;
     border-radius: 3px;
     -o-border-radius: 3px;
@@ -163,25 +163,25 @@ textarea {
 /* комментарии - стиль для бантика */
 
 .female {
-    position: absolute;  
+    position: absolute;
     top: 0;
     right: 0;
 }
 
-.female-input { 
+.female-input {
     padding : 6px;
-    font-size: 15px; 
+    font-size: 15px;
 }
-.female-input a { 
+.female-input a {
     margin-left: 10px;
     margin-right: 10px;
 }
 
-.female-input span { 
+.female-input span {
     margin-left: 10px;
 }
 
-.female-input img { 
+.female-input img {
     margin-left: 10px;
     margin-bottom: 2px;
 }
@@ -212,7 +212,7 @@ textarea {
 
 .server-info-header {
     padding : 4px;
-    background: #E8E8E8; 
+    background: #E8E8E8;
     font-size: 14px;
     margin-bottom: 4px;
 }
@@ -300,7 +300,7 @@ a.news-link:hover{
 .comment-container {
     padding-left: 20px;
     padding-top: 10px;
-    margin-left: 20px; 
+    margin-left: 20px;
     margin-bottom: 10px;
     margin-right: 10px;
 }
@@ -327,7 +327,7 @@ a.news-link:hover{
 }
 
 .comment-info {
-    padding-right : 4px; 
+    padding-right : 4px;
     padding-top: 4px;
     margin-bottom: 5px;
 }
@@ -338,9 +338,9 @@ a.news-link:hover{
     min-height: 40px;
     font-size: 14px;
     width: 500px;
-    
-    /* Перенос длинных слов */ 
-    
+
+    /* Перенос длинных слов */
+
     word-wrap: break-word;
 }
 

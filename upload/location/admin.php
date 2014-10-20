@@ -472,7 +472,8 @@ if ($do) {
 	$site_offline	= InputGet('site_offline', 'POST', 'bool');
 	$site_install	= InputGet('site_install', 'POST', 'bool');
 	$smtp			= InputGet('smtp', 'POST', 'bool');
-	
+	$smtp_tls		= InputGet('smtp_tls', 'POST', 'bool');
+
 	$site_about  = (isset($_POST['site_about']))? TextBase::HTMLDestruct($_POST['site_about']) : '';
 	$keywords    = (isset($_POST['site_keyword']))? TextBase::HTMLDestruct($_POST['site_keyword']) : '';	
 	
@@ -545,7 +546,8 @@ if ($do) {
 	$config['offline']		= $site_offline	;
 	$config['install']		= $site_install	;
 	$config['smtp']			= $smtp			;
-	
+	$config['smtp_tls']		= $smtp_tls		;
+
 	if (MainConfig::SaveOptions()) $info .= lng('OPTIONS_COMPLETE');
 	else $info .= lng('WRITE_FAIL').' ( '.MCR_ROOT.'config.php )';	
 

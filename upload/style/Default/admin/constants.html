@@ -59,6 +59,11 @@
 			  <input type="checkbox" name="smtp" value="1" <?php echo ($config['smtp'])?'checked="checked"':'' ?>> Использовать заданые настройки smtp
 			</label>	
 			<span class="help-block">В обход настроеной функции mail из файла php.ini вашего web сервера. </span>
+
+			<label class="checkbox">
+			  <input type="checkbox" name="smtp_tls" value="1" <?php echo ($config['smtp_tls'])?'checked="checked"':'' ?>> Использовать TLS/SSL шифрование
+			</label>
+			<span class="help-block">Включает поддержку TLS/SSL шифрования. Нужно при отправке через сервера Google и Яндекса.</span>
 			
 			<label>Пользователь smtp:</label>
 			<input type="text" class="form-control" style="width:300px" name="smtp_user" value="<?php echo sqlConfigGet('smtp-user') ?>">

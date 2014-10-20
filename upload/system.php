@@ -14,6 +14,12 @@ require(MCR_ROOT.'instruments/locale/'.MCR_LANG.'.php');
 require(MCR_ROOT.'config.php');
 require(MCR_ROOT.'donate.cfg.php');
 
+if(!isset($config['smtp_tls'])){ //Корректная работа после введения поддержки TLS/SSL
+	loadTool("alist.class.php");
+	$config['smtp_tls'] = false;
+	MainConfig::SaveOptions();
+}
+
 require(MCR_ROOT.'instruments/auth/'.$config['p_logic'].'.php');
 
 define('MCRAFT', MCR_ROOT.$site_ways['mcraft']);

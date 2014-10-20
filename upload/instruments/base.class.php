@@ -313,48 +313,59 @@ const ENCODE = 'utf-8';
 		
 		$headers = implode("\r\n", $headers);
 
-		$subject = '=?'.self::ENCODE.'?B?'.base64_encode($subject).'?=';
+		if (!$config['smtp_tls']) $subject = '=?'.self::ENCODE.'?B?'.base64_encode($subject).'?=';
 		
 		return ($config['smtp'])? self::smtpmail($mail_to, $subject, $message, $headers) : mail($mail_to, $subject, $message, $headers);
 	}
 	
 	private static function smtpmail($mail_to, $subject, $message, $headers) {
-		
+		global $config;
 		$smtp_user	= sqlConfigGet('smtp-user');
 		$smtp_pass	= sqlConfigGet('smtp-pass');
 		$smtp_host	= sqlConfigGet('smtp-host');
 		$smtp_port	= (int) sqlConfigGet('smtp-port');
 		$smtp_hello	= sqlConfigGet('smtp-hello');
-		
-		$send = "Date: ".date("D, d M Y H:i:s")." UT\r\n";
-		$send .= "Subject: {$subject}\r\n";			
-		$send .= $headers."\r\n\r\n".$message."\r\n";
+		if ($config['smtp_tls']){
+			loadTool("mail.class.php");
+			$m= new Mail;
+			$m->From(sqlConfigGet('email-name').';'.sqlConfigGet('email-mail'));
+			$m->To($mail_to);
+			$m->Subject($subject);
+			$m->Body($message);
+			$m->Priority(3) ;
+			$m->smtp_on("ssl://".$smtp_host,$smtp_user,$smtp_pass, $smtp_port);
+			return $m->Send();
+		} else {
+			$send = "Date: ".date("D, d M Y H:i:s")." UT\r\n";
+			$send .= "Subject: {$subject}\r\n";
+			$send .= $headers."\r\n\r\n".$message."\r\n";
 
-		if( !$socket = @fsockopen($smtp_host, $smtp_port, $errno, $errstr, 10) ) {
-			vtxtlog('[SMPT] '.$errno." | ".$errstr);
-			return false;
-		}
-		
-		stream_set_timeout($socket, 10);
-		
-		if (!self::server_action($socket, false, "220") or
-			!self::server_action($socket, $smtp_hello." " . $smtp_host . "\r\n", "250", 'Приветствие сервера недоступно')) 
+			if( !$socket = @fsockopen($smtp_host, $smtp_port, $errno, $errstr, 10) ) {
+				vtxtlog('[SMPT] '.$errno." | ".$errstr);
 				return false;
-			
-		if (!empty($smtp_user))
-			if (!self::server_action($socket, "AUTH LOGIN\r\n", "334", 'Нет ответа авторизации') or
-				!self::server_action($socket, base64_encode($smtp_user) . "\r\n", "334", 'Неверный логин авторизации') or
-				!self::server_action($socket, base64_encode($smtp_pass) . "\r\n", "235", 'Неверный пароль авторизации')) 
+			}
+
+			stream_set_timeout($socket, 10);
+
+			if (!self::server_action($socket, false, "220") or
+				!self::server_action($socket, $smtp_hello." " . $smtp_host . "\r\n", "250", 'Приветствие сервера недоступно'))
+				return false;
+
+			if (!empty($smtp_user))
+				if (!self::server_action($socket, "AUTH LOGIN\r\n", "334", 'Нет ответа авторизации') or
+					!self::server_action($socket, base64_encode($smtp_user) . "\r\n", "334", 'Неверный логин авторизации') or
+					!self::server_action($socket, base64_encode($smtp_pass) . "\r\n", "235", 'Неверный пароль авторизации'))
 					return false;
-				
-		if (!self::server_action($socket, "MAIL FROM: <". $smtp_user .">\r\n", "250", 'Ошибка MAIL FROM') or
-			!self::server_action($socket, "RCPT TO: <" . $mail_to . ">\r\n", "250", 'Ошибка RCPT TO') or
-			!self::server_action($socket, "DATA\r\n", "354", 'Ошибка DATA') or
-			!self::server_action($socket, $send."\r\n.\r\n", "250", 'Ошибка сообщения')) 
+
+			if (!self::server_action($socket, "MAIL FROM: <". $smtp_user .">\r\n", "250", 'Ошибка MAIL FROM') or
+				!self::server_action($socket, "RCPT TO: <" . $mail_to . ">\r\n", "250", 'Ошибка RCPT TO') or
+				!self::server_action($socket, "DATA\r\n", "354", 'Ошибка DATA') or
+				!self::server_action($socket, $send."\r\n.\r\n", "250", 'Ошибка сообщения'))
 				return false;
-		
-		self::server_action($socket, "QUIT\r\n"); 
-		return true;
+
+			self::server_action($socket, "QUIT\r\n");
+			return true;
+		}
 	}
 
 	private static function server_action($socket, $command = false, $correct_response = false, $error_mess = false, $line = __LINE__)	{

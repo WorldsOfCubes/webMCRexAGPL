@@ -22,7 +22,7 @@ switch ($mode) { /* Допустимые идентификаторы CMS */
 define('BASE_URL', Root_url());
 
 require_once(MCR_ROOT.'instruments/base.class.php');
-require_once(MCR_ROOT.'instruments/alist.class.php');
+require_once(MCR_ROOT . 'instruments/alist.class.php');
 
 if (file_exists(MCR_ROOT.'config.php')) {
 include MCR_ROOT . 'config.php';
@@ -294,7 +294,7 @@ switch ($step) {
 			$config['rewrite'] = Mode_rewrite();
 			$config['s_root']  = Root_url();
 			
-			if (MainConfig::SaveOptions()) $step = 2; 
+			if (ConfigManager::SaveMainConfig()) $step = 2;
 			else $info = $save_conf_err;	
 
 			
@@ -351,7 +351,7 @@ switch ($step) {
 			
 		if ($mode != 'xauth') BD("UPDATE `{$bd_names['users']}` SET `{$bd_users['group']}`='3' WHERE `{$bd_users['login']}`='$site_user'");	
 		$step = 3; 	
-		MainConfig::SaveOptions();			
+		ConfigManager::SaveMainConfig();
 		
 	} else if (CreateAdmin($site_user)) $step = 3; 		
 	break;
@@ -375,7 +375,7 @@ switch ($step) {
 
 	$config['install']    = false; 
 
-	if (MainConfig::SaveOptions()) $step = 4; 
+	if (ConfigManager::SaveMainConfig()) $step = 4;
 	else $info = $save_conf_err;	
 	
 	}

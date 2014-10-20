@@ -1,4 +1,6 @@
 <?php
+use ConfigManager;
+
 if (!defined('MCR')) exit;
  
 if (empty($user) or $user->lvl() < 15) { accss_deny(); }
@@ -265,7 +267,7 @@ if ($do) {
 			
 		if ($link_win or $link_osx or $link_lin or $game_news) 
 			
-			if (MainConfig::SaveOptions()) $info .= lng('OPTIONS_COMPLETE');
+			if (ConfigManager::SaveMainConfig()) $info .= lng('OPTIONS_COMPLETE');
 			else $info .= lng('WRITE_FAIL').' ( '.MCR_ROOT.'config.php )';
 					
         $game_lver  = sqlConfigGet('protection_key_set');
@@ -548,7 +550,7 @@ if ($do) {
 	$config['smtp']			= $smtp			;
 	$config['smtp_tls']		= $smtp_tls		;
 
-	if (MainConfig::SaveOptions()) $info .= lng('OPTIONS_COMPLETE');
+	if (ConfigManager::SaveMainConfig()) $info .= lng('OPTIONS_COMPLETE');
 	else $info .= lng('WRITE_FAIL').' ( '.MCR_ROOT.'config.php )';	
 
 	sqlConfigSet('email-name', $email_name);
@@ -597,7 +599,7 @@ if ($do) {
 	$donate['ik_secret_key_test']		= InputGet('new_ik_secret_key_test', 'POST', 'str');
 	$donate['ik_testing']			= InputGet('new_ik_testing', 'POST', 'bool');
 	
-	if (DonateConfig::SaveOptions()) $info .= lng('OPTIONS_COMPLETE');
+	if (ConfigManager::SaveDonateConfig()) $info .= lng('OPTIONS_COMPLETE');
 	else $info .= lng('WRITE_FAIL').' ( '.MCR_ROOT.'donate.cfg.php )';
 	}
 	include View::Get('donate.html', $st_subdir); 

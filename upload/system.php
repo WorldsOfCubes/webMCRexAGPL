@@ -17,7 +17,7 @@ require(MCR_ROOT.'donate.cfg.php');
 if(!isset($config['smtp_tls'])){ //Корректная работа после введения поддержки TLS/SSL
 	loadTool("alist.class.php");
 	$config['smtp_tls'] = false;
-	MainConfig::SaveOptions();
+	ConfigManager::SaveMainConfig();
 }
 
 require(MCR_ROOT.'instruments/auth/'.$config['p_logic'].'.php');

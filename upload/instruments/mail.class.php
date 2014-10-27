@@ -34,10 +34,10 @@ class Mail {
 	  кодировка по умолчанию
 	  @var string
 	 */
-	var $charset = "windows-1251";
+	var $charset = "utf-8";
 	var $ctencoding = "8bit";
 	var $receipt = 0;
-	var $text_html = "text/plain"; // формат письма. по умолчанию текстовый
+	var $text_html = "text/html"; // формат письма. по умолчанию HTML
 	var $smtp_on = false;    // отправка через smtp. по умолчанию выключена
 	var $names_email = array(); // имена для email адресов, чтобы делать вид ("Антон" <te@gg.ru>)
 

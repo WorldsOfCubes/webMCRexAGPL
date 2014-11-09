@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('MCR')) exit;
 
 /* Классы
@@ -17,15 +18,15 @@ private $name;
 private $priority;
 
     public function Category($id = false) {
-	global $bd_names;
+	global $db, $bd_names;
 	
 		$this->db = $bd_names['news_categorys']; 
 		$this->id = (int)$id; if (!$this->id) return false;
 
-		$result = BD("SELECT `name`,`priority` FROM `".$this->db."` WHERE `id`='".$this->id."'"); 
-		if ( mysql_num_rows( $result ) != 1 ) { $this->id = false; return false; }
+		$result = $db->execute("SELECT `name`,`priority` FROM `".$this->db."` WHERE `id`='".$this->id."'");
+		if ( $db->num_rows( $result ) != 1 ) { $this->id = false; return false; }
 		
-        $line = mysql_fetch_array( $result, MYSQL_NUM );
+        $line = $db->fetch_array( $result, MYSQL_NUM );
 		
 		$this->name 	= $line[0];
 		$this->priority = (int)$line[1];
@@ -37,18 +38,18 @@ private $priority;
 	}
 	
 	public function Create($name, $priority = 1, $description = '') {
-		
+		global $db;
 	if ($this->Exist()) return false; 
 		      
 		if (!$name or !TextBase::StringLen($name)) return false;
 		
-		$result = BD("SELECT COUNT(*) FROM `".$this->db."` WHERE `name`='".TextBase::SQLSafe($name)."'");
-		$num    = mysql_fetch_array($result, MYSQL_NUM);
+		$result = $db->execute("SELECT COUNT(*) FROM `".$this->db."` WHERE `name`='". $db->safe($name) ."'");
+		$num    = $db->fetch_array($result, MYSQL_NUM);
 		if ($num[0]) return false;				
 		
 		$priority    = (int) $priority;
 
-		if (BD("INSERT INTO `".$this->db."` ( `name`, `priority`, `description`) values ( '".TextBase::SQLSafe($name)."', '".TextBase::SQLSafe($priority)."','".TextBase::SQLSafe($description)."' )"))		
+		if ($db->execute("INSERT INTO `".$this->db."` ( `name`, `priority`, `description`) values ( '". $db->safe($name) ."', '". $db->safe($priority) ."','". $db->safe($description) ."' )"))
 		
 		$this->id = mysql_insert_id();
 		
@@ -72,27 +73,28 @@ private $priority;
 	}
 	
 	public function GetDescription() {
-		$result = BD("SELECT `description` FROM `".$this->db."` WHERE id='".$this->id."'"); 
+		global $db;
+		$result = $db->execute("SELECT `description` FROM `".$this->db."` WHERE id='".$this->id."'");
 
-		if ( mysql_num_rows( $result ) != 1 ) return false;
-        $line = mysql_fetch_array( $result, MYSQL_NUM );
+		if ( $db->num_rows( $result ) != 1 ) return false;
+        $line = $db->fetch_array( $result, MYSQL_NUM );
 		  
 		return $line[0];		
 	}
 	
 	public function Edit($name, $priority = 1, $description = '') {
-		
+		global $db;
 		if (!$this->Exist()) return false; 
 		
 		if (!$name or !TextBase::StringLen($name)) return false;
 		
-		$result = BD("SELECT COUNT(*) FROM `".$this->db."` WHERE `name`='".TextBase::SQLSafe($name)."' and `id`!='".$this->id."'");
-		$num  	= mysql_fetch_array($result, MYSQL_NUM);
+		$result = $db->execute("SELECT COUNT(*) FROM `".$this->db."` WHERE `name`='". $db->safe($name) ."' and `id`!='".$this->id."'");
+		$num  	= $db->fetch_array($result, MYSQL_NUM);
 		if ($num[0]) return false;	
 				
 		$priority    = (int) $priority; 
 		
-		BD("UPDATE `".$this->db."` SET `name`='".TextBase::SQLSafe($name)."',`priority`='".TextBase::SQLSafe($priority)."',`description`='".TextBase::SQLSafe($description)."' WHERE `id`='".$this->id."'"); 		
+		$db->execute("UPDATE `".$this->db."` SET `name`='". $db->safe($name) ."',`priority`='". $db->safe($priority) ."',`description`='". $db->safe($description) ."' WHERE `id`='".$this->id."'");
 		
 		$this->name 	= $name;
 		$this->priority = $priority;
@@ -100,14 +102,14 @@ private $priority;
 	}	
 	
 	public function Delete() {
-	global $bd_names;	
+		global $db, $bd_names;
 
 		if (!$this->Exist() or $this->IsSystem()) return false;
 		
-		$result = BD("SELECT `id` FROM `{$bd_names['news']}` WHERE `category_id`='".$this->id."'"); 
-		if ( mysql_num_rows( $result ) != 0 ) {
+		$result = $db->execute("SELECT `id` FROM `{$bd_names['news']}` WHERE `category_id`='".$this->id."'");
+		if ( $db->num_rows( $result ) != 0 ) {
 	  
-		  while ( $line = mysql_fetch_array( $result, MYSQL_NUM ) ) {
+		  while ( $line = $db->fetch_array( $result, MYSQL_NUM ) ) {
 		  		
 				$news_item = new News_Item($line[0]);
 				$news_item->Delete(); 
@@ -115,7 +117,7 @@ private $priority;
 		  }
 		}
 		
-		BD("DELETE FROM `".$this->db."` WHERE `id`='".$this->id."'");
+		$db->execute("DELETE FROM `".$this->db."` WHERE `id`='".$this->id."'");
 		$this->id = false;
 		return true; 
 	}	
@@ -124,12 +126,12 @@ private $priority;
 Class CategoryManager {
 
 	public static function GetList($selected = 1) {
-	global $bd_names;
+		global $db, $bd_names;
 	
-		$result = BD("SELECT `id`,`name` FROM {$bd_names['news_categorys']} ORDER BY `priority` DESC LIMIT 0,90");  
+		$result = $db->execute("SELECT `id`,`name` FROM {$bd_names['news_categorys']} ORDER BY `priority` DESC LIMIT 0,90");
 		$cat_list = '';
 							
-		while ( $line = mysql_fetch_array( $result, MYSQL_ASSOC ) ) 
+		while ( $line = $db->fetch_array( $result, MYSQL_ASSOC ) )
 		 $cat_list .= '<option value="'.$line['id'].'" '.(($selected == $line['id'])?'selected':'').'>'.$line['name'].'</option>';
 	
     return $cat_list;	
@@ -171,15 +173,15 @@ private $link_work;
 private $comments;
 
 	public function __construct($id = false, $style_sd = false ) {
-	global $bd_names;
+		global $db, $bd_names;
 	
 		parent::__construct($id, ItemType::News, $bd_names['news'], $style_sd);
 		if (!$this->id ) return false;
 		
-		$result = BD("SELECT `category_id`, `title`, `discus`, `comments`, `vote` FROM `{$this->db}` WHERE `id`='".$this->id."'"); 
-		if ( mysql_num_rows( $result ) != 1 ) { $this->id = false; return false; }
+		$result = $db->execute("SELECT `category_id`, `title`, `discus`, `comments`, `vote` FROM `{$this->db}` WHERE `id`='".$this->id."'");
+		if ( $db->num_rows( $result ) != 1 ) { $this->id = false; return false; }
 		
-		$line = mysql_fetch_array( $result, MYSQL_ASSOC );
+		$line = $db->fetch_array( $result, MYSQL_ASSOC );
 		
 		$this->category_id	= (int) $line['category_id'];	
 		$this->title		= $line['title'];	
@@ -195,12 +197,12 @@ private $comments;
 	}
 	
 	public function Create($cat_id, $title, $message, $message_full = false, $vote = true, $discus = true) {
-	global $user;	
+		global $db, $user;
 		
 		if ($this->Exist() or empty($user) or !$user->getPermission('add_news')) return false; 
 					
 	    $sql = ''; $sql2 = '';		
-	    if ( $message_full ) { $sql = ' `message_full`,'; $sql2 = "'".TextBase::SQLSafe($message_full)."', "; }
+	    if ( $message_full ) { $sql = ' `message_full`,'; $sql2 = "'". $db->safe($message_full) ."', "; }
 		
 		$cat_id = (int) $cat_id;
 		if (!CategoryManager::ExistByID($cat_id)) return false; 
@@ -208,7 +210,7 @@ private $comments;
 		$vote  = ($vote) ? 1 : 0;
 		$discus	= ($discus) ? 1 : 0;
 		
-		BD("INSERT INTO `{$this->db}` ( `title`, `message`, ".$sql." `time`, `category_id`, `user_id`, `discus`, `vote`) VALUES ( '".TextBase::SQLSafe($title)."', '".TextBase::SQLSafe($message)."', ".$sql2."NOW(), '".TextBase::SQLSafe($cat_id)."', '".$user->id()."', '".$discus."', '".$vote."' )");
+		$db->execute("INSERT INTO `{$this->db}` ( `title`, `message`, ".$sql." `time`, `category_id`, `user_id`, `discus`, `vote`) VALUES ( '". $db->safe($title) ."', '". $db->safe($message) ."', ".$sql2."NOW(), '". $db->safe($cat_id) ."', '".$user->id()."', '".$discus."', '".$vote."' )");
 		
 		$this->id = mysql_insert_id();
 		
@@ -234,18 +236,18 @@ private $comments;
 	}	
 	
 	public function OnComment() {
-	
+		global $db;
 		if ( !$this->Exist()) return false;
 		
-		BD("UPDATE `{$this->db}` SET `comments` = comments + 1 WHERE `id`='". $this->id ."'");	
+		$db->execute("UPDATE `{$this->db}` SET `comments` = comments + 1 WHERE `id`='". $this->id ."'");
 		$this->comments++;
 	}
 	
 	public function OnDeleteComment() {
-	
+		global $db;
 		if ( !$this->Exist()) return false;
 		
-		BD("UPDATE `{$this->db}` SET `comments` = comments - 1 WHERE `id`='". $this->id ."'");	
+		$db->execute("UPDATE `{$this->db}` SET `comments` = comments - 1 WHERE `id`='". $this->id ."'");
 		$this->comments--;
 	}
 	
@@ -259,13 +261,14 @@ private $comments;
         return $this->title;		
 	}
 	
-	public function getInfo() { 
+	public function getInfo() {
+		global $db;
 		if (!$this->Exist()) return false; 
 		
-		$result = BD("SELECT `message`, `message_full` FROM `{$this->db}` WHERE `id`='".$this->id."'"); 
-		if (!mysql_num_rows( $result )) return ''; 
+		$result = $db->execute("SELECT `message`, `message_full` FROM `{$this->db}` WHERE `id`='".$this->id."'");
+		if (!$db->num_rows( $result )) return '';
 		
-		$line = mysql_fetch_array($result, MYSQL_ASSOC);
+		$line = $db->fetch_array($result, MYSQL_ASSOC);
 		
 		return array (	'id' 		=> $this->id,
 						'type' 		=> $this->type(),
@@ -279,7 +282,7 @@ private $comments;
 	}
 	
 	public function Show($full_text = false) {
-    global $config, $user, $bd_names;
+		global $db, $config, $user, $bd_names;
 	
 	if (!$this->Exist()) return $this->ShowPage('news_not_found.html');
 		
@@ -289,16 +292,16 @@ private $comments;
 		
 		if ( $full_text ) {
 		
-			BD("UPDATE `{$this->db}` SET `hits` = LAST_INSERT_ID( `hits` + 1 ) WHERE `id`='".$this->id."'");
+			$db->execute("UPDATE `{$this->db}` SET `hits` = LAST_INSERT_ID( `hits` + 1 ) WHERE `id`='".$this->id."'");
 			$sql_hits = " LAST_INSERT_ID() AS hits,"; 
 		}
 		
 		$sql_likes = ( $this->vote ) ? ' `likes`, `dislikes`,' : '';
 		
-		$result = BD("SELECT DATE_FORMAT(time,'%d.%m.%Y') AS `date`, DATE_FORMAT(time,'%H:%i') AS `time`, ".$sql_hits.$sql_likes.$sql_text." `message` FROM `{$this->db}` WHERE `id`='".$this->id."'"); 
-		if (!mysql_num_rows( $result )) return ''; 
+		$result = $db->execute("SELECT DATE_FORMAT(time,'%d.%m.%Y') AS `date`, DATE_FORMAT(time,'%H:%i') AS `time`, ".$sql_hits.$sql_likes.$sql_text." `message` FROM `{$this->db}` WHERE `id`='".$this->id."'");
+		if (!$db->num_rows( $result )) return '';
 		
-		$line = mysql_fetch_array($result, MYSQL_ASSOC);
+		$line = $db->fetch_array($result, MYSQL_ASSOC);
 		
 		if ($full_text) $line['message_full'] = TextBase::CutWordWrap($line['message_full']);
 		$line['message'] = TextBase::CutWordWrap($line['message']);
@@ -377,7 +380,7 @@ private $comments;
 	}
 	
 	public function Edit($cat_id, $title, $message, $message_full = false, $vote = true, $discus = true ) {
-	global $user;
+		global $db, $user;
 		
 		if (!$this->Exist() or empty($user) or !$user->getPermission('add_news')) return false; 
 		
@@ -389,7 +392,7 @@ private $comments;
 		$vote   = ($vote)   ? 1 : 0;
 		$discus	= ($discus) ? 1 : 0;
 		
-		BD("UPDATE `{$this->db}` SET `message`='".TextBase::SQLSafe($message)."',`title`='".TextBase::SQLSafe($title)."',`message_full`='".TextBase::SQLSafe($message_full)."',`category_id`='".TextBase::SQLSafe($cat_id)."', `discus`='".$discus."', `vote`='".$vote."' WHERE `id`='".$this->id."'"); 		
+		$db->execute("UPDATE `{$this->db}` SET `message`='". $db->safe($message) ."',`title`='". $db->safe($title) ."',`message_full`='". $db->safe($message_full) ."',`category_id`='". $db->safe($cat_id) ."', `discus`='".$discus."', `vote`='".$vote."' WHERE `id`='".$this->id."'");
 		
 		$this->category_id 	= (int)$cat_id;
 		$this->title 		= $title;
@@ -402,17 +405,17 @@ private $comments;
 		
 	public function Delete() {
 	global $user, $bd_names;
-	
+		global $db;
 		if (empty($user) or 
 		    !$user->getPermission('add_news') or 
 			!$this->Exist()) return false; 
 		
-		$result = BD("SELECT id FROM `{$bd_names['comments']}` WHERE `item_id`='".$this->id."' AND `item_type` = '". $this->type() ."'"); 
-		if ( mysql_num_rows( $result ) != 0 ) {
+		$result = $db->execute("SELECT id FROM `{$bd_names['comments']}` WHERE `item_id`='".$this->id."' AND `item_type` = '". $this->type() ."'");
+		if ( $db->num_rows( $result ) != 0 ) {
 	  
 		loadTool('comment.class.php');
 	  
-		  while ( $line = mysql_fetch_array( $result, MYSQL_NUM ) ) {
+		  while ( $line = $db->fetch_array( $result, MYSQL_NUM ) ) {
 		  		
 				$comments_item = new Comments_Item($line[0], false);
 				$comments_item->Delete(); 
@@ -420,7 +423,7 @@ private $comments;
 		  }
 		}
 	
-		BD("DELETE FROM `{$bd_names['likes']}` WHERE `item_id` = '".$this->id."' AND `item_type` = '". $this->type() ."'");
+		$db->execute("DELETE FROM `{$bd_names['likes']}` WHERE `item_id` = '".$this->id."' AND `item_type` = '". $this->type() ."'");
 		
 		return parent::Delete(); 
 	}	
@@ -557,7 +560,7 @@ private $category_id;
 	}
 
 	public function ShowNewsListing($list = 1) {
-	global $bd_names,$config;
+		global $db, $bd_names,$config;
 
     $sql = '';
     if ( $this->category_id > 0 ) $sql = ' WHERE category_id='.$this->category_id.' ';	
@@ -578,8 +581,8 @@ private $category_id;
 	$html_news = ob_get_clean();
     $news_pnum  = $config['news_by_page'];
 	
-	$result = BD("SELECT COUNT(*) FROM `{$bd_names['news']}`".$sql);
-	$line = mysql_fetch_array($result, MYSQL_NUM );
+	$result = $db->execute("SELECT COUNT(*) FROM `{$bd_names['news']}`".$sql);
+	$line = $db->fetch_array($result, MYSQL_NUM );
 		  
 	$newsnum = $line[0];	
 	if (!$newsnum) {
@@ -588,11 +591,11 @@ private $category_id;
 	return $html_news;	
 	}
 	
-	$result = BD("SELECT id FROM `{$bd_names['news']}`".$sql."ORDER by time DESC LIMIT ".($news_pnum*($list-1)).",".$news_pnum);
+	$result = $db->execute("SELECT id FROM `{$bd_names['news']}`".$sql."ORDER by time DESC LIMIT ".($news_pnum*($list-1)).",".$news_pnum);
 
-	if ( mysql_num_rows( $result ) != 0 ) {
+	if ( $db->num_rows( $result ) != 0 ) {
 
-		  while ( $line = mysql_fetch_array( $result , MYSQL_NUM ) ) {
+		  while ( $line = $db->fetch_array( $result , MYSQL_NUM ) ) {
 		  
 		         $news_item = new News_Item($line[0], $this->st_subdir);
 				 

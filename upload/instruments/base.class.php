@@ -40,10 +40,10 @@ protected $db;
     }	
 	
 	public function Delete() {
-	
+	global $db;
         if (!$this->Exist()) return false;
         
-        BD("DELETE FROM `{$this->db}` WHERE `id`='" . $this->id . "'");	
+        $db->execute("DELETE FROM `{$this->db}` WHERE `id`='" . $this->id . "'");
 		
         $this->id = false;
         return true; 
@@ -249,14 +249,7 @@ Class View {
 
 Class TextBase {
 
-	public static function SQLSafe($text) {
-    global $link;
-	  
-	  return mysql_real_escape_string($text, $link);
-
-	}
-	
-    public static function HTMLDestruct($text) {
+	public static function HTMLDestruct($text) {
 	
 	  return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' );
 	
@@ -272,7 +265,13 @@ Class TextBase {
      
       return mb_strlen($text, 'UTF-8');
 
-    }	
+    }
+
+	public static function SQLSafe ($text) {
+		global $db;
+		vtxtlog("Using old method TextBase::SQLSafe()");
+		return $db->safe($text);
+	}
 
 	public static function CutString($text, $from = 0, $to = 255) {
 	
@@ -293,6 +292,49 @@ Class TextBase {
 	   return preg_replace('#([^\s]{'. $width .'})#u', '$1'. $break , $text);
 		   
 	}	
+}
+
+Class DB {
+	private $link;
+
+	public function connect ($log_script) {
+	global $config;
+		$this->link = mysql_connect($config['db_host'].':'.$config['db_port'], $config['db_login'], $config['db_passw']) or die(lng('BD_ERROR').lng('BD_AUTH_FAIL'));
+		mysql_select_db($config['db_name'], $this->link) or die(lng('BD_ERROR').'. '.lng('BD_NOT_EXIST').' ('.$config['db_name'].')');
+		$this->execute("SET time_zone = '".date('P')."'");
+		$this->execute("SET character_set_client='utf8'");
+		$this->execute("SET character_set_results='utf8'");
+		$this->execute("SET collation_connection='utf8_general_ci'");
+		if ($log_script and $config['action_log']) ActionLog($log_script);
+		CanAccess(2);
+	}
+
+	public function execute($query) {
+		global $queries;
+		$queries++;
+		$result = mysql_query( $query, $this->link );
+		if (is_bool($result) and $result == false)
+			vtxtlog('SQLError: ' . mysql_error() . ' in query ['.$query.']');
+		return $result;
+	}
+
+	public function safe($text)
+	{
+		return mysql_real_escape_string($text, $this->link);
+
+	}
+
+	public function fetch_assoc ($query) {
+		return mysql_fetch_assoc($query);
+	}
+
+	public function fetch_array ($query) {
+		return mysql_fetch_array($query);
+	}
+
+	public function num_rows ($query) {
+		return mysql_num_rows($query);
+	}
 }
 
 Class EMail {
@@ -404,7 +446,7 @@ Class Message {
 	*/
 
 	public static function Comment($text) {
-       
+       global $db;
 	   $text = trim($text);	   
 	   $text = TextBase::HTMLDestruct($text);
        $text = preg_replace('/(\\R{2})\\R++/Usi', '$1', $text);	  
@@ -412,7 +454,7 @@ Class Message {
 	   $text = TextBase::CutWordWrap($text);
 	   $text = TextBase::CutString($text);	   
 	   
-	  return TextBase::SQLSafe($text);      
+	  return $db->safe($text);
 	}
 	
 	/*
@@ -485,36 +527,36 @@ private $db;
 	}
 	
 	public function Like($dislike = false) {
-		
+		global $db;
 		if (!$this->bd_content) return 0;
 		
 		$var = (!$dislike)? 1 : -1;
 
-		$result = BD("SELECT `var` FROM `{$this->db}` WHERE `user_id` = '".$this->user_id."' AND `item_id` = '".$this->id."' AND `item_type` = '".$this->type."'"); 
+		$result = $db->execute("SELECT `var` FROM `{$this->db}` WHERE `user_id` = '".$this->user_id."' AND `item_id` = '".$this->id."' AND `item_type` = '".$this->type."'");
 		
-		if ( !mysql_num_rows( $result ) ) { 
+		if ( !$db->num_rows( $result ) ) {
 		
-			BD("INSERT INTO `{$this->db}` (`user_id`, `item_id`, `item_type`, `var`) VALUES ('".$this->user_id."', '".$this->id."', '".$this->type."', '".$var."')");
+			$db->execute("INSERT INTO `{$this->db}` (`user_id`, `item_id`, `item_type`, `var`) VALUES ('".$this->user_id."', '".$this->id."', '".$this->type."', '".$var."')");
 		
 			if (!$dislike) 
-				BD("UPDATE `{$this->bd_content}` SET `likes` = `likes` + 1 WHERE `id` = '".$this->id."'");					
+				$db->execute("UPDATE `{$this->bd_content}` SET `likes` = `likes` + 1 WHERE `id` = '".$this->id."'");
 			else 	     
-				BD("UPDATE `{$this->bd_content}` SET `dislikes` = `dislikes` + 1 WHERE `id` = '".$this->id."'");
+				$db->execute("UPDATE `{$this->bd_content}` SET `dislikes` = `dislikes` + 1 WHERE `id` = '".$this->id."'");
 		
 		return 1;
 		
 		} else {
 			
-			$line = mysql_fetch_array( $result, MYSQL_NUM );
+			$line = $db->fetch_array( $result, MYSQL_NUM );
 			
 			if ((int)$line[0] == (int)$var) return 0; 
 			
-			BD("UPDATE `{$this->db}` SET `var` = '".$var."' WHERE `user_id` = '".$this->user_id."' AND `item_id` = '".$this->id."' AND `item_type` = '".$this->type."'");		
+			$db->execute("UPDATE `{$this->db}` SET `var` = '".$var."' WHERE `user_id` = '".$this->user_id."' AND `item_id` = '".$this->id."' AND `item_type` = '".$this->type."'");
 			
 			if (!$dislike) 
-				BD("UPDATE `{$this->bd_content}` SET `likes` = `likes` + 1, `dislikes` = `dislikes` - 1  WHERE `id` = '".$this->id."'");
+				$db->execute("UPDATE `{$this->bd_content}` SET `likes` = `likes` + 1, `dislikes` = `dislikes` - 1  WHERE `id` = '".$this->id."'");
 			else 
-				BD("UPDATE `{$this->bd_content}` SET `likes` = `likes` - 1, `dislikes` = `dislikes` + 1 WHERE `id` = '".$this->id."'");			
+				$db->execute("UPDATE `{$this->bd_content}` SET `likes` = `likes` - 1, `dislikes` = `dislikes` + 1 WHERE `id` = '".$this->id."'");
 		
 		return 2;		
 		}
@@ -536,7 +578,7 @@ private $menu_fname;
 
 		require(MCR_ROOT.$this->menu_fname);
 		
-		$this->menu_items = $menu_items; 				
+		$this->menu_items = $menu_items;
 		} else $this->menu_items = array( 0 => array(), 1 => array() );
 	}
 	

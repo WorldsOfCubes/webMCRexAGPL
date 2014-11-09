@@ -1,4 +1,5 @@
 <?php
+
 require('../system.php');
 
 if (empty($_GET['sessionId']) or empty($_GET['user']) or empty($_GET['serverId'])) {
@@ -7,8 +8,9 @@ vtxtlog("[joinserver.php] join process [GET parameter empty] [ ".((empty($_GET['
 exit('Bad login');
 }	
 
-loadTool('user.class.php');  
-BDConnect('joinserver');
+loadTool('user.class.php');
+$db = new DB();
+$db->connect('joinserver');
 
 $login 		= $_GET['user']; 
 $serverid	= $_GET['serverId'];
@@ -35,14 +37,14 @@ vtxtlog("[joinserver.php] Bad login register");
 exit ('Bad login');
 }
 	
-$result = BD("SELECT `{$bd_users['login']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['session']}`='".TextBase::SQLSafe($sessionid)."' AND `{$bd_users['login']}`='".TextBase::SQLSafe($login)."' AND `{$bd_users['server']}`='".TextBase::SQLSafe($serverid)."'");
+$result = $db->execute("SELECT `{$bd_users['login']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['session']}`='". $db->safe($sessionid) ."' AND `{$bd_users['login']}`='". $db->safe($login) ."' AND `{$bd_users['server']}`='". $db->safe($serverid) ."'");
 
-if( mysql_num_rows($result) == 1 ){
+if( $db->num_rows($result) == 1 ){
 	vtxtlog('[joinserver.php] join Server [Result] Relogin OK'); 
 	exit('OK');
 } 
 
-$result = BD("UPDATE `{$bd_names['users']}` SET `{$bd_users['server']}`='".TextBase::SQLSafe($serverid)."' WHERE `{$bd_users['session']}`='".TextBase::SQLSafe($sessionid)."' AND `{$bd_users['login']}`='".TextBase::SQLSafe($login)."'");
+$result = $db->execute("UPDATE `{$bd_names['users']}` SET `{$bd_users['server']}`='". $db->safe($serverid) ."' WHERE `{$bd_users['session']}`='". $db->safe($sessionid) ."' AND `{$bd_users['login']}`='". $db->safe($login) ."'");
 
 if(mysql_affected_rows() == 1){
 	vtxtlog('[joinserver.php] join Server [Result] login OK'); 

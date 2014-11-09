@@ -22,7 +22,7 @@ exit;
 }
 	
 	$query = mysql_query("Select $db_columnUser From $db_table Where $db_columnUser='$user'") or die ("Ошибка");
-	$row = mysql_fetch_assoc($query);
+	$row = $db->fetch_assoc($query);
 	$realUser = $row[$db_columnUser];
 
 	if ($user !== $realUser)
@@ -31,7 +31,7 @@ exit;
         }
 	
 	$result = mysql_query("Select $db_columnUser From $db_table Where $db_columnSesId='$sessionid' And $db_columnUser='$user' And $db_columnServer='$serverid'") or die ("Ошибка");
-	if(mysql_num_rows($result) == 1) echo '{"id":"ok"}';
+	if($db->num_rows($result) == 1) echo '{"id":"ok"}';
 	else
 	{
 		$result = mysql_query("Update $db_table SET $db_columnServer='$serverid' Where $db_columnSesId='$sessionid' And $db_columnUser='$user'") or die ("Ошибка");

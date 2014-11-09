@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('MCR')) exit;
 
 /* User class | User group class */
@@ -42,7 +43,7 @@ private $posts;
 	);
 	
 	public function __construct($input, $method = false) {
-	global $bd_users, $bd_names;	
+		global $db, $bd_users, $bd_names;
 	
 		$this->db = $bd_names['users'];
 		
@@ -64,14 +65,14 @@ private $posts;
 					   `vote`,
 					   `posts`,
 					   `topics`,
-					   `warn_lvl` FROM `{$this->db}` WHERE `".TextBase::SQLSafe($method)."`='".TextBase::SQLSafe($input)."'";
+					   `warn_lvl` FROM `{$this->db}` WHERE `". $db->safe($method) ."`='". $db->safe($input) ."'";
 						   
-		$result = BD($sql);			
-		if ( !$result or mysql_num_rows( $result ) != 1 ) { $this->id = false; return false; }		
+		$result = $db->execute($sql);
+		if ( !$result or $db->num_rows( $result ) != 1 ) { $this->id = false; return false; }
 		
 		$this->permissions = null;	
 					 
-		$line = mysql_fetch_array($result, MYSQL_ASSOC);
+		$line = $db->fetch_array($result, MYSQL_ASSOC);
 			
 		$this->id     = (int)$line[$bd_users['id']];			
 		$this->name   = $line[$bd_users['login']];
@@ -99,9 +100,9 @@ private $posts;
 	}
 	
 	public function activity() {
-	global $bd_users;
+		global $db, $bd_users;
 	
-		if ($this->id) BD("UPDATE `{$this->db}` SET `active_last`= NOW() WHERE `{$bd_users['id']}`='".$this->id."'");	
+		if ($this->id) $db->execute("UPDATE `{$this->db}` SET `active_last`= NOW() WHERE `{$bd_users['id']}`='".$this->id."'");
 	}
 	
 	public function isOnline() {
@@ -117,19 +118,19 @@ private $posts;
 	}
 	
 	public function authenticate($pass) {
-	global $bd_users;
+		global $db, $bd_users;
 	
 		if (!$this->id) return false;
 
-		$result = BD("SELECT `{$bd_users['password']}` FROM `{$this->db}` WHERE `{$bd_users['id']}`='".$this->id."'"); 
-		$line = mysql_fetch_array( $result, MYSQL_NUM);
+		$result = $db->execute("SELECT `{$bd_users['password']}` FROM `{$this->db}` WHERE `{$bd_users['id']}`='".$this->id."'");
+		$line = $db->fetch_array( $result, MYSQL_NUM);
 		
 		$auth_info = array( 'pass_db' => $line[0], 'pass' => $pass, 'user_id' => $this->id, 'user_name' => $this->name );
 		$test_pass = MCRAuth::checkPass($auth_info);
 		
 		if ( !$test_pass ) {
 			
-			BD("UPDATE `{$this->db}` SET `{$bd_users['deadtry']}`= {$bd_users['deadtry']} + 1 WHERE `{$bd_users['id']}`='".$this->id."'");	
+			$db->execute("UPDATE `{$this->db}` SET `{$bd_users['deadtry']}`= {$bd_users['deadtry']} + 1 WHERE `{$bd_users['id']}`='".$this->id."'");
 			$this->deadtry++; 
 		}
 		
@@ -137,7 +138,7 @@ private $posts;
 	}
 	
 	public function login($tmp, $ip, $save = false) {
-	global $bd_users, $config;
+		global $db, $bd_users, $config;
 
 		if (!$this->id) return false;
 		
@@ -146,7 +147,7 @@ private $posts;
 		if ($config['p_logic'] != 'usual' and $config['p_sync'])
 			MCMSAuth::login($this->id());	
 			
-		BD("UPDATE `{$this->db}` SET `{$bd_users['deadtry']}` = '0', `{$bd_users['tmp']}`='".TextBase::SQLSafe($tmp)."', `{$bd_users['ip']}`='".TextBase::SQLSafe($ip)."' WHERE `{$bd_users['id']}`='".$this->id."'");
+		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['deadtry']}` = '0', `{$bd_users['tmp']}`='". $db->safe($tmp) ."', `{$bd_users['ip']}`='". $db->safe($ip) ."' WHERE `{$bd_users['id']}`='".$this->id."'");
 	
 		$this->tmp = $tmp;
 		
@@ -162,7 +163,7 @@ private $posts;
 	}
 	
 	public function logout() {
-	global $bd_users, $config;
+		global $db, $bd_users, $config;
 		
 		if ($config['p_logic'] != 'usual' and $config['p_sync'])
 			MCMSAuth::logout();	
@@ -171,13 +172,13 @@ private $posts;
 		if (isset($_SESSION)) session_destroy();
 		
 		$this->tmp = 0;	  
-		BD("UPDATE `{$this->db}` SET `{$bd_users['tmp']}`='".$this->tmp."' WHERE `{$bd_users['id']}`='".$this->id."'");
+		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['tmp']}`='".$this->tmp."' WHERE `{$bd_users['id']}`='".$this->id."'");
 			
 		if (isset($_COOKIE['PRTCookie1'])) setcookie("PRTCookie1", "", time()-3600);	
 	}
 	
 	public function canPostComment() {
-	global $bd_names;
+		global $db, $bd_names;
 	
 	   if (!$this->getPermission('add_comm')) return false;
 	   
@@ -185,46 +186,46 @@ private $posts;
 	   
 	/* Интервал по времени 1 минута */
 	
-		$result = BD("SELECT id FROM `{$bd_names['comments']}` WHERE user_id='".$this->id."' AND time>NOW()-INTERVAL 1 MINUTE");
-		if ( mysql_num_rows( $result ) ) return false;	
+		$result = $db->execute("SELECT id FROM `{$bd_names['comments']}` WHERE user_id='".$this->id."' AND time>NOW()-INTERVAL 1 MINUTE");
+		if ( $db->num_rows( $result ) ) return false;
 		
 		return true;
 	
 	}
 	
 	public function gameLoginConfirm() {
-	global $bd_users;	
+		global $db, $bd_users;
 	
 		if (!$this->id) return false;
 	
-		BD("UPDATE `{$this->db}` SET gameplay_last=NOW(),play_times=play_times+1 WHERE `{$bd_users['id']}`='".$this->id."'"); 
+		$db->execute("UPDATE `{$this->db}` SET gameplay_last=NOW(),play_times=play_times+1 WHERE `{$bd_users['id']}`='".$this->id."'");
 		
 		return true;
 	}
 	
 	public function gameLogoutConfirm() {
-	global $bd_users;
+		global $db, $bd_users;
 	
 		if (!$this->id) return false;
 	
-		$result = BD("SELECT `{$bd_users['id']}` FROM `{$this->db}` WHERE `{$bd_users['server']}` IS NOT NULL and `{$bd_users['id']}`='".$this->id."'");
+		$result = $db->execute("SELECT `{$bd_users['id']}` FROM `{$this->db}` WHERE `{$bd_users['server']}` IS NOT NULL and `{$bd_users['id']}`='".$this->id."'");
 		
-		if (mysql_num_rows( $result ) == 1)
-				BD("UPDATE `{$this->db}` SET `{$bd_users['server']}`=NULL WHERE `{$bd_users['id']}`='".$this->id."'"); 
+		if ($db->num_rows( $result ) == 1)
+				$db->execute("UPDATE `{$this->db}` SET `{$bd_users['server']}`=NULL WHERE `{$bd_users['id']}`='".$this->id."'");
 		
 		return true;
 	}
 	
 	public function gameLoginLast() {
-	global $bd_users;
+		global $db, $bd_users;
 	
 		if (!$this->id) return false;
 	
-		$result = BD("SELECT `gameplay_last` FROM `{$this->db}` WHERE `gameplay_last` <> '0000-00-00 00:00:00' and `{$bd_users['id']}`='".$this->id."'");
+		$result = $db->execute("SELECT `gameplay_last` FROM `{$this->db}` WHERE `gameplay_last` <> '0000-00-00 00:00:00' and `{$bd_users['id']}`='".$this->id."'");
 		
-		if (mysql_num_rows( $result ) == 1) {
+		if ($db->num_rows( $result ) == 1) {
 		
-			$line = mysql_fetch_array($result);
+			$line = $db->fetch_array($result);
 			
 			return $line['gameplay_last'];
 			
@@ -233,20 +234,20 @@ private $posts;
 	}
 	
 	public function getStatisticTime($param) {
-	global $bd_users, $config;	
+		global $db, $bd_users, $config;
 	
 		if (!$this->id) return false;	
 		
-		$param = TextBase::SQLSafe($param);
+		$param = $db->safe($param);
 		if ( !in_array($param, self::$date_statistic) ) return false;
 		
 		if ( $param === 'create_time' ) $param = $bd_users['ctime'];
 	
- 		$result = BD("SELECT `$param` FROM `{$this->db}` WHERE `$param`<>'0000-00-00 00:00:00' and `{$bd_users['id']}`='".$this->id."'");
+ 		$result = $db->execute("SELECT `$param` FROM `{$this->db}` WHERE `$param`<>'0000-00-00 00:00:00' and `{$bd_users['id']}`='".$this->id."'");
 		
-		if (mysql_num_rows( $result ) == 1) {		
+		if ($db->num_rows( $result ) == 1) {
 		
-			$line = mysql_fetch_array($result);	
+			$line = $db->fetch_array($result);
 			
 			if ($config['p_logic'] == 'xenforo' or 
 				$config['p_logic'] == 'ipb' or 
@@ -259,26 +260,26 @@ private $posts;
 	}
 	
 	public function getStatistic() {
-	global $bd_users;	
+		global $db, $bd_users;
 	
 		if (!$this->id) return false;
 	
-		$result = BD("SELECT `".implode("`, `", self::$int_statistic)."` FROM `{$this->db}` WHERE `{$bd_users['id']}`='".$this->id."'");
+		$result = $db->execute("SELECT `".implode("`, `", self::$int_statistic)."` FROM `{$this->db}` WHERE `{$bd_users['id']}`='".$this->id."'");
 		
-		if (mysql_num_rows( $result ) == 1)
+		if ($db->num_rows( $result ) == 1)
 				
-				return mysql_fetch_array($result);
+				return $db->fetch_array($result);
 				
 		else 	return false;		
 	}
 	
 	public function setStatistic($field_name, $var) {
-	global $bd_users;	
+		global $db, $bd_users;
 	
 		if (!$this->id) return false;
 		if ( !in_array($field_name, self::$int_statistic) ) return false;
 		
-		$field = TextBase::SQLSafe($field_name);
+		$field = $db->safe($field_name);
 		
 		$var = (int) $var;
 		$dec = ( $var < 0 )? '-' : '+';
@@ -287,26 +288,26 @@ private $posts;
 		if ( $var > 0 ) $sql_var = $field.$dec.$var ;
 		else  $sql_var = "'0'"; 
 	
-		BD("UPDATE `{$this->db}` SET `".$field."`=".$sql_var." WHERE {$bd_users['id']}='". $this->id ."'");
+		$db->execute("UPDATE `{$this->db}` SET `".$field."`=".$sql_var." WHERE {$bd_users['id']}='". $this->id ."'");
 		
 		return true;		
 	}
 	
     public function getMoney() {
-    global $bd_names, $bd_money;
+	    global $db, $bd_names, $bd_money;
 	
     if (!$this->id) return 0;
 	
 		if ($bd_names['iconomy']) {
 		
-			$result  = BD("SELECT `{$bd_money['bank']}` FROM `{$bd_names['iconomy']}` WHERE `{$bd_money['login']}`='".TextBase::SQLSafe($this->name())."'");
-			if (!mysql_num_rows( $result )) {
+			$result  = $db->execute("SELECT `{$bd_money['bank']}` FROM `{$bd_names['iconomy']}` WHERE `{$bd_money['login']}`='". $db->safe($this->name()) ."'");
+			if (!$db->num_rows( $result )) {
 			
-			$result = BD("INSERT INTO `{$bd_names['iconomy']}` (`{$bd_money['login']}`) values ('".TextBase::SQLSafe($this->name())."')");	
+			$result = $db->execute("INSERT INTO `{$bd_names['iconomy']}` (`{$bd_money['login']}`) values ('". $db->safe($this->name()) ."')");
 			return 0;			
 			}
 			
-			$line = mysql_fetch_array($result, MYSQL_NUM);
+			$line = $db->fetch_array($result, MYSQL_NUM);
 			
 		return floatval($line[0]);			
 		} 
@@ -314,20 +315,20 @@ private $posts;
     return 0;
     }
     public function getEcon() {
-    global $bd_names, $bd_money;
+	    global $db, $bd_names, $bd_money;
 	
     if (!$this->id) return 0;
 	
 		if ($bd_names['iconomy']) {
 		
-			$result  = BD("SELECT `{$bd_money['money']}` FROM `{$bd_names['iconomy']}` WHERE `{$bd_money['login']}`='".TextBase::SQLSafe($this->name())."'");
-			if (!mysql_num_rows( $result )) {
+			$result  = $db->execute("SELECT `{$bd_money['money']}` FROM `{$bd_names['iconomy']}` WHERE `{$bd_money['login']}`='". $db->safe($this->name()) ."'");
+			if (!$db->num_rows( $result )) {
 			
-			$result = BD("INSERT INTO `{$bd_names['iconomy']}` (`{$bd_money['login']}`) values ('".TextBase::SQLSafe($this->name())."')");	
+			$result = $db->execute("INSERT INTO `{$bd_names['iconomy']}` (`{$bd_money['login']}`) values ('". $db->safe($this->name()) ."')");
 			return 0;			
 			}
 			
-			$line = mysql_fetch_array($result, MYSQL_NUM);
+			$line = $db->fetch_array($result, MYSQL_NUM);
 			
 		return floatval($line[0]);			
 		} 
@@ -336,7 +337,7 @@ private $posts;
     }
 	
     public function addMoney($num) {
-    global $bd_names, $bd_money;
+	    global $db, $bd_names, $bd_money;
 	
     if (!$this->id) return false;
 	if (!$bd_names['iconomy']) return false;
@@ -347,12 +348,12 @@ private $posts;
 	$new_pl_money = $this->getMoney() + $num;		
 	if ($new_pl_money < 0 ) $new_pl_money = 0;
 		
-	BD("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['bank']}`='".TextBase::SQLSafe($new_pl_money)."' WHERE `{$bd_money['login']}`='".TextBase::SQLSafe($this->name())."'");       
+	$db->execute("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['bank']}`='". $db->safe($new_pl_money) ."' WHERE `{$bd_money['login']}`='". $db->safe($this->name()) ."'");
     return $new_pl_money;
     }
 	
     public function addEcon($num) {
-		global $bd_names, $bd_money;
+	    global $db, $bd_names, $bd_money;
 	
 		if (!$this->id) return false;
 		if (!$bd_names['iconomy']) return false;
@@ -363,7 +364,7 @@ private $posts;
 		$new_pl_emoney = $this->getEcon() + $num;		
 		if ($new_pl_emoney < 0 ) $new_pl_emoney = 0;
 		
-		BD("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['money']}`='".TextBase::SQLSafe($new_pl_emoney)."' WHERE `{$bd_money['login']}`='".TextBase::SQLSafe($this->name())."'");       
+		$db->execute("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['money']}`='". $db->safe($new_pl_emoney) ."' WHERE `{$bd_money['login']}`='". $db->safe($this->name()) ."'");
 		return $new_pl_emoney;
     }
 	
@@ -378,13 +379,13 @@ private $posts;
 	}
 
     public function getGroupName() {
-	global $bd_names;
+	    global $db, $bd_names;
 	  if (!$this->id) return false; 
 	  
-	  $result = BD("SELECT `name` FROM `{$bd_names['groups']}` WHERE `id`='{$this->group}'");
+	  $result = $db->execute("SELECT `name` FROM `{$bd_names['groups']}` WHERE `id`='{$this->group}'");
 
-      if (!mysql_num_rows( $result )) return 'unnamed';
-	  $line   = mysql_fetch_array($result, MYSQL_NUM);
+      if (!$db->num_rows( $result )) return 'unnamed';
+	  $line   = $db->fetch_array($result, MYSQL_NUM);
 
 	  return $line[0];
     }
@@ -439,14 +440,14 @@ private $posts;
 	}	
 	
 	public function defaultSkinTrigger($new_value = -1) { /* is player use unique skin */
-	global $bd_users;
+		global $db, $bd_users;
 	
 	  if (!$this->id) return false;
 	
 	  if ( $new_value < 0 ) {
 	  
-	    $result = BD("SELECT default_skin FROM `{$this->db}` WHERE `{$bd_users['id']}`='{$this->id()}'");
-	    $line   = mysql_fetch_array($result, MYSQL_NUM);
+	    $result = $db->execute("SELECT default_skin FROM `{$this->db}` WHERE `{$bd_users['id']}`='{$this->id()}'");
+	    $line   = $db->fetch_array($result, MYSQL_NUM);
 		
 		$trigger = (int)$line[0];
 		
@@ -456,14 +457,14 @@ private $posts;
 			elseif ( !strcmp($this->defaultSkinMD5(),md5_file($this->getSkinFName())) ) $trigger = 1;
 			else $trigger = 0;
 			
-			BD("UPDATE `{$this->db}` SET default_skin='$trigger' WHERE `{$bd_users['id']}`='{$this->id()}'");
+			$db->execute("UPDATE `{$this->db}` SET default_skin='$trigger' WHERE `{$bd_users['id']}`='{$this->id()}'");
 		}
 		return ($trigger)? true : false;		
 	  }
 	  
 	  $new_value = ($new_value)? 1 : 0;
       
-	  BD("UPDATE `{$this->db}` SET default_skin='$new_value' WHERE `{$bd_users['id']}`='{$this->id()}'");
+	  $db->execute("UPDATE `{$this->db}` SET default_skin='$new_value' WHERE `{$bd_users['id']}`='{$this->id()}'");
 	  
 	  return ($new_value)? true : false;
 	  
@@ -493,7 +494,7 @@ private $posts;
     }
 	
 	public function changeName($newname) {
-	global $bd_users, $site_ways;
+		global $db, $bd_users, $site_ways;
 	
 		if (!$this->id) return 0;
 	
@@ -501,13 +502,13 @@ private $posts;
 		
 		if (!preg_match("/^[a-zA-Z0-9_-]+$/", $newname)) return 1401;
 		
-		$result = BD("SELECT `{$bd_users['login']}` FROM `{$this->db}` WHERE `{$bd_users['login']}`='".TextBase::SQLSafe($newname)."'");
+		$result = $db->execute("SELECT `{$bd_users['login']}` FROM `{$this->db}` WHERE `{$bd_users['login']}`='". $db->safe($newname) ."'");
 		
-		if (mysql_num_rows($result)) return 1402;
+		if ($db->num_rows($result)) return 1402;
 		
 		if ((strlen($newname) < 4) or (strlen($newname) > 15)) return 1403;
 		
-		BD("UPDATE `{$this->db}` SET `{$bd_users['login']}`='".TextBase::SQLSafe($newname)."' WHERE `{$bd_users['login']}`='".TextBase::SQLSafe($this->name)."'");
+		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['login']}`='". $db->safe($newname) ."' WHERE `{$bd_users['login']}`='". $db->safe($this->name) ."'");
 		
 		if (!empty($_SESSION['user_name']) and $_SESSION['user_name'] == $this->name) $_SESSION['user_name'] = $newname;
 			
@@ -538,7 +539,7 @@ private $posts;
 	}
 	
 	public function changePassword($newpass, $repass = false, $pass = false) {
-	global $bd_users;
+		global $db, $bd_users;
 	
 		if (!$this->id) return 0;
 		
@@ -550,8 +551,8 @@ private $posts;
 			
 			if (!preg_match($regular, $pass) or !preg_match($regular, $newpass)) return 1501;
 			
-			$result = BD("SELECT `{$bd_users['password']}` FROM `{$this->db}` WHERE `{$bd_users['login']}`='".TextBase::SQLSafe($this->name)."'"); 
-			$line   = mysql_fetch_array( $result, MYSQL_NUM );
+			$result = $db->execute("SELECT `{$bd_users['password']}` FROM `{$this->db}` WHERE `{$bd_users['login']}`='". $db->safe($this->name) ."'");
+			$line   = $db->fetch_array( $result, MYSQL_NUM );
 			 
 			if ($line == NULL or !MCRAuth::checkPass(array('pass_db' => $line[0], 'pass' => $pass, 'user_id' => $this->id, 'user_name' => $this->name)) ) return 1502;
 		}
@@ -560,27 +561,27 @@ private $posts;
 		
 		if (($len < $minlen) or ($len > $maxlen)) return 1503;
 			 
-		BD("UPDATE `{$this->db}` SET `{$bd_users['password']}`='".MCRAuth::createPass($newpass)."' WHERE `{$bd_users['login']}`='".TextBase::SQLSafe($this->name)."'"); 
+		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='".MCRAuth::createPass($newpass)."' WHERE `{$bd_users['login']}`='". $db->safe($this->name) ."'");
 		
 		return 1;
 	}
 	
 	public function changeGroup($newgroup) {
-	global $bd_users, $bd_names;	
+		global $db, $bd_users, $bd_names;
 	
 		    $newgroup = (int) $newgroup;		
 		if ($newgroup < 0) return false;
 		if ($newgroup == $this->group) return false;
 		
-		$result = BD("SELECT `id` FROM `{$bd_names['groups']}` WHERE `id`='".TextBase::SQLSafe($newgroup)."'");
+		$result = $db->execute("SELECT `id` FROM `{$bd_names['groups']}` WHERE `id`='". $db->safe($newgroup) ."'");
 		
-		if ( !mysql_num_rows( $result ) ) return false;
+		if ( !$db->num_rows( $result ) ) return false;
 		
-		BD("UPDATE {$this->db} SET `{$bd_users['group']}`='".TextBase::SQLSafe($newgroup)."' WHERE `{$bd_users['id']}`='".$this->id."'");
+		$db->execute("UPDATE {$this->db} SET `{$bd_users['group']}`='". $db->safe($newgroup) ."' WHERE `{$bd_users['id']}`='".$this->id."'");
 		
 		$group = new Group($newgroup);
-		BD("DELETE FROM `permissions_inheritance` WHERE child='".$this->name."';");
-		BD("INSERT INTO permissions_inheritance (id, child, parent, type, world) VALUES (NULL, '".$this->name."', '".TextBase::SQLSafe($group->GetPexName())."', '1', NULL)");
+		$db->execute("DELETE FROM `permissions_inheritance` WHERE child='".$this->name."';");
+		$db->execute("INSERT INTO permissions_inheritance (id, child, parent, type, world) VALUES (NULL, '".$this->name."', '". $db->safe($group->GetPexName()) ."', '1', NULL)");
 		
 		$this->group = $newgroup;
 		$this->permissions['lvl'] = null;
@@ -590,7 +591,7 @@ private $posts;
 	}
 	
 	public function changeGender($female) {
-	global $bd_users, $config;	
+		global $db, $bd_users, $config;
 	
 		$female = (int) $female;
 	
@@ -601,7 +602,7 @@ private $posts;
 	
 		if ((int)$this->gender() == $female) return false;
 	
-		BD("UPDATE {$this->db} SET `{$bd_users['female']}`='$isFemale' WHERE `{$bd_users['id']}`='".$this->id."'"); 
+		$db->execute("UPDATE {$this->db} SET `{$bd_users['female']}`='$isFemale' WHERE `{$bd_users['id']}`='".$this->id."'");
 		
 		$this->gender = $female;
 		$this->female = ($female)? true : false;
@@ -611,7 +612,7 @@ private $posts;
 	}
 	
 	public function changeEmail($email, $verification = false) {
-	global $bd_users;
+		global $db, $bd_users;
 	
 		     $email = filter_var($email, FILTER_VALIDATE_EMAIL); 	
 		if (!$email) return 1901;
@@ -622,8 +623,8 @@ private $posts;
 			
 		} else { 	 
 	
-			$result = BD("SELECT `id` FROM {$this->db} WHERE `{$bd_users['email']}`='".TextBase::SQLSafe($email)."' AND `{$bd_users['id']}` != '".$this->id."' ");		
-			if ( mysql_num_rows( $result ) ) return 1902;	
+			$result = $db->execute("SELECT `id` FROM {$this->db} WHERE `{$bd_users['email']}`='". $db->safe($email) ."' AND `{$bd_users['id']}` != '".$this->id."' ");
+			if ( $db->num_rows( $result ) ) return 1902;
 		}
 		
 		if ($verification) {
@@ -639,7 +640,7 @@ private $posts;
 
 		if ($email != $this->email)
 
-			BD("UPDATE {$this->db} SET `{$bd_users['email']}`='".TextBase::SQLSafe($email)."' WHERE `{$bd_users['id']}`='".$this->id."'");
+			$db->execute("UPDATE {$this->db} SET `{$bd_users['email']}`='". $db->safe($email) ."' WHERE `{$bd_users['id']}`='".$this->id."'");
 		
 		$this->email = $email;
 
@@ -675,8 +676,8 @@ private $posts;
 	return $get_p;
 	}
 	
-	public function changeVisual($post_name, $type = 'skin') { 
-	global $bd_users;
+	public function changeVisual($post_name, $type = 'skin') {
+		global $db, $bd_users;
 	
 		if (!$this->id or !$this->getPermission(($type == 'skin')? 'change_skin' : 'change_cloak')) return 1605;
 	
@@ -725,12 +726,12 @@ private $posts;
 		
 		$this->deleteBuffer();
 		
-		BD("UPDATE `{$this->db}` SET `undress_times`=`undress_times`+1 WHERE `{$bd_users['id']}`='".$this->id()."'"); 
+		$db->execute("UPDATE `{$this->db}` SET `undress_times`=`undress_times`+1 WHERE `{$bd_users['id']}`='".$this->id()."'");
 		return 1;
 	}
 	
 	public function Delete() {
-	global $bd_users, $bd_names;	
+		global $db, $bd_users, $bd_names;
 	
 	    if (!$this->id) return false;
 		
@@ -740,10 +741,10 @@ private $posts;
 		$this->deleteSkin();
 		$this->deleteBuffer();			
 					
-		$result = BD("SELECT `id` FROM `{$bd_names['comments']}` WHERE `user_id`='".$this->id."'"); 
-		if ( mysql_num_rows( $result ) != 0 ) {
+		$result = $db->execute("SELECT `id` FROM `{$bd_names['comments']}` WHERE `user_id`='".$this->id."'");
+		if ( $db->num_rows( $result ) != 0 ) {
 	  
-		  while ( $line = mysql_fetch_array( $result, MYSQL_NUM ) ) {
+		  while ( $line = $db->fetch_array( $result, MYSQL_NUM ) ) {
 		  		
 				$comment_del = new Comments_Item($line[0]);
 				$comment_del->Delete(); 
@@ -751,7 +752,7 @@ private $posts;
 		  }
 		}
 		
-		BD("DELETE FROM `{$this->db}` WHERE `{$bd_users['id']}`= '".$this->id()."'");
+		$db->execute("DELETE FROM `{$this->db}` WHERE `{$bd_users['id']}`= '".$this->id()."'");
 
         $this->id = false;		
 		return true;		
@@ -879,15 +880,15 @@ private $pavailable;
 	}
 	
 	public function GetPermission($param) {
-
+		global $db;
 		if (!$this->id) return -1;		
 		if (!in_array($param, $this->pavailable)) return -1;
 
-		$result = BD("SELECT `$param` FROM `{$this->db}` WHERE `id`='".$this->id."'");
+		$result = $db->execute("SELECT `$param` FROM `{$this->db}` WHERE `id`='".$this->id."'");
 		
-		if (mysql_num_rows( $result ) == 1) {
+		if ($db->num_rows( $result ) == 1) {
 		
-			$line  = mysql_fetch_array($result, MYSQL_NUM );
+			$line  = $db->fetch_array($result, MYSQL_NUM );
 			$value = (int)$line[0];
 			
 			if ($param != 'max_fsize' and
@@ -901,23 +902,23 @@ private $pavailable;
 	}
 	
 	public function GetAllPermissions() {
-
+		global $db;
 	$sql_names = null; 
 	
 	for ($i=0;$i < sizeof($this->pavailable);$i++) 
 		if ($sql_names) $sql_names .= ",`{$this->pavailable[$i]}`"; 
 		else            $sql_names .= "`{$this->pavailable[$i]}`"; 	
    	
-	$result = BD("SELECT $sql_names FROM `{$this->db}` WHERE `id`='".$this->id."'");  
-	return mysql_fetch_array( $result, MYSQL_ASSOC );	
+	$result = $db->execute("SELECT $sql_names FROM `{$this->db}` WHERE `id`='".$this->id."'");
+	return $db->fetch_array( $result, MYSQL_ASSOC );
 	}
 	
 	public function Exist() {
-
+		global $db;
 		if (!$this->id) return false;
 		
-		$result = BD("SELECT COUNT(*) FROM `{$this->db}` WHERE `id`='".$this->id."'");
-		$num = mysql_fetch_array($result, MYSQL_NUM);
+		$result = $db->execute("SELECT COUNT(*) FROM `{$this->db}` WHERE `id`='".$this->id."'");
+		$num = $db->fetch_array($result, MYSQL_NUM);
 		
 		if ($num[0]) return true;
 
@@ -926,13 +927,13 @@ private $pavailable;
 	}
 	
 	public function Create($name, $pex_name, &$permissions) {
-
+		global $db;
 		if ($this->id) return false; 
 		
 		if (!$name or !TextBase::StringLen($name)) return false;
 		
-		$result = BD("SELECT COUNT(*) FROM `{$this->db}` WHERE `name`='".TextBase::SQLSafe($name)."'");
-		$num   = mysql_fetch_array($result, MYSQL_NUM);
+		$result = $db->execute("SELECT COUNT(*) FROM `{$this->db}` WHERE `name`='". $db->safe($name) ."'");
+		$num   = $db->fetch_array($result, MYSQL_NUM);
 		if ($num[0]) return false;	
 		
 		$sql_names = null; $sql_vars = null;
@@ -944,13 +945,13 @@ private $pavailable;
 			if ($key != 'max_fsize' and
                 $key != 'max_ratio' and
                 $key != 'lvl')	$value = ($value)? 1 : 0;				
-            else                $value = TextBase::SQLSafe((int) $value);
+            else                $value = $db->safe((int)$value);
 			
 			if ($sql_names) $sql_names .= ",`$key`"; else $sql_names .= "`$key`"; 
 			if ($sql_vars)  $sql_vars  .= ",'$value'"; else $sql_vars .= "'$value'"; 
 		  }
 
-		$result = BD("INSERT INTO `{$this->db}` (`name`, `pex_name`,$sql_names) values ('".TextBase::SQLSafe($name)."','".TextBase::SQLSafe($pex_name)."',$sql_vars)");	
+		$result = $db->execute("INSERT INTO `{$this->db}` (`name`, `pex_name`,$sql_names) values ('". $db->safe($name) ."','". $db->safe($pex_name) ."',$sql_vars)");
 		if ($result and mysql_affected_rows()) $this->id = mysql_insert_id();
 		else return false;
 	 
@@ -958,43 +959,43 @@ private $pavailable;
 	}
 	
 	public function GetName() {
+		global $db;
+		$result = $db->execute("SELECT `name` FROM `{$this->db}` WHERE `id`='".$this->id."'");
 
-		$result = BD("SELECT `name` FROM `{$this->db}` WHERE `id`='".$this->id."'"); 
-
-		if ( mysql_num_rows( $result ) != 1 ) return false;
-        $line = mysql_fetch_array( $result, MYSQL_NUM );
+		if ( $db->num_rows( $result ) != 1 ) return false;
+        $line = $db->fetch_array( $result, MYSQL_NUM );
 		  
 		return $line[0];		
     }
 	
 	public function GetPexName() {
+		global $db;
+		$result = $db->execute("SELECT `pex_name` FROM `{$this->db}` WHERE `id`='".$this->id."'");
 
-		$result = BD("SELECT `pex_name` FROM `{$this->db}` WHERE `id`='".$this->id."'"); 
-
-		if ( mysql_num_rows( $result ) != 1 ) {
+		if ( $db->num_rows( $result ) != 1 ) {
 			return false;
 		}
-        $line = mysql_fetch_array( $result, MYSQL_NUM );
+        $line = $db->fetch_array( $result, MYSQL_NUM );
 		return $line[0];		
     }
 	
 	public function IsSystem() {
+		global $db;
+		$result = $db->execute("SELECT `system` FROM `{$this->db}` WHERE `id`='".$this->id."'");
 
-		$result = BD("SELECT `system` FROM `{$this->db}` WHERE `id`='".$this->id."'"); 
-
-		if ( mysql_num_rows( $result ) != 1 ) return false;
-        $line = mysql_fetch_array( $result, MYSQL_NUM );
+		if ( $db->num_rows( $result ) != 1 ) return false;
+        $line = $db->fetch_array( $result, MYSQL_NUM );
 		  
 		return ($line[0])? true : false;		
     }	
 	
 	public function Edit($name, $pex_name, &$permissions) {
-		
+		global $db;
 		if (!$this->id) return false; 	
 		if (!$name or !TextBase::StringLen($name)) return false;
 		
-		$result = BD("SELECT COUNT(*) FROM `{$this->db}` WHERE `name`='".TextBase::SQLSafe($name)."' and `id`!='".$this->id."'");
-		$num   = mysql_fetch_array($result, MYSQL_NUM);
+		$result = $db->execute("SELECT COUNT(*) FROM `{$this->db}` WHERE `name`='". $db->safe($name) ."' and `id`!='".$this->id."'");
+		$num   = $db->fetch_array($result, MYSQL_NUM);
 		if ($num[0]) return false;	
 		
 		$sql = null;
@@ -1008,7 +1009,7 @@ private $pavailable;
 				if ($key != 'max_fsize' and
 					$key != 'max_ratio' and
 					$key != 'lvl')	$value = ($permissions[$key])? 1 : 0;				
-				else				$value = TextBase::SQLSafe((int) $permissions[$key]);				
+				else				$value = $db->safe((int)$permissions[$key]);
 				
 			} else $value = 0;
 			
@@ -1017,23 +1018,23 @@ private $pavailable;
 		
 		if (!$sql) $sql = '';
 		
-		$result = BD("UPDATE `{$this->db}` SET `name`='".TextBase::SQLSafe($name)."'$sql WHERE `id`='".$this->id."'"); 
-		$result = BD("UPDATE `{$this->db}` SET `pex_name`='".TextBase::SQLSafe($pex_name)."'$sql WHERE `id`='".$this->id."'"); 
+		$result = $db->execute("UPDATE `{$this->db}` SET `name`='". $db->safe($name) ."'$sql WHERE `id`='".$this->id."'");
+		$result = $db->execute("UPDATE `{$this->db}` SET `pex_name`='". $db->safe($pex_name) ."'$sql WHERE `id`='".$this->id."'");
 		if ($result and mysql_affected_rows()) return true;
 		
 		return true; 
 	}	
 	
 	public function Delete() {
-	global $bd_names;	
+		global $db, $bd_names;
 
 		if (!$this->id) return false; 
 		if ($this->IsSystem()) return false;
 		
-		$result = BD("SELECT `id` FROM `{$bd_names['users']}` WHERE `group`='".$this->id."'"); 
-		if ( mysql_num_rows( $result ) != 0 ) {
+		$result = $db->execute("SELECT `id` FROM `{$bd_names['users']}` WHERE `group`='".$this->id."'");
+		if ( $db->num_rows( $result ) != 0 ) {
 	  
-		  while ( $line = mysql_fetch_array( $result, MYSQL_NUM ) ) {
+		  while ( $line = $db->fetch_array( $result, MYSQL_NUM ) ) {
 		  		
 				$user_del = new User($line[0]);
 				$user_del->Delete(); 
@@ -1041,7 +1042,7 @@ private $pavailable;
 		  }
 		}
 		
-		$result = BD("DELETE FROM `{$this->db}` WHERE `id` = '".$this->id."' and `system` = '0'");
+		$result = $db->execute("DELETE FROM `{$this->db}` WHERE `id` = '".$this->id."' and `system` = '0'");
 		
 		$this->id = false;		
 		if ($result and mysql_affected_rows()) return true;
@@ -1053,12 +1054,12 @@ private $pavailable;
 Class GroupManager {
 
 	public static function GetList($selected) {
-	global $bd_names;
+		global $db, $bd_names;
 		
-		$result = BD("SELECT `id`, `name` FROM `{$bd_names['groups']}` ORDER BY `name` DESC LIMIT 0,90");  
+		$result = $db->execute("SELECT `id`, `name` FROM `{$bd_names['groups']}` ORDER BY `name` DESC LIMIT 0,90");
 		$group_list = '';
 							
-		while ( $line = mysql_fetch_array( $result, MYSQL_ASSOC ) ) 
+		while ( $line = $db->fetch_array( $result, MYSQL_ASSOC ) )
 		 $group_list .= '<option value="'.$line['id'].'" '.(($selected == $line['id'])?'selected':'').'>'.$line['name'].'</option>';
 		 
 		return $group_list;

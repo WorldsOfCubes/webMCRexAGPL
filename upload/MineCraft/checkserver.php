@@ -1,12 +1,14 @@
 <?php
+
 require('../system.php');
 
 if (empty($_GET['user']) or empty($_GET['serverId'])) {
   vtxtlog("[checkserver.php] checkserver process [GET parameter empty] [ ".((empty($_GET['user']))? 'LOGIN ':'').((empty($_GET['serverId']))? 'SERVERID ':'')."]");
   exit('NO');
 }
-	loadTool('user.class.php'); 
-	BDConnect('checkserver');
+	loadTool('user.class.php');
+$db = new DB();
+$db->connect('checkserver');
 	
 	$user 		= $_GET['user']; 
 	$serverid 	= $_GET['serverId'];
@@ -18,9 +20,9 @@ if (empty($_GET['user']) or empty($_GET['serverId'])) {
 		exit('NO');				
 	} 	
 		
-	$result = BD("SELECT `{$bd_users['login']}` FROM {$bd_names['users']} WHERE `{$bd_users['login']}`='".TextBase::SQLSafe($user)."' AND `{$bd_users['server']}`='".TextBase::SQLSafe($serverid)."'");
+	$result = $db->execute("SELECT `{$bd_users['login']}` FROM {$bd_names['users']} WHERE `{$bd_users['login']}`='". $db->safe($user) ."' AND `{$bd_users['server']}`='". $db->safe($serverid) ."'");
 
-	if( mysql_num_rows($result) == 1 ){
+	if( $db->num_rows($result) == 1 ){
 		
 	   $user_login = new User($user,$bd_users['login']);
 	   $user_login->gameLoginConfirm();

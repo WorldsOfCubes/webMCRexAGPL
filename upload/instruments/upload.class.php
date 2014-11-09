@@ -1,6 +1,7 @@
 <?php
 /* WEB-APP : WebMCR (С) 2013 NC22 | License : GPLv3 */
 
+
 if (!defined('MCR')) exit;
 
 Class File extends View { 
@@ -19,7 +20,7 @@ private $hash;
 private $downloads;
 
 	public function File($id = false, $style_sd = false) {
-	global $bd_names;	
+		global $db, $bd_names;
 		
 		parent::View($style_sd);
 		
@@ -46,15 +47,15 @@ private $downloads;
 			$search_by = 'id_word';
 		}		
 		
-		$result = BD("SELECT `id`, `user_id`, `id_word`, `way`, `name`, `size`, `hash`, `downloads`  FROM `{$this->db}` WHERE `$search_by`='".TextBase::SQLSafe($search_var)."'"); 
+		$result = $db->execute("SELECT `id`, `user_id`, `id_word`, `way`, `name`, `size`, `hash`, `downloads`  FROM `{$this->db}` WHERE `$search_by`='". $db->safe($search_var) ."'");
 		
-		if ( mysql_num_rows( $result ) != 1 ) {
+		if ( $db->num_rows( $result ) != 1 ) {
 		
 			$this->id = false;
 			return false;	
 		}
 	
-	    $line = mysql_fetch_array($result, MYSQL_NUM); 
+	    $line = $db->fetch_array($result, MYSQL_NUM);
 		
 		$this->id			= (int)$line[0];
         $this->user_id		= (int)$line[1];	
@@ -67,7 +68,7 @@ private $downloads;
 	}
 	
 	public function Create($post_name, $user_id, $id_word = false, $id_rewrite = false) {
-
+		global $db;
 		$user_id = (int)$user_id;
 		if (!POSTGood($post_name, $this->formats)) return 1;
 		if ($id_word and !preg_match("/^[a-zA-Z0-9._-]+$/", $id_word)) return 3;
@@ -77,12 +78,12 @@ private $downloads;
 		$way  = $this->base_dir.$new_file_info['tmp_name'];		
 		$hash = md5_file($this->base_dir.$new_file_info['tmp_name']);
 		
-		$sql_part = ($id_word)? " OR `id_word`='".TextBase::SQLSafe($id_word)."'" : ''; 
+		$sql_part = ($id_word)? " OR `id_word`='". $db->safe($id_word) ."'" : '';
 		
-		$result = BD("SELECT `id` FROM `{$this->db}` WHERE `hash`='".$hash."'".$sql_part." "); 
-		if ( mysql_num_rows( $result ) != 0 ) {
+		$result = $db->execute("SELECT `id` FROM `{$this->db}` WHERE `hash`='".$hash."'".$sql_part." ");
+		if ( $db->num_rows( $result ) != 0 ) {
 			
-			$line			= mysql_fetch_array( $result, MYSQL_NUM );	
+			$line			= $db->fetch_array( $result, MYSQL_NUM );
 			
 			$file_similar	= new File($line[0]);	
 			
@@ -119,7 +120,7 @@ private $downloads;
 			}
 		}		
 
-		if (BD("INSERT INTO {$this->db} (id_word, user_id, way, name, size, hash) VALUES ('".TextBase::SQLSafe($id_word)."', '".TextBase::SQLSafe($user_id)."','".TextBase::SQLSafe($new_file_info['tmp_name'])."','".TextBase::SQLSafe($new_file_info['name'])."', '".TextBase::SQLSafe($new_file_info['size_mb'])."', '".$hash."')")) {
+		if ($db->execute("INSERT INTO {$this->db} (id_word, user_id, way, name, size, hash) VALUES ('". $db->safe($id_word) ."', '". $db->safe($user_id) ."','". $db->safe($new_file_info['tmp_name']) ."','". $db->safe($new_file_info['name']) ."', '". $db->safe($new_file_info['size_mb']) ."', '".$hash."')")) {
 		
 		$this->id			= mysql_insert_id();	
 		$this->user_id		= $user_id;
@@ -140,10 +141,10 @@ private $downloads;
 	}
 	
 	public function Download() {
-
+		global $db;
 	if (!$this->Exist()) return false;	
 	
-	if (!file_exists($this->way)) BD("DELETE FROM `{$this->db}` WHERE `id`='`{$this->id}`'");	
+	if (!file_exists($this->way)) $db->execute("DELETE FROM `{$this->db}` WHERE `id`='`{$this->id}`'");
 		
 	$extension = strtolower(substr($this->name, 1 + strrpos($this->name, ".")));
 	$mimetype  = 'application/x-'.$extension;
@@ -178,7 +179,7 @@ private $downloads;
 		header('Content-Disposition: attachment; filename="'.$name_enc.'"'); 
 		header('Content-Transfer-Encoding:binary');
 		
-		BD("UPDATE `{$this->db}` SET downloads = downloads + 1 WHERE `id`='{$this->id}'");
+		$db->execute("UPDATE `{$this->db}` SET downloads = downloads + 1 WHERE `id`='{$this->id}'");
 	}	
 		
 	readfile($this->way);
@@ -233,11 +234,11 @@ private $downloads;
 	}
 	
 	public function Delete() {
-	
+		global $db;
 		if (!$this->Exist()) return false;
 		if (file_exists($this->way)) unlink($this->way);
 		
-		BD("DELETE FROM `{$this->db}` WHERE id='".$this->id."'");	
+		$db->execute("DELETE FROM `{$this->db}` WHERE id='".$this->id."'");
 		$this->id = false;
 	
 	return true; 
@@ -263,15 +264,15 @@ private $db;
 	}
 	
 	public function ShowFilesByUser($list = 1, $user_id = false) {
-			
+		global $db;
 			$list = (int) $list;	
 		if ($list <= 0) $list = 1; 
 		
 		$sql_part = '';
-		if (is_numeric($user_id)) $sql_part = " WHERE `user_id`='".TextBase::SQLSafe((int)$user_id)."'";
+		if (is_numeric($user_id)) $sql_part = " WHERE `user_id`='". $db->safe((int)$user_id) ."'";
 			
-		$result = BD("SELECT COUNT(*) FROM `{$this->db}`".$sql_part);
-		$line = mysql_fetch_array($result, MYSQL_NUM );
+		$result = $db->execute("SELECT COUNT(*) FROM `{$this->db}`".$sql_part);
+		$line = $db->fetch_array($result, MYSQL_NUM );
 			  
 		$num = $line[0];	
 		
@@ -283,14 +284,14 @@ private $db;
 		return $html_files;
 		}
 		
-		$result = BD("SELECT `id` FROM `{$this->db}`".$sql_part." ORDER BY `id` DESC LIMIT ".(10*($list-1)).",10");  
-		$resnum = mysql_num_rows( $result );
+		$result = $db->execute("SELECT `id` FROM `{$this->db}`".$sql_part." ORDER BY `id` DESC LIMIT ".(10*($list-1)).",10");
+		$resnum = $db->num_rows( $result );
 		
 		
 		
 		if (!$resnum) return $html_files;		
 		
-		while ( $line = mysql_fetch_array($result, MYSQL_NUM) ) {
+		while ( $line = $db->fetch_array($result, MYSQL_NUM) ) {
 			
 			$file = new File($line[0], $this->st_subdir);
 			$html_files .= $file->Show();        

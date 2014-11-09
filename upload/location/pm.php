@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 if (empty($user) or $user->lvl() < 1) { accss_deny(); }
 
 
@@ -11,10 +12,10 @@ if (isset($_GET['do'])) $do = $_GET['do'];
 switch($do){
 case 'write':
 	$menu->SetItemActive('pm_new');
-	if (isset($_GET['name'])) $name = TextBase::HTMLDestruct(TextBase::SQLSafe($_GET['name']));
-		elseif (isset($_POST['name'])) $name = TextBase::HTMLDestruct(TextBase::SQLSafe($_POST['name']));
+	if (isset($_GET['name'])) $name = TextBase::HTMLDestruct($db->safe($_GET['name']));
+		elseif (isset($_POST['name'])) $name = TextBase::HTMLDestruct($db->safe($_POST['name']));
 		else $name = false;
-	if (isset($_POST['topic'])) $topic = TextBase::HTMLDestruct(TextBase::SQLSafe($_POST['topic']));
+	if (isset($_POST['topic'])) $topic = TextBase::HTMLDestruct($db->safe($_POST['topic']));
 		else $topic = false;
 	if (isset($_POST['message'])) $message = TextBase::HTMLDestruct($_POST['message']);
 		else $message = false;
@@ -27,7 +28,7 @@ case 'write':
 		if ((mb_strlen($topic, "utf-8") < 4) or (mb_strlen($topic, "utf-8") > 128)) $info .= lng('INCORRECT_LEN_TOPIC');
 		$pl = new User($name,  $bd_users['login']);
 		if(!$pl->id()) $info .= lng('INCORRECT_UNAME');
-		if(!(strlen($info) > 0))BD("INSERT INTO `pm` (`date`, `sender`, `reciver`, `topic`, `text`) VALUES (NOW(), '" . $user->name() . "', '" . $pl->name() . "', '$topic', '" . TextBase::SQLSafe($message) . "');");
+		if(!(strlen($info) > 0))$db->execute("INSERT INTO `pm` (`date`, `sender`, `reciver`, `topic`, `text`) VALUES (NOW(), '" . $user->name() . "', '" . $pl->name() . "', '$topic', '" . $db->safe($message) . "');");
 		if((strlen($info) > 0)) $info = View::Alert($info);
 			else $info = View::Alert(lng('SENT_SUCCESS'), 'success');
 	}
@@ -42,15 +43,15 @@ case 'view':
 	if (isset($_GET['id'])) $id = $_GET['id'];
 		elseif (isset($_POST['id'])) $id = $_POST['id'];
 		else accss_deny();
-	$query = BD("SELECT * FROM `pm` WHERE `id`=$id");
-	if(!mysql_num_rows($query)) accss_deny();
-	$pm = mysql_fetch_assoc($query,0);
+	$query = $db->execute("SELECT * FROM `pm` WHERE `id`=$id");
+	if(!$db->num_rows($query)) accss_deny();
+	$pm = $db->fetch_assoc($query,0);
 	$pm['stext'] = Message::BBDecode($pm['text']);
 	$pm['stext'] = nl2br($pm['stext']);
 	if(($user->name() != $pm['reciver']) and ($user->name() != $pm['sender']))
 		accss_deny();
 	if(($user->name() == $pm['reciver']) and (1 != $pm['viewed']))
-		BD("UPDATE `pm` SET `viewed`=1 WHERE `id`=$id");
+		$db->execute("UPDATE `pm` SET `viewed`=1 WHERE `id`=$id");
 	if ($user->name() == $pm['reciver'])
 		$pl = new User($pm['sender'],  $bd_users['login']);
 	else
@@ -58,7 +59,7 @@ case 'view':
 	ob_start();
 		if(!$pl->name()){
 			include View::Get('pm_view_deleted.html', $path);
-			BD("DELETE FROM `pm` WHERE  `id`={$pm['id']}");
+			$db->execute("DELETE FROM `pm` WHERE  `id`={$pm['id']}");
 		} else
 			include View::Get('pm_view.html', $path);
 	$content_main = ob_get_clean();
@@ -78,7 +79,7 @@ default:
 	switch($do){
 	case 'outbox':
 		$menu->SetItemActive('pm_outbox');
-		$query = BD("SELECT `pm`.`id`, `pm`.`topic`, `pm`.`reciver`, `pm`.`date`, `{$bd_names['users']}`.`{$bd_users['id']}` AS sender_id
+		$query = $db->execute("SELECT `pm`.`id`, `pm`.`topic`, `pm`.`reciver`, `pm`.`date`, `{$bd_names['users']}`.`{$bd_users['id']}` AS sender_id
 					 FROM `pm`
 					 LEFT JOIN `{$bd_names['users']}`
 					 ON `{$bd_names['users']}`.`{$bd_users['login']}` = `pm`.`reciver`
@@ -87,7 +88,7 @@ default:
 					 LIMIT $first, $last");
 		$content_list = '';
 		$num = $first + 1;
-		while($tmp_pm = mysql_fetch_assoc($query,0)) {
+		while($tmp_pm = $db->fetch_assoc($query,0)) {
 			$name = $tmp_pm['reciver'];
 			$tmp_pm['viewed'] = 1;
 			ob_start();
@@ -99,8 +100,8 @@ default:
 			include View::Get('pm_list_outbox.html', $path);
 		$content_main = ob_get_clean();
 		
-		$result = BD("SELECT COUNT(*) FROM `pm` WHERE `sender` = '" . $user->name() . "'");
-		$line = mysql_fetch_array($result);
+		$result = $db->execute("SELECT COUNT(*) FROM `pm` WHERE `sender` = '" . $user->name() . "'");
+		$line = $db->fetch_array($result);
 		$view = new View("pm/pagin_out/");
 		$content_main .= $view->arrowsGenerator(Rewrite::GetURL('pm'), $page, $line[0], $num_by_page, "pagin");
 		$page = lng('PM_OUTBOX');
@@ -108,7 +109,7 @@ default:
 	case 'inbox':
 	default:
 		$menu->SetItemActive('pm_inbox');
-		$query = BD("SELECT `pm`.`id`, `pm`.`topic`, `pm`.`sender`, `pm`.date, `pm`.viewed, `{$bd_names['users']}`.`{$bd_users['id']}` AS sender_id
+		$query = $db->execute("SELECT `pm`.`id`, `pm`.`topic`, `pm`.`sender`, `pm`.date, `pm`.viewed, `{$bd_names['users']}`.`{$bd_users['id']}` AS sender_id
 					 FROM `pm`
 					 LEFT JOIN `{$bd_names['users']}`
 					 ON `{$bd_names['users']}`.`{$bd_users['login']}` = `pm`.`sender`
@@ -117,7 +118,7 @@ default:
 					 LIMIT $first, $last");
 		$content_list = '';
 		$num = $first + 1;
-		while($tmp_pm = mysql_fetch_assoc($query,0)) {
+		while($tmp_pm = $db->fetch_assoc($query,0)) {
 			$name = $tmp_pm['sender'];
 			ob_start();
 				include View::Get((isset($tmp_pm['sender_id']))? 'pm_item.html':'pm_item_deleted.html', $path);  
@@ -128,8 +129,8 @@ default:
 			include View::Get('pm_list_inbox.html', $path);
 		$content_main = ob_get_clean();
 		
-		$result = BD("SELECT COUNT(*) FROM `pm` WHERE `reciver` = '" . $user->name() . "'");
-		$line = mysql_fetch_array($result);
+		$result = $db->execute("SELECT COUNT(*) FROM `pm` WHERE `reciver` = '" . $user->name() . "'");
+		$line = $db->fetch_array($result);
 		$view = new View("pm/pagin_in/");
 		$content_main .= $view->arrowsGenerator(Rewrite::GetURL('pm'), $page, $line[0], $num_by_page, "pagin");
 		$page = lng('PM_INBOX');

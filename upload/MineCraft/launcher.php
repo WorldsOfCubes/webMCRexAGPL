@@ -1,5 +1,6 @@
 <?php
-    header('Content-Type: text/html; charset=utf8');
+
+header('Content-Type: text/html; charset=utf8');
 	define('INCLUDE_CHECK',true);
 	include("connect.php");
 	loadTool("user.class.php");
@@ -65,7 +66,7 @@
 		$md5clwjql_util = strtoint(xorencode($md5lwjql_util, $protectionKey));
 		$md5jinput		= md5_file("clients/".$client."/bin/extra.jar");
 		$md5cjinput     = strtoint(xorencode($md5jinput, $protectionKey));
-		BD("UPDATE `{$bd_names['users']}` SET `{$bd_users['session']}`='".TextBase::SQLSafe($sessid)."' WHERE `{$bd_users['login']}`='".TextBase::SQLSafe($user->name())."'") or die ("Ошибка.");
+		$db->execute("UPDATE `{$bd_names['users']}` SET `{$bd_users['session']}`='". $db->safe($sessid) ."' WHERE `{$bd_users['login']}`='". $db->safe($user->name()) ."'") or die ("Ошибка.");
 		echo "$md5czip<:>$md52czip<:>$md5cjar<:>$md5clwjql<:>$md5clwjql_util<:>$md5cjinput<:>$masterversion<br>".
 		$user->name().'<:>'.strtoint(xorencode($sessid, $protectionKey)).'<br>';
 		

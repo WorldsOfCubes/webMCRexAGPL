@@ -62,7 +62,7 @@ if ($user->group() != 4 ) {
 	if(isset($_POST['prprem']) && $user->lvl() == 6) {
 		if($player_money >= $donate['premiumcash']/2){
 			$user->addMoney(0 - $donate['premiumcash']/2);
-			BD("UPDATE permissions SET value=value+2678400 WHERE name='$player'");
+			$db->execute("UPDATE permissions SET value=value+2678400 WHERE name='$player'");
 			$message = View::Alert("Вы успешно продлили Premium! Спасибо за помощь проекту!", 'success');
 		}else{
 			$message = View::Alert("К сожалению, у вас недостаточно средств, пополните счет!");
@@ -72,7 +72,7 @@ if ($user->group() != 4 ) {
 	if(isset($_POST['prvip']) && $user->lvl() == 5) {
 		if($player_money >= $donate['vipcash']/2){
 			$user->addMoney(0 - $donate['vipcash']/2);
-			BD("UPDATE permissions SET value=value+2678400 WHERE name='$player'");
+			$db->execute("UPDATE permissions SET value=value+2678400 WHERE name='$player'");
 			$message = View::Alert("Вы успешно продлили VIP! Спасибо за помощь проекту!", 'success');
 		}else{
 			$message = View::Alert("К сожалению, у вас недостаточно средств или вы не пермиум!");
@@ -80,21 +80,21 @@ if ($user->group() != 4 ) {
 	}
 
 	if(isset($_POST['unban'])) {
-		$sql2 = BD("SELECT name FROM banlist WHERE name='$player'");
+		$sql2 = $db->execute("SELECT name FROM banlist WHERE name='$player'");
 		if($sql2) {
-			$query2 = mysql_fetch_array($sql2);
+			$query2 = $db->fetch_array($sql2);
 			$query2 = $query2['name'];
 		} else $query2 = false;
-		$sql = BD("SELECT numofban FROM unbans WHERE name='$player'");
+		$sql = $db->execute("SELECT numofban FROM unbans WHERE name='$player'");
 		if($sql) {
-			$query = mysql_fetch_array($sql);
+			$query = $db->fetch_array($sql);
 			$query = $query['numofban'];
 		} else $query = false;
 		if($query == ''){
 			if($query2 != ''){
 				if($player_money >=  $donate['unban']){
-					BD("INSERT INTO unbans VALUES (NULL, '$player', '1')");
-					BD("DELETE FROM banlist WHERE name='$player'");
+					$db->execute("INSERT INTO unbans VALUES (NULL, '$player', '1')");
+					$db->execute("DELETE FROM banlist WHERE name='$player'");
 					$user->addMoney(0 - $donate['unban']);
 					$message = View::Alert("Это ваш первый разбан, не нарушайте правила сервера!", 'success');
 				}else{
@@ -106,8 +106,8 @@ if ($user->group() != 4 ) {
 		}elseif($query >= 1){
 			if($query2 != ''){
 				if($player_money >=  $donate['unban']*$query) {
-					BD("UPDATE unbans SET numofban=numofban+1 WHERE name='$player'");
-					BD("DELETE FROM banlist WHERE name='$player'");
+					$db->execute("UPDATE unbans SET numofban=numofban+1 WHERE name='$player'");
+					$db->execute("DELETE FROM banlist WHERE name='$player'");
 					$user->addMoney(0 - $donate['unban']*$query);
 					$message = View::Alert("Это ваш очередной разбан, может, пора себя хорошо вести?!", 'warning');
 				}else{
@@ -144,8 +144,8 @@ if ($user->group() != 4 ) {
 			$expdate = date('d-m-Y H:i:s', $pexdate);
 			$user->changeGroup(5);
 			$player_group = "VIP";
-			BD("DELETE FROM `permissions` WHERE `name`='$player';");
-			BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-vip-until', ' ', '$pexdate')");
+			$db->execute("DELETE FROM `permissions` WHERE `name`='$player';");
+			$db->execute("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-vip-until', ' ', '$pexdate')");
 			$user->addMoney(0 - $donate['vipcash']);
 			$player_money -= $donate['vipcash'];
 			$message = View::Alert("Вы успешно купили VIP! Спасибо за помощь проекту", 'success');
@@ -164,8 +164,8 @@ if ($user->group() != 4 ) {
 				$expdate = date('d-m-Y H:i:s', $pexdate);
 				$user->changeGroup(6);
 				$player_group = "Premium";
-				BD("DELETE FROM `permissions` WHERE `name`='$player';");
-				BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-premium-until', ' ', '$pexdate')");
+				$db->execute("DELETE FROM `permissions` WHERE `name`='$player';");
+				$db->execute("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-premium-until', ' ', '$pexdate')");
 				$user->addMoney(0 - $donate['premiumcash']);
 				$player_money -= $donate['premiumcash'];
 				$message = View::Alert("Вы успешно купили Premium! Спасибо за помощь проекту!", 'success');
@@ -181,8 +181,8 @@ if ($user->group() != 4 ) {
 				$expdate = date('d-m-Y H:i:s', $pexdate);
 				$user->changeGroup(6);
 				$player_group = "Premium";
-				BD("DELETE FROM `permissions` WHERE `name`='$player';");
-				BD("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-premium-until', ' ', '$pexdate')");
+				$db->execute("DELETE FROM `permissions` WHERE `name`='$player';");
+				$db->execute("INSERT INTO permissions (id, name, type, permission, world, value) VALUES (NULL, '$player', '1', 'group-premium-until', ' ', '$pexdate')");
 				$user->addMoney(0 - ($donate['premiumcash'] / 2));
 				$player_money -= $donate['premiumcash'] / 2;
 				$message = View::Alert("Вы успешно купили Premium! Спасибо за помощь проекту!", 'success');

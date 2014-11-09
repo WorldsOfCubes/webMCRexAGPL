@@ -37,7 +37,8 @@ $uInfo = array (	'mini'		=> (isset($_GET['mini']) or isset($_GET['m'])) ? true :
 
 if ( $uInfo['id'] ) {
 
-	BDConnect('skin_viewer'); loadTool('user.class.php');	
+	$db = new DB();
+	$db->connect('skin_viewer'); loadTool('user.class.php');
 	$tmp_user = new User($uInfo['id']) ;
 	if ( !$tmp_user->id() ) exit; 
 

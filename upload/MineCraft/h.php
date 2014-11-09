@@ -13,7 +13,7 @@
     }
 
 	$query = mysql_query("Select $db_columnUser From $db_table Where $db_columnUser='$user'") or die ("Ошибка");
-	$row = mysql_fetch_assoc($query);
+	$row = $db->fetch_assoc($query);
 	$realUser = $row[$db_columnUser];
 
 	if ($user !== $realUser)
@@ -23,6 +23,6 @@
 	
 	$result = mysql_query("Select $db_columnUser From $db_table Where $db_columnUser='$user' And $db_columnServer='$serverid'") or die (mysql_error());
 
-	if(mysql_num_rows($result) == 1) echo '{"id":"ok"}';
+	if($db->num_rows($result) == 1) echo '{"id":"ok"}';
 	else echo '{"error":"Bad login","errorMessage":"Bad login"}';
 ?>

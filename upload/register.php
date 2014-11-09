@@ -1,4 +1,5 @@
 <?php
+
 function CheckPostComplect() {
 
 if (isset($_POST['login']) and 
@@ -26,11 +27,8 @@ if ($config['offline']) {
 	aExit(2, lng('REG_BLOCKED_SITE'));
 }
 
-if (	$config['p_logic'] != 'usual' 
-	and $config['p_logic'] != 'xauth'
-	and $config['p_logic'] != 'authme') aExit(1,lng('REG_BLOCKED_CMS'));
-
-BDConnect('register');
+$db = new DB();
+$db->connect('register');
 
 loadTool('user.class.php');
 $rcodes  = array();  
@@ -94,13 +92,13 @@ if (empty($login) || empty($pass) || empty($repass) || empty($_POST['email'])) a
 
     tryExit();
 	
-    $result = BD("SELECT COUNT(*) FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='".TextBase::SQLSafe($login)."'");
-	$line   = mysql_fetch_array($result, MYSQL_NUM );
+    $result = $db->execute("SELECT COUNT(*) FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='". $db->safe($login) ."'");
+	$line   = $db->fetch_array($result, MYSQL_NUM );
 	
 	if ($line[0]) aExit(5, lng('AUTH_EXIST_LOGIN'));
 	
-    $result = BD("SELECT COUNT(*) FROM `{$bd_names['users']}` WHERE `{$bd_users['email']}`='".TextBase::SQLSafe($email)."'");
-	$line   = mysql_fetch_array($result, MYSQL_NUM );	
+    $result = $db->execute("SELECT COUNT(*) FROM `{$bd_names['users']}` WHERE `{$bd_users['email']}`='". $db->safe($email) ."'");
+	$line   = $db->fetch_array($result, MYSQL_NUM );
 	
 	if ($line[0]) aExit(15, lng('AUTH_EXIST_EMAIL'));
 
@@ -117,7 +115,7 @@ if (empty($login) || empty($pass) || empty($repass) || empty($_POST['email'])) a
 	if ($verification) $group = 4;
 	else $group = 1;
 	
-	if (!BD("INSERT INTO `{$bd_names['users']}` (`{$bd_users['login']}`,`{$bd_users['password']}`,`{$bd_users['ip']}`,`{$bd_users['female']}`,`{$bd_users['ctime']}`,`{$bd_users['group']}`) VALUES('".TextBase::SQLSafe($login)."','".MCRAuth::createPass($pass)."','".TextBase::SQLSafe(GetRealIp())."',$female,NOW(),'$group')"))
+	if (!$db->execute("INSERT INTO `{$bd_names['users']}` (`{$bd_users['login']}`,`{$bd_users['password']}`,`{$bd_users['ip']}`,`{$bd_users['female']}`,`{$bd_users['ctime']}`,`{$bd_users['group']}`) VALUES('". $db->safe($login) ."','".MCRAuth::createPass($pass)."','". $db->safe(GetRealIp()) ."',$female,NOW(),'$group')"))
 	  aExit(14);
 
 	$tmp_user = new User(mysql_insert_id());
@@ -126,7 +124,7 @@ if (empty($login) || empty($pass) || empty($repass) || empty($_POST['email'])) a
     $next_reg = (int) sqlConfigGet('next-reg-time');	
 	 
 	if ($next_reg  > 0) 
-	BD("INSERT INTO `{$bd_names['ip_banning']}` (`IP`,`time_start`,`ban_until`) VALUES ('".TextBase::SQLSafe($_SERVER['REMOTE_ADDR'])."',NOW(),NOW()+INTERVAL $next_reg HOUR)");
+	$db->execute("INSERT INTO `{$bd_names['ip_banning']}` (`IP`,`time_start`,`ban_until`) VALUES ('". $db->safe($_SERVER['REMOTE_ADDR']) ."',NOW(),NOW()+INTERVAL $next_reg HOUR)");
 	
 	if (!$verification) {
 		$tmp_user->changeEmail($email);

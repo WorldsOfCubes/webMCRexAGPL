@@ -6,7 +6,8 @@ require('./system.php');
 loadTool('ajax.php');
 loadTool('user.class.php');
 
-BDConnect('login');
+$db = new DB();
+$db->connect('login');
 
 if (isset($_GET['out'])) {
 

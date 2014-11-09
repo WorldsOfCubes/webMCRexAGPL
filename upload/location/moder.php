@@ -1,13 +1,14 @@
 <?php
 
+
 if (empty($user) or $user->group() == 4) { accss_deny(); }
 
 $check = "";
 $page = 'Набор в модераторы - форма заявки';
 
 
-$sql2 = BD('SELECT * FROM `reqests` WHERE `name`="'.$_SESSION['user_name'].'"');
-$resultsql2 = mysql_fetch_array($sql2,0);
+$sql2 = $db->execute('SELECT * FROM `reqests` WHERE `name`="'.$_SESSION['user_name'].'"');
+$resultsql2 = $db->fetch_array($sql2,0);
 
 if (!isset($_POST['playername']) && !isset($_POST['realname']) && !isset($_POST['surname']) && !isset($_POST['old']) && !isset($_POST['skype']))
 	{
@@ -29,7 +30,7 @@ if ($realname != $check && $surname != $check && $old != $check && $skype != $ch
 				{
 
 			$content = View::Alert("Заявка отправлена</div>", 'success');
-			BD("INSERT INTO `reqests` (name, realname, surname, old, skype, comment) VALUES ('".$player."', '".TextBase::SQLSafe($realname)."', '".TextBase::SQLSafe($surname)."', '".TextBase::SQLSafe($old)."', '".TextBase::SQLSafe($skype)."', '".TextBase::SQLSafe($comment)."')");
+			$db->execute("INSERT INTO `reqests` (name, realname, surname, old, skype, comment) VALUES ('".$player."', '". $db->safe($realname) ."', '". $db->safe($surname) ."', '". $db->safe($old) ."', '". $db->safe($skype) ."', '". $db->safe($comment) ."')");
 				}
 				elseif ($resultsql2['name'] == $_SESSION['user_name'])
 				{
@@ -55,8 +56,8 @@ if ($realname != $check && $surname != $check && $old != $check && $skype != $ch
 	}
 }
 
-$sql2 = BD('SELECT * FROM `reqests` WHERE `name`="'.$_SESSION['user_name'].'"');
-$resultsql2 = mysql_fetch_array($sql2,0);
+$sql2 = $db->execute('SELECT * FROM `reqests` WHERE `name`="'.$_SESSION['user_name'].'"');
+$resultsql2 = $db->fetch_array($sql2,0);
 
 if ($resultsql2['answer'] == $check)
 {

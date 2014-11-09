@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('MCR')) exit;
 
 Class Server extends Item {
@@ -18,16 +19,16 @@ private $rcon;
 private $s_user; 
 
 	public function Server($id = false, $style_sd = false) {
-	global $bd_names;
+		global $db, $bd_names;
 	
 		parent::__construct($id, ItemType::Server, $bd_names['servers'], $style_sd);
         
 		if (!$this->id) return false;
 		
-		$result = BD("SELECT online, address, port, name, numpl, service_user, slots, info, refresh_time, method, rcon FROM `".$this->db."` WHERE id='".TextBase::SQLSafe($this->id)."'");
-		if ( mysql_num_rows( $result ) != 1 ) { $this->id = false; return false; }
+		$result = $db->execute("SELECT online, address, port, name, numpl, service_user, slots, info, refresh_time, method, rcon FROM `".$this->db."` WHERE id='". $db->safe($this->id) ."'");
+		if ( $db->num_rows( $result ) != 1 ) { $this->id = false; return false; }
 			
-		$line = mysql_fetch_array($result, MYSQL_ASSOC);
+		$line = $db->fetch_array($result, MYSQL_ASSOC);
 
 		$this->address = $line['address'];
 		$this->port    = (int)$line['port'];
@@ -48,7 +49,7 @@ private $s_user;
 	}
 	
 	public function Create($address, $port, $method = 0, $rcon = false, $name = '', $info = '', $s_user = false) {
-                
+		global $db;
 		if ($this->Exist()) return 0; 
 		
 		if (!$address or !TextBase::StringLen($address)) return false;
@@ -64,7 +65,7 @@ private $s_user;
 		$port = (int) $port;
 		if (!$port) $port = 25565;
 
-		if ( BD("insert into `".$this->db."` ( address, port, info, name, method, service_user, rcon ) values ('".TextBase::SQLSafe($address)."', '".TextBase::SQLSafe($port)."', '".TextBase::SQLSafe($info)."' , '".TextBase::SQLSafe($name)."', '".TextBase::SQLSafe($method)."', '".TextBase::SQLSafe($s_user)."', '".TextBase::SQLSafe($rcon)."' )") ) 
+		if ( $db->execute("insert into `".$this->db."` ( address, port, info, name, method, service_user, rcon ) values ('". $db->safe($address) ."', '". $db->safe($port) ."', '". $db->safe($info) ."' , '". $db->safe($name) ."', '". $db->safe($method) ."', '". $db->safe($s_user) ."', '". $db->safe($rcon) ."' )") )
           
 		  $this->id = mysql_insert_id();
 		  
@@ -81,7 +82,7 @@ private $s_user;
 	}
 	
    public function SetConnectMethod($method = 0, $rcon = '', $s_user = '') {
-	
+	   global $db;
 	if (!$this->Exist()) return false;
 		    
 		$method = (int)$method;
@@ -91,14 +92,14 @@ private $s_user;
 	if (!$rcon and ( $method == 2 or $method == 3)) return false;
 	if (!$s_user and $method == 3 ) return false;
 		
-	BD("UPDATE `".$this->db."` SET `method`='".TextBase::SQLSafe($method)."',`rcon`='".TextBase::SQLSafe($rcon)."',`service_user`='".TextBase::SQLSafe($s_user)."' WHERE `id`='".$this->id."'"); 	
+	$db->execute("UPDATE `".$this->db."` SET `method`='". $db->safe($method) ."',`rcon`='". $db->safe($rcon) ."',`service_user`='". $db->safe($s_user) ."' WHERE `id`='".$this->id."'");
 	
 	$this->method = $method;
 	$this->rcon   = $rcon;
    }   
    
    public function SetConnectWay($address, $port) {
-	
+	   global $db;
 	if (!$this->Exist()) return false;	
 	
 	if (!$address or !TextBase::StringLen($address)) return false;
@@ -106,7 +107,7 @@ private $s_user;
 	$port = (int) $port;
 	if (!$port) $port = 25565;	
 	
-	BD("UPDATE `".$this->db."` SET `address`='".TextBase::SQLSafe($address)."',`port`='".TextBase::SQLSafe($port)."' WHERE `id`='".$this->id."'"); 
+	$db->execute("UPDATE `".$this->db."` SET `address`='". $db->safe($address) ."',`port`='". $db->safe($port) ."' WHERE `id`='".$this->id."'");
 	
 	$this->address = $address;
 	$this->port    = $port;
@@ -114,31 +115,31 @@ private $s_user;
    }
    
    public function SetText($var, $field = 'name') {
-	
+	   global $db;
 	if (!$this->Exist()) return false;
 	else if (!$field == 'name' and !$field == 'info') return false;
 	
 	if (!$var or !TextBase::StringLen($var)) return false;
 	
-	BD("UPDATE `".$this->db."` SET `".TextBase::SQLSafe($field)."`='".TextBase::SQLSafe($var)."' WHERE `id`='".$this->id."'"); 
+	$db->execute("UPDATE `".$this->db."` SET `". $db->safe($field) ."`='". $db->safe($var) ."' WHERE `id`='".$this->id."'");
 	
 	if ($field == 'name') $this->name = $var;
 	else  $this->info = $var;
    }  
    	
 	private function IsTimeToUpdate() {
-
+		global $db;
 	if (!$this->Exist()) return false;
 	
-		$result = BD("SELECT last_update FROM `".$this->db."` WHERE id='".$this->id."' AND last_update<NOW()-INTERVAL ".TextBase::SQLSafe($this->refresh)." MINUTE"); 
+		$result = $db->execute("SELECT last_update FROM `".$this->db."` WHERE id='".$this->id."' AND last_update<NOW()-INTERVAL ". $db->safe($this->refresh) ." MINUTE");
 
-	    if ( mysql_num_rows( $result ) == 1 ) return true;
+	    if ( $db->num_rows( $result ) == 1 ) return true;
 		else return false;
 		
 	}
 	
 	public function UpdateState($extra = false) {
-    global $config;
+		global $db, $config;
     
 	if ((!$extra and !$this->IsTimeToUpdate()) or !$this->Exist()) return;
 	
@@ -146,11 +147,11 @@ private $s_user;
 	$users_list = NULL;
 	
 	if (empty($this->address)) {	
-	 BD("UPDATE `".$this->db."` SET online='0',last_update=NOW() WHERE id='".$this->id."'"); 
+	 $db->execute("UPDATE `".$this->db."` SET online='0',last_update=NOW() WHERE id='".$this->id."'");
 	 return;
     }
 	
-	BD("UPDATE `".$this->db."` SET last_update=NOW() WHERE id='".$this->id."'"); 
+	$db->execute("UPDATE `".$this->db."` SET last_update=NOW() WHERE id='".$this->id."'");
         switch ($this->method) {
 		
 // RCON Connect 
@@ -168,7 +169,7 @@ private $s_user;
 		} catch( MinecraftRconException $e ){
 		
 			if ($e->getMessage() == 'Server offline') {
-			   BD("UPDATE `".$this->db."` SET online='0' WHERE id='".$this->id."'"); 
+			   $db->execute("UPDATE `".$this->db."` SET online='0' WHERE id='".$this->id."'");
 			   return;
 			}
 		}
@@ -200,7 +201,7 @@ private $s_user;
                 
             if (!$apiresult) {
                
-			   BD("UPDATE `".$this->db."` SET online='0' WHERE id='".$this->id."'"); 
+			   $db->execute("UPDATE `".$this->db."` SET online='0' WHERE id='".$this->id."'");
                return;
             }
 				
@@ -216,7 +217,7 @@ private $s_user;
 		$full_state = ($this->method == 1)? mcraftQuery($this->address, $this->port ) : mcraftQuery_SE($this->address, $this->port );		 
 		if (empty($full_state) or isset($full_state['too_many'])) {
 		
-		   BD("UPDATE `".$this->db."` SET online='".((isset($full_state['too_many']))? '1' : '0')."' WHERE id='".$this->id."'"); 
+		   $db->execute("UPDATE `".$this->db."` SET online='".((isset($full_state['too_many']))? '1' : '0')."' WHERE id='".$this->id."'");
 		   
 		   $this->online = (isset($full_state['too_many']))? true : false;
 		   return;
@@ -248,18 +249,18 @@ private $s_user;
 	$this->numpl = $numpl;
 	
 	if (!empty($full_state))	// name='".$full_state['hostname']."'
-	  BD("UPDATE `".$this->db."` SET numpl='".TextBase::SQLSafe($numpl)."',slots='".TextBase::SQLSafe($full_state['maxplayers'])."',players='".TextBase::SQLSafe($system_users)."',online='1' WHERE id='".$this->id."'"); 		 
+	  $db->execute("UPDATE `".$this->db."` SET numpl='". $db->safe($numpl) ."',slots='". $db->safe($full_state['maxplayers']) ."',players='". $db->safe($system_users) ."',online='1' WHERE id='".$this->id."'");
     else
-  	  BD("UPDATE `".$this->db."` SET numpl='".TextBase::SQLSafe($numpl)."',slots='-1',players='".TextBase::SQLSafe($system_users)."',online='1' WHERE id='".$this->id."'"); 		 
+  	  $db->execute("UPDATE `".$this->db."` SET numpl='". $db->safe($numpl) ."',slots='-1',players='". $db->safe($system_users) ."',online='1' WHERE id='".$this->id."'");
 	
 	}	
 	
 	public function GetPlayers() {
-	
+		global $db;
 	if (!$this->Exist()) return false;
 	
-			$result = BD("SELECT players, numpl FROM `".$this->db."` WHERE id='".$this->id."'");
-			$players = mysql_fetch_array($result, MYSQL_ASSOC);
+			$result = $db->execute("SELECT players, numpl FROM `".$this->db."` WHERE id='".$this->id."'");
+			$players = $db->fetch_array($result, MYSQL_ASSOC);
 			$list    = $players['players'];
 			$numpl   = (int)$players['numpl'];
 			
@@ -270,7 +271,7 @@ private $s_user;
     }
 	
 	public function SetVisible($page,$state) {
-	
+		global $db;
 	if (!$this->Exist()) return false;
 	
 	    $page = ServerManager::getPageName($page);
@@ -278,21 +279,21 @@ private $s_user;
 		
 		$state = ($state)? 1 : 0;
 		
-		BD("UPDATE `".$this->db."` SET `$page`='$state' WHERE `id`='".$this->id."'"); 
+		$db->execute("UPDATE `".$this->db."` SET `$page`='$state' WHERE `id`='".$this->id."'");
 	}
    
    public function GetVisible($param) {
-
+	   global $db;
 		if (!$this->Exist()) return -1;	
 		
 		     $param = ServerManager::getPageName($param);
 		if (!$param) return false;
 		
-		$result = BD("SELECT `$param` FROM `".$this->db."` WHERE `id`='".$this->id."'");
+		$result = $db->execute("SELECT `$param` FROM `".$this->db."` WHERE `id`='".$this->id."'");
 		
-		if (mysql_num_rows( $result ) == 1) {
+		if ($db->num_rows( $result ) == 1) {
 		
-			$line  = mysql_fetch_array($result, MYSQL_NUM );
+			$line  = $db->fetch_array($result, MYSQL_NUM );
 			$value = ((int)$line[0])? true : false;
 			
 			return $value;
@@ -301,39 +302,39 @@ private $s_user;
    }
    
    public function SetRefreshTime($newTimeout) {
-	
+	   global $db;
 	if (!$this->Exist()) return false;
 	
 	    $newTimeout = (int)$newTimeout;
 		if ($newTimeout < 0) $newTimeout = 0;
 		
-		BD("UPDATE `".$this->db."` SET `refresh_time`='".TextBase::SQLSafe($newTimeout)."' WHERE `id`='".$this->id."'"); 
+		$db->execute("UPDATE `".$this->db."` SET `refresh_time`='". $db->safe($newTimeout) ."' WHERE `id`='".$this->id."'");
 		
 	$this->refresh = $newTimeout;	
    return true;		
    }
    
    public function SetPriority($new) {
-	
+	   global $db;
 	if (!$this->Exist()) return false;
 	
 	    $new = (int)$new;
 		if ($new < 0) $new = 0;
 		
-		BD("UPDATE `".$this->db."` SET `priority`='".TextBase::SQLSafe($new)."' WHERE `id`='".$this->id."'"); 
+		$db->execute("UPDATE `".$this->db."` SET `priority`='". $db->safe($new) ."' WHERE `id`='".$this->id."'");
 		
 	return true;
    }  
    
    public function GetPriority() {
-   
+	   global $db;
         if (!$this->Exist()) return false;
 
-		$result = BD("SELECT `priority` FROM `".$this->db."` WHERE `id`='".$this->id."'");
+		$result = $db->execute("SELECT `priority` FROM `".$this->db."` WHERE `id`='".$this->id."'");
 		
-		if (mysql_num_rows( $result ) == 1) {
+		if ($db->num_rows( $result ) == 1) {
 		
-			$line  = mysql_fetch_array($result, MYSQL_NUM );
+			$line  = $db->fetch_array($result, MYSQL_NUM );
 		    return (int)$line[0];
 			
 		} else return false;		
@@ -445,17 +446,17 @@ Class ServerManager extends View {
 	
 	public function Show($type = 'side', $update = false) {
 	global $bd_names;
-	
+		global $db;
 	         $page = self::getPageName($type);
         if (!$page) return false;
 		
 		$html_serv = $this->ShowPage('serverstate_'.$type.'_header.html'); 
 		
-		$result = BD("SELECT `id` FROM `{$bd_names['servers']}` WHERE `$page`=1 ORDER BY priority DESC LIMIT 0,10"); 
+		$result = $db->execute("SELECT `id` FROM `{$bd_names['servers']}` WHERE `$page`=1 ORDER BY priority DESC LIMIT 0,10");
 			
-		if ( mysql_num_rows( $result ) ) { 
+		if ( $db->num_rows( $result ) ) {
 
-		   while ( $line = mysql_fetch_array( $result, MYSQL_NUM ) ) {
+		   while ( $line = $db->fetch_array( $result, MYSQL_NUM ) ) {
 					
 			$server = new Server($line[0], $this->st_subdir);
 			if ($update) $server->UpdateState();

@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('MCR')) exit;
 
 require(MCR_ROOT.'instruments/auth/usual.php');
@@ -42,14 +43,14 @@ public static function createPass($password) {
 	'user_name'	 - логин пользователя
 */
 
-public static function checkPass($data) { 
-global $bd_names, $bd_users;
+public static function checkPass($data) {
+	global $db, $bd_names, $bd_users;
 	
-	 $result = BD("SELECT `{$bd_users['salt_pwd']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['id']}`='".TextBase::SQLSafe($data['user_id'])."'"); 
+	 $result = $db->execute("SELECT `{$bd_users['salt_pwd']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['id']}`='". $db->safe($data['user_id']) ."'");
 
-	 if ( !$result or !mysql_num_rows( $result ) ) return false;
+	 if ( !$result or !$db->num_rows( $result ) ) return false;
 	 
-	 $line = mysql_fetch_array( $result, MYSQL_NUM);
+	 $line = $db->fetch_array( $result, MYSQL_NUM);
 	 
 	if ($data['pass_db'] == md5(md5($line[0]).md5($data['pass']))) return true;
 	else return false;

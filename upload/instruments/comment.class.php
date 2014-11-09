@@ -1,5 +1,6 @@
-<?php 
-if (!defined('MCR')) exit; 
+<?php
+
+if (!defined('MCR')) exit;
 
 class CommentList extends View {
 private $work_script;
@@ -47,14 +48,14 @@ private $db;
 	}
     
     public function Show($list = false) {
-    global $user;
+	    global $db, $user;
 	
 		if ( $this->parent_obj === false ) return '';
 		
         $sql_where = "`item_id`='". $this->parent_obj->id() ."' AND `item_type`='" . $this->parent_obj->type() . "'";
 		
-        $result = BD("SELECT COUNT(*) FROM `{$this->db}` WHERE " . $sql_where);
-        $line = mysql_fetch_array($result);
+        $result = $db->execute("SELECT COUNT(*) FROM `{$this->db}` WHERE " . $sql_where);
+        $line = $db->fetch_array($result);
         
         $comments_html = '';  
         $arrows_html = '';  
@@ -68,10 +69,10 @@ private $db;
             $list_def = ($this->revers)? ceil($commentnum / $comm_pnum) : 1;	
             $list = ($list <= 0)? $list_def : (int)$list;		
             
-            $result = BD("SELECT `id` FROM `{$this->db}` WHERE " . $sql_where . " ORDER by time ". $comm_order ." LIMIT ".($comm_pnum*($list-1)).",".$comm_pnum); 
-            if ( mysql_num_rows( $result ) != 0 ) {			
+            $result = $db->execute("SELECT `id` FROM `{$this->db}` WHERE " . $sql_where . " ORDER by time ". $comm_order ." LIMIT ".($comm_pnum*($list-1)).",".$comm_pnum);
+            if ( $db->num_rows( $result ) != 0 ) {
             
-            while ( $line = mysql_fetch_array( $result, MYSQL_NUM ) ) {
+            while ( $line = $db->fetch_array( $result, MYSQL_NUM ) ) {
             
                      $comments_item = new Comments_Item($line[0], $this->st_subdir);
                      
@@ -94,17 +95,17 @@ private $user_id;
 private $parent_obj;
 
     public function __construct($id = false, $style_sd = false) {
-    global $bd_names;	
+	    global $db, $bd_names;
 
     parent::__construct($id, ItemType::Comment, $bd_names['comments'], $style_sd);
 
 	if (!$this->id) return false;	
 	
-    $result = BD("SELECT `user_id`, `item_id`, `item_type` FROM `{$this->db}` WHERE `id`='". $this->id ."'"); 
+    $result = $db->execute("SELECT `user_id`, `item_id`, `item_type` FROM `{$this->db}` WHERE `id`='". $this->id ."'");
  
-        if ( mysql_num_rows( $result ) != 1 ) { $this->id = false; return false; }
+        if ( $db->num_rows( $result ) != 1 ) { $this->id = false; return false; }
   
-    $line = mysql_fetch_array($result, MYSQL_NUM);   
+    $line = $db->fetch_array($result, MYSQL_NUM);
   
     $this->user_id = (int) $line[0];
 	$this->parent_id = (int) $line[1];	
@@ -170,7 +171,7 @@ private $parent_obj;
 	}
 	
 	public function Create($message, $user_id, $item_id, $item_type) {
-	
+		global $db;
 		if ($this->id) return 0;
 
 		$this->parent_id = (int) $item_id;	
@@ -185,7 +186,7 @@ private $parent_obj;
 			
 		// lock read \ write cause comments may asked to be shown \ delete while creation
 		
-		if ( BD("INSERT INTO `{$this->db}` ( `message`, `time` , `item_id`, `item_type`, `user_id`) values ('".TextBase::SQLSafe($message)."', NOW(), '". $this->parent_obj->id() ."', '". $this->parent_obj->type() ."', '".$this->user_id."')") ) {
+		if ( $db->execute("INSERT INTO `{$this->db}` ( `message`, `time` , `item_id`, `item_type`, `user_id`) values ('". $db->safe($message) ."', NOW(), '". $this->parent_obj->id() ."', '". $this->parent_obj->type() ."', '".$this->user_id."')") ) {
 		
 		$this->id = mysql_insert_id();
 		$this->parent_obj->OnComment();			
@@ -197,13 +198,13 @@ private $parent_obj;
 	}
     
     public function Show($for_user = false) {
-
+	    global $db;
         if (!$this->Exist()) return $this->ShowPage('comment_not_found.html');
         
-        $result = BD("SELECT DATE_FORMAT(time, '%d.%m.%Y | %H:%i:%S') AS time, message, item_id FROM `{$this->db}` WHERE `id`='" . $this->id . "'" ); 
-        if (!mysql_num_rows( $result )) return ''; 
+        $result = $db->execute("SELECT DATE_FORMAT(time, '%d.%m.%Y | %H:%i:%S') AS time, message, item_id FROM `{$this->db}` WHERE `id`='" . $this->id . "'" );
+        if (!$db->num_rows( $result )) return '';
         
-        $line = mysql_fetch_array( $result, MYSQL_ASSOC );
+        $line = $db->fetch_array( $result, MYSQL_ASSOC );
         
         $admin_buttons  = '';
         $female_mark    = '';
@@ -242,8 +243,9 @@ private $parent_obj;
     }
 
     public function Edit($message) {
+	    global $db;
         $message = Message::Comment($message);				
-        BD("UPDATE `{$this->db}` SET message='".TextBase::SQLSafe($message)."' WHERE `id`='" . $this->id . "'");
+        $db->execute("UPDATE `{$this->db}` SET message='". $db->safe($message) ."' WHERE `id`='" . $this->id . "'");
         
         return true; 
     }

@@ -1,45 +1,46 @@
 <?php
 	if(!defined('INCLUDE_CHECK')) die("You don't have permissions to run this");
-	/* Ìåòîä õåøèðîâàíèÿ ïàðîëÿ äëÿ èíòåãðàöèè ñ ðàçëè÷íèìè ïëàãèíàìè/ñàéòàìè/cms/ôîðóìàìè
-	'hash_md5' 			- md5 õåøèðîâàíèå
-	'hash_authme'   	- èíòåãðàöèÿ ñ ïëàãèíîì AuthMe
-	'hash_cauth' 		- èíòåãðàöèÿ ñ ïëàãèíîì Cauth
-	'hash_xauth' 		- èíòåãðàöèÿ ñ ïëàãèíîì xAuth
-	'hash_joomla' 		- èíòåãðàöèÿ ñ Joomla (v1.6- v1.7)
-	'hash_ipb' 			- èíòåãðàöèÿ ñ IPB
-	'hash_xenforo' 		- èíòåãðàöèÿ ñ XenForo
-	'hash_wordpress' 	- èíòåãðàöèÿ ñ WordPress
-	'hash_vbulletin' 	- èíòåãðàöèÿ ñ vBulletin
-	'hash_dle' 			- èíòåãðàöèÿ ñ DLE
-	'hash_drupal'     	- èíòåãðàöèÿ ñ Drupal (v.7)
-	'hash_launcher'		- èíòåãðàöèÿ ñ ëàóí÷åðîì sashok724 (Ðåãèñòðàöèÿ ÷åðåç ëàóí÷åð)
+	/* ÐœÐµÑ‚Ð¾Ð´ Ñ…ÐµÑˆÐ¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ Ð¿Ð°Ñ€Ð¾Ð»Ñ Ð´Ð»Ñ Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ð¸ Ñ Ñ€Ð°Ð·Ð»Ð¸Ñ‡Ð½Ð¸Ð¼Ð¸ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð°Ð¼Ð¸/ÑÐ°Ð¹Ñ‚Ð°Ð¼Ð¸/cms/Ñ„Ð¾Ñ€ÑƒÐ¼Ð°Ð¼Ð¸
+	'hash_md5' 			- md5 Ñ…ÐµÑˆÐ¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ
+	'hash_authme'   	- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð¾Ð¼ AuthMe
+	'hash_cauth' 		- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð¾Ð¼ Cauth
+	'hash_xauth' 		- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ Ð¿Ð»Ð°Ð³Ð¸Ð½Ð¾Ð¼ xAuth
+	'hash_joomla' 		- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ Joomla (v1.6- v1.7)
+	'hash_ipb' 			- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ IPB
+	'hash_xenforo' 		- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ XenForo
+	'hash_wordpress' 	- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ WordPress
+	'hash_vbulletin' 	- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ vBulletin
+	'hash_dle' 			- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ DLE
+	'hash_drupal'     	- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ Drupal (v.7)
+	'hash_launcher'		- Ð¸Ð½Ñ‚ÐµÐ³Ñ€Ð°Ñ†Ð¸Ñ Ñ Ð»Ð°ÑƒÐ½Ñ‡ÐµÑ€Ð¾Ð¼ sashok724 (Ð ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ñ Ñ‡ÐµÑ€ÐµÐ· Ð»Ð°ÑƒÐ½Ñ‡ÐµÑ€)
 	*/
 	require('../system.php');
-	BDConnect('auth');
+	$db = new DB();
+	$db->connect('auth');
 	$crypt 				= 'hash_md5';
 	
-	$db_host			=  $config['db_host']; // Ip-àäðåñ MySQL
-	$db_port			= $config['db_port']; // Ïîðò áàçû äàííûõ
-	$db_user			= $config['db_login']; // Ïîëüçîâàòåëü áàçû äàííûõ
-	$db_pass			= $config['db_passw']; // Ïàðîëü áàçû äàííûõ
-	$db_database		= $config['db_name']; //Áàçà äàííûõ
+	$db_host			=  $config['db_host']; // Ip-Ð°Ð´Ñ€ÐµÑ MySQL
+	$db_port			= $config['db_port']; // ÐŸÐ¾Ñ€Ñ‚ Ð±Ð°Ð·Ñ‹ Ð´Ð°Ð½Ð½Ñ‹Ñ…
+	$db_user			= $config['db_login']; // ÐŸÐ¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ Ð±Ð°Ð·Ñ‹ Ð´Ð°Ð½Ð½Ñ‹Ñ…
+	$db_pass			= $config['db_passw']; // ÐŸÐ°Ñ€Ð¾Ð»ÑŒ Ð±Ð°Ð·Ñ‹ Ð´Ð°Ð½Ð½Ñ‹Ñ…
+	$db_database		= $config['db_name']; //Ð‘Ð°Ð·Ð° Ð´Ð°Ð½Ð½Ñ‹Ñ…
 	
-	$db_table       	= $bd_names['users']; //Òàáëèöà ñ ïîëüçîâàòåëÿìè
-	$db_group           = $bd_users['group']; //Äëÿ webmcr (ìèíèôèêñ)
-	$db_columnId  		= $bd_users['id']; //Êîëîíêà ñ ID ïîëüçîâàòåëåé
-	$db_columnUser  	= $bd_users['login']; //Êîëîíêà ñ èìåíàìè ïîëüçîâàòåëåé
-	$db_columnPass  	= $bd_users['password']; //Êîëîíêà ñ ïàðîëÿìè ïîëüçîâàòåëåé
-	$db_tableOther 		= 'xf_user_authenticate'; //Äîïîëíèòåëüíàÿ òàáëèöà äëÿ XenForo, íå òðîãàéòå
-	$db_columnSesId	 	= $bd_users['session']; //Êîëîíêà ñ ñåññèÿìè ïîëüçîâàòåëåé, íå òðîãàéòå
-	$db_columnServer	= $bd_users['server']; //Êîëîíêà ñ ñåðâåðàìè ïîëüçîâàòåëåé, íå òðîãàéòe
-	$db_columnSalt  	= 'members_pass_salt'; //Íàñòðàèâàåòñÿ äëÿ IPB è vBulletin: , IPB - members_pass_salt, vBulletin - salt
-    $db_columnIp  		= $bd_users['ip']; //Êîëîíêà ñ IP ïîëüçîâàòåëåé
+	$db_table       	= $bd_names['users']; //Ð¢Ð°Ð±Ð»Ð¸Ñ†Ð° Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑÐ¼Ð¸
+	$db_group           = $bd_users['group']; //Ð”Ð»Ñ webmcr (Ð¼Ð¸Ð½Ð¸Ñ„Ð¸ÐºÑ)
+	$db_columnId  		= $bd_users['id']; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ ID Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹
+	$db_columnUser  	= $bd_users['login']; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ Ð¸Ð¼ÐµÐ½Ð°Ð¼Ð¸ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹
+	$db_columnPass  	= $bd_users['password']; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ Ð¿Ð°Ñ€Ð¾Ð»ÑÐ¼Ð¸ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹
+	$db_tableOther 		= 'xf_user_authenticate'; //Ð”Ð¾Ð¿Ð¾Ð»Ð½Ð¸Ñ‚ÐµÐ»ÑŒÐ½Ð°Ñ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ð° Ð´Ð»Ñ XenForo, Ð½Ðµ Ñ‚Ñ€Ð¾Ð³Ð°Ð¹Ñ‚Ðµ
+	$db_columnSesId	 	= $bd_users['session']; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ ÑÐµÑÑÐ¸ÑÐ¼Ð¸ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹, Ð½Ðµ Ñ‚Ñ€Ð¾Ð³Ð°Ð¹Ñ‚Ðµ
+	$db_columnServer	= $bd_users['server']; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ ÑÐµÑ€Ð²ÐµÑ€Ð°Ð¼Ð¸ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹, Ð½Ðµ Ñ‚Ñ€Ð¾Ð³Ð°Ð¹Ñ‚e
+	$db_columnSalt  	= 'members_pass_salt'; //ÐÐ°ÑÑ‚Ñ€Ð°Ð¸Ð²Ð°ÐµÑ‚ÑÑ Ð´Ð»Ñ IPB Ð¸ vBulletin: , IPB - members_pass_salt, vBulletin - salt
+    $db_columnIp  		= $bd_users['ip']; //ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ñ IP Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÐµÐ¹
 	
-	$db_columnDatareg   = $bd_users['ctime']; // Êîëîíêà äàòû ðåãèñòðàöèè
-	$db_columnMail      = $bd_users['email']; // Êîëîíêà mail
+	$db_columnDatareg   = $bd_users['ctime']; // ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° Ð´Ð°Ñ‚Ñ‹ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ð¸
+	$db_columnMail      = $bd_users['email']; // ÐšÐ¾Ð»Ð¾Ð½ÐºÐ° mail
 	
-	$masterversion  	= sqlConfigGet('launcher-version'); //Ìàñòåð-âåðñèÿ ëàóí÷åðà
-	$protectionKey		= sqlConfigGet('protection-key'); //Êëþ÷ çàùèòû ñåññèè. Íèêîìó åãî íå ãîâîðèòå.
+	$masterversion  	= sqlConfigGet('launcher-version'); //ÐœÐ°ÑÑ‚ÐµÑ€-Ð²ÐµÑ€ÑÐ¸Ñ Ð»Ð°ÑƒÐ½Ñ‡ÐµÑ€Ð°
+	$protectionKey		= sqlConfigGet('protection-key'); //ÐšÐ»ÑŽÑ‡ Ð·Ð°Ñ‰Ð¸Ñ‚Ñ‹ ÑÐµÑÑÐ¸Ð¸. ÐÐ¸ÐºÐ¾Ð¼Ñƒ ÐµÐ³Ð¾ Ð½Ðµ Ð³Ð¾Ð²Ð¾Ñ€Ð¸Ñ‚Ðµ.
 
-	$usecheck			=  true; //Ìîæíî ëè èñïîëüçîâàòü ðåãèñòðàöèþ â ëàóí÷åðå
+	$usecheck			=  true; //ÐœÐ¾Ð¶Ð½Ð¾ Ð»Ð¸ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸ÑŽ Ð² Ð»Ð°ÑƒÐ½Ñ‡ÐµÑ€Ðµ
 ?>

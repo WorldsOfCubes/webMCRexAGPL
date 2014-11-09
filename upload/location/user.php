@@ -27,7 +27,7 @@ if ($do == 'full' or isset($_GET['name']) or isset($_POST['name'])) {
 	$page = lng('USERS_LIST');
 	$first = ((int) $do - 1) * $num_by_page;
 	$last  = (int) $do * $num_by_page;
-	$query = BD("SELECT `{$bd_names['users']}`.`{$bd_users['id']}`, `{$bd_names['users']}`.`{$bd_users['login']}`, `{$bd_names['users']}`.`{$bd_users['female']}`, `{$bd_names['users']}`.default_skin, `{$bd_names['groups']}`.name AS group_name
+	$query = $db->execute("SELECT `{$bd_names['users']}`.`{$bd_users['id']}`, `{$bd_names['users']}`.`{$bd_users['login']}`, `{$bd_names['users']}`.`{$bd_users['female']}`, `{$bd_names['users']}`.default_skin, `{$bd_names['groups']}`.name AS group_name
 				FROM `{$bd_names['users']}`
 				LEFT JOIN `{$bd_names['groups']}`
 				ON `{$bd_names['groups']}`.id = `{$bd_names['users']}`.`{$bd_users['group']}`
@@ -35,7 +35,7 @@ if ($do == 'full' or isset($_GET['name']) or isset($_POST['name'])) {
 				LIMIT $first, $last");
 	$content_list = '';
 	$num = $first + 1;
-	while($tmp_user = mysql_fetch_assoc($query,0)) {
+	while($tmp_user = $db->fetch_assoc($query,0)) {
 		ob_start();
 			include View::Get('users_item.html', $path);  
 		$content_list .= ob_get_clean();
@@ -45,8 +45,8 @@ if ($do == 'full' or isset($_GET['name']) or isset($_POST['name'])) {
 		include View::Get('users_list.html', $path);
 	$content_main = ob_get_clean();
 	
-	$result = BD("SELECT COUNT(*) FROM `{$bd_names['users']}`");
-	$line = mysql_fetch_array($result);
+	$result = $db->execute("SELECT COUNT(*) FROM `{$bd_names['users']}`");
+	$line = $db->fetch_array($result);
 	$view = new View("users/");
 	$content_main .= $view->arrowsGenerator(Rewrite::GetURL('users'), $do, $line[0], $num_by_page, "pagin");
 }

@@ -26,16 +26,16 @@ if ((strlen($password) < 4) or (strlen($password) > 20)) die ("errorPassSmall");
 if($password != $password2) die("errorPassToPass");
 
 
-$eMailProverka = BD("SELECT $db_columnMail FROM $db_table WHERE $db_columnMail ='{$mail}'") or die("error.".$logger->WriteLine($log_date.mysql_error())); //вывод ошибок MySQL в m.log
-if (mysql_num_rows($eMailProverka))
+$eMailProverka = $db->execute("SELECT $db_columnMail FROM $db_table WHERE $db_columnMail ='{$mail}'") or die("error.".$logger->WriteLine($log_date.mysql_error())); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ MySQL пїЅ m.log
+if ($db->num_rows($eMailProverka))
  die("emailErrorPovtor");
 
-$ProverkaUser = BD("SELECT $db_columnUser FROM $db_table WHERE $db_columnUser ='{$user}'") or die("error.".$logger->WriteLine($log_date.mysql_error())); //вывод ошибок MySQL в m.log
-if (mysql_num_rows($ProverkaUser))
+$ProverkaUser = $db->execute("SELECT $db_columnUser FROM $db_table WHERE $db_columnUser ='{$user}'") or die("error.".$logger->WriteLine($log_date.mysql_error())); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ MySQL пїЅ m.log
+if ($db->num_rows($ProverkaUser))
  die("loginErrorPovtor");
 
-$Proverkaip = BD("SELECT $db_columnIp FROM $db_table WHERE $db_columnIp ='{$ip}'") or die("error.".$logger->WriteLine($log_date.mysql_error())); //вывод ошибок MySQL в m.log
-if (mysql_num_rows($Proverkaip))
+$Proverkaip = $db->execute("SELECT $db_columnIp FROM $db_table WHERE $db_columnIp ='{$ip}'") or die("error.".$logger->WriteLine($log_date.mysql_error())); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ MySQL пїЅ m.log
+if ($db->num_rows($Proverkaip))
  die("Erroripip");
  
 if($crypt == 'hash_md5')
@@ -46,16 +46,16 @@ else if($crypt == 'hash_dle')
 { 
 $checkPass = md5(md5($password));
 }
-else die("Ошибка: тип хеша еще не поддерживается");
+else die("пїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 /*************************************/
 if($useactivate)
 {
-BD("INSERT INTO $db_table ($db_columnUser,$db_columnPass,$db_columnMail,$db_columnDatareg,$db_columnIp,$db_table.$db_group) VALUES('$user','$checkPass','$mail',NOW(),'$ip','$noactive')") or die("error.".$logger->WriteLine($log_date.mysql_error())); //вывод ошибок MySQL в m.log
+$db->execute("INSERT INTO $db_table ($db_columnUser,$db_columnPass,$db_columnMail,$db_columnDatareg,$db_columnIp,$db_table.$db_group) VALUES('$user','$checkPass','$mail',NOW(),'$ip','$noactive')") or die("error.".$logger->WriteLine($log_date.mysql_error())); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ MySQL пїЅ m.log
 echo "done";
 }
 else
 {
-BD("INSERT INTO $db_table ($db_columnUser,$db_columnPass,$db_columnMail,$db_columnDatareg,$db_columnIp) VALUES('$user','$checkPass','$mail',NOW(),'$ip')") or die("error.".$logger->WriteLine($log_date.mysql_error())); //вывод ошибок MySQL в m.log
+$db->execute("INSERT INTO $db_table ($db_columnUser,$db_columnPass,$db_columnMail,$db_columnDatareg,$db_columnIp) VALUES('$user','$checkPass','$mail',NOW(),'$ip')") or die("error.".$logger->WriteLine($log_date.mysql_error())); //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ MySQL пїЅ m.log
 echo "done";
 }
 /*************************************/

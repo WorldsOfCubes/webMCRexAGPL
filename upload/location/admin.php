@@ -209,8 +209,8 @@ if ($do) {
 	$ban_type	= (isset($_POST['banip_all']))? 2 : 1;
 	$ban_user_t	= (isset($_POST['banip_anduser']) and (int)$_POST['banip_anduser'])? true : false;
 		
-		BD("DELETE FROM {$bd_names['ip_banning']} WHERE IP='".TextBase::SQLSafe($ban_user->ip())."'");	
-		BD("INSERT INTO {$bd_names['ip_banning']} (IP, time_start, ban_until, ban_type) VALUES ('".TextBase::SQLSafe($ban_user->ip())."', NOW(), NOW()+INTERVAL ".TextBase::SQLSafe($ban_time)." DAY, '".$ban_type."')");
+		$db->execute("DELETE FROM {$bd_names['ip_banning']} WHERE IP='". $db->safe($ban_user->ip()) ."'");
+		$db->execute("INSERT INTO {$bd_names['ip_banning']} (IP, time_start, ban_until, ban_type) VALUES ('". $db->safe($ban_user->ip()) ."', NOW(), NOW()+INTERVAL ". $db->safe($ban_time) ." DAY, '".$ban_type."')");
 		
 		$info .= lng('ADMIN_BAN_IP').' (IP '.$ban_user->ip().') <br/>';
 		
@@ -625,7 +625,7 @@ if ($do) {
     case 'delete_banip': 
 	if (!empty($_GET['ip']) and preg_match("/[0-9.]+$/", $_GET['ip'])) {
 	
-	$ip = $_GET['ip']; BD("DELETE FROM {$bd_names['ip_banning']} WHERE IP='".TextBase::SQLSafe($ip)."'");
+	$ip = $_GET['ip']; $db->execute("DELETE FROM {$bd_names['ip_banning']} WHERE IP='". $db->safe($ip) ."'");
 		                  
     $info .= lng('IP_UNBANNED') . ' ( '.$ip.') ';
 	} 

@@ -1,6 +1,7 @@
 <?php
 /* WEB-APP : WebMCR (С) 2013 NC22 | License : GPLv3 */
 
+
 if (empty($_POST['method']) and empty($_GET['method'])) exit;
 $method = (isset($_POST['method']))? $_POST['method'] : $_GET['method'];
 
@@ -31,8 +32,9 @@ switch ($method) {
 			$config['p_logic'] != 'authme')
 			
 				aExit(1,'Change password is not available');
-	
-	BDConnect('action_'.$method);
+
+	$db = new DB();
+	$db->connect('action_'.$method);
 	MCRAuth::userLoad();
 	
     break;
@@ -40,8 +42,9 @@ switch ($method) {
 	
 	require('./system.php');
 	loadTool('upload.class.php');
-	
-	BDConnect('action_download');
+
+		$db = new DB();
+		$db->connect('action_download');
 
 $player       = $user->name();
 $player_id    = $user->id();
@@ -143,10 +146,10 @@ switch ($method) {
 
         $email = $_POST['email'];  
 	    
-		$result = BD("SELECT `{$bd_users['id']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['email']}`='".TextBase::SQLSafe($email)."'"); 
-		if ( !mysql_num_rows($result) ) aExit(3, lng('RESTORE_NOT_EXIST'));
+		$result = $db->execute("SELECT `{$bd_users['id']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['email']}`='". $db->safe($email) ."'");
+		if ( !$db->num_rows($result) ) aExit(3, lng('RESTORE_NOT_EXIST'));
 		
-		$line = mysql_fetch_array( $result, MYSQL_NUM );
+		$line = $db->fetch_array( $result, MYSQL_NUM );
         
 		$restore_user = new User($line[0]);		
 	     
@@ -337,11 +340,11 @@ switch ($method) {
 		$f = '] ';
 		$g = '';
 
-        if (!$pref)$fineprefix = TextBase::SQLSafe($prefcolor.$d.$pref.$f.$nickcolor);
-            else $fineprefix = TextBase::SQLSafe($nickcolor);
-		$suffix = TextBase::SQLSafe($textcolor.$g);
-		BD("DELETE FROM permissions_entity WHERE name='".$user->name()."'");
-		BD("INSERT INTO permissions_entity VALUES (NULL, '".$user->name()."', '1', '$fineprefix', '$suffix', '0')")or aExit(4, ('Не удалось соединиться: ' . mysql_error() . " Сообщите полный текст этого сообщения администраторам для устранения ошибки."));
+        if (!$pref)$fineprefix = $db->safe($prefcolor . $d . $pref . $f . $nickcolor);
+            else $fineprefix = $db->safe($nickcolor);
+		$suffix = $db->safe($textcolor . $g);
+		$db->execute("DELETE FROM permissions_entity WHERE name='".$user->name()."'");
+		$db->execute("INSERT INTO permissions_entity VALUES (NULL, '".$user->name()."', '1', '$fineprefix', '$suffix', '0')")or aExit(4, ('Не удалось соединиться: ' . mysql_error() . " Сообщите полный текст этого сообщения администраторам для устранения ошибки."));
 		aExit(0, 'Теперь ваш ник будет отображаться в новом цвете');
     break;
 }

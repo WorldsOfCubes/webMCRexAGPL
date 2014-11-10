@@ -188,7 +188,7 @@ private $parent_obj;
 		
 		if ( $db->execute("INSERT INTO `{$this->db}` ( `message`, `time` , `item_id`, `item_type`, `user_id`) values ('". $db->safe($message) ."', NOW(), '". $this->parent_obj->id() ."', '". $this->parent_obj->type() ."', '".$this->user_id."')") ) {
 		
-		$this->id = mysql_insert_id();
+		$this->id = $db->insert_id();
 		$this->parent_obj->OnComment();			
 		
 		return 1; 	

@@ -122,7 +122,7 @@ private $downloads;
 
 		if ($db->execute("INSERT INTO {$this->db} (id_word, user_id, way, name, size, hash) VALUES ('". $db->safe($id_word) ."', '". $db->safe($user_id) ."','". $db->safe($new_file_info['tmp_name']) ."','". $db->safe($new_file_info['name']) ."', '". $db->safe($new_file_info['size_mb']) ."', '".$hash."')")) {
 		
-		$this->id			= mysql_insert_id();	
+		$this->id			= $db->insert_id();
 		$this->user_id		= $user_id;
 		$this->id_word		= $id_word;
 		$this->way	   		= $way;

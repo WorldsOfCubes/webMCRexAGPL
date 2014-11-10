@@ -67,7 +67,7 @@ private $s_user;
 
 		if ( $db->execute("insert into `".$this->db."` ( address, port, info, name, method, service_user, rcon ) values ('". $db->safe($address) ."', '". $db->safe($port) ."', '". $db->safe($info) ."' , '". $db->safe($name) ."', '". $db->safe($method) ."', '". $db->safe($s_user) ."', '". $db->safe($rcon) ."' )") )
           
-		  $this->id = mysql_insert_id();
+		  $this->id = $db->insert_id();
 		  
 		else return 4;
 		

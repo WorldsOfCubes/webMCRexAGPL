@@ -344,7 +344,7 @@ switch ($method) {
             else $fineprefix = $db->safe($nickcolor);
 		$suffix = $db->safe($textcolor . $g);
 		$db->execute("DELETE FROM permissions_entity WHERE name='".$user->name()."'");
-		$db->execute("INSERT INTO permissions_entity VALUES (NULL, '".$user->name()."', '1', '$fineprefix', '$suffix', '0')")or aExit(4, ('Не удалось соединиться: ' . mysql_error() . " Сообщите полный текст этого сообщения администраторам для устранения ошибки."));
+		$db->execute("INSERT INTO permissions_entity VALUES (NULL, '".$user->name()."', '1', '$fineprefix', '$suffix', '0')")or aExit(4, ('Не удалось соединиться: ' . $db->error() . " Сообщите полный текст этого сообщения администраторам для устранения ошибки."));
 		aExit(0, 'Теперь ваш ник будет отображаться в новом цвете');
     break;
 }

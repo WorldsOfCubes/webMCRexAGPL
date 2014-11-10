@@ -118,7 +118,7 @@ if (empty($login) || empty($pass) || empty($repass) || empty($_POST['email'])) a
 	if (!$db->execute("INSERT INTO `{$bd_names['users']}` (`{$bd_users['login']}`,`{$bd_users['password']}`,`{$bd_users['ip']}`,`{$bd_users['female']}`,`{$bd_users['ctime']}`,`{$bd_users['group']}`) VALUES('". $db->safe($login) ."','".MCRAuth::createPass($pass)."','". $db->safe(GetRealIp()) ."',$female,NOW(),'$group')"))
 	  aExit(14);
 
-	$tmp_user = new User(mysql_insert_id());
+	$tmp_user = new User($db->insert_id());
 	$tmp_user->setDefaultSkin();	
 
     $next_reg = (int) sqlConfigGet('next-reg-time');	

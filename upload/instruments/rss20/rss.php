@@ -10,13 +10,13 @@ $rss_doc = '';
 
 $site_news = 'http://'.str_replace('instruments/rss20/rss.php','',$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']).'index.php';
 
-$num_news = mysql_fetch_row($db->execute("SELECT COUNT(*) FROM `{$bd_names['news']}`")); if(empty($num_news[0])) exit;
+$num_news = $db->fetch_row($db->execute("SELECT COUNT(*) FROM `{$bd_names['news']}`")); if(empty($num_news[0])) exit;
 
 define('DATE_FORMAT_RFC822','r');
 
 Header("content-type: application/rss+xml; charset=utf-8");
 
-$cur_date = mysql_fetch_row($db->execute("SELECT DATE_FORMAT(NOW(),'%a, %d %b %Y %T')"));
+$cur_date = $db->fetch_row($db->execute("SELECT DATE_FORMAT(NOW(),'%a, %d %b %Y %T')"));
 $cur_date = $cur_date[0];
 
 $result = $db->execute("SELECT * FROM `{$bd_names['news']}` ORDER by time DESC LIMIT 0,10");

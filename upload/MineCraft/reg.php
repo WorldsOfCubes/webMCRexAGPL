@@ -4,11 +4,11 @@
 	error_reporting(0);
 	include("connect.php");
 	include("loger.php");
-	$action = mysql_real_escape_string($_POST['action']);
-	$user = mysql_real_escape_string($_POST['user']);
-	$password = mysql_real_escape_string($_POST['password']);
-	$password2 = mysql_real_escape_string($_POST['password2']);
-	$mail = mysql_real_escape_string($_POST['email']);
+	$action = $db->safe($_POST['action']);
+	$user = $db->safe($_POST['user']);
+	$password = $db->safe($_POST['password']);
+	$password2 = $db->safe($_POST['password2']);
+	$mail = $db->safe($_POST['email']);
 	$ip  = getenv('REMOTE_ADDR');
 if($action == 'register' && !$usecheck) die("registeroff");	
 if($action == 'register')
@@ -26,15 +26,15 @@ if ((strlen($password) < 4) or (strlen($password) > 20)) die ("errorPassSmall");
 if($password != $password2) die("errorPassToPass");
 
 
-$eMailProverka = $db->execute("SELECT $db_columnMail FROM $db_table WHERE $db_columnMail ='{$mail}'") or die("error.".$logger->WriteLine($log_date.mysql_error())); //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MySQL ï¿½ m.log
+$eMailProverka = $db->execute("SELECT $db_columnMail FROM $db_table WHERE $db_columnMail ='{$mail}'") or die("error.".$logger->WriteLine($log_date.$db->error())); //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MySQL ï¿½ m.log
 if ($db->num_rows($eMailProverka))
  die("emailErrorPovtor");
 
-$ProverkaUser = $db->execute("SELECT $db_columnUser FROM $db_table WHERE $db_columnUser ='{$user}'") or die("error.".$logger->WriteLine($log_date.mysql_error())); //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MySQL ï¿½ m.log
+$ProverkaUser = $db->execute("SELECT $db_columnUser FROM $db_table WHERE $db_columnUser ='{$user}'") or die("error.".$logger->WriteLine($log_date.$db->error())); //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MySQL ï¿½ m.log
 if ($db->num_rows($ProverkaUser))
  die("loginErrorPovtor");
 
-$Proverkaip = $db->execute("SELECT $db_columnIp FROM $db_table WHERE $db_columnIp ='{$ip}'") or die("error.".$logger->WriteLine($log_date.mysql_error())); //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MySQL ï¿½ m.log
+$Proverkaip = $db->execute("SELECT $db_columnIp FROM $db_table WHERE $db_columnIp ='{$ip}'") or die("error.".$logger->WriteLine($log_date.$db->error())); //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MySQL ï¿½ m.log
 if ($db->num_rows($Proverkaip))
  die("Erroripip");
  
@@ -50,12 +50,12 @@ else die("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï
 /*************************************/
 if($useactivate)
 {
-$db->execute("INSERT INTO $db_table ($db_columnUser,$db_columnPass,$db_columnMail,$db_columnDatareg,$db_columnIp,$db_table.$db_group) VALUES('$user','$checkPass','$mail',NOW(),'$ip','$noactive')") or die("error.".$logger->WriteLine($log_date.mysql_error())); //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MySQL ï¿½ m.log
+$db->execute("INSERT INTO $db_table ($db_columnUser,$db_columnPass,$db_columnMail,$db_columnDatareg,$db_columnIp,$db_table.$db_group) VALUES('$user','$checkPass','$mail',NOW(),'$ip','$noactive')") or die("error.".$logger->WriteLine($log_date.$db->error())); //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MySQL ï¿½ m.log
 echo "done";
 }
 else
 {
-$db->execute("INSERT INTO $db_table ($db_columnUser,$db_columnPass,$db_columnMail,$db_columnDatareg,$db_columnIp) VALUES('$user','$checkPass','$mail',NOW(),'$ip')") or die("error.".$logger->WriteLine($log_date.mysql_error())); //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MySQL ï¿½ m.log
+$db->execute("INSERT INTO $db_table ($db_columnUser,$db_columnPass,$db_columnMail,$db_columnDatareg,$db_columnIp) VALUES('$user','$checkPass','$mail',NOW(),'$ip')") or die("error.".$logger->WriteLine($log_date.$db->error())); //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MySQL ï¿½ m.log
 echo "done";
 }
 /*************************************/

@@ -51,7 +51,7 @@ private $priority;
 
 		if ($db->execute("INSERT INTO `".$this->db."` ( `name`, `priority`, `description`) values ( '". $db->safe($name) ."', '". $db->safe($priority) ."','". $db->safe($description) ."' )"))
 		
-		$this->id = mysql_insert_id();
+		$this->id = $db->insert_id();
 		
 		else return false;
 		
@@ -212,7 +212,7 @@ private $comments;
 		
 		$db->execute("INSERT INTO `{$this->db}` ( `title`, `message`, ".$sql." `time`, `category_id`, `user_id`, `discus`, `vote`) VALUES ( '". $db->safe($title) ."', '". $db->safe($message) ."', ".$sql2."NOW(), '". $db->safe($cat_id) ."', '".$user->id()."', '".$discus."', '".$vote."' )");
 		
-		$this->id = mysql_insert_id();
+		$this->id = $db->insert_id();
 		
 		$this->category_id 	= $cat_id;
 		$this->title 		= $title;

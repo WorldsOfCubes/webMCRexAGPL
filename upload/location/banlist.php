@@ -12,7 +12,7 @@ if (!empty($user) and $user->lvl() > 0){
 //		$content_main .= "<div class='alert alert-success'>" . lng("NOT_BANED") . "</div>";
 	}
 }
-print mysql_error(); 
+print $db->error();
 $num_by_page = 25;
 
 if (isset($_GET['page'])) $page = $_GET['page'];
@@ -27,7 +27,7 @@ $path = 'banlist/';
 $first = ((int) $page - 1) * $num_by_page;
 $last  = (int) $page * $num_by_page;
 $query = $db->execute("SELECT * FROM `banlist` ORDER BY `time` DESC LIMIT $first, $last");
-print mysql_error();
+print $db->error();
 $content_list = '';
 $num = $first + 1;
 

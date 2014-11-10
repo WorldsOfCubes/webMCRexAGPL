@@ -952,7 +952,7 @@ private $pavailable;
 		  }
 
 		$result = $db->execute("INSERT INTO `{$this->db}` (`name`, `pex_name`,$sql_names) values ('". $db->safe($name) ."','". $db->safe($pex_name) ."',$sql_vars)");
-		if ($result and mysql_affected_rows()) $this->id = mysql_insert_id();
+		if ($result and $db->affected_rows()) $this->id = $db->insert_id();
 		else return false;
 	 
 		return true; 
@@ -1020,7 +1020,7 @@ private $pavailable;
 		
 		$result = $db->execute("UPDATE `{$this->db}` SET `name`='". $db->safe($name) ."'$sql WHERE `id`='".$this->id."'");
 		$result = $db->execute("UPDATE `{$this->db}` SET `pex_name`='". $db->safe($pex_name) ."'$sql WHERE `id`='".$this->id."'");
-		if ($result and mysql_affected_rows()) return true;
+		if ($result and $db->affected_rows()) return true;
 		
 		return true; 
 	}	
@@ -1045,7 +1045,7 @@ private $pavailable;
 		$result = $db->execute("DELETE FROM `{$this->db}` WHERE `id` = '".$this->id."' and `system` = '0'");
 		
 		$this->id = false;		
-		if ($result and mysql_affected_rows()) return true;
+		if ($result and $db->affected_rows()) return true;
 		
 		return false; 
 	}	

@@ -1,8 +1,8 @@
 <?php
-define('MCR', '2.0b'); 
+define('MCR', '2.0b21');
 define('EX', '2'); 
 define('PROGNAME', 'webMCRex '.MCR);
-define('FEEDBACK', '<a href="http://WorldsOfCubes.NET/go/webmcrex">'.PROGNAME.'</a> &copy; 2013-2014 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.NET">WoC Team</a>');  
+define('FEEDBACK', '<a href="http://WorldsOfCubes.NET/go/webmcrex">'.PROGNAME.'</a> &copy; 2013-2014 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.NET">WoC Team</a>');
 
 class Item extends View {
 
@@ -314,7 +314,7 @@ Class DB {
 		$queries++;
 		$result = mysql_query( $query, $this->link );
 		if (is_bool($result) and $result == false)
-			vtxtlog('SQLError: ' . mysql_error() . ' in query ['.$query.']');
+			vtxtlog('SQLError: ' . $this->error() . ' in query ['.$query.']');
 		return $result;
 	}
 
@@ -334,6 +334,22 @@ Class DB {
 
 	public function num_rows ($query) {
 		return mysql_num_rows($query);
+	}
+
+	public function error () {
+		return mysql_error($this->link);
+	}
+
+	public function insert_id () {
+		return mysql_insert_id($this->link);
+	}
+
+	public function affected_rows () {
+		return mysql_affected_rows($this->link);
+	}
+
+	public function fetch_row ($query) {
+		return mysql_fetch_row($query);
 	}
 }
 

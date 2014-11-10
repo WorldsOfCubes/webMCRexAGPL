@@ -4,10 +4,10 @@ header('Content-Type: text/html; charset=utf8');
 	define('INCLUDE_CHECK',true);
 	include("connect.php");
 	loadTool("user.class.php");
-	$login 		= mysql_real_escape_string($_POST['login']);
-	$postPass	= mysql_real_escape_string($_POST['password']);
-	$client 	= mysql_real_escape_string($_POST['client']);
-	$action		= mysql_real_escape_string($_POST['action']);
+	$login 		= $db->safe($_POST['login']);
+	$postPass	= $db->safe($_POST['password']);
+	$client 	= $db->safe($_POST['client']);
+	$action		= $db->safe($_POST['action']);
 	
 	
 	

@@ -10,9 +10,9 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' ) && (stripos($_SERVER["CONTENT_TYPE"]
 }
 
 @$aT = $json->accessToken; @$sP = @$json->selectedProfile; @$sI = $json->serverId;
-@$user                      = mysql_real_escape_string($aT);
-@$sessionid                 = mysql_real_escape_string($sP);
-@$serverid                  = mysql_real_escape_string($sI);
+@$user                      = $db->safe($aT);
+@$sessionid                 = $db->safe($sP);
+@$serverid                  = $db->safe($sI);
 //$logger->WriteLine($user.' '.$sessionid.' '.$serverid);
 
 if (!preg_match("/^[a-zA-Z0-9_-]+$/", $user) || !preg_match("/^[a-zA-Z0-9:_-]+$/", $sessionid) || !preg_match("/^[a-zA-Z0-9_-]+$/", $serverid)){
@@ -21,7 +21,7 @@ echo '{"error":"Bad login","errorMessage":"Bad login"}';
 exit;
 }
 	
-	$query = mysql_query("Select $db_columnUser From $db_table Where $db_columnUser='$user'") or die ("Ошибка");
+	$query = $db->execute("Select $db_columnUser From $db_table Where $db_columnUser='$user'") or die ("Ошибка");
 	$row = $db->fetch_assoc($query);
 	$realUser = $row[$db_columnUser];
 
@@ -30,12 +30,12 @@ exit;
          exit ('{"error":"Bad login","errorMessage":"Bad login"}');
         }
 	
-	$result = mysql_query("Select $db_columnUser From $db_table Where $db_columnSesId='$sessionid' And $db_columnUser='$user' And $db_columnServer='$serverid'") or die ("Ошибка");
+	$result = $db->execute("Select $db_columnUser From $db_table Where $db_columnSesId='$sessionid' And $db_columnUser='$user' And $db_columnServer='$serverid'") or die ("Ошибка");
 	if($db->num_rows($result) == 1) echo '{"id":"ok"}';
 	else
 	{
-		$result = mysql_query("Update $db_table SET $db_columnServer='$serverid' Where $db_columnSesId='$sessionid' And $db_columnUser='$user'") or die ("Ошибка");
-		if(mysql_affected_rows() == 1) echo '{"id":"ok"}';
+		$result = $db->execute("Update $db_table SET $db_columnServer='$serverid' Where $db_columnSesId='$sessionid' And $db_columnUser='$user'") or die ("Ошибка");
+		if($db->affected_rows() == 1) echo '{"id":"ok"}';
 		else echo '{"error":"Bad login","errorMessage":"Bad login"}';
 	}
 ?>

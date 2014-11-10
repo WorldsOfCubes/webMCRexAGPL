@@ -46,7 +46,7 @@ if( $db->num_rows($result) == 1 ){
 
 $result = $db->execute("UPDATE `{$bd_names['users']}` SET `{$bd_users['server']}`='". $db->safe($serverid) ."' WHERE `{$bd_users['session']}`='". $db->safe($sessionid) ."' AND `{$bd_users['login']}`='". $db->safe($login) ."'");
 
-if(mysql_affected_rows() == 1){
+if($db->affected_rows() == 1){
 	vtxtlog('[joinserver.php] join Server [Result] login OK'); 
 	exit('OK');
 }

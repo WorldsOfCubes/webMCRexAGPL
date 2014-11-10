@@ -29,16 +29,16 @@ $helperresult = $db->fetch_array($helperinfo,0);
 	{
 		if ($answer == 'yes') {
 			$content = View::Alert("Заявка успешно принята!</div>", 'success');
-			$db->execute("UPDATE `reqests` SET `answer`=3 WHERE `id`='".$userid."'")or die(mysql_error());
+			$db->execute("UPDATE `reqests` SET `answer`=3 WHERE `id`='".$userid."'")or die($db->error());
 		} elseif ($answer == 'no') {
 			$content = View::Alert("Заявка успешно отклонена!</div>", 'success');
-			$db->execute("UPDATE `reqests` SET `answer`=2 WHERE `id`='".$userid."'")or die(mysql_error());
+			$db->execute("UPDATE `reqests` SET `answer`=2 WHERE `id`='".$userid."'")or die($db->error());
 		} elseif ($answer == 'un') {
 			$content = View::Alert("Заявка успешно помечена непрочитанной!", 'success');
-			$db->execute("UPDATE `reqests` SET `answer`=1 WHERE `id`='".$userid."'")or die(mysql_error());
+			$db->execute("UPDATE `reqests` SET `answer`=1 WHERE `id`='".$userid."'")or die($db->error());
 		} elseif ($answer == 'del' && $user->lvl() >= 15) {
 			$content = View::Alert("Заявка успешно удалена!", 'success');
-			$db->execute("DELETE FROM `reqests` WHERE `id` = '".$userid."'")or die(mysql_error());
+			$db->execute("DELETE FROM `reqests` WHERE `id` = '".$userid."'")or die($db->error());
 		} else {
 			$content = View::Alert("Подмена запроса Answer", 'success');
 		}

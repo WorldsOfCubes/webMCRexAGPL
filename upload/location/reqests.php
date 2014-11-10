@@ -1,7 +1,6 @@
 <?php 
 if (empty($user) or $user->lvl() < 9) { accss_deny(); }
 
-// Мини настройки для RB
 
 $content = '';
 $page = 'Управление запросами';

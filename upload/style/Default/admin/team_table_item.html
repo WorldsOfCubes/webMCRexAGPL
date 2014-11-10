@@ -1,12 +1,12 @@
 <tr>
 <td><center><strong><a href="user/profile/<? echo $reqests['name'] ?>" target="_blank"><?php echo $reqests['name'] ?></a></strong></center></td>
-<td><center><strong><?php echo $reqests['realname'] ?></strong></center></td>
-<td><center><strong><?php echo $reqests['surname'] ?></strong></center></td>
-<td><center><strong><?php echo $reqests['old'] ?></strong></center></td>
-<td><center><strong><?php echo $reqests['skype'] ?></strong></center></td>
+<td><center><strong><?php echo TextBase::HTMLDestruct($reqests['realname']) ?></strong></center></td>
+<td><center><strong><?php echo TextBase::HTMLDestruct($reqests['surname']) ?></strong></center></td>
+<td><center><strong><?php echo TextBase::HTMLDestruct($reqests['old']) ?></strong></center></td>
+<td><center><strong><?php echo TextBase::HTMLDestruct($reqests['skype']) ?></strong></center></td>
 	<form method="post" class="form-inline">
 		<input type="hidden" name="userid" value="<?php echo $reqests['id'] ?>" />
-		<td><?php echo $reqests['comment'] ?>
+		<td><?php echo TextBase::HTMLDestruct($reqests['comment']) ?>
 		</td>
 		<td>
 			<select name="answer" class="form-control">

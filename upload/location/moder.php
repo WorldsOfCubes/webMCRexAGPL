@@ -24,7 +24,7 @@ if ($realname != $check && $surname != $check && $old != $check && $skype != $ch
 	{
 		if (preg_match('/^[а-яА-Я]+/iu', $realname) && preg_match('/^[а-яА-Я]+/iu', $surname) && preg_match('/^[0-9]+/iu', $old) && preg_match('/^[a-zA-Z0-9]+/iu', $skype) && preg_match('/^[а-яА-Яa-zA-Z0-9 ]+/iu', $comment))
 		{
-			if ((strlen($realname) < 20) && (strlen($surname) < 20) && (strlen($old) < 3) && (strlen($skype) < 20))
+			if ((mb_strlen($realname, "utf8") < 20) && (mb_strlen($surname, "utf8") < 20) && (mb_strlen($old, "utf8") < 3) && (mb_strlen($skype, "utf8") < 20))
 			{
 				if ($resultsql2['name'] != $_SESSION['user_name'])
 				{
@@ -65,15 +65,15 @@ $content = '';
 }
 elseif ($resultsql2['answer'] == '1')
 {
-$content = View::Alert("<button type=\"button\" class=\"close\" data-dismiss=\"alert\"></button>Твоя заявка на рассмотрении у администрации.", 'info');
+$content = View::Alert("Твоя заявка на рассмотрении у администрации.", 'info');
 }
 elseif ($resultsql2['answer'] == 2)
 {
-$content = View::Alert("<button type=\"button\" class=\"close\" data-dismiss=\"alert\"></button>Твоя заявка отклонена администратором.");
+$content = View::Alert("Твоя заявка отклонена администратором.");
 }
 elseif ($resultsql2['answer'] == 3)
 {
-$content = View::Alert("<button type=\"button\" class=\"close\" data-dismiss=\"alert\"></button>Твою заявку приняли.", 'success');
+$content = View::Alert("Твою заявку приняли.", 'success');
 }
 
 ob_start();

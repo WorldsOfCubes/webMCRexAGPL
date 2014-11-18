@@ -74,12 +74,15 @@ if ($config['offline'] and (empty($user) or $user->group() != 3)) {
 	exit;
 }
 function accss_deny() {
+	show_error('accsess_denied', 'Доступ запрещен');
+}
+function show_error($html, $page) {
 global $config, $content_js, $content_advice, $content_side, $user;
 	if (!empty($user)) {
 		$player       = $user->name();
 		$player_id    = $user->id();
 		$player_lvl   = $user->lvl();
-		$player_email = $user->email(); if (empty($player_email)) $player_email = lng('NOT_SET'); 
+		$player_email = $user->email(); if (empty($player_email)) $player_email = lng('NOT_SET');
 		$player_group = $user->getGroupName();
 		$player_econ  = $user->getEcon();
 		$player_money = $user->getMoney();
@@ -89,8 +92,7 @@ global $config, $content_js, $content_advice, $content_side, $user;
 	$content_menu = $menu->Show();
 	$content_js .= InitJS();
 	$mode = 'denied';
-	$page = 'Доступ запрещен';
-	$content_main = View::ShowStaticPage('accsess_denied.html');
+	$content_main = View::ShowStaticPage($html . '.html');
 	include('./location/side.php');
 	ob_start();
 	include View::Get('index.html');

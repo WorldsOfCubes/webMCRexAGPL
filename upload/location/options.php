@@ -204,7 +204,7 @@ if ($user->group() != 4 ) {
 	if ($user->getPermission('change_cloak')  and file_exists($user->getCloakFName()))
 											  include View::Get('profile_del_cloak.html', $prefix);
 	if ($user->getPermission('change_login')) include View::Get('profile_nik.html', $prefix);
-	if ($user->getPermission('change_pass'))  include View::Get('profile_pass.html', $prefix);
+	if ($user->getPermission('change_pass'))  include View::Get((!$user->pass_set())?'profile_pass_noold.html':'profile_pass.html', $prefix);
 
 	$profile_inputs = ob_get_clean();
 

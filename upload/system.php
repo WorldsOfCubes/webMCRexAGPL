@@ -8,6 +8,7 @@ define('MCR_ROOT', dirname(__FILE__).'/');
 define('MCR_LANG', 'ru_RU');
 
 loadTool('base.class.php');
+loadTool('pm.class.php');
 
 if (!file_exists(MCR_ROOT.'config.php')) { header("Location: install/install.php"); exit; }
 
@@ -256,8 +257,7 @@ global $db, $link, $bd_names;
 
 function CheckPM(){
 global $db, $user;
-	$pm_count = $db->execute("SELECT COUNT(*) FROM `pm` WHERE `reciver` = '" . $user->name() . "' AND `viewed`=0");
-	$pm_count = $db->fetch_array($pm_count);
+	$pm_count = PManager::CheckNew();
 	ob_start();
 	include View::Get("pm_new_modal.html", "pm/");
 	$message = ob_get_clean();
@@ -267,8 +267,7 @@ global $db, $user;
 function CheckPMMenu(){
 global $db, $user;
 	if (empty($user)) return '';
-	$pm_count = $db->execute("SELECT COUNT(*) FROM `pm` WHERE `reciver` = '" . $user->name() . "' AND `viewed`=0");
-	$pm_count = $db->fetch_array($pm_count);
+	$pm_count = PManager::CheckNew();
 	return ($pm_count['0']!=0)? "&nbsp;({$pm_count['0']})" : '';
 }
 ?>

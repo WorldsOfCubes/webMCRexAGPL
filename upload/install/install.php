@@ -9,11 +9,7 @@ $mode = (!empty($_POST['mode']) or !empty($_GET['mode']))? ((empty($_GET['mode']
 $step = (!empty($_POST['step']))? (int) $_POST['step'] : $step = 1;
 
 switch ($mode) { /* Допустимые идентификаторы CMS */
-	case 'xenforo':		$main_cms = 'xenForo';				break; /* [+] */
-	case 'ipb':			$main_cms = 'Invision Power Board';	break; /* [+] */
-	case 'dle':			$main_cms = 'DataLife Engine';		break; /* [+] */
-	case 'wp':			$main_cms = 'WordPress';			break; /* [+] */	
-	case 'joomla':		$main_cms = 'Joomla!';				break; /* [+] */
+	case 'wocauth':		$main_cms = 'WoCAuth';				break; /* [+] */
 	case 'xauth':		$main_cms = 'xAuth';				break; /* [+] */
 	case 'authme':		$main_cms = 'AuthMe';				break; /* [+] */
 	default :			$main_cms = false; $mode = 'usual';	break;
@@ -149,27 +145,6 @@ global $site_ways, $create_ways;
     foreach ($site_ways as $key => $value)
 		if ($value and in_array($key, $create_ways) and !is_dir(MCR_ROOT.$site_ways['mcraft'].$value)) 
 				mkdir(MCR_ROOT.$site_ways['mcraft'].$value, 0777, true);
-}
-
-function findCMS($way){
-global $main_cms, $mode, $info;
-
-	if ( !TextBase::StringLen($way)) { 
-		$info = 'Укажите путь до папки '.$main_cms.'.';
-		return false;
-	}
-		
-	switch ($mode) {
-		case 'xenforo': $file = 'library/XenForo/Autoloader.php'; break; 
-		case 'ipb':		$file = 'admin/sources/base/ipsController.php';	break; 
-		default: return false; break;
-	} 
-	
-	if (!file_exists($way.$file)) 
-	$info = 'Путь до папки '.$main_cms.' указан неверно. В папке отсутствует поддериктория с файлом '.$file;	
-	else return true;
-	
-	return false;
 }
 
 function BD( $query ) {
@@ -319,7 +294,7 @@ switch ($step) {
 	
 	if ($main_cms) {
 		
-		$bd_names['users']  = ConfigPostStr('bd_accounts_mcms');		
+//		$bd_names['users']  = ConfigPostStr('bd_accounts_mcms');
 		$bd_alter_users = "ALTER TABLE `{$bd_names['users']}` ";
 		
 		include './CMS/sql/sql_'.$mode.'.php';	
@@ -330,22 +305,24 @@ switch ($step) {
 		
 		$result = BD("SELECT `{$bd_users['id']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='$site_user'");
 		
-		if (is_bool($result) and $result == false) { $info = 'Название таблицы пользователей указано неверно.'; break; }		
-		if (!mysql_num_rows( $result )) { $info = 'Пользователь с таким именем не найден.'; break; }		
+		if (is_bool($result) and $result == false and $mode!='wocauth') { $info = 'Название таблицы пользователей указано неверно.'; break; }
+		if ($mode!='wocauth' and !mysql_num_rows( $result )) { $info = 'Пользователь с таким именем не найден.'; break; }
+
+		if ($mode!='wocauth') $line = mysql_fetch_array($result, MYSQL_NUM);
 		
-		$line = mysql_fetch_array($result, MYSQL_NUM);		
-		
-		if ($mode == 'xenforo') {
-		
-			$cms_way = (isset( $_POST['main_cms']))? $_POST['main_cms'] : '';			
-			if (!findCMS($cms_way)) break;
-			
-			$site_ways['main_cms'] = $cms_way;			
-			$bd_names['user_auth']  = ConfigPostStr('bd_auth_xenforo');
-			
-			$result = BD("SELECT `{$bd_users['id']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['id']}`='".$line[0]."'");		
-			if (is_bool($result) and $result == false) { $info = 'Название таблицы c дополнительными данными указано неверно.'; break; }
+		if ($mode == 'wocauth') {
+
+			$config['security_key']  = ConfigPostStr('woc_security_key');
+			$config['woc_id']  = ConfigPostInt('woc_id');
+			$user = ConfigPostStr('site_user');
+
+			$result = BD("SELECT `{$bd_users['login']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='$user'");
+			if ($result and mysql_num_rows($result) )
+				BD("DELETE FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='$user'");
+			$result = BD("INSERT INTO `{$bd_names['users']}` (`{$bd_users['login']}`,`{$bd_users['ip']}`,`{$bd_users['group']}`,`{$bd_users['ctime']}`) VALUES('$user','".GetRealIp()."',3,NOW())");
+//			if (is_bool($result) and $result == false) { $info = 'Название таблицы c дополнительными данными указано неверно.'; break; }
 		}
+
 			
 		if ($mode == 'xauth' and !CreateAdmin($site_user)) break;		
 			
@@ -402,13 +379,9 @@ switch ($step) {
 	case 2: 
 	switch ($mode) {
 		case 'usual': include View::Get('install_user.html', $i_sd); break;
-		case 'xenforo': 
+		case 'wocauth':
 		case 'xauth': include View::Get('install_'.$mode.'.html', $i_sd); break;
 		case 'authme': include View::Get('install_xauth.html', $i_sd); break;
-		case 'ipb': 
-		case 'joomla':		
-		case 'dle':
-		case 'wp': include View::Get('install_mcms.html', $i_sd); break;
 	} 	
 	break;
 	case 3: include View::Get('install_constants.html', $i_sd); break;

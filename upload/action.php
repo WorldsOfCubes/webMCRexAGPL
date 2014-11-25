@@ -250,7 +250,7 @@ switch ($method) {
 			$newpass   =  $_POST['new_password'];
             $newrepass = (!empty($_POST['new_repassword']))? $_POST['new_repassword'] : '';
 
-            if ($user->lvl() >= 15 and !empty($_POST['user_id'])) $rcodes[] = $mod_user->changePassword($newpass);
+            if (($user->lvl() >= 15 and !empty($_POST['user_id'])) or !$mod_user->pass_set()) $rcodes[] = $mod_user->changePassword($newpass);
             else                  	$rcodes[] = $mod_user->changePassword($newpass, $newrepass, $oldpass);
         }
 		
@@ -294,7 +294,7 @@ switch ($method) {
 				break;
                 case 16021 : 
 				$tmpm = $user->getPermission('max_ratio');
-				$message .= lng('MAX_FILE_RATIO').' '.(22*$tmpm)."x".(17*$tmpm).' ( '.lng('CLOAK_UPLOAD').' )';
+				$message .= lng('MAX_FILE_RATIO').' '.(22*$tmpm)."x".(17*$tmpm).lng('OR').' '.(62*$tmpm)."x".(32*$tmpm).' ( '.lng('CLOAK_UPLOAD').' )';
                 unset($tmpm);
 				break;
                 case 1604 : $message .= lng('UPLOAD_FAIL').' ( '.lng('SKIN_UPLOAD').' ) '.lng('UPLOAD_FORMATS').' - .png'; break;

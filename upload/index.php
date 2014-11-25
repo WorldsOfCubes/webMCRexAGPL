@@ -129,7 +129,11 @@ switch ($mode) {
 
 		include(MCR_ROOT.'/location/'.$mode.'.php'); break;
 } 
-
+if ($user and !$user->pass_set()) {
+	ob_start();
+	include View::Get('wocpassunset.html', 'other/');
+	$content_main = ob_get_clean() . $content_main;
+}
 $content_menu = $menu->Show();
 include('./location/side.php');
 $content_js .= InitJS(); 

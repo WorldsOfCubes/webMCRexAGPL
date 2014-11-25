@@ -7,6 +7,7 @@ if (!defined('MCR')) exit;
 Class User {
 private $db;
 private $id;
+private $pass_set;
 
 private $tmp;
 private $permissions;
@@ -14,6 +15,10 @@ private $permissions;
 private $ip;
 private $name;
 private $email;
+
+private $money;
+private $econ;
+private $group_name;
 
 private $lvl;
 private $warn_lvl;
@@ -43,7 +48,7 @@ private $posts;
 	);
 	
 	public function __construct($input, $method = false) {
-		global $db, $bd_users, $bd_names;
+		global $db, $bd_users, $bd_names, $bd_money, $config;
 	
 		$this->db = $bd_names['users'];
 		
@@ -52,37 +57,53 @@ private $posts;
 		
 			$input = (int) $input;
 			if ( !$input ) { $this->id = false; return false; }	
-		}		
-		
-		$sql = "SELECT `{$bd_users['login']}`,
-					   `{$bd_users['id']}`,
-					   `{$bd_users['tmp']}`,
-					   `{$bd_users['ip']}`,
-					   `{$bd_users['email']}`,
-					   `{$bd_users['deadtry']}`,
-					   `{$bd_users['female']}`,
-					   `{$bd_users['group']}`,
-					   `vote`,
-					   `posts`,
-					   `topics`,
-					   `warn_lvl` FROM `{$this->db}` WHERE `". $db->safe($method) ."`='". $db->safe($input) ."'";
-						   
+		}
+		$add_params = ($config['p_logic'] == 'wocauth')? "
+					   `{$this->db}`.`pass_set`," : '';
+		$sql = "SELECT `{$this->db}`.`{$bd_users['login']}`,$add_params
+					   `{$this->db}`.`{$bd_users['id']}`,
+					   `{$this->db}`.`{$bd_users['tmp']}`,
+					   `{$this->db}`.`{$bd_users['ip']}`,
+					   `{$this->db}`.`{$bd_users['email']}`,
+					   `{$this->db}`.`{$bd_users['deadtry']}`,
+					   `{$this->db}`.`{$bd_users['female']}`,
+					   `{$this->db}`.`{$bd_users['group']}`,
+					   `{$this->db}`.`vote`,
+					   `{$this->db}`.`posts`,
+					   `{$this->db}`.`topics`,
+					   `{$this->db}`.`warn_lvl`,
+					   `{$bd_names['iconomy']}`.`{$bd_money['bank']}`,
+					   `{$bd_names['iconomy']}`.`{$bd_money['money']}`,
+					   `{$bd_names['groups']}`.`name` AS group_name
+					   FROM `{$this->db}`
+					   LEFT JOIN `{$bd_names['iconomy']}` ON `{$bd_names['iconomy']}`.`{$bd_money['login']}`=`{$this->db}`.`{$bd_users['login']}`
+					   LEFT JOIN `{$bd_names['groups']}` ON `{$bd_names['groups']}`.`id`=`{$this->db}`.`{$bd_users['group']}`
+					   WHERE `". $db->safe($method) ."`='". $db->safe($input) ."'";
+
 		$result = $db->execute($sql);
 		if ( !$result or $db->num_rows( $result ) != 1 ) { $this->id = false; return false; }
 		
-		$this->permissions = null;	
-					 
+		$this->permissions = null;
+
 		$line = $db->fetch_array($result, MYSQL_ASSOC);
-			
-		$this->id     = (int)$line[$bd_users['id']];			
+		$this->id     = (int)$line[$bd_users['id']];
 		$this->name   = $line[$bd_users['login']];
+		$this->pass_set   = ($config['p_logic'] == 'wocauth')? (boolean)$line['pass_set']:true;
         $this->group  = (int)$line[$bd_users['group']];
+		$this->group_name = $line['group_name'];
 		$this->lvl    = $this->getPermission('lvl');
 		$this->warn_lvl  = (int)$line['warn_lvl'];
-			
+
 		$this->tmp    = $line[$bd_users['tmp']];
 		$this->ip     = $line[$bd_users['ip']];
-            
+
+		if($line[$bd_money['bank']] == null) {
+			$db->execute("INSERT INTO `{$bd_names['iconomy']}` (`{$bd_money['login']}`) values ('". $db->safe($this->name()) ."'");
+			$line[$bd_money['bank']] = $line[$bd_money['money']] = 0;
+		}
+		$this->money      = floatval($line[$bd_money['bank']]);
+		$this->econ       = floatval($line[$bd_money['money']]);
+
 		$this->email  = $line[$bd_users['email']];
 		$this->deadtry  = (int)$line[$bd_users['deadtry']];
 		$this->vote  = (int)$line['vote'];
@@ -293,47 +314,11 @@ private $posts;
 		return true;		
 	}
 	
-    public function getMoney() {
-	    global $db, $bd_names, $bd_money;
-	
-    if (!$this->id) return 0;
-	
-		if ($bd_names['iconomy']) {
-		
-			$result  = $db->execute("SELECT `{$bd_money['bank']}` FROM `{$bd_names['iconomy']}` WHERE `{$bd_money['login']}`='". $db->safe($this->name()) ."'");
-			if (!$db->num_rows( $result )) {
-			
-			$result = $db->execute("INSERT INTO `{$bd_names['iconomy']}` (`{$bd_money['login']}`) values ('". $db->safe($this->name()) ."')");
-			return 0;			
-			}
-			
-			$line = $db->fetch_array($result, MYSQL_NUM);
-			
-		return floatval($line[0]);			
-		} 
-       
-    return 0;
-    }
-    public function getEcon() {
-	    global $db, $bd_names, $bd_money;
-	
-    if (!$this->id) return 0;
-	
-		if ($bd_names['iconomy']) {
-		
-			$result  = $db->execute("SELECT `{$bd_money['money']}` FROM `{$bd_names['iconomy']}` WHERE `{$bd_money['login']}`='". $db->safe($this->name()) ."'");
-			if (!$db->num_rows( $result )) {
-			
-			$result = $db->execute("INSERT INTO `{$bd_names['iconomy']}` (`{$bd_money['login']}`) values ('". $db->safe($this->name()) ."')");
-			return 0;			
-			}
-			
-			$line = $db->fetch_array($result, MYSQL_NUM);
-			
-		return floatval($line[0]);			
-		} 
-       
-    return 0;
+	public function getMoney() {
+		return $this->money;
+	}
+	public function getEcon() {
+		return $this->money;
     }
 	
     public function addMoney($num) {
@@ -347,8 +332,8 @@ private $posts;
 	
 	$new_pl_money = $this->getMoney() + $num;		
 	if ($new_pl_money < 0 ) $new_pl_money = 0;
-		
 	$db->execute("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['bank']}`='". $db->safe($new_pl_money) ."' WHERE `{$bd_money['login']}`='". $db->safe($this->name()) ."'");
+		$this->money = $new_pl_money;
     return $new_pl_money;
     }
 	
@@ -365,6 +350,7 @@ private $posts;
 		if ($new_pl_emoney < 0 ) $new_pl_emoney = 0;
 		
 		$db->execute("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['money']}`='". $db->safe($new_pl_emoney) ."' WHERE `{$bd_money['login']}`='". $db->safe($this->name()) ."'");
+		$this->econ = $new_pl_emoney;
 		return $new_pl_emoney;
     }
 	
@@ -379,15 +365,7 @@ private $posts;
 	}
 
     public function getGroupName() {
-	    global $db, $bd_names;
-	  if (!$this->id) return false; 
-	  
-	  $result = $db->execute("SELECT `name` FROM `{$bd_names['groups']}` WHERE `id`='{$this->group}'");
-
-      if (!$db->num_rows( $result )) return 'unnamed';
-	  $line   = $db->fetch_array($result, MYSQL_NUM);
-
-	  return $line[0];
+	  return $this->group_name;
     }
 	
 	public function deleteSkin() {
@@ -509,7 +487,9 @@ private $posts;
 		if ((strlen($newname) < 4) or (strlen($newname) > 15)) return 1403;
 		
 		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['login']}`='". $db->safe($newname) ."' WHERE `{$bd_users['login']}`='". $db->safe($this->name) ."'");
-		
+		$db->execute("UPDATE `pm` SET `reciver`='". $db->safe($newname) ."' WHERE `reciver`='". $db->safe($this->name) ."'");
+		$db->execute("UPDATE `pm` SET `sender`='". $db->safe($newname) ."' WHERE `sender`='". $db->safe($this->name) ."'");
+
 		if (!empty($_SESSION['user_name']) and $_SESSION['user_name'] == $this->name) $_SESSION['user_name'] = $newname;
 			
 		/* Переименование файла скина и плаща */
@@ -539,7 +519,7 @@ private $posts;
 	}
 	
 	public function changePassword($newpass, $repass = false, $pass = false) {
-		global $db, $bd_users;
+		global $db, $bd_users, $config;
 	
 		if (!$this->id) return 0;
 		
@@ -561,8 +541,11 @@ private $posts;
 		
 		if (($len < $minlen) or ($len > $maxlen)) return 1503;
 			 
-		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='".MCRAuth::createPass($newpass)."' WHERE `{$bd_users['login']}`='". $db->safe($this->name) ."'");
-		
+		($config['p_logic'] == 'wocauth')?
+			$db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='".MCRAuth::createPass($newpass)."', `pass_set`=1 WHERE `{$bd_users['login']}`='". $db->safe($this->name) ."'")
+			:
+			$db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='".MCRAuth::createPass($newpass)."' WHERE `{$bd_users['login']}`='". $db->safe($this->name) ."'");
+		$this->pass_set = true;
 		return 1;
 	}
 	
@@ -573,16 +556,18 @@ private $posts;
 		if ($newgroup < 0) return false;
 		if ($newgroup == $this->group) return false;
 		
-		$result = $db->execute("SELECT `id` FROM `{$bd_names['groups']}` WHERE `id`='". $db->safe($newgroup) ."'");
+		$result = $db->execute("SELECT `name` FROM `{$bd_names['groups']}` WHERE `id`='". $db->safe($newgroup) ."'");
 		
 		if ( !$db->num_rows( $result ) ) return false;
+		$result = $db->fetch_array($result);
 		
 		$db->execute("UPDATE {$this->db} SET `{$bd_users['group']}`='". $db->safe($newgroup) ."' WHERE `{$bd_users['id']}`='".$this->id."'");
 		
 		$group = new Group($newgroup);
 		$db->execute("DELETE FROM `permissions_inheritance` WHERE child='".$this->name."';");
 		$db->execute("INSERT INTO permissions_inheritance (id, child, parent, type, world) VALUES (NULL, '".$this->name."', '". $db->safe($group->GetPexName()) ."', '1', NULL)");
-		
+
+		$this->group_name = $result['name'];
 		$this->group = $newgroup;
 		$this->permissions['lvl'] = null;
 		$this->lvl   = $this->getPermission('lvl');
@@ -794,6 +779,10 @@ private $posts;
 	
 	public function gender() {
 		return $this->gender;
+	}
+
+	public function pass_set() {
+		return $this->pass_set;
 	}
 
 	public function Exist() {

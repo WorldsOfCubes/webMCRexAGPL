@@ -1,6 +1,4 @@
 <?php
-use ConfigManager;
-
 if (!defined('MCR')) exit;
  
 if (empty($user) or $user->lvl() < 15) { accss_deny(); }

@@ -232,7 +232,7 @@ global $config,$bd_names,$bd_users,$info;
 		if ( mysql_num_rows($result) ) 
 			BD("DELETE FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='$site_user'");
 		require_once(MCR_ROOT.'instruments/auth/'.$config['p_logic'].'.php');
-		BD("INSERT INTO `{$bd_names['users']}` (`{$bd_users['login']}`,`{$bd_users['password']}`,`{$bd_users['ip']}`,`{$bd_users['group']}`,`{$bd_users['ctime']}`,`{$bd_users['email']}`,`{$bd_users['female']}`) VALUES('$site_user','".MCRAuth::createPass($site_password)."','".TextBase::SQLSafe(GetRealIp())."',3,NOW(),'$site_email',$site_gender)");	
+		BD("INSERT INTO `{$bd_names['users']}` (`{$bd_users['login']}`,`{$bd_users['password']}`,`{$bd_users['ip']}`,`{$bd_users['group']}`,`{$bd_users['ctime']}`,`{$bd_users['email']}`,`{$bd_users['female']}`) VALUES('$site_user','".MCRAuth::createPass($site_password)."','".GetRealIp()."',3,NOW(),'$site_email',$site_gender)");
 		$result = true;
 	}
 

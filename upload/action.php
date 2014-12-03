@@ -19,11 +19,6 @@ switch ($method) {
 	require('./system.php');
 	loadTool('ajax.php');	
 	loadTool('user.class.php');
-	
-	
-	
-	
-	
 		if ($method == 'upload' or $method == 'delete_file')	loadTool('upload.class.php');
 	elseif ($method == 'profile')								loadTool('skin.class.php');
 	elseif ($method == 'restore' and 
@@ -45,14 +40,6 @@ switch ($method) {
 
 		$db = new DB();
 		$db->connect('action_download');
-
-$player       = $user->name();
-$player_id    = $user->id();
-$player_lvl   = $user->lvl();
-$player_email = $user->email(); if (empty($player_email)) $player_email = lng('NOT_SET'); 
-$player_group = $user->getGroupName();
-$player_econ  = $user->getEcon();
-$player_money = $user->getMoney();
 	
 	
 	

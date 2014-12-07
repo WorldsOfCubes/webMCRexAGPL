@@ -24,7 +24,7 @@ public static function logout() { return; }
 /* Проверка авторизации пользователя в webMCR */
 
 public static function userInit() { 
-MCRAuth::LoadSession();
+MCRAuth::LoadSession(false);
 }
 
 /* Генерация пароля */

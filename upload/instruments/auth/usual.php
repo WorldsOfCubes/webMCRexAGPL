@@ -15,10 +15,10 @@ global $config, $user;
 	if (!empty($user)) $user->activity();
 }
 
-public static function LoadSession() { 
+public static function LoadSession($check = true) {
 global $user, $bd_users;
 
-	$user = false; $check_ip =  GetRealIp(); $check = true; 
+	$user = false; $check_ip =  GetRealIp();
 	
 	if (!class_exists('User', false)) exit('include user class first');	
 	if (!session_id() and !empty($_GET['session_id']) and preg_match('/^[a-zA-Z0-9]{26,40}$/', $_GET['session_id'])) 

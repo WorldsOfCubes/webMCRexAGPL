@@ -228,11 +228,18 @@ global $config,$bd_names,$bd_users,$info;
 	elseif ( strcmp($site_password,$site_repassword)) $info = 'Пароли не совпадают.';
 	else {
 
-		$result = BD("SELECT `{$bd_users['login']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='$site_user'");			  
-		if ( mysql_num_rows($result) ) 
-			BD("DELETE FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='$site_user'");
 		require_once(MCR_ROOT.'instruments/auth/'.$config['p_logic'].'.php');
-		BD("INSERT INTO `{$bd_names['users']}` (`{$bd_users['login']}`,`{$bd_users['password']}`,`{$bd_users['ip']}`,`{$bd_users['group']}`,`{$bd_users['ctime']}`,`{$bd_users['email']}`,`{$bd_users['female']}`) VALUES('$site_user','".MCRAuth::createPass($site_password)."','".GetRealIp()."',3,NOW(),'$site_email',$site_gender)");
+
+		BD("INSERT INTO `{$bd_names['users']}` ("
+			. "`{$bd_users['login']}`,"
+			. "`{$bd_users['password']}`,"
+			. "`{$bd_users['ip']}`,"
+			. "`{$bd_users['group']}`,"
+			. "`{$bd_users['ctime']}`,"
+			. "`{$bd_users['email']}`"
+			. ",`{$bd_users['female']}`) "
+			. "VALUES('$site_user','".MCRAuth::createPass($site_password)."','".GetRealIp()."',3,NOW(),'$site_email',$site_gender)"
+			. "ON DUPLICATE KEY UPDATE `{$bd_users['group']}`='3',`{$bd_users['password']}`='$site_repassword',`{$bd_users['email']}`='$site_email'");
 		$result = true;
 	}
 
@@ -316,10 +323,13 @@ switch ($step) {
 			$config['woc_id']  = ConfigPostInt('woc_id');
 			$user = ConfigPostStr('site_user');
 
-			$result = BD("SELECT `{$bd_users['login']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='$user'");
-			if ($result and mysql_num_rows($result) )
-				BD("DELETE FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='$user'");
-			$result = BD("INSERT INTO `{$bd_names['users']}` (`{$bd_users['login']}`,`{$bd_users['ip']}`,`{$bd_users['group']}`,`{$bd_users['ctime']}`) VALUES('$user','".GetRealIp()."',3,NOW())");
+			$result = BD("INSERT INTO `{$bd_names['users']}` ("
+				. "`{$bd_users['login']}`,"
+				. "`{$bd_users['ip']}`,"
+				. "`{$bd_users['group']}`,"
+				. "`{$bd_users['ctime']}`"
+				. "VALUES('$user','".GetRealIp()."',3,NOW())"
+				. "ON DUPLICATE KEY UPDATE `{$bd_users['group']}`=3");
 //			if (is_bool($result) and $result == false) { $info = 'Название таблицы c дополнительными данными указано неверно.'; break; }
 		}
 

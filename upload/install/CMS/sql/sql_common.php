@@ -192,6 +192,10 @@ BD("INSERT INTO `{$bd_names['data']}` (`property`, `value`) VALUES
 ('email-name', 'Info'),
 ('email-mail', 'noreply@noreply.ru');");
 
+if (!BD_ColumnExist($bd_names['users'], 'pass_set') && $mode == "wocauth")
+
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `pass_set` tinyint(1) NOT NULL DEFAULT 0;");
+
 /* webMCR 2.05 UPDATE */
 
 if (!BD_ColumnExist($bd_names['ip_banning'], 'ban_type'))

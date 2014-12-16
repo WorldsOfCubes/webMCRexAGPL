@@ -68,7 +68,7 @@ private $posts;
 					   `{$this->db}`.`{$bd_users['deadtry']}`,
 					   `{$this->db}`.`{$bd_users['female']}`,
 					   `{$this->db}`.`{$bd_users['group']}`,
-					   `{$this->db}`.`vote`,
+					   `vote`,
 					   `{$this->db}`.`posts`,
 					   `{$this->db}`.`topics`,
 					   `{$this->db}`.`warn_lvl`,
@@ -78,8 +78,7 @@ private $posts;
 					   FROM `{$this->db}`
 					   LEFT JOIN `{$bd_names['iconomy']}` ON `{$bd_names['iconomy']}`.`{$bd_money['login']}`=`{$this->db}`.`{$bd_users['login']}`
 					   LEFT JOIN `{$bd_names['groups']}` ON `{$bd_names['groups']}`.`id`=`{$this->db}`.`{$bd_users['group']}`
-					   WHERE `". $db->safe($method) ."`='". $db->safe($input) ."'";
-
+					   WHERE `{$this->db}`.`". $db->safe($method) ."`='". $db->safe($input) ."'";
 		$result = $db->execute($sql);
 		if ( !$result or $db->num_rows( $result ) != 1 ) { $this->id = false; return false; }
 		

@@ -317,7 +317,7 @@ private $posts;
 		return $this->money;
 	}
 	public function getEcon() {
-		return $this->money;
+		return $this->econ;
     }
 	
     public function addMoney($num) {

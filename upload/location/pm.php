@@ -75,7 +75,6 @@ default:
 		else $page = 1;
 	if ($page == 0) $page = 1;
 	$first = ((int) $page - 1) * $num_by_page;
-	$last  = (int) $page * $num_by_page;
 	switch($do){
 	case 'outbox':
 		$menu->SetItemActive('pm_outbox');
@@ -85,7 +84,7 @@ default:
 					 ON `{$bd_names['users']}`.`{$bd_users['login']}` = `pm`.`reciver`
 					 WHERE `pm`.sender = '" . $user->name() . "'
 					 ORDER BY `pm`.`date` DESC
-					 LIMIT $first, $last");
+					 LIMIT $first, $num_by_page");
 		$content_list = '';
 		$num = $first + 1;
 		while($tmp_pm = $db->fetch_assoc($query,0)) {
@@ -115,7 +114,7 @@ default:
 					 ON `{$bd_names['users']}`.`{$bd_users['login']}` = `pm`.`sender`
 					 WHERE `pm`.`reciver` = '" . $user->name() . "'
 					 ORDER BY `pm`.`date` DESC
-					 LIMIT $first, $last");
+					 LIMIT $first, $num_by_page");
 		$content_list = '';
 		$num = $first + 1;
 		while($tmp_pm = $db->fetch_assoc($query,0)) {

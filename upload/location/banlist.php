@@ -25,8 +25,7 @@ if ($page == 0) $page = 1;
 
 $path = 'banlist/';
 $first = ((int) $page - 1) * $num_by_page;
-$last  = (int) $page * $num_by_page;
-$query = $db->execute("SELECT * FROM `banlist` ORDER BY `time` DESC LIMIT $first, $last");
+$query = $db->execute("SELECT * FROM `banlist` ORDER BY `time` DESC LIMIT $first, $num_by_page");
 print $db->error();
 $content_list = '';
 $num = $first + 1;

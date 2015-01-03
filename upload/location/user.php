@@ -26,13 +26,12 @@ if ($do == 'full' or isset($_GET['name']) or isset($_POST['name'])) {
 	if ($do == 0) $do = 1;
 	$page = lng('USERS_LIST');
 	$first = ((int) $do - 1) * $num_by_page;
-	$last  = (int) $do * $num_by_page;
 	$query = $db->execute("SELECT `{$bd_names['users']}`.`{$bd_users['id']}`, `{$bd_names['users']}`.`{$bd_users['login']}`, `{$bd_names['users']}`.`{$bd_users['female']}`, `{$bd_names['users']}`.default_skin, `{$bd_names['groups']}`.name AS group_name
 				FROM `{$bd_names['users']}`
 				LEFT JOIN `{$bd_names['groups']}`
 				ON `{$bd_names['groups']}`.id = `{$bd_names['users']}`.`{$bd_users['group']}`
 				ORDER BY `{$bd_names['users']}`.`{$bd_users['login']}` ASC
-				LIMIT $first, $last");
+				LIMIT $first, $num_by_page");
 	$content_list = '';
 	$num = $first + 1;
 	while($tmp_user = $db->fetch_assoc($query,0)) {

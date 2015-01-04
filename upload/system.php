@@ -10,10 +10,10 @@ define('MCR_LANG', 'ru_RU');
 loadTool('base.class.php');
 loadTool('pm.class.php');
 
-if (!file_exists(MCR_ROOT.'config.php')) { header("Location: install/install.php"); exit; }
+if (!file_exists(MCR_ROOT.'main.cfg.php')) { header("Location: install/install.php"); exit; }
 
 require(MCR_ROOT.'instruments/locale/'.MCR_LANG.'.php');
-require(MCR_ROOT.'config.php');
+require(MCR_ROOT . 'main.cfg.php');
 require(MCR_ROOT.'donate.cfg.php');
 
 if(!isset($config['smtp_tls'])){ //Корректная работа после введения поддержки TLS/SSL

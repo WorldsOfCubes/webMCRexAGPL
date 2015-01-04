@@ -20,14 +20,14 @@ define('BASE_URL', Root_url());
 require_once(MCR_ROOT.'instruments/base.class.php');
 require_once(MCR_ROOT . 'instruments/alist.class.php');
 
-if (file_exists(MCR_ROOT.'config.php')) {
-include MCR_ROOT . 'config.php';
+if (file_exists(MCR_ROOT.'main.cfg.php')) {
+include MCR_ROOT . 'main.cfg.php';
 
 if (!$config['install']) { header('Location: '.BASE_URL); exit; } 
 elseif ($config['p_logic'] != $mode) /* Установка была не завершена, файл существует и режим установки не совпадает с выбранным - удаляем */
 
-	if (unlink(MCR_ROOT.'config.php')) { header('Location: '.BASE_URL.'install/install.php?mode='.$mode); exit; }  
-	else { echo 'Файл '.MCR_ROOT.'config.php уже существует. Удалите его, для продолжения установки.'; exit; } 
+	if (unlink(MCR_ROOT.'main.cfg.php')) { header('Location: '.BASE_URL.'install/install.php?mode='.$mode); exit; }
+	else { echo 'Файл '.MCR_ROOT.'main.cfg.php уже существует. Удалите его, для продолжения установки.'; exit; }
 
 } else { 
 
@@ -52,7 +52,7 @@ define('DEF_STYLE_URL', STYLE_URL . View::def_theme . '/');
 define('CUR_STYLE_URL', DEF_STYLE_URL);
 
 $page = 'Настройка '.PROGNAME;
-$save_conf_err = 'Ошибка создания \ перезаписи файла '.MCR_ROOT.'config.php (корневая дирректория сайта). Папка защищена от записи \ файл не доступен для записи. Настройки не были сохранены.';
+$save_conf_err = 'Ошибка создания \ перезаписи файла '.MCR_ROOT.'main.cfg.php (корневая дирректория сайта). Папка защищена от записи \ файл не доступен для записи. Настройки не были сохранены.';
 
 $i_sd = 'other/install/';
 
@@ -92,7 +92,7 @@ if ( !function_exists('json_encode'))
 	$cErr .= $p.'Функция json_encode недоступна ( авторизация на сайте )'.$pe;
 
 	checkRWOut(MCR_ROOT.'instruments/menu_items.php');
-	// checkRWOut(MCR_ROOT.'config.php');
+	// checkRWOut(MCR_ROOT.'main.cfg.php');
 	
 	$mcraft_dir = MCR_ROOT.$site_ways['mcraft'];
 	

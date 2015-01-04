@@ -290,7 +290,7 @@ if ($do) {
 			if ($link_win or $link_osx or $link_lin or $game_news)
 
 				if (ConfigManager::SaveMainConfig())
-					$info .= lng('OPTIONS_COMPLETE'); else $info .= lng('WRITE_FAIL') . ' ( ' . MCR_ROOT . 'config.php )';
+					$info .= lng('OPTIONS_COMPLETE'); else $info .= lng('WRITE_FAIL') . ' ( ' . MCR_ROOT . 'main.cfg.php )';
 
 			$game_lver = sqlConfigGet('protection_key_set');
 			$protection_key = sqlConfigGet('protection-key');
@@ -611,7 +611,7 @@ if ($do) {
 				$config['smtp_tls'] = $smtp_tls;
 
 				if (ConfigManager::SaveMainConfig())
-					$info .= lng('OPTIONS_COMPLETE'); else $info .= lng('WRITE_FAIL') . ' ( ' . MCR_ROOT . 'config.php )';
+					$info .= lng('OPTIONS_COMPLETE'); else $info .= lng('WRITE_FAIL') . ' ( ' . MCR_ROOT . 'main.cfg.php )';
 
 				sqlConfigSet('email-name', $email_name);
 				sqlConfigSet('email-mail', $email_mail);

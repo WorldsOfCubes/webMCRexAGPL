@@ -12,6 +12,16 @@ $menu_items = array (
 			'active' => false,
 			'inner_html' => '',
 		),
+		'forum' => 
+		array (
+			'name' => '<i class="glyphicon glyphicon-comment"></i> ' . lng('FORUM'),
+			'url' => Rewrite::GetURL('forum'),
+			'parent_id' => -1,
+			'lvl' => -1,
+			'permission' => -1,
+			'active' => false,
+			'inner_html' => '',
+		),
 		'admin' => 
 		array (
 			'name' => '<i class="glyphicon glyphicon-wrench"></i> ' . lng('ADM'),
@@ -102,6 +112,16 @@ $menu_items = array (
 			'active' => false,
 			'inner_html' => '',
 		),
+        'forum_edit' =>
+            array (
+                'name' => lng('FORUM_EDIT'),
+                'url' => Rewrite::GetURL(array('control', 'forum')),
+                'parent_id' => 'admin',
+                'lvl' => 15,
+                'permission' => -1,
+                'active' => false,
+                'inner_html' => '',
+            ),
 		'donate_edit' => 
 		array (
 			'name' => lng('ADM_DONATE'),

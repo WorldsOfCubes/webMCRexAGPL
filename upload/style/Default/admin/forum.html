@@ -1,0 +1,199 @@
+<div class="tabbable" style="margin-top: 12px; padding: 10px;">
+
+        <ul class="nav nav-tabs">
+
+            <li class="active"><a href="#tab1" data-toggle="tab">Управление категориями и форумами</a></li>
+            <li><a href="#tab2" data-toggle="tab">Почтовый сервер</a></li>
+            <li><a href="#tab4" data-toggle="tab">Темы оформления</a></li>
+            <li><a href="#tab3" data-toggle="tab">Дополнительно</a></li>
+        </ul>
+
+        <div class="tab-content">
+
+            <div class="tab-pane active" id="tab1">
+                <div class="bg-danger" style="padding: 10px; margin-bottom: 15px;"><b>Внимание:</b>
+                <p><i>Выбранный приоритет может быть любым числом и сортировка будет проходить от большего(Сверху списка) к меньшему(Снизу списка)</i></p></div>
+                <?php if(isset($parents) && count($parents) > 0) { foreach($parents as $prnts) { ?>
+                <div class="panel panel-default" style="margin-top: 30px;">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse<?php echo $prnts['id']; ?>">
+                                <i class="glyphicon glyphicon-list"></i><strong> <?php echo $prnts['name'];?></strong>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse<?php echo $prnts['id']; ?>" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <form style="text-align: center; margin-bottom: 10px;" action="?mode=control&do=forum" method="POST">
+                                <input type="hidden" name="id" value="<?php echo $prnts['id']; ?>"/>
+                                <input type="text" name="prior" value="<?php echo $prnts['priority']; ?>"class="form-control" style="margin-right: 5px; margin-top: -10px; width: auto; display: inline;" placeholder="Приоритет" />
+                                <button type="submit" class="btn btn-primary" style="margin-right: 5px; margin-top: -4px;">Обновить приоритет</button>
+                                <a href="?mode=control&do=forum&iddel=<?php echo $prnts['id']; ?>" style="margin-top: -4px;" class="btn btn-danger">
+                                    <i class="glyphicon glyphicon-trash" title="Удалить категорию"></i>
+                                </a>
+                            </form>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Название форума</th>
+                                    <th>Приоритет</th>
+                                    <th>Действие</th>
+                                </tr>
+                                <?php if(isset($prnts['forums']) && count($prnts['forums']) > 0) foreach($prnts['forums'] as $forum) { ?>
+                                <tr>
+                                    <form action="?mode=control&do=forum" method="POST">
+                                        <input type="hidden" name="id" value="<?php echo $forum['id']; ?>"/>
+                                        <td style="vertical-align: middle;"><?php echo $forum['name']; ?></td>
+                                        <td><input type="text" name="prior" value="<?php echo $forum['priority']; ?>"class="form-control" placeholder="Приоритет" /></td>
+                                        <td style="vertical-align: middle"><button type="submit"class="btn btn-primary btn-xs" style="margin-right: 5px;">Обновить приоритет</button><a href="?mode=control&do=forum&iddel=<?php echo $forum['id']; ?>" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash" title="Удалить форум"></i></a></td>
+                                    </form>
+                                </tr>
+                                <?php } else { ?>
+                                    <tr>
+                                        <td>Форумов нет</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                <?php } ?>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <?php }} else { ?>
+                    <div class="bg-warning" style="padding: 10px;"><b><h2>Категорий нет</h2></b></div>
+                <?php } ?>
+                <!--
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Сортировка/удаление категорий
+                    </div>
+                    <table class="table table-hover">
+                        <tr>
+                        <th>ID</th>
+                        <th>Название категории</th>
+                        <th>Приоритет</th>
+                        <th>Действие</th>
+                        </tr>
+                        <?php if(isset($categorys) && count($categorys) > 0) { foreach($categorys as $ctg) { ?>
+                        <tr>
+                            <form action="?mode=control&do=forum" method="POST">
+                                <td style="vertical-align: middle"><input type="hidden" name="id" value="<?php echo $ctg['id']; ?>"/><?php echo $ctg['id']; ?></td>
+                                <td style="vertical-align: middle"><?php echo $ctg['name']; ?></td>
+                                <td><input type="text" name="prior" value="<?php echo $ctg['priority']; ?>" class="form-control" placeholder="Приоритет" /></td>
+                                <td style="vertical-align: middle"><button type="submit"class="btn btn-primary btn-xs" style="margin-right: 5px;">Обновить приоритет</button><a href="/" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash" title="Удалить категорию"></i></a></td>
+                            </form>
+                        </tr>
+                        <?php }} else { ?>
+                        <tr>
+                            <td>Категорий нет</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <?php }?>
+                    </table>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Сортировка/удаление форумов
+                    </div>
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Категория</th>
+                            <th>Название форума</th>
+                            <th>Приоритет</th>
+                            <th>Действие</th>
+                        </tr>
+                        <?php if(isset($forums) && count($forums) > 0) { foreach($forums as $frm) { foreach($forums['cats'] as $frmc) { $frm_opt = ''; $frm_opt .= '<option value="'. $frmc['id'] .'">'. $frmc['name'] .'</option>';?>
+                        <tr>
+                            <form action="?mode=control&do=forum" method="POST">
+                                <td style="vertical-align: middle"><select name="catid"><?php echo $frm_opt; ?></select><input type="hidden" name="id" value="<?php echo $frm['id']; ?>"/></td>
+                                <td style="vertical-align: middle"><?php echo $frm['name']; ?></td>
+                                <td><input type="text" name="prior" value="<?php echo $frm['priority']; ?>" class="form-control" placeholder="Приоритет" /></td>
+                                <td style="vertical-align: middle"><button type="submit"class="btn btn-primary btn-xs" style="margin-right: 5px;">Обновить приоритет</button><a href="/" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash" title="Удалить категорию"></i></a></td>
+                            </form>
+                        </tr>
+                        <?php }}} else { ?>
+                        <tr>
+                            <td>Форумов нет</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <?php }?>
+                    </table>
+                </div>-->
+            </div>
+
+            <div class="tab-pane" id="tab2">
+
+                <label>Имя отправителя:</label>
+                <input type="text" class="form-control" style="width:300px" name="email_name" value="<?php echo sqlConfigGet('email-name') ?>">
+
+                <label>Обратный адрес:</label>
+                <input type="text" class="form-control" style="width:300px" name="email_mail" value="<?php echo sqlConfigGet('email-mail') ?>">
+                <span class="help-block">Обычно должен соответствовать адресу, прописаному в настройках php.ini или пользователю smtp. </span>
+
+                <label>Отправить тестовое сообщение на:</label>
+                <input type="text" class="form-control" style="width:300px" name="email_test">
+
+                <label class="checkbox">
+                    <input type="checkbox" name="smtp" value="1" <?php echo ($config['smtp'])?'checked="checked"':'' ?>> Использовать заданые настройки smtp
+                </label>
+                <span class="help-block">В обход настроеной функции mail из файла php.ini вашего web сервера. </span>
+
+                <label class="checkbox">
+                    <input type="checkbox" name="smtp_tls" value="1" <?php echo ($config['smtp_tls'])?'checked="checked"':'' ?>> Использовать TLS/SSL шифрование
+                </label>
+                <span class="help-block">Включает поддержку TLS/SSL шифрования. Нужно при отправке через сервера Google и Яндекса.</span>
+
+                <label>Пользователь smtp:</label>
+                <input type="text" class="form-control" style="width:300px" name="smtp_user" value="<?php echo sqlConfigGet('smtp-user') ?>">
+
+                <label>Пароль пользователя:</label>
+                <input type="password" name="smtp_pass" class="form-control" style="width:300px" value="<?php echo (sqlConfigGet('smtp-pass'))? '**defined**' : '' ?>">
+
+                <label>Адрес сервера:</label>
+                <input type="text" class="form-control" style="width:300px" name="smtp_host" value="<?php echo sqlConfigGet('smtp-host');  ?>">
+
+                <label>Порт:</label>
+                <input type="text" class="form-control" style="width:300px" name="smtp_port" value="<?php echo sqlConfigGet('smtp-port');  ?>">
+
+                <label>Приветствие:</label>
+
+                <input type="text" class="form-control" style="width:300px" name="smtp_hello" value="<?php echo sqlConfigGet('smtp-hello');  ?>">
+                <span class="help-block">Системное сообщение приветствия, как правило либо HELO либо EHLO . Не менять без необходимости</span>
+
+            </div>
+
+            <div class="tab-pane" id="tab3">
+
+                <label class="checkbox">
+                    <input type="checkbox" name="site_offline" value="1" <?php echo ($config['offline'])?'checked="checked"':'' ?>> Закрыть сайт ( режим "Технических работ" )
+                </label>
+
+                <div class="alert alert-info">
+                    В режиме "Технических работ" доступ к сайту будет доступен только пользователям из группы Администратор
+                </div>
+
+                <label class="checkbox">
+                    <input type="checkbox" name="site_install" value="1" <?php echo ($config['install'])?'checked="checked"':'' ?>> Активировать инсталлятор
+                </label>
+
+                <div class="alert alert-danger">
+                    <b>Внимание!</b> Этот режим дает возможность повторно провести инсталляцию движка, например, при обновлении. Ни в коем случае не активируйте инсталлятор без необходимости иначе сайт может быть взломан! После установки инсталлятор автоматически деактивируется.
+                </div>
+
+                <label class="checkbox">
+                    <input type="checkbox" name="log" value="1" <?php echo ($config['log'])?'checked="checked"':'' ?>> Запись лога (<a href="index.php?mode=control&do=log">Просмотр</a>)
+                </label>
+                <span class="help-block">Запись сообщений об ошибках веб приложения в файл <?php echo MCR_ROOT.'log.txt' ?> . Обнуление файла при размере > 50мб</span>
+
+            </div>
+            <div class="tab-pane" id="tab4">
+
+                <?php echo $theme_selector ?>
+
+            </div>
+        </div>
+
+    </div>

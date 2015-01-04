@@ -1,0 +1,223 @@
+<?php
+error_reporting(E_ERROR);
+
+$num_by_page = 20;
+
+if (isset($_GET['do'])) $do = $_GET['do'];
+elseif (isset($_POST['do'])) $do = $_POST['do'];
+else $do = 'main';
+$menu->SetItemActive('forum');
+$path = 'forum/';
+
+if (isset($_GET['page'])) $page = $_GET['page'];
+elseif (isset($_POST['page'])) $page = $_POST['page'];
+else $page = 1;
+if ($page == 0) $page = 1;
+$first = ((int) $page - 1) * $num_by_page;
+$last  = (int) $page * $num_by_page;
+
+switch($do) {
+    case 'main':
+    default:
+        $forum_partition = $db->execute("SELECT * FROM forum_partition WHERE parent_id = '0'  ORDER BY priority DESC");
+
+        while($fpat = $db->fetch_assoc($forum_partition)) {
+            $parents[] = $fpat;
+        }
+
+        foreach($parents as $key => &$value) {
+            $forums = $db->execute("SELECT fp.*, (SELECT count(ft.id) FROM forum_topics ft WHERE ft.partition_id = fp.id) as topic_count,
+                                    (SELECT count(fm.id) FROM forum_messages fm WHERE fm.partition_id = fp.id) as message_count,
+                                    (SELECT acc.login FROM accounts acc, forum_messages fm WHERE fm.partition_id = fp.id AND acc.id = fm.author_id ORDER BY fm.date DESC LIMIT 1) as last_author,
+                                    (SELECT ft.title FROM forum_topics ft, forum_messages fm WHERE fm.partition_id = fp.id AND ft.id = fm.topic_id ORDER BY fm.date DESC LIMIT 1) as last_name,
+                                    (SELECT ft.id FROM forum_topics ft, forum_messages fm WHERE fm.partition_id = fp.id AND ft.id = fm.topic_id ORDER BY fm.date DESC LIMIT 1) as last_topic_id,
+                                    (SELECT fm.date FROM forum_messages fm WHERE fm.partition_id = fp.id ORDER BY fm.date DESC LIMIT 1) as last_date
+                                    FROM forum_partition fp
+                                    WHERE fp.parent_id = '{$value['id']}' ORDER BY priority DESC ");
+            while($forums_cont = $db->fetch_assoc($forums)) {
+                $value['forums'][] = $forums_cont;
+            }
+        } unset($value);
+
+        ob_start();
+        include View::Get('main.html', $path);
+        $content_main = ob_get_clean();
+
+        $page = lng('FORUM_LIST');
+        return;
+        break;
+    case 'viewforum':
+        $forum_id = intval($_GET['id']);
+
+        $forum_topics = $db->execute("SELECT ft.*, acc.login as author_name, (SELECT MAX(fm.date) FROM forum_messages fm WHERE fm.topic_id = ft.id) as lastdate FROM forum_topics ft, accounts acc WHERE ft.partition_id = '$forum_id' AND ft.author_id = acc.id ORDER BY lastdate DESC LIMIT $first, $num_by_page");
+        $forum_name = $db->execute("SELECT name FROM forum_partition WHERE id = '$forum_id'");
+
+        while($fname = $db->fetch_assoc($forum_name)) {
+            $name = $fname['name'];
+        }
+
+        if(!isset($name)) {
+            header("Location: /go/forum");
+            exit;
+        }
+
+        while($ftop = $db->fetch_assoc($forum_topics)) {
+            $topics[] = $ftop;
+        }
+
+        ob_start();
+        include View::Get('forum_topics.html', $path);
+        $content_main = ob_get_clean();
+
+        $pagin_topics = $db->execute("SELECT COUNT(*) FROM `forum_topics` WHERE `partition_id` = '$forum_id'");
+        $pagin_line = $db->fetch_array($pagin_topics);
+        $view = new View("forum/paginator/");
+        $content_main .= $view->arrowsGenerator('/go/forum/view/'.$forum_id."/", $page, $pagin_line[0], $num_by_page, "pagin");
+
+        $page = lng('FORUM_CAT_VIEW');
+        return;
+        break;
+    case 'viewtopic':
+        $topic_id = intval($_GET['id']);
+        $message_add = '';
+        $mess_id = intval($_POST['mess_id']);
+
+        $delete = array();
+
+        if (!empty($user) && $user->lvl() > 13) {
+
+            if (isset($mess_id)) {
+                $messages = $db->execute("SELECT * FROM forum_messages WHERE id = '$mess_id'");
+                while ($msgs = $db->fetch_assoc($messages)) {
+                    $message_list[] = $msgs;
+                }
+                foreach ($message_list as $msg) {
+                    if ($msg['topmsg'] == 'Y') {
+                        $delete['topmsg'][] = $msg['topic_id'];
+                    } else $delete['default'][] = $mess_id;
+                }
+
+                if (count($delete['topmsg'])) {
+                    $db->execute("DELETE FROM forum_messages WHERE topic_id IN (" . implode($delete['topmsg'], ',') . ")");
+                    $db->execute("DELETE FROM forum_topics WHERE id IN (" . implode($delete['topmsg'], ',') . ")");
+                }
+
+                if (count($delete['default'])) {
+                    $db->execute("DELETE FROM forum_messages WHERE id IN (" . implode($delete['default'], ',') . ")");
+                }
+            }
+        }
+
+        if (!empty($user) && $user->lvl() > 0) {
+
+            if(!empty($_POST['topic_id']) && !empty($_POST['message']) && $_POST['topic_id'] == $topic_id) {
+                $message = $_POST['message'];
+                $time = time();
+                $message = nl2br($message);
+                $db->execute("INSERT INTO `forum_messages`(`topic_id`, `author_id`, `message`, `date`) VALUES ('$topic_id','" . $user->id() . "','" . $db->safe($message) . "','$time')");
+            }
+        }
+
+        $topic_info = $db->execute("SELECT ft.*, fp.name as part_name, fp.id as part_id FROM forum_topics ft, forum_partition fp WHERE ft.id = '$topic_id' AND fp.id = ft.partition_id");
+        $topic_info = $db->fetch_assoc($topic_info);
+
+        $forum_topic = $db->execute("SELECT fm.*, acc.login as author_name FROM forum_messages fm, accounts acc WHERE fm.topic_id = '$topic_id' AND acc.id = fm.author_id LIMIT $first, $num_by_page");
+
+        while($ftopic = $db->fetch_assoc($forum_topic)) {
+            $ftopic_msg[] = $ftopic;
+        }
+
+        if (!empty($user) && $user->lvl() > 0) {
+            ob_start();
+            include View::Get('forum_mess_add.html', $path);
+            $message_add = ob_get_clean();
+        }
+
+        if(!isset($ftopic_msg)) {
+            header("Location: /go/forum");
+            exit;
+        }
+
+        ob_start();
+        include View::Get('forum_topic.html', $path);
+        $content_main = ob_get_clean();
+
+        $pagin_topics = $db->execute("SELECT COUNT(*) FROM `forum_messages` WHERE `topic_id` = '$topic_id'");
+        $pagin_line = $db->fetch_array($pagin_topics);
+        $view = new View("forum/paginator/");
+        $content_main .= $view->arrowsGenerator('/go/forum/view/topic/'.$topic_id."/", $page, $pagin_line[0], $num_by_page, "pagin");
+
+        $page = lng('FORUM_TOPIC_VIEW');
+        return;
+        break;
+    case 'add':
+        if (!empty($user) && $user->lvl() > 0) {
+            $forum_id = $_GET['id'];
+
+            $topic_information = $db->execute("SELECT name FROM forum_partition WHERE id = '$forum_id'");
+            while ($topic_inf = $db->fetch_assoc($topic_information)) {
+                $topic_info = $topic_inf['name'];
+            }
+
+            if (!empty($_POST['message']) && !empty($_POST['topic_title'])) {
+                $message = $_POST['message'];
+                $title = $_POST['topic_title'];
+                $time = time();
+                $db->execute("INSERT INTO forum_topics(partition_id, author_id, title, date) VALUES ('$forum_id','" . $user->id() . "','" . $db->safe($title) . "','$time')");
+                $forum_ids = mysql_insert_id();
+                $db->execute("INSERT INTO forum_messages(partition_id, topic_id, author_id, message, date, topmsg) VALUES ('$forum_id', '$forum_ids', '" . $user->id() . "','" . $db->safe($message) . "','$time', 'Y')");
+                header("Location: /go/forum/view/topic/" . $forum_ids . "/1/");
+                exit;
+            }
+        } else {
+            accss_deny();
+        }
+
+        ob_start();
+        include View::Get('forum_topic_add.html', $path);
+        $content_main = ob_get_clean();
+
+        if(!isset($topic_info)) {
+            ob_start();
+            include View::Get('forum_topic_die.html', $path);
+            $content_main = ob_get_clean();
+        }
+
+        $page = lng('FORUM_TOPIC_NEW');
+        return;
+        break;
+    case 'mainadd':
+        if(!empty($user) && $user->lvl() > 13) {
+            if(!empty($_POST['cat_name'])) {
+                $db->execute("INSERT INTO forum_partition(name) VALUES ('". $db->safe($_POST['cat_name']) ."')");
+                header("Location: /go/forum/");
+                exit;
+            }
+
+            $categorys = $db->execute("SELECT * FROM forum_partition WHERE parent_id = '0'");
+            while($categor = $db->fetch_assoc($categorys)) {
+                $categ[] = $categor;
+            }
+
+            $list_cat = '';
+            foreach($categ as $cat) {
+                $list_cat .= '<option value="'. $cat['id'] .'">'. $cat['name'] .'</option>';
+            }
+
+            if(!empty($_POST['name']) && !empty($_POST['category']) && !empty($_POST['description'])) {
+                $db->execute("INSERT INTO forum_partition(parent_id, name, description) VALUES ('". $db->safe($_POST['category']) ."','". $db->safe($_POST['name']) ."', '". $db->safe($_POST['description']) ."' )");
+                header("Location: /go/forum/");
+                exit;
+            }
+        } else {
+            accss_deny();
+        }
+
+        ob_start();
+        include View::Get('forum_settings.html', $path);
+        $content_main = ob_get_clean();
+
+        $page = lng('FORUM_SETTINGS');
+        return;
+    break;
+}

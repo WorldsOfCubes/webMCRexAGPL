@@ -9,6 +9,22 @@
             <th style="text-align: center;">Дата создания</th>
             <th style="text-align: center;">Последнее сообщение</th>
         </tr>
+        <?php if(isset($topics_top) && count($topics_top) > 0) { foreach($topics_top as $toplist_top) { ?>
+        <tr class="active" style="border: 1px solid #000;">
+            <td class="td-main">
+                <a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
+                <?php echo $toplist_top['title']; ?><span style="display: block; color: #7f8c8d;">Автор: <?php echo $toplist_top['author_name']; ?></span>
+            </td>
+            <td style="text-align: center;" class="td-main">
+                <a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
+                <?php echo date("d.m.Y в H:i", $toplist_top['date']); ?>
+            </td>
+            <td style="text-align: center;" class="td-main">
+                <a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
+                <?php echo date("d.m.Y в H:i", $toplist_top['lastdate']); ?>
+            </td>
+        </tr>
+        <?php }} else { echo ''; } ?>
         <?php if(isset($topics) && count($topics) > 0) { foreach($topics as $toplist) { ?>
         <tr>
             <td class="td-main">

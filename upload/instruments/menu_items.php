@@ -164,7 +164,7 @@ $menu_items = array (
 		),
 		'info' => 
 		array (
-			'name' => '<i class="glyphicon glyphicon-info-sign"></i> ' . lng('INFO'),
+			'name' => '<i class="glyphicon glyphicon-info-circle"></i> ' . lng('INFO'),
 			'url' => Rewrite::GetURL('guide'),
 			'parent_id' => -1,
 			'lvl' => -1,

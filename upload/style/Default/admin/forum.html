@@ -3,9 +3,7 @@
         <ul class="nav nav-tabs">
 
             <li class="active"><a href="#tab1" data-toggle="tab">Управление категориями и форумами</a></li>
-            <li><a href="#tab2" data-toggle="tab">Почтовый сервер</a></li>
-            <li><a href="#tab4" data-toggle="tab">Темы оформления</a></li>
-            <li><a href="#tab3" data-toggle="tab">Дополнительно</a></li>
+            <li><a href="#tab2" data-toggle="tab">Управление темами</a></li>
         </ul>
 
         <div class="tab-content">
@@ -61,139 +59,81 @@
                 <?php }} else { ?>
                     <div class="bg-warning" style="padding: 10px;"><b><h2>Категорий нет</h2></b></div>
                 <?php } ?>
-                <!--
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Сортировка/удаление категорий
-                    </div>
-                    <table class="table table-hover">
-                        <tr>
-                        <th>ID</th>
-                        <th>Название категории</th>
-                        <th>Приоритет</th>
-                        <th>Действие</th>
-                        </tr>
-                        <?php if(isset($categorys) && count($categorys) > 0) { foreach($categorys as $ctg) { ?>
-                        <tr>
-                            <form action="?mode=control&do=forum" method="POST">
-                                <td style="vertical-align: middle"><input type="hidden" name="id" value="<?php echo $ctg['id']; ?>"/><?php echo $ctg['id']; ?></td>
-                                <td style="vertical-align: middle"><?php echo $ctg['name']; ?></td>
-                                <td><input type="text" name="prior" value="<?php echo $ctg['priority']; ?>" class="form-control" placeholder="Приоритет" /></td>
-                                <td style="vertical-align: middle"><button type="submit"class="btn btn-primary btn-xs" style="margin-right: 5px;">Обновить приоритет</button><a href="/" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash" title="Удалить категорию"></i></a></td>
-                            </form>
-                        </tr>
-                        <?php }} else { ?>
-                        <tr>
-                            <td>Категорий нет</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <?php }?>
-                    </table>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Сортировка/удаление форумов
-                    </div>
-                    <table class="table table-hover">
-                        <tr>
-                            <th>Категория</th>
-                            <th>Название форума</th>
-                            <th>Приоритет</th>
-                            <th>Действие</th>
-                        </tr>
-                        <?php if(isset($forums) && count($forums) > 0) { foreach($forums as $frm) { foreach($forums['cats'] as $frmc) { $frm_opt = ''; $frm_opt .= '<option value="'. $frmc['id'] .'">'. $frmc['name'] .'</option>';?>
-                        <tr>
-                            <form action="?mode=control&do=forum" method="POST">
-                                <td style="vertical-align: middle"><select name="catid"><?php echo $frm_opt; ?></select><input type="hidden" name="id" value="<?php echo $frm['id']; ?>"/></td>
-                                <td style="vertical-align: middle"><?php echo $frm['name']; ?></td>
-                                <td><input type="text" name="prior" value="<?php echo $frm['priority']; ?>" class="form-control" placeholder="Приоритет" /></td>
-                                <td style="vertical-align: middle"><button type="submit"class="btn btn-primary btn-xs" style="margin-right: 5px;">Обновить приоритет</button><a href="/" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash" title="Удалить категорию"></i></a></td>
-                            </form>
-                        </tr>
-                        <?php }}} else { ?>
-                        <tr>
-                            <td>Форумов нет</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <?php }?>
-                    </table>
-                </div>-->
             </div>
 
             <div class="tab-pane" id="tab2">
-
-                <label>Имя отправителя:</label>
-                <input type="text" class="form-control" style="width:300px" name="email_name" value="<?php echo sqlConfigGet('email-name') ?>">
-
-                <label>Обратный адрес:</label>
-                <input type="text" class="form-control" style="width:300px" name="email_mail" value="<?php echo sqlConfigGet('email-mail') ?>">
-                <span class="help-block">Обычно должен соответствовать адресу, прописаному в настройках php.ini или пользователю smtp. </span>
-
-                <label>Отправить тестовое сообщение на:</label>
-                <input type="text" class="form-control" style="width:300px" name="email_test">
-
-                <label class="checkbox">
-                    <input type="checkbox" name="smtp" value="1" <?php echo ($config['smtp'])?'checked="checked"':'' ?>> Использовать заданые настройки smtp
-                </label>
-                <span class="help-block">В обход настроеной функции mail из файла php.ini вашего web сервера. </span>
-
-                <label class="checkbox">
-                    <input type="checkbox" name="smtp_tls" value="1" <?php echo ($config['smtp_tls'])?'checked="checked"':'' ?>> Использовать TLS/SSL шифрование
-                </label>
-                <span class="help-block">Включает поддержку TLS/SSL шифрования. Нужно при отправке через сервера Google и Яндекса.</span>
-
-                <label>Пользователь smtp:</label>
-                <input type="text" class="form-control" style="width:300px" name="smtp_user" value="<?php echo sqlConfigGet('smtp-user') ?>">
-
-                <label>Пароль пользователя:</label>
-                <input type="password" name="smtp_pass" class="form-control" style="width:300px" value="<?php echo (sqlConfigGet('smtp-pass'))? '**defined**' : '' ?>">
-
-                <label>Адрес сервера:</label>
-                <input type="text" class="form-control" style="width:300px" name="smtp_host" value="<?php echo sqlConfigGet('smtp-host');  ?>">
-
-                <label>Порт:</label>
-                <input type="text" class="form-control" style="width:300px" name="smtp_port" value="<?php echo sqlConfigGet('smtp-port');  ?>">
-
-                <label>Приветствие:</label>
-
-                <input type="text" class="form-control" style="width:300px" name="smtp_hello" value="<?php echo sqlConfigGet('smtp-hello');  ?>">
-                <span class="help-block">Системное сообщение приветствия, как правило либо HELO либо EHLO . Не менять без необходимости</span>
-
-            </div>
-
-            <div class="tab-pane" id="tab3">
-
-                <label class="checkbox">
-                    <input type="checkbox" name="site_offline" value="1" <?php echo ($config['offline'])?'checked="checked"':'' ?>> Закрыть сайт ( режим "Технических работ" )
-                </label>
-
-                <div class="alert alert-info">
-                    В режиме "Технических работ" доступ к сайту будет доступен только пользователям из группы Администратор
+                <div class="bg-danger" style="padding: 10px; margin-bottom: 15px;"><b>Внимание:</b>
+                    <p><i>При клике на тему вы попадете на страницу с таковой, а при клике на название форума попадете на форум, где хранится выбранная тема</i></p></div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Список тем из всех форумов
+                    </div>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Информация о теме</th>
+                            <th style="text-align: center;">Дата создания / Последнее сообщение</th>
+                            <th style="text-align: center;">Форум</th>
+                            <th style="text-align: center;">Действия</th>
+                        </tr>
+                        <?php if(isset($topics_top) && count($topics_top) > 0) { foreach($topics_top as $toplist_top) { ?>
+                        <tr class="active" style="border: 1px solid #000;">
+                            <td class="td-main">
+                                <a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
+                                <?php echo $toplist_top['title']; ?><span style="display: block; color: #7f8c8d;">Автор: <?php echo $toplist_top['author_name']; ?></span>
+                            </td>
+                            <td style="text-align: center;" class="td-main">
+                                <a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
+                                <?php echo date("d.m.Y в H:i", $toplist_top['date']); ?>
+                                <span style="display: block; color: #7f8c8d"><?php echo date("d.m.Y в H:i", $toplist_top['lastdate']); ?></span>
+                            </td>
+                            <td style="text-align: center;" class="td-main">
+                                <a href="/go/forum/view/<?php echo $toplist_top['partition_id'];?>/1" class="forum-link"></a>
+                                <?php echo $toplist_top['forum_name']; ?>
+                            </td>
+                            <td style="text-align: center;" class="td-main">
+                                <a href="?mode=control&do=forum&downid=<?php echo $toplist_top['id'];?>" class="btn btn-xs btn-warning" title="Снять тему с фиксации"><i class="glyphicon glyphicon-arrow-down"></i></a>
+                                <?php if($toplist_top['closed'] == 'N') {?><a href="?mode=control&do=forum&lock=<?php echo $toplist_top['id'];?>" class="btn btn-xs btn-info" title="Закрыть тему"><i class="glyphicon glyphicon-lock"></i></a><?php }?>
+                                <?php if($toplist_top['closed'] == 'Y') {?><a href="?mode=control&do=forum&unlock=<?php echo $toplist_top['id'];?>" class="btn btn-xs btn-info" title="Открыть тему"><i class="glyphicon glyphicon-unlock"></i></a><?php }?>
+                                <a href="?mode=control&do=forum&delid=<?php echo $toplist_top['id'];?>" class="btn btn-xs btn-danger" title="Удалить тему"><i class="glyphicon glyphicon-trash"></i></a>
+                            </td>
+                        </tr>
+                        <?php }} else { echo ''; } ?>
+                        <?php if(isset($topics) && count($topics) > 0) { foreach($topics as $toplist) { ?>
+                        <tr>
+                            <td class="td-main">
+                                <a href="/go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
+                                <?php echo $toplist['title']; ?><span style="display: block; color: #7f8c8d;">Автор: <?php echo $toplist['author_name']; ?></span>
+                            </td>
+                            <td style="text-align: center;" class="td-main">
+                                <a href="/go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
+                                <?php echo date("d.m.Y в H:i", $toplist['date']); ?>
+                                <span style="display: block; color: #7f8c8d"><?php echo date("d.m.Y в H:i", $toplist['lastdate']); ?></span>
+                            </td>
+                            <td style="text-align: center;" class="td-main">
+                                <a href="/go/forum/view/<?php echo $toplist['partition_id'];?>/1" class="forum-link"></a>
+                                <?php echo $toplist['forum_name']; ?>
+                            </td>
+                            <td style="text-align: center;" class="td-main">
+                                <a href="?mode=control&do=forum&topid=<?php echo $toplist['id'];?>" class="btn btn-xs btn-success" title="Зафиксировать тему вверху"><i class="glyphicon glyphicon-arrow-up"></i></a>
+                                <?php if($toplist['closed'] == 'N') {?><a href="?mode=control&do=forum&lock=<?php echo $toplist['id'];?>" class="btn btn-xs btn-info" title="Закрыть тему"><i class="glyphicon glyphicon-lock"></i></a><?php }?>
+                                <?php if($toplist['closed'] == 'Y') {?><a href="?mode=control&do=forum&unlock=<?php echo $toplist['id'];?>" class="btn btn-xs btn-info" title="Открыть"><i class="glyphicon glyphicon-unlock"></i></a><?php }?>
+                                <a href="?mode=control&do=forum&delid=<?php echo $toplist['id'];?>" class="btn btn-xs btn-danger" title="Удалить тему"><i class="glyphicon glyphicon-trash"></i></a>
+                            </td>
+                        </tr>
+                        <?php }} else { ?>
+                        <tr>
+                            <td class="td-main">Тем нет</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <?php }?>
+                    </table>
                 </div>
-
-                <label class="checkbox">
-                    <input type="checkbox" name="site_install" value="1" <?php echo ($config['install'])?'checked="checked"':'' ?>> Активировать инсталлятор
-                </label>
-
-                <div class="alert alert-danger">
-                    <b>Внимание!</b> Этот режим дает возможность повторно провести инсталляцию движка, например, при обновлении. Ни в коем случае не активируйте инсталлятор без необходимости иначе сайт может быть взломан! После установки инсталлятор автоматически деактивируется.
-                </div>
-
-                <label class="checkbox">
-                    <input type="checkbox" name="log" value="1" <?php echo ($config['log'])?'checked="checked"':'' ?>> Запись лога (<a href="index.php?mode=control&do=log">Просмотр</a>)
-                </label>
-                <span class="help-block">Запись сообщений об ошибках веб приложения в файл <?php echo MCR_ROOT.'log.txt' ?> . Обнуление файла при размере > 50мб</span>
-
             </div>
-            <div class="tab-pane" id="tab4">
-
-                <?php echo $theme_selector ?>
-
-            </div>
-        </div>
-
     </div>
+<style>
+    .td-main {position: relative; vertical-align: middle!important;}
+    .forum-link {position: absolute;top:0;left:0;width:100%;height:100%;}
+    tr:hover > td {background: #d9edf7;}
+
+</style>

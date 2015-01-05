@@ -49,7 +49,8 @@ switch($do) {
     case 'viewforum':
         $forum_id = intval($_GET['id']);
 
-        $forum_topics = $db->execute("SELECT ft.*, acc.login as author_name, (SELECT MAX(fm.date) FROM forum_messages fm WHERE fm.topic_id = ft.id) as lastdate FROM forum_topics ft, accounts acc WHERE ft.partition_id = '$forum_id' AND ft.author_id = acc.id ORDER BY lastdate DESC LIMIT $first, $num_by_page");
+        $forum_topics = $db->execute("SELECT ft.*, acc.login as author_name, (SELECT MAX(fm.date) FROM forum_messages fm WHERE fm.topic_id = ft.id) as lastdate FROM forum_topics ft, accounts acc WHERE ft.partition_id = '$forum_id' AND ft.author_id = acc.id AND ft.top = 'N' ORDER BY lastdate DESC LIMIT $first, $num_by_page");
+        $forum_topics_top = $db->execute("SELECT ft.*, acc.login as author_name, (SELECT MAX(fm.date) FROM forum_messages fm WHERE fm.topic_id = ft.id) as lastdate FROM forum_topics ft, accounts acc WHERE ft.partition_id = '$forum_id' AND ft.author_id = acc.id AND ft.top = 'Y' ORDER BY lastdate DESC LIMIT $first, $num_by_page");
         $forum_name = $db->execute("SELECT name FROM forum_partition WHERE id = '$forum_id'");
 
         while($fname = $db->fetch_assoc($forum_name)) {
@@ -63,6 +64,10 @@ switch($do) {
 
         while($ftop = $db->fetch_assoc($forum_topics)) {
             $topics[] = $ftop;
+        }
+
+        while($ftop_top = $db->fetch_assoc($forum_topics_top)) {
+            $topics_top[] = $ftop_top;
         }
 
         ob_start();
@@ -127,10 +132,16 @@ switch($do) {
             $ftopic_msg[] = $ftopic;
         }
 
+        $lock = $db->execute("SELECT closed FROM forum_topics WHERE id = '$topic_id'");
+        $lock = $db->fetch_assoc($lock);
+
+
         if (!empty($user) && $user->lvl() > 0) {
-            ob_start();
-            include View::Get('forum_mess_add.html', $path);
-            $message_add = ob_get_clean();
+            if( $lock['closed'] == 'N' ) {
+                ob_start();
+                include View::Get('forum_mess_add.html', $path);
+                $message_add = ob_get_clean();
+            }
         }
 
         if(!isset($ftopic_msg)) {
@@ -163,7 +174,13 @@ switch($do) {
                 $message = $_POST['message'];
                 $title = $_POST['topic_title'];
                 $time = time();
-                $db->execute("INSERT INTO forum_topics(partition_id, author_id, title, date) VALUES ('$forum_id','" . $user->id() . "','" . $db->safe($title) . "','$time')");
+                if(!empty($_POST['top'])) {
+                    $top = $_POST['top'];
+                    $db->execute("INSERT INTO forum_topics(partition_id, author_id, title, date, top) VALUES ('$forum_id','" . $user->id() . "','" . $db->safe($title) . "','$time', '". $db->safe($top) ."')");
+                } else {
+
+                    $db->execute("INSERT INTO forum_topics(partition_id, author_id, title, date) VALUES ('$forum_id','" . $user->id() . "','" . $db->safe($title) . "','$time')");
+                }
                 $forum_ids = mysql_insert_id();
                 $db->execute("INSERT INTO forum_messages(partition_id, topic_id, author_id, message, date, topmsg) VALUES ('$forum_id', '$forum_ids', '" . $user->id() . "','" . $db->safe($message) . "','$time', 'Y')");
                 header("Location: /go/forum/view/topic/" . $forum_ids . "/1/");
@@ -219,5 +236,27 @@ switch($do) {
 
         $page = lng('FORUM_SETTINGS');
         return;
+    break;
+    case 'edit':
+        $msg_id = intval($_GET['id']);
+        if( !empty($_POST['id']) && !empty($_POST['message']) ) {
+            if( $_POST['id'] == $msg_id) {
+                $message = $_POST['message'];
+                $db->execute("UPDATE forum_messages SET message = '". $db->safe($message) ."'");
+                $link = $db->execute("SELECT topic_id FROM forum_messages WHERE id = '$msg_id'");
+                $link = $db->fetch_assoc($link);
+                header("Location: /go/forum/view/topic/". $link['topic_id'] ."/1");
+            }
+        }
+
+        $message_db = $db->execute("SELECT message FROM forum_messages WHERE id = '$msg_id'");
+        $message_db = $db->fetch_assoc($message_db);
+        $message = $message_db['message'];
+
+
+        ob_start();
+        include View::Get('forum_mess_edit.html', $path);
+        $content_main = ob_get_clean();
+        $page = lng('MESSAGE_EDIT');
     break;
 }

@@ -1,5 +1,4 @@
 <script language="JavaScript" type="text/javascript">
-
     function tag_insert(obj, str1, str2){
 
         obj.focus()
@@ -94,53 +93,50 @@
     }
 </script>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <a href="/go/forum/"><?php echo lng('FORUM')?></a> &raquo; <a href="/go/forum/view/<?php echo $forum_id; ?>/1"><?php echo $topic_info;?></a> &raquo; <?php echo lng('FORUM_TOPIC_NEW');?>
-    </div>
-    <div class="inform-block" style="display: none;" id="comment-error"><div class="alert alert-error" id="comment-error-text"></div></div>
+<div class="inform-block" style="display: none;" id="comment-error"><div class="alert alert-error" id="comment-error-text"></div></div>
 
-        <div class="form-block" style="margin-top: 0px;">
+<div class="form-block">
+
+    <div class="block-header">Редактировать сообщение</div>
+
+    <div class="block-line"></div>
+
+    <form method="post" action="">
+        <input type="hidden" name="id" value="<?php echo $msg_id; ?>" />
+        <div class="btn-toolbar" style="margin-bottom:5px;">
+            <div class="btn-group">
+                <button class="btn btn-default" onclick="return bbcode(0)"><b>b</b></button>
+                <button class="btn btn-default" onclick="return bbcode(1)"><i>i</i></button>
+                <button class="btn btn-default" onclick="return bbcode(2)"><u>u</u></button>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-default" onclick="return bbcode(3)">Ссылка</button>
+                <button class="btn btn-default" onclick="return bbcode(4)">Цитата</button>
+                <button class="btn btn-default" onclick="return bbcode(5)">Спойлер</button>
+            </div>
+
+            <div class="btn-group">
+
+                <button class="btn btn-default" onclick="BlockVisible('comment-smile-list'); cDrawSmiles(); return false">Смайлики <span class="caret"></span></button>
+
+            </div>
+
+        </div>
+
+        <div id="comment-smile-list" style="display: none; white-space: normal; padding-bottom: 6px; "></div>
 
         <div class="block-line"></div>
 
-        <form method="post" action="">
-            <input required="*" id="comment-item-author" class="form-control" style="margin-bottom: 15px;" name="topic_title" placeholder="Название темы" />
-            <div class="btn-toolbar" style="margin-bottom:5px;">
-                <div class="btn-group">
-                    <button class="btn btn-default" onclick="return bbcode(0)"><b>b</b></button>
-                    <button class="btn btn-default" onclick="return bbcode(1)"><i>i</i></button>
-                    <button class="btn btn-default" onclick="return bbcode(2)"><u>u</u></button>
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-default" onclick="return bbcode(3)">Ссылка</button>
-                    <button class="btn btn-default" onclick="return bbcode(5)">Спойлер</button>
-                </div>
+        <div style="text-align: center;">
 
-                <div class="btn-group">
+            <textarea id="comment-add-text" required="*" class="form-control" style="height:100px" name="message" onclick="return DrawLenInfo(event)" onchange="return DrawLenInfo(event)" onkeyup="return DrawLenInfo(event)" onkeypress="return DrawLenInfo(event)" ><?php echo $message; ?></textarea>
 
-                    <button class="btn btn-default" onclick="BlockVisible('comment-smile-list'); cDrawSmiles(); return false">Смайлики <span class="caret"></span></button>
+        </div>
 
-                </div>
+        <div class="block-line"></div>
+        <div style="float: right;height:24px;margin-bottom:5px">
+            <input id="comment-button" class="btn btn-default" type="submit" value="Редактировать" />
 
-            </div>
-
-            <div id="comment-smile-list" style="display: none; white-space: normal; padding-bottom: 6px; "></div>
-
-            <div class="block-line"></div>
-
-            <div style="text-align: center;">
-
-                <textarea required="*" id="comment-add-text" class="form-control" style="height:200px; width: 100%!important; resize: none;" name="message" onclick="return DrawLenInfo(event)" onchange="return DrawLenInfo(event)" onkeyup="return DrawLenInfo(event)" onkeypress="return DrawLenInfo(event)" ></textarea>
-
-            </div>
-
-            <div class="block-line"></div>
-            <?php if(!empty($user) && $user->lvl() > 13) {?><label style="float: left;"><input name="top" value="Y" type="checkbox" /> Зафиксировать тему</label><?php } ?>
-            <div style="float: right;height:24px;margin-bottom:5px">
-                <input id="comment-button" class="btn btn-default" type="submit" value="Добавить" />
-
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>

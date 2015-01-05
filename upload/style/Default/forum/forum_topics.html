@@ -13,7 +13,9 @@
         <tr class="active" style="border: 1px solid #000;">
             <td class="td-main">
                 <a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
-                <?php echo $toplist_top['title']; ?><i class="glyphicon glyphicon-level-up pull-right" title="Запись закреплена"></i><span style="display: block; color: #7f8c8d;">Автор: <?php echo $toplist_top['author_name']; ?><i class="glyphicon glyphicon-level-up" title="Запись закреплена"></i></span>
+                <?php echo $toplist_top['title']; ?><i class="glyphicon glyphicon-level-up pull-right" style="margin-left: 6px;" title="Тема закреплена"></i>
+                <?php if($toplist_top['closed'] == 'Y') { ?> <i class="glyphicon glyphicon-lock pull-right" title="Тема закрыта"></i><?php }?>
+                <span style="display: block; color: #7f8c8d;">Автор: <?php echo $toplist_top['author_name']; ?></span>
             </td>
             <td style="text-align: center;" class="td-main">
                 <a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
@@ -29,6 +31,7 @@
         <tr>
             <td class="td-main">
                 <a href="/go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
+                <?php if($toplist['closed'] == 'Y') { ?><i class="glyphicon glyphicon-lock pull-right" title="Тема закрыта"></i> <?php }?>
                 <?php echo $toplist['title']; ?><span style="display: block; color: #7f8c8d;">Автор: <?php echo $toplist['author_name']; ?></span>
             </td>
             <td style="text-align: center;" class="td-main">

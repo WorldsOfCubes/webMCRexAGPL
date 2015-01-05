@@ -101,9 +101,6 @@
 
     <div class="block-line"></div>
 
-    <form method="post" action="">
-        <input required="*" id="comment-item-topic" type="hidden" name="topic_id" value="<?php echo $topic_id ?>" />
-
         <div class="btn-toolbar" style="margin-bottom:5px;">
             <div class="btn-group">
                 <button class="btn btn-default" onclick="return bbcode(0)"><b>b</b></button>
@@ -127,6 +124,8 @@
         <div id="comment-smile-list" style="display: none; white-space: normal; padding-bottom: 6px; "></div>
 
         <div class="block-line"></div>
+       <form method="post" action="">
+        <input required="*" id="comment-item-topic" type="hidden" name="topic_id" value="<?php echo $topic_id ?>" />
 
         <div style="text-align: center;">
 

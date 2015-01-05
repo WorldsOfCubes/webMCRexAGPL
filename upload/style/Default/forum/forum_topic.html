@@ -1,9 +1,55 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <a href="/go/forum/"><?php echo lng('FORUM')?></a> &raquo; <a href="/go/forum/view/<?php echo $topic_info['part_id'];?>/1"><?php echo $topic_info['part_name'];?></a> &raquo; <?php echo $topic_info['title'];?>
-        <?php if( $lock['closed'] == 'Y' ) { ?><div class="pull-right"><i class="glyphicon glyphicon-lock" style="font-size:20px" title="Тема закрыта"></i></div><?php }?>
+
+        <?php if( $lock['closed'] == 'Y' ) { ?><div class="pull-right">
+        <?php if( $toped['top'] == 'N' && !empty($user) && $user->lvl() > 13 ) { ?>
+        <a href="/index.php?mode=forum&do=main&top=<?php echo $topic_id;?>">Закрепить тему</a> | <?php } ?>
+        <?php if( $toped['top'] == 'Y' && !empty($user) && $user->lvl() > 13 ) { ?>
+        <a href="/index.php?mode=forum&do=main&down=<?php echo $topic_id;?>">Открепить тему</a> | <?php } ?>
+        <?php if(!empty($user) && $user->lvl() > 13 ) { ?> <a href="/index.php?mode=forum&do=main&unlock=<?php echo $topic_id;?>">Открыть тему</a> | <?php } ?>  <i class="glyphicon glyphicon-lock" style="font-size:20px" title="Тема закрыта"></i></div><?php }?>
+        <?php if( $lock['closed'] == 'N' && !empty($user) && $user->lvl() > 13 ) { ?><div class="pull-right"><?php if( $toped['top'] == 'N' && !empty($user) && $user->lvl() > 13 ) { ?>
+        <a href="/index.php?mode=forum&do=main&top=<?php echo $topic_id;?>">Закрепить тему</a> |<?php } ?>
+        <?php if( $toped['top'] == 'Y' && !empty($user) && $user->lvl() > 13 ) { ?>
+        <a href="/index.php?mode=forum&do=main&down=<?php echo $topic_id;?>">Открепить тему</a> |<?php } ?>  <a href="/index.php?mode=forum&do=main&lock=<?php echo $topic_id;?>">Закрыть тему</a> | <i class="glyphicon glyphicon-unlock" style="font-size:20px" title="Тема открыта"></i></div><?php }?>
     </div>
+    <?php foreach($tpmess as $topmess) { ?>
+    <div id="comment-byid-<?php echo $topmess['id']; ?>"><div class="comment-container bg-info" style="width: 100%; margin-bottom: 0px; margin-left: 0px;">
+        <div class="comment-avatar" style="vertical-align: top; display: inline-block; position: relative;">
+            <a href="#" onclick="LoadProfile('customp',<?php echo $topmess['author_id'];?>); return false">
+                <img class="img-polaroid" src="skin.php?m=<?php echo $ftops['author_id'];?>" width="64" height="64" alt="Пользователь <?php echo $topmess['author_name'];?>">
+            </a>
+        </div>
+        <div class="comment-self">
+            <?php if (!empty($user) && $user->lvl() > 13) { ?>
+            <div class="btn-group" style="float: left; margin-right: 5px; padding: 3px;">
+                <button class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+
+                <ul class="dropdown-menu">
+                    <form action="" method="POST">
+                        <input type="hidden" name="mess_id" value="<?php echo $topmess['id'] ?>" />
+                        <li><a href="/go/forum/edit/<?php echo $topmess['id'] ?>" style="background: none; border: none; color: #000; padding-left: 6px;"><i class="glyphicon glyphicon-pencil"></i> Редактировать</a></li>
+                        <li><button type="submit" style="background: none; border: none;"><i class="glyphicon glyphicon-trash"></i> Удалить</button></li>
+                    </form>
+
+                </ul>
+            </div>
+            <?php }?>
+            <div class="comment-info"> <b><a href="#"  id="author-cbyid-<?php echo $topmess['id']; ?>" onclick="LoadProfile('customp',<?php echo $topmess['author_id'];?>); return false" class="player-name"><?php echo $topmess['author_name'];?></a></b> пишет:</div>
+            <div class="comment-text" id="text-cbyid-<?php echo $topmess['id']; ?>"><?php echo Message::BBDecode($topmess['message']);?><b></b></div>
+            <div class="comment-addition">&nbsp;<?php echo date("d.m.Y | H:i", $topmess['date']);?></div>
+        </div>
+        <div style="display: inline-block; vertical-align: top; padding-left: 4px; padding-top: 4px; text-align: right;">
+            <a href="#" style="float: right;  color: #555555;" onclick="return Quote(<?php echo $ftops['id'] ?>)">Цитировать</a>
+        </div>
+    </div>
+
+    </div>
+    <?php }?>
     <?php foreach($ftopic_msg as $ftops) { ?>
+    <?php if($ftops['topmsg'] == 'Y') { echo ''; } else {?>
     <div id="comment-byid-<?php echo $ftops['id']; ?>"><div class="comment-container" style="width: 100%; border-top: 5px solid #428bca; margin-left: 0px;">
         <div class="comment-avatar" style="vertical-align: top; display: inline-block; position: relative;">
             <a href="#" onclick="LoadProfile('customp',<?php echo $ftops['author_id'];?>); return false">
@@ -27,6 +73,22 @@
                 </ul>
             </div>
             <?php }?>
+            <?php if (!empty($user) && $user->lvl() > 0 && $user->lvl() < 13 && $user->id() == $ftops['author_id']) { ?>
+            <div class="btn-group" style="float: left; margin-right: 5px; padding: 3px;">
+                <button class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+
+                <ul class="dropdown-menu">
+                    <form action="" method="POST">
+                        <input type="hidden" name="mess_id" value="<?php echo $ftops['id'] ?>" />
+                        <input type="hidden" name="mess_auth" value="<?php echo $ftops['author_id'] ?>" />
+                        <li><button type="submit" style="background: none; border: none;"><i class="glyphicon glyphicon-trash"></i> Удалить</button></li>
+                    </form>
+
+                </ul>
+            </div>
+            <?php }?>
             <div class="comment-info"> <b><a href="#"  id="author-cbyid-<?php echo $ftops['id']; ?>" onclick="LoadProfile('customp',<?php echo $ftops['author_id'];?>); return false" class="player-name"><?php echo $ftops['author_name'];?></a></b> пишет:</div>
             <div class="comment-text" id="text-cbyid-<?php echo $ftops['id']; ?>"><?php echo Message::BBDecode($ftops['message']);?><b></b></div>
             <div class="comment-addition">&nbsp;<?php echo date("d.m.Y | H:i", $ftops['date']);?></div>
@@ -37,6 +99,6 @@
     </div>
 
     </div>
-    <?php } ?>
+    <?php }} ?>
     <?php echo $message_add; ?>
 </div>

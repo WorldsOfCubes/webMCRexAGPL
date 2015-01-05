@@ -100,9 +100,6 @@
     <div class="block-header">Редактировать сообщение</div>
 
     <div class="block-line"></div>
-
-    <form method="post" action="">
-        <input type="hidden" name="id" value="<?php echo $msg_id; ?>" />
         <div class="btn-toolbar" style="margin-bottom:5px;">
             <div class="btn-group">
                 <button class="btn btn-default" onclick="return bbcode(0)"><b>b</b></button>
@@ -114,7 +111,8 @@
                 <button class="btn btn-default" onclick="return bbcode(4)">Цитата</button>
                 <button class="btn btn-default" onclick="return bbcode(5)">Спойлер</button>
             </div>
-
+            <form method="post" action="">
+                <input type="hidden" name="id" value="<?php echo $msg_id; ?>" />
             <div class="btn-group">
 
                 <button class="btn btn-default" onclick="BlockVisible('comment-smile-list'); cDrawSmiles(); return false">Смайлики <span class="caret"></span></button>

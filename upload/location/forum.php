@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ERROR);
 
-$num_by_page = 20;
+$num_by_page = 20; //Число постов, выводимых на страницу
 
 if (isset($_GET['do'])) $do = $_GET['do'];
 elseif (isset($_POST['do'])) $do = $_POST['do'];
@@ -16,15 +16,50 @@ if ($page == 0) $page = 1;
 $first = ((int) $page - 1) * $num_by_page;
 $last  = (int) $page * $num_by_page;
 
+//Форум
 switch($do) {
-    case 'main':
+    case 'main': //Главная дерриктория форума(/go/forum/)
     default:
         $forum_partition = $db->execute("SELECT * FROM forum_partition WHERE parent_id = '0'  ORDER BY priority DESC");
 
+
+        //Вывод категорий
         while($fpat = $db->fetch_assoc($forum_partition)) {
             $parents[] = $fpat;
         }
 
+        //Закрытие/открытие тем
+        if(!empty($_GET['lock'])) {
+            $id = intval($_GET['lock']);
+            $db->execute("UPDATE forum_topics SET closed = 'Y' WHERE id = '$id'");
+            header("Location: go/forum/view/topic/ ". $id ."/1");
+            exit;
+        }
+
+        if(!empty($_GET['unlock'])) {
+            $id = intval($_GET['unlock']);
+            $db->execute("UPDATE forum_topics SET closed = 'N' WHERE id = '$id'");
+            header("Location: go/forum/view/topic/ ". $id ."/1");
+            exit;
+        }
+
+        //Закрепление/открепление тем
+        if(!empty($_GET['top'])) {
+            $id = intval($_GET['top']);
+            $db->execute("UPDATE forum_topics SET top = 'Y' WHERE id = '$id'");
+            header("Location: go/forum/view/topic/ ". $id ."/1");
+            exit;
+        }
+
+        if(!empty($_GET['down'])) {
+            $id = intval($_GET['down']);
+            $db->execute("UPDATE forum_topics SET top = 'N' WHERE id = '$id'");
+            header("Location: go/forum/view/topic/ ". $id ."/1");
+            exit;
+        }
+
+
+        //Вывди списка форумов с подробностями
         foreach($parents as $key => &$value) {
             $forums = $db->execute("SELECT fp.*, (SELECT count(ft.id) FROM forum_topics ft WHERE ft.partition_id = fp.id) as topic_count,
                                     (SELECT count(fm.id) FROM forum_messages fm WHERE fm.partition_id = fp.id) as message_count,
@@ -39,6 +74,7 @@ switch($do) {
             }
         } unset($value);
 
+        //Генерация шаблона
         ob_start();
         include View::Get('main.html', $path);
         $content_main = ob_get_clean();
@@ -46,9 +82,10 @@ switch($do) {
         $page = lng('FORUM_LIST');
         return;
         break;
-    case 'viewforum':
+    case 'viewforum': //Просмотр форума(/go/forum/view/$1)
         $forum_id = intval($_GET['id']);
 
+        //Информация о темах и форуме в котором мы находмся/пагнация/вывод тем
         $forum_topics = $db->execute("SELECT ft.*, acc.login as author_name, (SELECT MAX(fm.date) FROM forum_messages fm WHERE fm.topic_id = ft.id) as lastdate FROM forum_topics ft, accounts acc WHERE ft.partition_id = '$forum_id' AND ft.author_id = acc.id AND ft.top = 'N' ORDER BY lastdate DESC LIMIT $first, $num_by_page");
         $forum_topics_top = $db->execute("SELECT ft.*, acc.login as author_name, (SELECT MAX(fm.date) FROM forum_messages fm WHERE fm.topic_id = ft.id) as lastdate FROM forum_topics ft, accounts acc WHERE ft.partition_id = '$forum_id' AND ft.author_id = acc.id AND ft.top = 'Y' ORDER BY lastdate DESC LIMIT $first, $num_by_page");
         $forum_name = $db->execute("SELECT name FROM forum_partition WHERE id = '$forum_id'");
@@ -69,11 +106,12 @@ switch($do) {
         while($ftop_top = $db->fetch_assoc($forum_topics_top)) {
             $topics_top[] = $ftop_top;
         }
-
+        //Генерация шаблона
         ob_start();
         include View::Get('forum_topics.html', $path);
         $content_main = ob_get_clean();
 
+        //Пагинатор(Постраничная навигация)
         $pagin_topics = $db->execute("SELECT COUNT(*) FROM `forum_topics` WHERE `partition_id` = '$forum_id'");
         $pagin_line = $db->fetch_array($pagin_topics);
         $view = new View("forum/paginator/");
@@ -82,13 +120,28 @@ switch($do) {
         $page = lng('FORUM_CAT_VIEW');
         return;
         break;
-    case 'viewtopic':
+    case 'viewtopic': //Просмотр темы(/go/forum/view/topic/$1)
         $topic_id = intval($_GET['id']);
         $message_add = '';
         $mess_id = intval($_POST['mess_id']);
 
         $delete = array();
 
+        //Удаление комментов юзеров
+        if(!empty($user) && $user->lvl() > 0 && $user->lvl() < 13) {
+            if(!empty($_POST['mess_id']) && !empty($_POST['mess_auth'])) {
+                $mess_id = intval($_POST['mess_id']);
+                $auth_id = intval($_POST['mess_auth']);
+                if($user->id() == $auth_id) {
+                    $db->execute("DELETE FROM forum_messages WHERE id = '$mess_id'");
+                } else {
+                    accss_deny();
+                }
+            }
+        }
+
+
+        //удаление топика и содержимого админом
         if (!empty($user) && $user->lvl() > 13) {
 
             if (isset($mess_id)) {
@@ -113,12 +166,13 @@ switch($do) {
             }
         }
 
+        //Добавление сообщения
         if (!empty($user) && $user->lvl() > 0) {
 
             if(!empty($_POST['topic_id']) && !empty($_POST['message']) && $_POST['topic_id'] == $topic_id) {
                 $message = $_POST['message'];
                 $time = time();
-                $message = Message::Comment($message);
+                $message = TextBase::HTMLDestruct($message);
                 $message = nl2br($message);
                 $db->execute("INSERT INTO `forum_messages`(`topic_id`, `author_id`, `message`, `date`) VALUES ('$topic_id','" . $user->id() . "','" . $db->safe($message) . "','$time')");
             }
@@ -133,8 +187,17 @@ switch($do) {
             $ftopic_msg[] = $ftopic;
         }
 
+        $topmsg = $db->execute("SELECT * FROM forum_messages WHERE topic_id = '$topic_id' AND topmsg = 'Y'");
+        while($tpmsg = $db->fetch_assoc($topmsg)) {
+            $tpmess[]= $tpmsg;
+        }
+
         $lock = $db->execute("SELECT closed FROM forum_topics WHERE id = '$topic_id'");
         $lock = $db->fetch_assoc($lock);
+
+        $toped = $db->execute("SELECT top FROM forum_topics WHERE id = '$topic_id'");
+        $toped = $db->fetch_assoc($toped);
+
 
 
         if (!empty($user) && $user->lvl() > 0) {
@@ -162,7 +225,7 @@ switch($do) {
         $page = lng('FORUM_TOPIC_VIEW');
         return;
         break;
-    case 'add':
+    case 'add': //добавление топиков
         if (!empty($user) && $user->lvl() > 0) {
             $forum_id = $_GET['id'];
 
@@ -173,10 +236,10 @@ switch($do) {
 
             if (!empty($_POST['message']) && !empty($_POST['topic_title'])) {
                 $message = $_POST['message'];
-                $message = Message::Comment($message);
+                $message = TextBase::HTMLDestruct($message);
                 $message = nl2br($message);
                 $title = $_POST['topic_title'];
-                $title = Message::Comment($title);
+                $title = TextBase::HTMLDestruct($title);
                 $time = time();
                 if(!empty($_POST['top'])) {
                     $top = $_POST['top'];
@@ -207,10 +270,10 @@ switch($do) {
         $page = lng('FORUM_TOPIC_NEW');
         return;
         break;
-    case 'mainadd':
+    case 'mainadd': //Добавление категорий и форумов
         if(!empty($user) && $user->lvl() > 13) {
             if(!empty($_POST['cat_name'])) {
-                $_POST['cat_name'] = Message::Comment($_POST['cat_name']);
+                $_POST['cat_name'] = TextBase::HTMLDestruct($_POST['cat_name']);
                 $db->execute("INSERT INTO forum_partition(name) VALUES ('". $db->safe($_POST['cat_name']) ."')");
                 header("Location: /go/forum/");
                 exit;

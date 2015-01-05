@@ -118,6 +118,7 @@ switch($do) {
             if(!empty($_POST['topic_id']) && !empty($_POST['message']) && $_POST['topic_id'] == $topic_id) {
                 $message = $_POST['message'];
                 $time = time();
+                $message = Message::Comment($message);
                 $message = nl2br($message);
                 $db->execute("INSERT INTO `forum_messages`(`topic_id`, `author_id`, `message`, `date`) VALUES ('$topic_id','" . $user->id() . "','" . $db->safe($message) . "','$time')");
             }
@@ -172,7 +173,10 @@ switch($do) {
 
             if (!empty($_POST['message']) && !empty($_POST['topic_title'])) {
                 $message = $_POST['message'];
+                $message = Message::Comment($message);
+                $message = nl2br($message);
                 $title = $_POST['topic_title'];
+                $title = Message::Comment($title);
                 $time = time();
                 if(!empty($_POST['top'])) {
                     $top = $_POST['top'];
@@ -206,6 +210,7 @@ switch($do) {
     case 'mainadd':
         if(!empty($user) && $user->lvl() > 13) {
             if(!empty($_POST['cat_name'])) {
+                $_POST['cat_name'] = Message::Comment($_POST['cat_name']);
                 $db->execute("INSERT INTO forum_partition(name) VALUES ('". $db->safe($_POST['cat_name']) ."')");
                 header("Location: /go/forum/");
                 exit;
@@ -238,25 +243,29 @@ switch($do) {
         return;
     break;
     case 'edit':
-        $msg_id = intval($_GET['id']);
-        if( !empty($_POST['id']) && !empty($_POST['message']) ) {
-            if( $_POST['id'] == $msg_id) {
-                $message = $_POST['message'];
-                $db->execute("UPDATE forum_messages SET message = '". $db->safe($message) ."'");
-                $link = $db->execute("SELECT topic_id FROM forum_messages WHERE id = '$msg_id'");
-                $link = $db->fetch_assoc($link);
-                header("Location: /go/forum/view/topic/". $link['topic_id'] ."/1");
+        if(!empty($user) && $user->lvl() > 13) {
+            $msg_id = intval($_GET['id']);
+            if( !empty($_POST['id']) && !empty($_POST['message']) ) {
+                if( $_POST['id'] == $msg_id) {
+                    $message = $_POST['message'];
+                    $db->execute("UPDATE forum_messages SET message = '". $db->safe($message) ."'");
+                    $link = $db->execute("SELECT topic_id FROM forum_messages WHERE id = '$msg_id'");
+                    $link = $db->fetch_assoc($link);
+                    header("Location: /go/forum/view/topic/". $link['topic_id'] ."/1");
+                }
             }
+
+            $message_db = $db->execute("SELECT message FROM forum_messages WHERE id = '$msg_id'");
+            $message_db = $db->fetch_assoc($message_db);
+            $message = $message_db['message'];
+
+
+            ob_start();
+            include View::Get('forum_mess_edit.html', $path);
+            $content_main = ob_get_clean();
+            $page = lng('MESSAGE_EDIT');
+        } else {
+            accss_deny();
         }
-
-        $message_db = $db->execute("SELECT message FROM forum_messages WHERE id = '$msg_id'");
-        $message_db = $db->fetch_assoc($message_db);
-        $message = $message_db['message'];
-
-
-        ob_start();
-        include View::Get('forum_mess_edit.html', $path);
-        $content_main = ob_get_clean();
-        $page = lng('MESSAGE_EDIT');
     break;
 }

@@ -9,6 +9,8 @@ else $do = 'main';
 $menu->SetItemActive('forum');
 $path = 'forum/';
 
+loadTool('ajax.php');
+
 if (isset($_GET['page'])) $page = $_GET['page'];
 elseif (isset($_POST['page'])) $page = $_POST['page'];
 else $page = 1;
@@ -174,7 +176,11 @@ switch($do) {
                 $time = time();
                 $message = TextBase::HTMLDestruct($message);
                 $message = nl2br($message);
-                $db->execute("INSERT INTO `forum_messages`(`topic_id`, `author_id`, `message`, `date`) VALUES ('$topic_id','" . $user->id() . "','" . $db->safe($message) . "','$time')");
+                if (CaptchaCheck(0, false)) {
+                    $db->execute("INSERT INTO `forum_messages`(`topic_id`, `author_id`, `message`, `date`) VALUES ('$topic_id','" . $user->id() . "','" . $db->safe($message) . "','$time')");
+                } else {
+                    $info = 'Неверный код проверки';
+                }
             }
         }
 
@@ -241,17 +247,21 @@ switch($do) {
                 $title = $_POST['topic_title'];
                 $title = TextBase::HTMLDestruct($title);
                 $time = time();
-                if(!empty($_POST['top'])) {
-                    $top = $_POST['top'];
-                    $db->execute("INSERT INTO forum_topics(partition_id, author_id, title, date, top) VALUES ('$forum_id','" . $user->id() . "','" . $db->safe($title) . "','$time', '". $db->safe($top) ."')");
-                } else {
+                if(CaptchaCheck(0,false)) {
+                    if(!empty($_POST['top'])) {
+                        $top = $_POST['top'];
+                        $db->execute("INSERT INTO forum_topics(partition_id, author_id, title, date, top) VALUES ('$forum_id','" . $user->id() . "','" . $db->safe($title) . "','$time', '". $db->safe($top) ."')");
+                    } else {
 
-                    $db->execute("INSERT INTO forum_topics(partition_id, author_id, title, date) VALUES ('$forum_id','" . $user->id() . "','" . $db->safe($title) . "','$time')");
+                        $db->execute("INSERT INTO forum_topics(partition_id, author_id, title, date) VALUES ('$forum_id','" . $user->id() . "','" . $db->safe($title) . "','$time')");
+                    }
+                    $forum_ids = mysql_insert_id();
+                    $db->execute("INSERT INTO forum_messages(partition_id, topic_id, author_id, message, date, topmsg) VALUES ('$forum_id', '$forum_ids', '" . $user->id() . "','" . $db->safe($message) . "','$time', 'Y')");
+                    header("Location: /go/forum/view/topic/" . $forum_ids . "/1/");
+                    exit;
+                } else {
+                    $info = 'Неверный код проверки';
                 }
-                $forum_ids = mysql_insert_id();
-                $db->execute("INSERT INTO forum_messages(partition_id, topic_id, author_id, message, date, topmsg) VALUES ('$forum_id', '$forum_ids', '" . $user->id() . "','" . $db->safe($message) . "','$time', 'Y')");
-                header("Location: /go/forum/view/topic/" . $forum_ids . "/1/");
-                exit;
             }
         } else {
             accss_deny();
@@ -310,11 +320,17 @@ switch($do) {
             $msg_id = intval($_GET['id']);
             if( !empty($_POST['id']) && !empty($_POST['message']) ) {
                 if( $_POST['id'] == $msg_id) {
-                    $message = $_POST['message'];
-                    $db->execute("UPDATE forum_messages SET message = '". $db->safe($message) ."'");
-                    $link = $db->execute("SELECT topic_id FROM forum_messages WHERE id = '$msg_id'");
-                    $link = $db->fetch_assoc($link);
-                    header("Location: /go/forum/view/topic/". $link['topic_id'] ."/1");
+                    if(CaptchaCheck(0,false)) {
+                        $message = $_POST['message'];
+                        $message = TextBase::HTMLDestruct($message);
+                        $db->execute("UPDATE forum_messages SET message = '". $db->safe($message) ."'");
+                        $link = $db->execute("SELECT topic_id FROM forum_messages WHERE id = '$msg_id'");
+                        $link = $db->fetch_assoc($link);
+                        header("Location: /go/forum/view/topic/". $link['topic_id'] ."/1");
+                        exit;
+                    } else {
+                        $info = 'Неверный код проверки';
+                    }
                 }
             }
 

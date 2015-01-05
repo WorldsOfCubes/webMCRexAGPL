@@ -137,7 +137,10 @@
 
             <div class="block-line"></div>
             <?php if(!empty($user) && $user->lvl() > 13) {?><label style="float: left;"><input name="top" value="Y" type="checkbox" /> Зафиксировать тему</label><?php } ?>
+            <div class="pull-left" style="margin: 5px 10px;"><span style="color: red;"><?php if(isset($info)) { echo $info;} ?></span></div>
             <div style="float: right;height:24px;margin-bottom:5px">
+                <img id="comment-captcha" src="instruments/captcha/captcha.php?refresh=<?php echo rand(1337,31337) ?>" class="img-thumbnail" alt="Код подтверждения" width="70" height="24" style="margin:0px"/>
+                <input id="antibot" type="text" name="antibot" placeholder="" maxlength="4" class="form-control" style="width: 88px;display:inline; margin-bottom: -10px;" />
                 <input id="comment-button" class="btn btn-default" type="submit" value="Добавить" />
 
             </div>

@@ -268,6 +268,6 @@ function CheckPMMenu(){
 global $db, $user;
 	if (empty($user)) return '';
 	$pm_count = PManager::CheckNew();
-	return ($pm_count['0']!=0)? "&nbsp;({$pm_count})" : '';
+	return ($pm_count!=0)? "&nbsp;({$pm_count})" : '';
 }
 ?>

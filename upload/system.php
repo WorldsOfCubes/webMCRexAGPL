@@ -255,19 +255,18 @@ global $db, $link, $bd_names;
 	return true;					
 }
 
-function CheckPM(){
-global $db, $user;
+function CheckPM() {
 	$pm_count = PManager::CheckNew();
 	ob_start();
 	include View::Get("pm_new_modal.html", "pm/");
 	$message = ob_get_clean();
-	return ($pm_count['0']!=0)? $message : '';
+	return ($pm_count!=0)? $message : '';
 }
 
 function CheckPMMenu(){
-global $db, $user;
+global $user;
 	if (empty($user)) return '';
 	$pm_count = PManager::CheckNew();
-	return ($pm_count['0']!=0)? "&nbsp;({$pm_count['0']})" : '';
+	return ($pm_count!=0)? "&nbsp;({$pm_count})" : '';
 }
 ?>

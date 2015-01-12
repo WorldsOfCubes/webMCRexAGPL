@@ -21,14 +21,15 @@ case 'write':
 		else $message = false;
 	$info = '';
 	if (isset($_POST['submit'])){
-		
-		if (!$topic or !$message or !$name) $info .= lng('INCOMPLETE_FORM');
-		if ((mb_strlen($name, "utf-8") < 4) or (mb_strlen($name, "utf-8") > 32)) $info .= lng('INCORRECT_LEN_RECIVER');
-		if ((mb_strlen($message, "utf-8") > 1024) or (mb_strlen($message, "utf-8") < 5)) $info .= lng('INCORRECT_LEN_MESSAGE');
-		if ((mb_strlen($topic, "utf-8") < 4) or (mb_strlen($topic, "utf-8") > 128)) $info .= lng('INCORRECT_LEN_TOPIC');
+		loadTool("ajax.php");
+		if(!CaptchaCheck(0, false)) $info .= lng('CAPTCHA_FAIL') . ". ";
+		if (!$topic or !$message or !$name) $info .= lng('INCOMPLETE_FORM') . ". ";
+		if ((mb_strlen($name, "utf-8") < 3) or (mb_strlen($name, "utf-8") > 32)) $info .= lng('INCORRECT_LEN_RECIVER') . ". ";
+		if ((mb_strlen($message, "utf-8") > 1024) or (mb_strlen($message, "utf-8") < 5)) $info .= lng('INCORRECT_LEN_MESSAGE') . ". ";
+		if ((mb_strlen($topic, "utf-8") < 4) or (mb_strlen($topic, "utf-8") > 128)) $info .= lng('INCORRECT_LEN_TOPIC') . ". ";
 		$pl = new User($name,  $bd_users['login']);
-		if(!$pl->id()) $info .= lng('INCORRECT_UNAME');
-		if(!(strlen($info) > 0))$db->execute("INSERT INTO `pm` (`date`, `sender`, `reciver`, `topic`, `text`) VALUES (NOW(), '" . $user->name() . "', '" . $pl->name() . "', '$topic', '" . $db->safe($message) . "');");
+		if(!$pl->id()) $info .= lng('INCORRECT_UNAME') . ". ";
+		if(!(strlen($info) > 0)) PManager::SendPM($user->name(), $pl->name(), $topic, $message);
 		if((strlen($info) > 0)) $info = View::Alert($info);
 			else $info = View::Alert(lng('SENT_SUCCESS'), 'success');
 	}

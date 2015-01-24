@@ -331,11 +331,11 @@ Class DB {
 		$this->execute("SET character_set_results='utf8'");
 		$this->execute("SET collation_connection='utf8_general_ci'");
 		if ($log_script and $config['action_log']) ActionLog($log_script);
-		CanAccess(2);
+		if ($die) CanAccess(2);
 		return 0;
 	}
 
-	public function execute($query) {
+	public function execute($query, $log = true) {
 		global $queries;
 		$queries++;
 		switch ($this->method) {
@@ -347,7 +347,7 @@ Class DB {
 				$result = mysqli_query($this->link, $query);
 				break;
 		}
-		if (is_bool($result) and $result == false)
+		if ($log and is_bool($result) and $result == false)
 			vtxtlog('SQLError: ' . $this->error() . ' in query ['.$query.']');
 		return $result;
 	}

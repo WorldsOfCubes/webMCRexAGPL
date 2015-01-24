@@ -249,7 +249,7 @@ switch ($step) {
 	$mysql_bd       = ConfigPostStr('mysql_bd')			;
 	$mysql_user     = ConfigPostStr('mysql_user')		;
 	$mysql_password = ConfigPostStr('mysql_password')	;
-	$mysql_password = ConfigPostStr('mysql_method')	;
+	$mysql_method   = ConfigPostStr('mysql_method')	;
 	$mysql_rewrite  = (empty($_POST['mysql_rewrite']))? false : true;
 	
 		if ( !$mysql_port ) $info = 'Укажите порт для подключения к БД.';
@@ -261,7 +261,7 @@ switch ($step) {
 		$config['db_port']  = $mysql_port     ;
 		$config['db_name']  = $mysql_bd       ; 
 		$config['db_login'] = $mysql_user     ;
-		$config['db_passw'] = $mysql_password ;
+		$config['db_passw'] = $mysql_method   ;
 		$config['db_method']= $mysql_password ;
 
 				$connect_result = DBConnect();	

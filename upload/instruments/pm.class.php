@@ -6,7 +6,7 @@ class PManager {
 		if(!$user) return 0 ;
 		if(!isset($pm_count)) {
 			$pm_count = $db->execute("SELECT COUNT(*) FROM `pm` WHERE `reciver` = '" . $user->name() . "' AND `viewed`=0");
-			$pm_count = mysql_fetch_array($pm_count);
+			$pm_count = $db->fetch_array($pm_count);
 			$pm_count = $pm_count[0];
 		}
 		return $pm_count;

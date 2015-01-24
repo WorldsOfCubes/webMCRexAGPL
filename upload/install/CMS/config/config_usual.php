@@ -27,6 +27,7 @@ $config = array (
 	'db_login'		=> 'root',
 	'db_passw'		=> '',
 	'db_name'		=> 'ex',
+	'db_method'		=> 'mysqli',
 
 /* site constants */
   

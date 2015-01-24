@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=UTF-8');
 error_reporting(E_ALL); 
 
 define('MCR_ROOT', dirname(dirname(__FILE__)).'/');
-
+include MCR_ROOT . "instruments/locale/ru_RU.php";
 $mode = (!empty($_POST['mode']) or !empty($_GET['mode']))? ((empty($_GET['mode']))? $_POST['mode'] : $_GET['mode'] ): $mode = 'usual';
 $step = (!empty($_POST['step']))? (int) $_POST['step'] : $step = 1;
 
@@ -148,11 +148,13 @@ global $site_ways, $create_ways;
 }
 
 function BD( $query ) {
-    return mysql_query( $query );
+	global $db;
+    return $db->execute( $query, false );
 }
 
 function BD_ColumnExist($table, $column) {
-	return (@mysql_query("SELECT `$column` FROM `$table` LIMIT 0, 1"))? true : false;
+	global $db;
+	return ($db->execute("SELECT `$column` FROM `$table` LIMIT 0, 1", false))? true : false;
 }
 
 function Root_url(){
@@ -174,17 +176,9 @@ function Mode_rewrite(){
 }
 
 function DBConnect() {
-global $link,$config;
-
-$link = mysql_connect($config['db_host'].':'.$config['db_port'], $config['db_login'],  $config['db_passw'] );
-if (!$link) return 1;
-if (!mysql_select_db($config['db_name'],$link)) return 2;
-
-BD("set character_set_client = 'utf8'"); 
-BD("set character_set_results = 'utf8'"); 
-BD("set collation_connection = 'utf8_general_ci'");  
-
-return false;
+	global $db;
+	$db = new DB();
+	return $db->connect('install', false);
 }
 
 function ConfigPostStr($postKey){
@@ -255,6 +249,7 @@ switch ($step) {
 	$mysql_bd       = ConfigPostStr('mysql_bd')			;
 	$mysql_user     = ConfigPostStr('mysql_user')		;
 	$mysql_password = ConfigPostStr('mysql_password')	;
+	$mysql_method   = ConfigPostStr('mysql_method')	;
 	$mysql_rewrite  = (empty($_POST['mysql_rewrite']))? false : true;
 	
 		if ( !$mysql_port ) $info = 'Укажите порт для подключения к БД.';
@@ -267,7 +262,8 @@ switch ($step) {
 		$config['db_name']  = $mysql_bd       ; 
 		$config['db_login'] = $mysql_user     ;
 		$config['db_passw'] = $mysql_password ;
-		
+		$config['db_method']= $mysql_method   ;
+
 				$connect_result = DBConnect();	
 			if ($connect_result == 1) $info = 'Данные для подключения к БД не верны. Возможно не правильно указан логин и пароль.';
 		elseif ($connect_result == 2) $info = 'Не найдена база данных с именем '.$mysql_bd;
@@ -277,12 +273,13 @@ switch ($step) {
 			$config['s_root']  = Root_url();
 			
 			if (ConfigManager::SaveMainConfig()) $step = 2;
-			else $info = $save_conf_err;	
+			else $info = $save_conf_err;
 
+			print 1;
 			
-			include './CMS/sql/sql_common.php';				
-			if (!$main_cms) include './CMS/sql/sql_usual.php';	
-			
+			include './CMS/sql/sql_common.php';
+			if (!$main_cms) include './CMS/sql/sql_usual.php';
+//			$step = 2;
 		}		
 	}	
 	break;
@@ -313,9 +310,9 @@ switch ($step) {
 		$result = BD("SELECT `{$bd_users['id']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='$site_user'");
 		
 		if (is_bool($result) and $result == false and $mode!='wocauth') { $info = 'Название таблицы пользователей указано неверно.'; break; }
-		if ($mode!='wocauth' and !mysql_num_rows( $result )) { $info = 'Пользователь с таким именем не найден.'; break; }
+		if ($mode!='wocauth' and !$db->num_rows( $result )) { $info = 'Пользователь с таким именем не найден.'; break; }
 
-		if ($mode!='wocauth') $line = mysql_fetch_array($result, MYSQL_NUM);
+		if ($mode!='wocauth') $line = $db->fetch_array($result, MYSQL_NUM);
 		
 		if ($mode == 'wocauth') {
 
@@ -368,10 +365,8 @@ switch ($step) {
 	}
 	break;
 }
-	
 createWays();	
 checkBaseRequire();
-
 ob_start(); 
 
 if ($info) include View::Get('info.html', $i_sd); 
@@ -380,7 +375,6 @@ if ($cErr) {
 	$info_color = 'alert-error';
 	include View::Get('info.html', $i_sd); 
 }
-
 switch ($step) {
 	case 1: 
 	include View::Get('install_method.html', $i_sd);  
@@ -399,6 +393,10 @@ switch ($step) {
 }
 
 $content_main = ob_get_clean();
-
+ob_start();
 include View::Get('index.html');
-?>
+$content_page = ob_get_clean();
+require_once(MCR_ROOT.'instruments/template.class.php');
+$temp = new TemplateParser();
+$content_page = $temp->parse($content_page);
+echo $content_page;

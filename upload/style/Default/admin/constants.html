@@ -30,6 +30,11 @@
 			  <input type="checkbox" name="comm_revers" value="1" <?php echo ($config['comm_revers'])?'checked="checked"':'' ?>> Комментарии в обратном порядке
 			</label>
 			<span class="help-block">Новые в конец, страница листинга комментариев по умолчанию последняя.</span>
+
+			<label class="checkbox">
+			  <input type="checkbox" name="news_author" value="1" <?php echo ($config['news_author'])?'checked="checked"':'' ?>> Показывать авторов новостей
+			</label>
+			<span class="help-block">Отображать ли ники пользователея, который опубликовал новость.</span>
 					
 			<label class="checkbox">
 			  <input type="checkbox" name="sbuffer" value="1" <?php echo ($config['sbuffer'])?'checked="checked"':'' ?>> Буферизация генерируемых изображений

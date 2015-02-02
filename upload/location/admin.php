@@ -534,6 +534,7 @@ if ($do) {
 				$rewrite = InputGet('rewrite', 'POST', 'bool');
 				$log = InputGet('log', 'POST', 'bool');
 				$comm_revers = InputGet('comm_revers', 'POST', 'bool');
+				$news_author = InputGet('news_author', 'POST', 'bool');
 
 				$theme_id = InputGet('theme_name', 'POST', 'str');
 				$theme_delete = InputGet('theme_delete', 'POST', 'str');
@@ -605,6 +606,7 @@ if ($do) {
 				$config['rewrite'] = $rewrite;
 				$config['log'] = $log;
 				$config['comm_revers'] = $comm_revers;
+				$config['news_author'] = $news_author;
 				$config['offline'] = $site_offline;
 				$config['install'] = $site_install;
 				$config['smtp'] = $smtp;

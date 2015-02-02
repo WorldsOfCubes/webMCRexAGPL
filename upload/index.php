@@ -36,7 +36,7 @@ function InitJS () {
 global $addition_events;
 	
 	$init_js  = "var pbm; var way_style = '".DEF_STYLE_URL."'; var cur_style = '".View::GetURL()."'; var base_url  = '".BASE_URL."';" ;
-	$init_js .= "window.onload = function () { mcr_init(); ". $addition_events ." } " ; 
+	$init_js .= "window.onload = function () { mcr_init(); $('.stt').tooltip(); $('.spp').popover(); ". $addition_events ." } " ;
 	return '<script type="text/javascript">' . $init_js . '</script>' ;
 }
 

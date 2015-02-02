@@ -22,6 +22,9 @@ if(!isset($config['smtp_tls'])){ //Корректная работа после 
 	ConfigManager::SaveMainConfig();
 }
 
+if(!isset($config['news_author'])) $config['news_author'] = false;
+
+
 require(MCR_ROOT.'instruments/auth/'.$config['p_logic'].'.php');
 
 define('MCRAFT', MCR_ROOT.$site_ways['mcraft']);

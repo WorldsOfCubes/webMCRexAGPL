@@ -169,23 +169,25 @@ private $vote;
 
 private $link;
 private $link_work;
+private $user;
 
 private $comments;
 
 	public function __construct($id = false, $style_sd = false ) {
-		global $db, $bd_names;
+		global $db, $bd_names, $bd_users;
 	
 		parent::__construct($id, ItemType::News, $bd_names['news'], $style_sd);
 		if (!$this->id ) return false;
 		
-		$result = $db->execute("SELECT `category_id`, `title`, `discus`, `comments`, `vote` FROM `{$this->db}` WHERE `id`='".$this->id."'");
+		$result = $db->execute("SELECT `{$bd_names['users']}`.`{$bd_users['login']}`, `{$this->db}`.`category_id`, `{$this->db}`.`title`, `{$this->db}`.`discus`, `{$this->db}`.`comments`, `{$this->db}`.`vote` FROM `{$this->db}`LEFT JOIN `{$bd_names['users']}` ON `{$this->db}`.user_id = `{$bd_names['users']}`.`{$bd_users['id']}` WHERE `{$this->db}`.`id`='".$this->id."'");
 		if ( $db->num_rows( $result ) != 1 ) { $this->id = false; return false; }
 		
 		$line = $db->fetch_array( $result, MYSQL_ASSOC );
 		
-		$this->category_id	= (int) $line['category_id'];	
-		$this->title		= $line['title'];	
-		$this->discus		= ((int) $line['discus'] == 1) ? true : false;	
+		$this->category_id	= (int) $line['category_id'];
+		$this->title		= $line['title'];
+		$this->user		= $line[$bd_users['login']];
+		$this->discus		= ((int) $line['discus'] == 1) ? true : false;
 		$this->vote			= ((int) $line['vote'] == 1) ? true : false;
 		
 		$this->link 	 = Rewrite::GetURL(array('news', $this->id), array('', 'id'));
@@ -306,10 +308,10 @@ private $comments;
 		if ($full_text) $line['message_full'] = TextBase::CutWordWrap($line['message_full']);
 		$line['message'] = TextBase::CutWordWrap($line['message']);
 		
-		$text = ( $full_text and TextBase::StringLen($line['message_full']) )? $line['message_full'] : $line['message'];		
-		
+		$text = ( $full_text and TextBase::StringLen($line['message_full']) )? $line['message_full'] : $line['message'];
 		$id    = $this->id;
 		$title = $this->title;
+		$uname  = $this->user;
 		$date  = $line['date'];
 		$time  = $line['time'];
 		

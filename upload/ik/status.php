@@ -1,13 +1,15 @@
 <?php
 
 include('../system.php');
-BDConnect("pay");
+$db = new DB();
+$db->connect('pay');
+
 loadTool('log.class.php');
 function ikSign($params, $ikKey){
-	// удаляем ненужные параметры
+	// СѓРґР°Р»СЏРµРј РЅРµРЅСѓР¶РЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹
 	unset($params['ik_sign']);
 	foreach($params as $key => $value) if(! preg_match("/^ik_/is", $key)) unset($params[$key]);
-	
+
 	ksort($params, SORT_STRING);
 	array_push($params, $ikKey);
 	$sign = implode(":", $params);
@@ -24,21 +26,21 @@ $payStatus = trim($_REQUEST['ik_inv_st']);
 $sign = trim($_REQUEST['ik_sign']);
 $ik_payment_timestamp = trim($_REQUEST['ik_inv_prc']);
 $secretKey = $donate['secret_key'];
-// тестирование
+// С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ
 if($donate['ik_testing'] and ($paySystem == "test_interkassa_test_xts")){
 	$secretKey = $donate['ik_secret_key_test'];
 } elseif($paySystem == "test_interkassa_test_xts") {
-	vtxtlog($ik_payment_timestamp."\t$paymentId не произвел тестовый платеж на $summ руб");
+	vtxtlog($ik_payment_timestamp."\t$paymentId РЅРµ РїСЂРѕРёР·РІРµР» С‚РµСЃС‚РѕРІС‹Р№ РїР»Р°С‚РµР¶ РЅР° $summ СЂСѓР±");
 	exit("OK");
 }
 
-if($kassaId != $donate['shop_id']) exit("Неверный ID кассы");
+if($kassaId != $donate['shop_id']) exit("РќРµРІРµСЂРЅС‹Р№ ID РєР°СЃСЃС‹");
 if($sign != ikSign($_REQUEST, $secretKey)) {
-	Logs::write($ik_payment_timestamp."\tНеверная подпись: $sign $summ ");
+	Logs::write($ik_payment_timestamp."\tРќРµРІРµСЂРЅР°СЏ РїРѕРґРїРёСЃСЊ: $sign $summ ");
 	exit("Bad sign");
 }
-BD("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['bank']}`=`{$bd_money['bank']}`+$summ WHERE `{$bd_money['login']}`='$paymentId'");
+$db->execute("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['bank']}`=`{$bd_money['bank']}`+$summ WHERE `{$bd_money['login']}`='$paymentId'");
 
 
-	vtxtlog($ik_payment_timestamp."\t$paymentId произвел платеж на $summ руб");
+vtxtlog($ik_payment_timestamp."\t$paymentId РїСЂРѕРёР·РІРµР» РїР»Р°С‚РµР¶ РЅР° $summ СЂСѓР±");
 echo "ok";

@@ -324,9 +324,9 @@ switch ($step) {
 				. "`{$bd_users['login']}`,"
 				. "`{$bd_users['ip']}`,"
 				. "`{$bd_users['group']}`,"
-				. "`{$bd_users['ctime']}`"
-				. "VALUES('$user','".GetRealIp()."','3',NOW())"
-				. "ON DUPLICATE KEY UPDATE `{$bd_users['login']}`='$user',`{$bd_users['group']}`='3'");
+				. "`{$bd_users['ctime']}`)"
+				. " VALUES ('$user','".GetRealIp()."','3',NOW())"
+				. " ON DUPLICATE KEY UPDATE `{$bd_users['login']}`='$user',`{$bd_users['group']}`='3'");
 //			if (is_bool($result) and $result == false) { $info = 'Название таблицы c дополнительными данными указано неверно.'; break; }
 		}
 

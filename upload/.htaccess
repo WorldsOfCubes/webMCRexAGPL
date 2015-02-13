@@ -43,7 +43,11 @@ RewriteRule ^go/pm/delete/([^/]+)/?$ index.php?mode=pm&do=delete&id=$1 [L,NE]
 RewriteRule ^go/pm/view/([^/]+)/?$ index.php?mode=pm&do=view&id=$1 [L,NE]
 
 RewriteRule ^go/forum/([^/]+)/?$ index.php?mode=forum&id=$1 [L,NE]
-RewriteRule ^go/forum/topic/([\w]+)/?$ index.php?mode=forum&topic=$1 [L]
+RewriteRule ^go/forum/mainadd/([^/]+)/?$ index.php?mode=forum&do=mainadd&id=$1 [L,NE]
+RewriteRule ^go/forum/view/([^/]+)/([^/]+)/?$ index.php?mode=forum&do=viewforum&id=$1&page=$2 [L,NE]
+RewriteRule ^go/forum/add/([^/]+)/?$ index.php?mode=forum&do=add&id=$1 [L,NE]
+RewriteRule ^go/forum/view/topic/([^/]+)/([^/]+)/?$ index.php?mode=forum&do=viewtopic&id=$1&page=$2 [L,NE]
+RewriteRule ^go/forum/edit/([^/]+)/?$ index.php?mode=forum&do=edit&id=$1 [L,NE]
 
 RewriteRule ^get/([^/]+)/?$ action.php?method=download&file=$1 [L,NE]
 

@@ -1,0 +1,43 @@
+<?php if (!empty($user) && $user->lvl() > 13) { ?><a href="/go/forum/mainadd/add" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">Создать категорию/форум</a><?php } ?>
+<div class="panel panel-default">
+    <table class="table table-bordered">
+        <?php foreach($parents as $prnts) { ?>
+        <tr>
+            <td colspan="3" style="padding: 0px;"><div class="bg-primary" style="width: 100%; height: 100%; padding: 8px;"><h4 style="-webkit-margin-before: 0em; -webkit-margin-after: 0em;"><?php echo $prnts['name'];?></h4></div></td>
+        </tr>
+        <tr>
+            <th>Информация о форуме</th>
+            <th style="text-align: center;">Активность</th>
+            <th style="text-align: center;">Последний ответ</th>
+        </tr>
+        <?php if(count($prnts['forums'])) foreach($prnts['forums'] as $forum) { ?>
+        <tr>
+            <td class="td-main">
+                <a href="/go/forum/view/<?php echo $forum['id']; ?>/1" class="forum-link"></a>
+                <?php echo $forum['name']; ?><span style="display: block; color: #7f8c8d;"><?php echo $forum['description']; ?></span>
+            </td>
+            <td style="text-align: center;" class="td-main">
+                <a href="/go/forum/view/<?php echo $forum['id']; ?>/1" class="forum-link"></a>
+                <?php echo $forum['topic_count'];?> Тем<span style="display: block; color: #7f8c8d;"><?php echo $forum['message_count']; ?> Сообщений</span>
+            </td>
+            <td style="text-align: center;" class="td-main">
+                <a href="/go/forum/view/topic/<?php echo $forum['last_topic_id']; ?>/1" class="forum-link"></a>
+                <?php if(!$forum['last_author']) { ?>
+                    Нет тем
+                <?php } else { ?>
+                От <b><i><?php echo $forum['last_author'];?></i></b>
+                <span style="display: block;">В теме: <?php echo $forum['last_name'];?></span>
+                <span style="display: block; color: #7f8c8d; font-size: 10px;"><?php echo date('d.m.Y, H:i:s', $forum['last_date']);?></span>
+                <?php } ?>
+            </td>
+        </tr>
+        <?php } ?>
+        <?php } ?>
+    </table>
+</div>
+<style>
+    .td-main {position: relative; vertical-align: middle!important;}
+    .forum-link {position: absolute;top:0;left:0;width:100%;height:100%;}
+    tr:hover > td {background: #d9edf7;}
+
+</style>

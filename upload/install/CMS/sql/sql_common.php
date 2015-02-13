@@ -162,9 +162,7 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['data']}` (
   `value` varchar(255) DEFAULT NULL,
   UNIQUE KEY `property` (`property`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-
 /* DEFAULT INFO ADD */
-
 BD("INSERT INTO `{$bd_names['news_categorys']}` (`id`,`name`) VALUES (1,'Без категории');");
 
 BD("INSERT INTO `{$bd_names['data']}` (`property`, `value`) VALUES
@@ -221,8 +219,9 @@ BD("ALTER TABLE `{$bd_names['news']}`	ADD KEY `category_id` (`category_id`),
 BD("ALTER TABLE `{$bd_names['comments']}`	ADD KEY `user_id` (`user_id`),
 											ADD	KEY `item_id` (`item_id`);");
 
-BD("ALTER TABLE `{$bd_names['users']}`	ADD	KEY `group_id` (`{$bd_users['group']}`);");	
-}	
+BD("ALTER TABLE `{$bd_names['users']}`	ADD	KEY `group_id` (`{$bd_users['group']}`);");
+
+}
 
 /* webMCR 2.15 UPDATE */
 if (!BD_ColumnExist($bd_names['users'], $bd_users['deadtry'])) {
@@ -347,3 +346,39 @@ BD("CREATE TABLE IF NOT EXISTS `banlistip` (
 `lastip` tinytext NOT NULL,
 PRIMARY KEY (`name`)
 ) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;");
+
+/*Forum update*/
+BD("CREATE TABLE IF NOT EXISTS `{$bd_names['forum_part']}` (
+`id` int(11) NOT NULL,
+  `parent_id` int(11) DEFAULT '0',
+  `priority` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8");
+
+BD("CREATE TABLE IF NOT EXISTS `{$bd_names['forum_topics']}` (
+  `id` int(11) NOT NULL,
+  `partition_id` int(11) NOT NULL,
+  `author_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `date` int(11) NOT NULL,
+  `top` char(1) NOT NULL DEFAULT 'N',
+  `closed` char(1) NOT NULL DEFAULT 'N'
+) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;");
+
+BD("CREATE TABLE IF NOT EXISTS `{$bd_names['forum_mess']}` (
+  `id` int(11) NOT NULL,
+  `partition_id` int(11) NOT NULL,
+  `topic_id` int(11) NOT NULL,
+  `author_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `date` int(11) NOT NULL,
+  `topmsg` char(1) NOT NULL DEFAULT 'N'
+) ENGINE=MyISAM AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;");
+
+BD("ALTER TABLE `{$bd_names['forum_part']}` ADD PRIMARY KEY (`id`);");
+BD("ALTER TABLE `{$bd_names['forum_topics']}` ADD PRIMARY KEY (`id`);");
+BD("ALTER TABLE `{$bd_names['forum_mess']}` ADD PRIMARY KEY (`id`);");
+BD("ALTER TABLE `{$bd_names['forum_part']}` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1");
+BD("ALTER TABLE `{$bd_names['forum_topics']}` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1");
+BD("ALTER TABLE `{$bd_names['forum_mess']}` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1");

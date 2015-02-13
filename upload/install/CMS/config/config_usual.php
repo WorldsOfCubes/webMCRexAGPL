@@ -14,6 +14,9 @@ $bd_names = array (
 	'servers'			=> 'servers',
 	'action_log'		=> 'action_log',
 	'iconomy' => 'iconomy',
+	'forum_part' => 'forum_partition',
+	'forum_topics' => 'forum_topics',
+	'forum_mess' => 'forum_messages',
 );
 
 $config = array (

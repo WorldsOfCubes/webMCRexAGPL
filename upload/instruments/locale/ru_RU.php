@@ -3,8 +3,8 @@
 $MCR_LANG = array (
 	'KB' => 'Кб',
 	
-	'MALE' => 'Мальчик',
-	'FEMALE' => 'Девочка',
+	'MALE' => 'Парень',
+	'FEMALE' => 'Девушка',
 	
 	//Названия страниц
 	'PAGE_OPTIONS' => 'Настройки аккаунта',
@@ -14,11 +14,19 @@ $MCR_LANG = array (
 	'USER_POFILE' => 'Профиль пользователя',
 	'USERS_LIST' => 'Игроки',
 	'RULES' => 'Правила',
-	'GUIDE' => 'Гайд',
+	'GUIDE' => 'Гайды',
 	'FORUM_TOPIC_NEW' => 'Новая тема...',
 	'FORUM_TOPIC_VIEW' => 'Просмотр темы',
-	'FORUM_CAT_VIEW' => 'Просмотр категории',
+	'FORUM_CAT_VIEW' => 'Список тем',
 	'FORUM_LIST' => 'Список форумов',
+	'FORUM_SETTINGS' => 'Создание каталогов/форумов',
+
+	//Прочие пометки
+	'FORUM_TO_TOPICS' => 'К списку тем',
+	'FORUM_TO_TOPIC' => 'К просмотру темы',
+    'NEWS' => 'Новости',
+    'ACCOUNT' => 'Личный кабинет',
+    'MESSAGE_EDIT' => 'Редактирование сообщения',
 
 	//Для меню
 	'HOME' => 'Главная',
@@ -38,6 +46,7 @@ $MCR_LANG = array (
 	'ADM_FILES' => 'Файлы',
 	'ADM_USER' => 'Аккаунты',
 	'ADM_REQ' => 'Заявки в модераторы',
+	'FORUM_EDIT' => 'Настройки форума',
 	'ADM_REG' => 'Регистрация',
 	'ADM_GROUP' => 'Группы пользователей',
 	'ADM_SITE' => 'Настройки сайта',
@@ -132,7 +141,7 @@ $MCR_LANG = array (
 	
 	'LOGIN' => 'Логин',
 	'PASS' => 'Пароль',
-	'EMAIL' => 'e-mai\'l',
+	'EMAIL' => 'E-mail',
 	'TXT_ID' => 'Текстовый идентификатор',
 	'REPASS' => 'Повтор пароля',
 	'ENTER' => 'Войти',
@@ -171,7 +180,7 @@ $MCR_LANG_TPL = array(
 	'{USERNAME}' => $MCR_LANG['LOGIN'],
 	'{PASS}' => $MCR_LANG['PASS'],
 	'{REPASS}' => $MCR_LANG['REPASS'],
-	'{EMAIL}' => 'e-mail',
+	'{EMAIL}' => 'E-mail',
 	'{ENTER}' => $MCR_LANG['ENTER'],
 	'{RESTOREPASS_LINK}' => 'Забыли пароль?',
 	'{SAVE_SESSION}' => 'Запомнить',

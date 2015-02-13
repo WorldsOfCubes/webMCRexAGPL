@@ -47,7 +47,8 @@ if ($do == 'gettheme')
 if (empty($id))
 	$id = false;
 
-function RatioList($selectid = 1) {
+function RatioList($selectid = 1)
+{
 
 	$html_ratio = '<option value="1" ' . ((1 == $selectid) ? 'selected' : '') . '>64x32 | 22x17</option>';
 
@@ -691,6 +692,159 @@ if ($do) {
 
 				include View::Get('profile_footer.html', $st_subdir . 'profile/');
 			}
+			break;
+
+
+		case 'forum':
+
+
+			if (!empty($_POST['id']) && !empty($_POST['prior'])) {
+
+				$id = intval($_POST['id']);
+
+				$prior = intval($_POST['prior']);
+
+				$db->execute("UPDATE forum_partition SET priority = '$prior' WHERE id = '$id'");
+
+				header("Location: control/forum");
+
+				exit;
+
+			}
+
+
+			if (!empty($_GET['iddel'])) {
+
+				$id = intval($_GET['iddel']);
+
+				$par_id = $db->execute("SELECT id FROM forum_partition WHERE parent_id = '$id'");
+
+				$parid = $db->fetch_assoc($par_id);
+
+				$db->execute("DELETE FROM forum_partition WHERE id = '$id' OR parent_id = '$id'");
+
+				$db->execute("DELETE FROM forum_topics WHERE partition_id = '{$parid['id']}'");
+
+				$db->execute("DELETE FROM forum_messages WHERE partition_id = '{$parid['id']}'");
+
+				header("Location: control/forum");
+
+				exit;
+
+			}
+
+
+			if (!empty($_GET['topid'])) {
+
+				$id = intval($_GET['topid']);
+
+				$db->execute("UPDATE forum_topics SET top = 'Y' WHERE id = '$id'");
+
+				header("Location: control/forum");
+
+				exit;
+
+			}
+
+
+			if (!empty($_GET['downid'])) {
+
+				$id = intval($_GET['downid']);
+
+				$db->execute("UPDATE forum_topics SET top = 'N' WHERE id = '$id'");
+
+				header("Location: control/forum");
+
+				exit;
+
+			}
+
+
+			if (!empty($_GET['lock'])) {
+
+				$id = intval($_GET['lock']);
+
+				$db->execute("UPDATE forum_topics SET closed = 'Y' WHERE id = '$id'");
+
+				header("Location: control/forum");
+
+				exit;
+
+			}
+
+
+			if (!empty($_GET['unlock'])) {
+
+				$id = intval($_GET['unlock']);
+
+				$db->execute("UPDATE forum_topics SET closed = 'N' WHERE id = '$id'");
+
+				header("Location: control/forum");
+
+				exit;
+
+			}
+
+
+			if (!empty($_GET['delid'])) {
+
+				$id = intval($_GET['delid']);
+
+				$db->execute("DELETE FROM forum_messages WHERE topic_ = '$id'");
+
+				$db->execute("DELETE FROM forum_topics WHERE id = '$id'");
+
+				header("Location: control/forum");
+
+				exit;
+
+			}
+
+
+			$forum_partition = $db->execute("SELECT * FROM forum_partition WHERE parent_id = '0'  ORDER BY priority DESC");
+
+
+			while ($fpat = $db->fetch_assoc($forum_partition)) {
+
+				$parents[] = $fpat;
+
+			}
+
+
+			foreach ($parents as $key => &$value) {
+
+				$forums = $db->execute("SELECT * FROM forum_partition WHERE parent_id = '{$value['id']}' ORDER BY priority DESC ");
+				while ($forums_cont = $db->fetch_assoc($forums)) {
+
+					$value['forums'][] = $forums_cont;
+
+				}
+
+			}
+			unset($value);
+
+
+			$forum_topics = $db->execute("SELECT ft.*, acc.login as author_name, fp.name as forum_name, (SELECT MAX(fm.date) FROM forum_messages fm WHERE fm.topic_id = ft.id) as lastdate FROM forum_topics ft, accounts acc, forum_partition fp WHERE ft.author_id = acc.id AND fp.id = ft.partition_id AND ft.top = 'N' ORDER BY lastdate DESC");
+
+			$forum_topics_top = $db->execute("SELECT ft.*, acc.login as author_name, fp.name as forum_name, (SELECT MAX(fm.date) FROM forum_messages fm WHERE fm.topic_id = ft.id) as lastdate FROM forum_topics ft, accounts acc, forum_partition fp WHERE ft.author_id = acc.id AND fp.id = ft.partition_id AND ft.top = 'Y' ORDER BY lastdate DESC");
+
+
+			while ($ftop = $db->fetch_assoc($forum_topics)) {
+
+				$topics[] = $ftop;
+
+			}
+
+
+			while ($ftop_top = $db->fetch_assoc($forum_topics_top)) {
+
+				$topics_top[] = $ftop_top;
+
+			}
+
+
+			include View::Get('forum.html', $st_subdir);
+
 			break;
 		case 'delete_banip':
 			if (!empty($_GET['ip']) and preg_match("/[0-9.]+$/", $_GET['ip'])) {

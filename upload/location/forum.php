@@ -135,7 +135,7 @@ switch($do) {
                 $mess_id = intval($_POST['mess_id']);
                 $auth_id = intval($_POST['mess_auth']);
                 if($user->id() == $auth_id) {
-                    $db->execute("DELETE FROM forum_messages WHERE id = '$mess_id'");
+                    $db->execute("DELETE FROM forum_messages WHERE id = '$mess_id' AND author_id = '$auth_id'");
                 } else {
                     accss_deny();
                 }
@@ -175,9 +175,10 @@ switch($do) {
                 $message = $_POST['message'];
                 $time = time();
                 $message = TextBase::HTMLDestruct($message);
-                $message = nl2br($message);
                 if (CaptchaCheck(0, false)) {
-                    $db->execute("INSERT INTO `forum_messages`(`topic_id`, `author_id`, `message`, `date`) VALUES ('$topic_id','" . $user->id() . "','" . $db->safe($message) . "','$time')");
+                    $selectpart = $db->execute("SELECT partition_id FROM forum_topics WHERE id = '{$_POST['topic_id']}'");
+                    $selectpart = $db->fetch_assoc($selectpart);
+                    $db->execute("INSERT INTO `forum_messages`(`topic_id`, `author_id`, `message`, `date`, `partition_id`) VALUES ('$topic_id','" . $user->id() . "','" . $db->safe($message) . "','$time', '{$selectpart['partition_id']}')");
                 } else {
                     $info = 'Неверный код проверки';
                 }
@@ -187,13 +188,13 @@ switch($do) {
         $topic_info = $db->execute("SELECT ft.*, fp.name as part_name, fp.id as part_id FROM forum_topics ft, forum_partition fp WHERE ft.id = '$topic_id' AND fp.id = ft.partition_id");
         $topic_info = $db->fetch_assoc($topic_info);
 
-        $forum_topic = $db->execute("SELECT fm.*, acc.login as author_name FROM forum_messages fm, accounts acc WHERE fm.topic_id = '$topic_id' AND acc.id = fm.author_id LIMIT $first, $num_by_page");
+        $forum_topic = $db->execute("SELECT fm.*, acc.login as author_name FROM forum_messages fm, accounts acc WHERE fm.topic_id = '$topic_id' AND acc.id = fm.author_id ORDER BY fm.date ASC LIMIT $first, $num_by_page");
 
         while($ftopic = $db->fetch_assoc($forum_topic)) {
             $ftopic_msg[] = $ftopic;
         }
 
-        $topmsg = $db->execute("SELECT * FROM forum_messages WHERE topic_id = '$topic_id' AND topmsg = 'Y'");
+        $topmsg = $db->execute("SELECT fm.*, acc.login as author_name FROM forum_messages fm, accounts acc WHERE fm.topic_id = '$topic_id' AND fm.topmsg = 'Y' AND acc.id = fm.author_id");
         while($tpmsg = $db->fetch_assoc($topmsg)) {
             $tpmess[]= $tpmsg;
         }
@@ -243,7 +244,6 @@ switch($do) {
             if (!empty($_POST['message']) && !empty($_POST['topic_title'])) {
                 $message = $_POST['message'];
                 $message = TextBase::HTMLDestruct($message);
-                $message = nl2br($message);
                 $title = $_POST['topic_title'];
                 $title = TextBase::HTMLDestruct($title);
                 $time = time();
@@ -323,7 +323,7 @@ switch($do) {
                     if(CaptchaCheck(0,false)) {
                         $message = $_POST['message'];
                         $message = TextBase::HTMLDestruct($message);
-                        $db->execute("UPDATE forum_messages SET message = '". $db->safe($message) ."'");
+                        $db->execute("UPDATE forum_messages SET message = '". $db->safe($message) ."' WHERE id = '$msg_id'");
                         $link = $db->execute("SELECT topic_id FROM forum_messages WHERE id = '$msg_id'");
                         $link = $db->fetch_assoc($link);
                         header("Location: /go/forum/view/topic/". $link['topic_id'] ."/1");
@@ -333,7 +333,6 @@ switch($do) {
                     }
                 }
             }
-
             $message_db = $db->execute("SELECT message FROM forum_messages WHERE id = '$msg_id'");
             $message_db = $db->fetch_assoc($message_db);
             $message = $message_db['message'];

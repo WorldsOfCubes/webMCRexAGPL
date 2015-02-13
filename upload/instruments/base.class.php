@@ -1,5 +1,5 @@
 <?php
-define('MCR', '2.0b31');
+define('MCR', '2.0b33');
 define('EX', '2'); 
 define('PROGNAME', 'webMCRex '.MCR);
 define('FEEDBACK', '<a href="http://WorldsOfCubes.NET/go/webmcrex">'.PROGNAME.'</a> &copy; 2013-2014 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.NET">WoC Team</a>');
@@ -296,60 +296,158 @@ Class TextBase {
 
 Class DB {
 	private $link;
+	private $method;
 
-	public function connect ($log_script) {
-	global $config;
-		$this->link = mysql_connect($config['db_host'].':'.$config['db_port'], $config['db_login'], $config['db_passw']) or die(lng('BD_ERROR').lng('BD_AUTH_FAIL'));
-		mysql_select_db($config['db_name'], $this->link) or die(lng('BD_ERROR').'. '.lng('BD_NOT_EXIST').' ('.$config['db_name'].')');
+	public function connect ($log_script, $die = true) {
+		global $config;
+		$this->method = (isset($config['db_method']))? $config['db_method']: 'mysql'; //правит совместимость со старыми версиями. Если были поставлены моды для webMCR 2.35 и более ранних версий, то ничего не упадет.
+		switch ($this->method) {
+			case 'mysql':
+				$this->link = mysql_connect($config['db_host'].':'.$config['db_port'], $config['db_login'], $config['db_passw']);
+				if (!$this->link) {
+					if ($die) die(lng('BD_ERROR') . lng('BD_AUTH_FAIL'));
+					else return 1;
+				}
+				if (!mysql_select_db($config['db_name'],$this->link)) {
+					if ($die) die(lng('BD_ERROR') . lng('BD_AUTH_FAIL'));
+					else return 2;
+				}
+				break;
+			case 'mysqli':
+			default:
+				$this->link = mysqli_connect($config['db_host'].':'.$config['db_port'], $config['db_login'], $config['db_passw']);
+
+				if (!$this->link) {
+					if ($die) die(lng('BD_ERROR') . lng('BD_AUTH_FAIL'));
+						else return 1;
+				}
+				if (!mysqli_select_db($this->link,$config['db_name'])) {
+					if ($die) die(lng('BD_ERROR') . lng('BD_AUTH_FAIL'));
+						else return 2;
+				}
+		}
 		$this->execute("SET time_zone = '".date('P')."'");
 		$this->execute("SET character_set_client='utf8'");
 		$this->execute("SET character_set_results='utf8'");
 		$this->execute("SET collation_connection='utf8_general_ci'");
 		if ($log_script and $config['action_log']) ActionLog($log_script);
-		CanAccess(2);
+		if ($die) CanAccess(2);
+		return 0;
 	}
 
-	public function execute($query) {
+	public function execute($query, $log = true) {
 		global $queries;
 		$queries++;
-		$result = mysql_query( $query, $this->link );
-		if (is_bool($result) and $result == false)
+		switch ($this->method) {
+			case 'mysql':
+				$result = mysql_query( $query, $this->link );
+				break;
+			case 'mysqli':
+			default:
+				$result = mysqli_query($this->link, $query);
+				break;
+		}
+		if ($log and is_bool($result) and $result == false)
 			vtxtlog('SQLError: ' . $this->error() . ' in query ['.$query.']');
 		return $result;
 	}
 
 	public function safe($text)
 	{
-		return mysql_real_escape_string($text, $this->link);
+		switch ($this->method) {
+			case 'mysql':
+				return mysql_real_escape_string($text, $this->link);
+				break;
+			case 'mysqli':
+			default:
+				return mysqli_real_escape_string($this->link, $text);
+				break;
+		}
 
 	}
 
 	public function fetch_assoc ($query) {
-		return mysql_fetch_assoc($query);
+		switch ($this->method) {
+			case 'mysql':
+				return mysql_fetch_assoc($query);
+				break;
+			case 'mysqli':
+			default:
+				return mysqli_fetch_assoc($query);
+				break;
+		}
 	}
 
 	public function fetch_array ($query) {
-		return mysql_fetch_array($query);
+		switch ($this->method) {
+			case 'mysql':
+				return mysql_fetch_array($query);
+				break;
+			case 'mysqli':
+			default:
+				return mysqli_fetch_array($query);
+				break;
+		}
 	}
 
 	public function num_rows ($query) {
-		return mysql_num_rows($query);
+		switch ($this->method) {
+			case 'mysql':
+				return mysql_num_rows($query);
+				break;
+			case 'mysqli':
+			default:
+				return mysqli_num_rows($query);
+				break;
+		}
 	}
 
 	public function error () {
-		return mysql_error($this->link);
+		switch ($this->method) {
+			case 'mysql':
+				return mysql_error($this->link);
+				break;
+			case 'mysqli':
+			default:
+				return mysqli_error($this->link);
+				break;
+		}
 	}
 
 	public function insert_id () {
-		return mysql_insert_id($this->link);
+		switch ($this->method) {
+			case 'mysql':
+				return mysql_insert_id($this->link);
+				break;
+			case 'mysqli':
+			default:
+				return mysqli_insert_id($this->link);
+				break;
+		}
 	}
 
 	public function affected_rows () {
-		return mysql_affected_rows($this->link);
+		switch ($this->method) {
+			case 'mysql':
+				return mysql_affected_rows($this->link);
+				break;
+			case 'mysqli':
+			default:
+				return mysqli_affected_rows($this->link);
+				break;
+		}
 	}
 
 	public function fetch_row ($query) {
-		return mysql_fetch_row($query);
+		switch ($this->method) {
+			case 'mysql':
+				return mysql_fetch_row($query);
+				break;
+			case 'mysqli':
+			default:
+				return mysqli_fetch_row($query);
+				break;
+		}
 	}
 }
 

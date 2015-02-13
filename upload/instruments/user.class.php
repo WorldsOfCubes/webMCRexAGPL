@@ -71,6 +71,7 @@ Class User {
 					   `{$this->db}`.`warn_lvl`,
 					   `{$bd_names['iconomy']}`.`{$bd_money['bank']}`,
 					   `{$bd_names['iconomy']}`.`{$bd_money['money']}`,
+					   `{$bd_names['groups']}`.`lvl`,
 					   `{$bd_names['groups']}`.`name` AS group_name
 					   FROM `{$this->db}`
 					   LEFT JOIN `{$bd_names['iconomy']}` ON `{$bd_names['iconomy']}`.`{$bd_money['login']}`=`{$this->db}`.`{$bd_users['login']}`
@@ -90,7 +91,7 @@ Class User {
 		$this->pass_set = ($config['p_logic'] == 'wocauth') ? (boolean)$line['pass_set'] : true;
 		$this->group = (int)$line[$bd_users['group']];
 		$this->group_name = $line['group_name'];
-		$this->lvl = $this->getPermission('lvl');
+		$this->lvl = $line['lvl'];
 		$this->warn_lvl = (int)$line['warn_lvl'];
 
 		$this->tmp = $line[$bd_users['tmp']];

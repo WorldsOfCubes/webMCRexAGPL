@@ -803,26 +803,26 @@ if ($do) {
 
 			$forum_partition = $db->execute("SELECT * FROM forum_partition WHERE parent_id = '0'  ORDER BY priority DESC");
 
+			if ($db->num_rows($forum_partition)) {
+				while ($fpat = $db->fetch_assoc($forum_partition)) {
 
-			while ($fpat = $db->fetch_assoc($forum_partition)) {
-
-				$parents[] = $fpat;
-
-			}
-
-
-			foreach ($parents as $key => &$value) {
-
-				$forums = $db->execute("SELECT * FROM forum_partition WHERE parent_id = '{$value['id']}' ORDER BY priority DESC ");
-				while ($forums_cont = $db->fetch_assoc($forums)) {
-
-					$value['forums'][] = $forums_cont;
+					$parents[] = $fpat;
 
 				}
 
-			}
-			unset($value);
 
+				foreach ($parents as $key => &$value) {
+
+					$forums = $db->execute("SELECT * FROM forum_partition WHERE parent_id = '{$value['id']}' ORDER BY priority DESC ");
+					while ($forums_cont = $db->fetch_assoc($forums)) {
+
+						$value['forums'][] = $forums_cont;
+
+					}
+
+				}
+				unset($value);
+			}
 
 			$forum_topics = $db->execute("SELECT ft.*, acc.login as author_name, fp.name as forum_name, (SELECT MAX(fm.date) FROM forum_messages fm WHERE fm.topic_id = ft.id) as lastdate FROM forum_topics ft, accounts acc, forum_partition fp WHERE ft.author_id = acc.id AND fp.id = ft.partition_id AND ft.top = 'N' ORDER BY lastdate DESC");
 

@@ -1,6 +1,6 @@
-<?php 
+<?php
 $bd_names_PREFIX = 'mcr_'; /* Not used by default. Will add for usual table names if install with main CMS */
-  
+
 $bd_names = array (
 	'users' 			=> 'accounts',
 	'likes'				=> 'likes',
@@ -10,14 +10,17 @@ $bd_names = array (
 	'groups'			=> 'groups',
 	'data'				=> 'data',
 	'files'				=> 'files',
-	'comments'			=> 'comments', 
+	'comments'			=> 'comments',
 	'servers'			=> 'servers',
 	'action_log'		=> 'action_log',
 	'iconomy' => 'iconomy',
+	'forum_part' => 'forum_partition',
+	'forum_topics' => 'forum_topics',
+	'forum_mess' => 'forum_messages',
 );
 
 $config = array (
-/* MySQL connection */
+	/* MySQL connection */
 
 	'db_host'		=> 'localhost',
 	'db_port'		=> 3306,
@@ -25,42 +28,42 @@ $config = array (
 	'db_passw'		=> '',
 	'db_name'		=> 'ex',
 
-/* site constants */
-  
+	/* site constants */
+
 	's_name'		=> 'webMCRex WoCAuth',
 	's_about'		=> 'Личный кабинет для онлайн сервера игры Minecraft',
 	's_keywords'	=> 'сервер игра онлайн NC22 STRELOK2022 WorldsOfCubes Minecraft',
-	's_dpage'		=> 'news', 
-	's_theme'		=> View::def_theme,	
+	's_dpage'		=> 'news',
+	's_theme'		=> View::def_theme,
 	's_root'		=> '/',
-  
+
 	'news_by_page'	=> 5,
-	'comm_by_page'	=> 5,  
+	'comm_by_page'	=> 5,
 	'comm_revers'	=> false,
 	'game_news'		=> 1,
-  
-/* system */
 
-	'timezone'	=> 'Asia/Moscow',
-	'sbuffer'	=> true,  
-	'skinposer'	=> false, 
+	/* system */
+
+	'timezone'	=> 'Europe/Moscow',
+	'sbuffer'	=> true,
+	'skinposer'	=> false,
 	'rewrite'	=> true,
-	'log'		=> false,
+	'log'		=> true,
 	'offline'	=> false,
-  
+
 	'install' => true,
 	'p_logic' => 'wocauth',
-	
+
 	'smtp'		=> false,
-	
-/* action limiter */
+
+	/* action limiter */
 
 	'action_log'	=> false,	// log connect with BD times and detect some fast users, possible bots
 	'action_max'	=> 10,		// maximum exec php script's times ( server monitorings, page refresh, profile edit and etc.)
 	'action_time'	=> 1,		// per seconds. 
 	'action_ban'	=> 60,		// ban time in seconds
 );
-  
+
 $site_ways = array (
 	'style'		=> 'style/',
 	'mcraft'	=> 'MineCraft/',
@@ -70,23 +73,23 @@ $site_ways = array (
 );
 
 $bd_money = array ( /* iconomy or some other plugin, just check names */
-  'login' => 'username',
-  'money' => 'balance',
-  'bank' => 'realmoney',
+	'login' => 'username',
+	'money' => 'balance',
+	'bank' => 'realmoney',
 );
 
 $bd_users = array (
-  'login' => 'login',
-  'id' => 'id',
-  'password' => 'password',
-  'ip' => 'ip',
-  'email' => 'email',
-  'female' => 'female',
-  'group' => 'group',
-  'deadtry' => 'deadtry',
-  'tmp' => 'tmp',
-  'session' => 'session',
-  'server' => 'server',
-  'clientToken'   => 'clientToken',
-  'ctime' => 'create_time',
+	'login' => 'login',
+	'id' => 'id',
+	'password' => 'password',
+	'ip' => 'ip',
+	'email' => 'email',
+	'female' => 'female',
+	'group' => 'group',
+	'deadtry' => 'deadtry',
+	'tmp' => 'tmp',
+	'session' => 'session',
+	'server' => 'server',
+	'clientToken'   => 'clientToken',
+	'ctime' => 'create_time',
 );

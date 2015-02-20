@@ -256,7 +256,7 @@ switch($do) {
                         $db->execute("INSERT INTO forum_topics(partition_id, author_id, title, date) VALUES ('$forum_id','" . $user->id() . "','" . $db->safe($title) . "','$time')");
                     }
                     $forum_ids = mysql_insert_id();
-                    $db->execute("INSERT INTO forum_messages(partition_id, topic_id, author_id, message, date, topmsg) VALUES ('$forum_id', '$forum_ids', '" . $user->id() . "','" . $db->safe($message) . "','$time', 'Y')");
+                    $db->execute("INSERT INTO forum_messages(partition_id, topic_id, author_id, message, date, topmsg) VALUES ('$forum_id', '" . $db->insert_id() . "', '" . $user->id() . "','" . $db->safe($message) . "','$time', 'Y')");
                     header("Location: /go/forum/view/topic/" . $forum_ids . "/1/");
                     exit;
                 } else {

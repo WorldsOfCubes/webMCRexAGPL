@@ -179,6 +179,7 @@ switch($do) {
                     $selectpart = $db->execute("SELECT partition_id FROM forum_topics WHERE id = '{$_POST['topic_id']}'");
                     $selectpart = $db->fetch_assoc($selectpart);
                     $db->execute("INSERT INTO `forum_messages`(`topic_id`, `author_id`, `message`, `date`, `partition_id`) VALUES ('$topic_id','" . $user->id() . "','" . $db->safe($message) . "','$time', '{$selectpart['partition_id']}')");
+                    $db->execute("UPDATE `{$bd_names['users']}` SET `posts`=`posts`+1 WHERE `{$bd_users['login']}`='".$user->name()."'");
                 } else {
                     $info = 'Неверный код проверки';
                 }
@@ -257,6 +258,7 @@ switch($do) {
                     }
                     $forum_ids = mysql_insert_id();
                     $db->execute("INSERT INTO forum_messages(partition_id, topic_id, author_id, message, date, topmsg) VALUES ('$forum_id', '" . $db->insert_id() . "', '" . $user->id() . "','" . $db->safe($message) . "','$time', 'Y')");
+                    $db->execute("UPDATE `{$bd_names['users']}` SET `topics`=`topics`+1 WHERE `{$bd_users['login']}`='".$user->name()."'");
                     header("Location: /go/forum/view/topic/" . $forum_ids . "/1/");
                     exit;
                 } else {

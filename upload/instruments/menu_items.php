@@ -12,16 +12,6 @@ $menu_items = array (
 			'active' => false,
 			'inner_html' => '',
 		),
-		'forum' => 
-		array (
-			'name' => '<i class="glyphicon glyphicon-comment"></i> ' . lng('FORUM'),
-			'url' => Rewrite::GetURL('forum'),
-			'parent_id' => -1,
-			'lvl' => -1,
-			'permission' => -1,
-			'active' => false,
-			'inner_html' => '',
-		),
 		'admin' => 
 		array (
 			'name' => '<i class="glyphicon glyphicon-wrench"></i> ' . lng('ADM'),
@@ -162,9 +152,19 @@ $menu_items = array (
 			'active' => false,
 			'inner_html' => '',
 		),
+		'forum' =>
+			array (
+				'name' => '<i class="glyphicon glyphicon-comment"></i> ' . lng('FORUM'),
+				'url' => Rewrite::GetURL('forum'),
+				'parent_id' => -1,
+				'lvl' => -1,
+				'permission' => -1,
+				'active' => false,
+				'inner_html' => '',
+			),
 		'info' => 
 		array (
-			'name' => '<i class="glyphicon glyphicon-info-circle"></i> ' . lng('INFO'),
+			'name' => '<i class="fa fa-info-circle"></i> ' . lng('INFO'),
 			'url' => Rewrite::GetURL('guide'),
 			'parent_id' => -1,
 			'lvl' => -1,
@@ -277,7 +277,7 @@ $menu_items = array (
 		),
 		'exit' => 
 		array (
-			'name' => '<i class="glyphicon glyphicon-log-out"></i> ' . lng('EXIT'),
+			'name' => '<i class="fa fa-sign-out"></i> ' . lng('EXIT'),
 			'url' => 'login.php?out=1',
 			'parent_id' => -1,
 			'lvl' => 1,

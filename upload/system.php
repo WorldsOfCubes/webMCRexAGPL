@@ -142,26 +142,14 @@ function randString( $pass_len = 50 ) {
 }
 
 function sqlConfigGet($type){
-global $db, $bd_names;
-	
-	if (!in_array($type, ItemType::$SQLConfigVar)) return false;
-	
-    $result = $db->execute("SELECT `value` FROM `{$bd_names['data']}` WHERE `property`='". $db->safe($type) ."'");
-
-    if ( $db->num_rows( $result ) != 1 ) return false;
-	
-	$line = $db->fetch_array($result, MYSQL_NUM );
-	
-	return $line[0];		
+global $db;
+	return $db->sql_config_get($type);
 }
 
 function sqlConfigSet($type, $value) {
-global $db, $bd_names;
+global $db;
 
-	if (!in_array($type, ItemType::$SQLConfigVar)) return false;
-	
-	$result = $db->execute("INSERT INTO `{$bd_names['data']}` (value,property) VALUES ('". $db->safe($value) ."','". $db->safe($type) ."') ON DUPLICATE KEY UPDATE `value`='". $db->safe($value) ."'");
-	return true;
+	return $db->sql_config_set($type, $value);
 }
 
 function GetRealIp(){

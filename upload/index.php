@@ -146,7 +146,7 @@ $parser = new TemplateParser();
 $html_page = $parser->parse($html_page);
 echo $html_page;
 //echo (memory_get_usage() - $mem_start)/1024 . "КБ памяти использовано";
-//echo "\nSQL запросов сделано: ".$queries."\r\n";
+echo "\nSQL запросов сделано: ".$queries."\r\n";
 $timer_end = microtime();
 $timer_total = round($timer_end-$timer_start, 7);
 //echo "\nСтраница сгенерирована за ".$timer_total." секунд\r\n";

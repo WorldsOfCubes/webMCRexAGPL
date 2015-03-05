@@ -1,8 +1,8 @@
 <?php
-define('MCR', '2.0b38');
+define('MCR', '2.0b39');
 define('EX', '2'); 
 define('PROGNAME', 'webMCRex '.MCR);
-define('FEEDBACK', '<a href="http://WorldsOfCubes.NET/go/webmcrex">'.PROGNAME.'</a> &copy; 2013-2015 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.NET">WoC Team</a>');
+define('FEEDBACK', '<a href="http://webmcrex.com">'.PROGNAME.'</a> &copy; 2013-2015 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.NET">WoC Team</a>');
 
 class Item extends View {
 
@@ -297,9 +297,10 @@ Class TextBase {
 Class DB {
 	private $link;
 	private $method;
+	private $sql_config;
 
 	public function connect ($log_script, $die = true) {
-		global $config;
+		global $config, $bd_names;
 		$this->method = (isset($config['db_method']))? $config['db_method']: 'mysql'; //правит совместимость со старыми версиями. Если были поставлены моды для webMCR 2.35 и более ранних версий, то ничего не упадет.
 		switch ($this->method) {
 			case 'mysql':
@@ -330,9 +331,26 @@ Class DB {
 		$this->execute("SET character_set_client='utf8'");
 		$this->execute("SET character_set_results='utf8'");
 		$this->execute("SET collation_connection='utf8_general_ci'");
+		$query = $this->execute("SELECT * FROM `{$bd_names['data']}`");
+		while ($temp_cfg = $this->fetch_array($query))
+			$this->sql_config[$temp_cfg['property']] = $temp_cfg['value'];
 		if ($log_script and $config['action_log']) ActionLog($log_script);
 		if ($die) CanAccess(2);
 		return 0;
+	}
+
+	public function sql_config_get($property) {
+		if (!in_array($property, ItemType::$SQLConfigVar)) return false;
+		return $this->sql_config[$property];
+	}
+
+	public function sql_config_set($property, $value) {
+		global $db, $bd_names;
+
+		if (!in_array($property, ItemType::$SQLConfigVar)) return false;
+		$result = $db->execute("INSERT INTO `{$bd_names['data']}` (value,property) VALUES ('". $db->safe($value) ."','". $db->safe($property) ."') ON DUPLICATE KEY UPDATE `value`='". $db->safe($value) ."'");
+		if ($result) $this->sql_config[$property] = $value;
+		return ($result)? true : false;
 	}
 
 	public function execute($query, $log = true) {

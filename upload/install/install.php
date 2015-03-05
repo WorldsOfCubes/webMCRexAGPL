@@ -233,7 +233,7 @@ global $config,$bd_names,$bd_users,$info;
 			. "`{$bd_users['email']}`"
 			. ",`{$bd_users['female']}`) "
 			. "VALUES('$site_user','".MCRAuth::createPass($site_password)."','".GetRealIp()."',3,NOW(),'$site_email',$site_gender)"
-			. "ON DUPLICATE KEY UPDATE `{$bd_users['group']}`='3',`{$bd_users['password']}`='$site_repassword',`{$bd_users['email']}`='$site_email'");
+			. "ON DUPLICATE KEY UPDATE `{$bd_users['group']}`='3',`{$bd_users['password']}`='".MCRAuth::createPass($site_password)."',`{$bd_users['email']}`='$site_email'");
 		$result = true;
 	}
 

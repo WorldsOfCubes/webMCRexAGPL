@@ -152,16 +152,6 @@ $menu_items = array (
 			'active' => false,
 			'inner_html' => '',
 		),
-		'forum' =>
-			array (
-				'name' => '<i class="glyphicon glyphicon-comment"></i> ' . lng('FORUM'),
-				'url' => Rewrite::GetURL('forum'),
-				'parent_id' => -1,
-				'lvl' => -1,
-				'permission' => -1,
-				'active' => false,
-				'inner_html' => '',
-			),
 		'info' => 
 		array (
 			'name' => '<i class="fa fa-info-circle"></i> ' . lng('INFO'),
@@ -222,6 +212,16 @@ $menu_items = array (
 			'active' => false,
 			'inner_html' => '',
 		),
+		'forum' =>
+			array (
+				'name' => '<i class="glyphicon glyphicon-comment"></i> ' . lng('FORUM'),
+				'url' => Rewrite::GetURL('forum'),
+				'parent_id' => -1,
+				'lvl' => -1,
+				'permission' => -1,
+				'active' => false,
+				'inner_html' => '',
+			),
 	),
 	1 => 
 	array (

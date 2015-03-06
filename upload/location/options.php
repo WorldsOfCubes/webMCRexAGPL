@@ -209,7 +209,7 @@ if ($user->group() != 4 ) {
 	$profile_inputs = ob_get_clean();
 
 	ob_start();
-	if ($user->lvl() >= 6) include View::Get('profile_prefix.html', $prefix);
+	if ($user->getPermission('change_prefix')) include View::Get('profile_prefix.html', $prefix);
 		else include View::Get('profile_prefix_buy.html', $prefix);
 	$profile_prefix = ob_get_clean();
 	ob_start();

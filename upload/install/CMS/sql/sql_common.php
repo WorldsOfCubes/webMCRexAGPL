@@ -129,6 +129,7 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['groups']}` (
   `change_pass` tinyint(1) NOT NULL DEFAULT 0,
   `change_login` tinyint(1) NOT NULL DEFAULT 0,
   `change_cloak` tinyint(1) NOT NULL DEFAULT 0,
+  `change_prefix` tinyint(1) NOT NULL DEFAULT 0,
   `add_news` tinyint(1) NOT NULL DEFAULT 0,
   `add_comm` tinyint(1) NOT NULL DEFAULT 0,
   `adm_comm` tinyint(1) NOT NULL DEFAULT 0,
@@ -271,6 +272,12 @@ BD("ALTER TABLE `{$bd_names['groups']}` ADD `pex_name` char(64) NOT NULL;");
 BD("ALTER TABLE `{$bd_names['users']}` ADD `warn_lvl` smallint(10) DEFAULT 0;");
 BD("ALTER TABLE `{$bd_names['users']}` ADD `topics` smallint(10) DEFAULT 0;");
 BD("ALTER TABLE `{$bd_names['users']}` ADD `posts` smallint(10) DEFAULT 0;");
+}
+
+/* webMCRex 2.0b40 UPDATE */
+if (!BD_ColumnExist($bd_names['groups'], 'change_prefix')) {
+
+BD("ALTER TABLE `{$bd_names['groups']}` ADD `change_prefix` SMALLINT(1) NOT NULL DEFAULT 0;");
 }
 
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['action_log']}` (

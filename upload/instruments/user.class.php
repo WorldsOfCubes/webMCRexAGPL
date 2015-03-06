@@ -83,13 +83,14 @@ Class User {
 			return false;
 		}
 
-		$this->permissions = null;
-
 		$line = $db->fetch_array($result, MYSQL_ASSOC);
 		$this->id = (int)$line[$bd_users['id']];
 		$this->name = $line[$bd_users['login']];
 		$this->pass_set = ($config['p_logic'] == 'wocauth') ? (boolean)$line['pass_set'] : true;
 		$this->group = (int)$line[$bd_users['group']];
+		$group_temp = new Group($this->group);
+		$this->permissions = $group_temp->GetAllPermissions();
+
 		$this->group_name = $line['group_name'];
 		$this->lvl = $line['lvl'];
 		$this->warn_lvl = (int)$line['warn_lvl'];
@@ -627,13 +628,12 @@ Class User {
 		$db->execute("UPDATE {$this->db} SET `{$bd_users['group']}`='" . $db->safe($newgroup) . "' WHERE `{$bd_users['id']}`='" . $this->id . "'");
 
 		$group = new Group($newgroup);
+		$this->permissions = $group->GetAllPermissions();
 		$db->execute("DELETE FROM `permissions_inheritance` WHERE child='" . $this->name . "';");
 		$db->execute("INSERT INTO permissions_inheritance (id, child, parent, type, world) VALUES (NULL, '" . $this->name . "', '" . $db->safe($group->GetPexName()) . "', '1', NULL)");
 
 		$this->group_name = $result['name'];
 		$this->group = $newgroup;
-		$this->permissions['lvl'] = null;
-		$this->lvl = $this->getPermission('lvl');
 
 		return true;
 	}
@@ -927,7 +927,7 @@ Class Group extends TextBase {
 
 		$this->db = $bd_names['groups'];
 		$this->id = (int)$id;
-		$this->pavailable = array("change_skin", "change_pass", "lvl", "change_cloak", "change_login", "max_fsize", "max_ratio", "add_news", "adm_comm", "add_comm");
+		$this->pavailable = array("change_skin", "change_pass", "lvl", "change_cloak", "change_prefix", "change_login", "max_fsize", "max_ratio", "add_news", "adm_comm", "add_comm");
 
 		if (isset($bd_names['sp_skins'])) {
 
@@ -965,8 +965,7 @@ Class Group extends TextBase {
 		$sql_names = null;
 
 		for ($i = 0; $i < sizeof($this->pavailable); $i++)
-			if ($sql_names)
-				$sql_names .= ",`{$this->pavailable[$i]}`"; else            $sql_names .= "`{$this->pavailable[$i]}`";
+			($sql_names)? $sql_names .= ",`{$this->pavailable[$i]}`" : $sql_names .= "`{$this->pavailable[$i]}`";
 
 		$result = $db->execute("SELECT $sql_names FROM `{$this->db}` WHERE `id`='" . $this->id . "'");
 		return $db->fetch_array($result, MYSQL_ASSOC);

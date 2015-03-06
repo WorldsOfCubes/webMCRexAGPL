@@ -275,7 +275,6 @@ switch ($step) {
 			if (ConfigManager::SaveMainConfig()) $step = 2;
 			else $info = $save_conf_err;
 
-			print 1;
 			
 			include './CMS/sql/sql_common.php';
 			if (!$main_cms) include './CMS/sql/sql_usual.php';

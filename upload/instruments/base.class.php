@@ -332,7 +332,7 @@ Class DB {
 		$this->execute("SET character_set_results='utf8'");
 		$this->execute("SET collation_connection='utf8_general_ci'");
 		$query = $this->execute("SELECT * FROM `{$bd_names['data']}`");
-		while ($temp_cfg = $this->fetch_array($query))
+		while ($query and $temp_cfg = $this->fetch_array($query))
 			$this->sql_config[$temp_cfg['property']] = $temp_cfg['value'];
 		if ($log_script and $config['action_log']) ActionLog($log_script);
 		if ($die) CanAccess(2);

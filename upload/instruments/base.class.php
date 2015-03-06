@@ -316,7 +316,7 @@ Class DB {
 				break;
 			case 'mysqli':
 			default:
-				$this->link = mysqli_connect($config['db_host'].':'.$config['db_port'], $config['db_login'], $config['db_passw']);
+				$this->link = mysqli_connect($config['db_host'], $config['db_login'], $config['db_passw'], '', $config['db_port']);
 
 				if (!$this->link) {
 					if ($die) die(lng('BD_ERROR') . lng('BD_AUTH_FAIL'));
@@ -365,7 +365,7 @@ Class DB {
 				$result = mysqli_query($this->link, $query);
 				break;
 		}
-		if ($log and is_bool($result) and $result == false)
+		if ($log and is_bool($result) and $result == false and function_exists("vtxtlog"))
 			vtxtlog('SQLError: ' . $this->error() . ' in query ['.$query.']');
 		return $result;
 	}

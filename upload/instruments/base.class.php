@@ -1,8 +1,167 @@
 <?php
-define('MCR', '2.0b40');
+define('MCR', '2.0b41');
 define('EX', '2'); 
 define('PROGNAME', 'webMCRex '.MCR);
 define('FEEDBACK', '<a href="http://webmcrex.com">'.PROGNAME.'</a> &copy; 2013-2015 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.NET">WoC Team</a>');
+
+/* Base class for objects with Show method */
+
+Class View {
+
+	const def_theme = 'Default';
+
+	protected $st_subdir;
+
+	public function View($style_subdir = '') {
+
+		if (!$style_subdir) $style_subdir = false;
+
+		$this->st_subdir = $style_subdir;
+	}
+
+// ToDo transform output
+
+	public function ShowPage($way, $out = false) {
+		global $config;
+
+		ob_start();
+
+		include self::Get($way, $this->st_subdir);
+
+		return ob_get_clean();
+	}
+
+	public static function ShowStaticPage($way, $st_subdir = false, $out = false ) {
+		global $config;
+
+		ob_start();
+
+		include self::Get($way, $st_subdir);
+
+		return ob_get_clean();
+	}
+
+	protected function GetView($way) {
+
+		return self::Get($way, $this->st_subdir);
+	}
+
+	public static function GetURL($way = false) {
+		global $config;
+
+		$current_st_url = empty($config['s_theme'])? DEF_STYLE_URL : STYLE_URL . $config['s_theme'] . '/' ;
+
+		if (!$way) return $current_st_url;
+
+		if ( DEF_STYLE_URL === $current_st_url ) return DEF_STYLE_URL . $way;
+		else return (file_exists( MCR_STYLE . $config['s_theme'] . '/'  . $way )? $current_st_url : DEF_STYLE_URL) . $way;
+	}
+
+	public static function URL($way = false) {
+
+		echo self::GetURL($way);
+	}
+
+	public static function Alert($text, $state = 'danger') {
+
+		return "<div class=\"alert alert-$state\">$text</div>";
+	}
+
+	public static function Get($way, $base_ = false) {
+		global $config;
+
+		$base = ($base_)? $base_ : '' ;
+
+		if ( empty ($config['s_theme']) ) $theme_dir = '';
+		else {
+
+			if ( $config['s_theme'] === self::def_theme ) return MCR_STYLE. self::def_theme . '/' . $base . $way;
+
+			$theme_dir = $config['s_theme'] . '/' ;
+		}
+
+		return MCR_STYLE.((file_exists(MCR_STYLE.$theme_dir.$base.$way))? $theme_dir : self::def_theme . '/'). $base . $way;
+	}
+
+	public function arrowsGenerator($link, $curpage, $itemsnum, $per_page, $prefix = false) {
+		global $config;
+		if ( !$prefix ) { // Default arrows style
+
+			$prefix = 'common';
+			$st_subdir = 'other/';
+
+		} else
+
+			$st_subdir = $this->st_subdir;
+
+		$numoflists = ceil($itemsnum / $per_page);
+		$arrows = '';
+
+		if ($numoflists > 10 and $curpage > 4) {
+
+			$showliststart = $curpage - 4;
+			$showlistend   = $curpage + 5;
+
+			if ($showliststart < 1) $showliststart = 1;
+
+			if ($showlistend > $numoflists) $showlistend = $numoflists;
+
+		} else {
+
+			$showliststart = 1;
+
+			if ($numoflists < 10 ) $showlistend = $numoflists;
+			else                   $showlistend = 10;
+
+		}
+
+		ob_start();
+
+		if ($numoflists>1) {
+
+			if ($curpage > 1) {
+
+				if ($curpage-4 > 1) { $var = 1; $text = '<<'; include $this->Get($prefix.'_list_item.html', $st_subdir); }
+
+				$var = $curpage-1; $text = '<'; include $this->Get($prefix.'_list_item.html', $st_subdir);
+
+			}
+
+			for ($i=$showliststart;$i<=$showlistend;$i++) {
+
+				$var  = $i;
+				$text = $i;
+
+				if ($i == $curpage) include $this->Get($prefix.'_list_item_selected.html', $st_subdir);
+				else			    include $this->Get($prefix.'_list_item.html', $st_subdir);
+
+			}
+
+			if ($curpage < $numoflists) {
+
+				$var = $curpage+1; $text = '>'; include $this->Get($prefix.'_list_item.html', $st_subdir);
+
+				if ($curpage+5 < $numoflists) { $var = $numoflists; $text = '>>'; include $this->Get($prefix.'_list_item.html', $st_subdir); }
+
+			}
+
+		}
+
+		$arrows = ob_get_clean();
+
+		if ( $arrows ) {
+
+			ob_start();
+
+			include $this->Get($prefix.'_list.html', $st_subdir);
+
+			return ob_get_clean();
+		}
+
+		return '';
+	}
+
+}
 
 class Item extends View {
 
@@ -86,165 +245,6 @@ class ItemType {  // stock types
 		'smtp-port',
 		'smtp-hello',		
 	);
-}
-
-/* Base class for objects with Show method */
-
-Class View {
-
-	const def_theme = 'Default';
-	
-	protected $st_subdir;	
-	
-	public function View($style_subdir = '') {
-	
-		if (!$style_subdir) $style_subdir = false;
-		
-		$this->st_subdir = $style_subdir;		
-	}
-	
-// ToDo transform output
-	
-	public function ShowPage($way, $out = false) {
-	global $config;
-	
-		ob_start(); 
-		
-		include self::Get($way, $this->st_subdir);
-
-		return ob_get_clean(); 	
-	}
-
-	public static function ShowStaticPage($way, $st_subdir = false, $out = false ) {
-	global $config;
-		
-		ob_start(); 
-		
-		include self::Get($way, $st_subdir);
-		
-		return ob_get_clean(); 	
-	}	
-	
-	protected function GetView($way) {
-	
-		return self::Get($way, $this->st_subdir);		
-	}
-	
-	public static function GetURL($way = false) {
-	global $config;
-		
-		$current_st_url = empty($config['s_theme'])? DEF_STYLE_URL : STYLE_URL . $config['s_theme'] . '/' ;
-		
-		if (!$way) return $current_st_url;
-		
-		if ( DEF_STYLE_URL === $current_st_url ) return DEF_STYLE_URL . $way;
-		else return (file_exists( MCR_STYLE . $config['s_theme'] . '/'  . $way )? $current_st_url : DEF_STYLE_URL) . $way;	
-	}
-	
-	public static function URL($way = false) {
-		
-		echo self::GetURL($way);
-	}
-	
-	public static function Alert($text, $state = 'danger') {
-		
-		return "<div class=\"alert alert-$state\">$text</div>";
-	}
-	
-	public static function Get($way, $base_ = false) {
-	global $config;
-
-		$base = ($base_)? $base_ : '' ;	
-		
-		if ( empty ($config['s_theme']) ) $theme_dir = '';	
-		else {
-			
-			if ( $config['s_theme'] === self::def_theme ) return MCR_STYLE. self::def_theme . '/' . $base . $way;
-			
-			$theme_dir = $config['s_theme'] . '/' ;			
-		}	
-		
-		return MCR_STYLE.((file_exists(MCR_STYLE.$theme_dir.$base.$way))? $theme_dir : self::def_theme . '/'). $base . $way;
-	} 
-
-    public function arrowsGenerator($link, $curpage, $itemsnum, $per_page, $prefix = false) { 
-		global $config;
-		if ( !$prefix ) { // Default arrows style
-			
-			$prefix = 'common';
-			$st_subdir = 'other/'; 
-			
-		} else 
-		
-			$st_subdir = $this->st_subdir;
-	
-	  $numoflists = ceil($itemsnum / $per_page);
-	  $arrows = '';
-	  
-			  if ($numoflists > 10 and $curpage > 4) {
-			  
-				$showliststart = $curpage - 4;
-				$showlistend   = $curpage + 5;
-				
-				if ($showliststart < 1) $showliststart = 1;
-				
-				if ($showlistend > $numoflists) $showlistend = $numoflists;
-				
-			  } else {
-			  
-				$showliststart = 1;
-				
-				if ($numoflists < 10 ) $showlistend = $numoflists;
-				else                   $showlistend = 10;
-			  
-			  }
-			 
-			 ob_start();	
-			 
-			  if ($numoflists>1) {
-	 
-				if ($curpage > 1) { 
-				
-				  if ($curpage-4 > 1) { $var = 1; $text = '<<'; include $this->Get($prefix.'_list_item.html', $st_subdir); } 
-				  
-				  $var = $curpage-1; $text = '<'; include $this->Get($prefix.'_list_item.html', $st_subdir); 
-				
-				}
-				
-					for ($i=$showliststart;$i<=$showlistend;$i++) {
-					
-					$var  = $i; 
-					$text = $i;
-					
-						if ($i == $curpage) include $this->Get($prefix.'_list_item_selected.html', $st_subdir); 
-						else			    include $this->Get($prefix.'_list_item.html', $st_subdir); 
-						
-					}
-					
-				if ($curpage < $numoflists) { 
-				
-				  $var = $curpage+1; $text = '>'; include $this->Get($prefix.'_list_item.html', $st_subdir); 
-				  
-				  if ($curpage+5 < $numoflists) { $var = $numoflists; $text = '>>'; include $this->Get($prefix.'_list_item.html', $st_subdir); } 
-				
-				}
-				
-			  }
-			  
-		$arrows = ob_get_clean();
-		
-		if ( $arrows ) {
-		
-			ob_start(); 
-			  
-			include $this->Get($prefix.'_list.html', $st_subdir);	
-			  
-			return ob_get_clean();			  
-		}
-		
-	return '';
-	}
-	
 }
 
 Class TextBase {

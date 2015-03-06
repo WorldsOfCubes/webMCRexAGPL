@@ -316,7 +316,7 @@ switch ($method) {
 
     break;
 	case 'prefix':
-		if($user->lvl()<6 ) {
+		if(!$user->getPermission('change_prefix')) {
 			aExit(4, "Ух ты какой хакер! Я не ожидал тебя тут увидеть :P" );
 		}
 		$pref = $_POST['pref'];

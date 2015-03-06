@@ -1,5 +1,5 @@
 <?php
-define('MCR', '2.0b39');
+define('MCR', '2.0b40');
 define('EX', '2'); 
 define('PROGNAME', 'webMCRex '.MCR);
 define('FEEDBACK', '<a href="http://webmcrex.com">'.PROGNAME.'</a> &copy; 2013-2015 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.NET">WoC Team</a>');

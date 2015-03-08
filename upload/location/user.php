@@ -5,6 +5,7 @@ $menu->SetItemActive('users');
 
 $num_by_page = 25;
 
+loadTool('profile.class.php');
 if (isset($_GET['do'])) $do = $_GET['do'];
 	elseif (isset($_POST['do'])) $do = $_POST['do'];
 	else $do = 1;

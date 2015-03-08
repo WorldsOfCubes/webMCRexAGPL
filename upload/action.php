@@ -319,7 +319,9 @@ switch ($method) {
 		if(!$user->getPermission('change_prefix')) {
 			aExit(4, "Ух ты какой хакер! Я не ожидал тебя тут увидеть :P" );
 		}
-		$pref = $_POST['pref'];
+		if(!$_POST['textcolor'] or !$_POST['nickcolor'] or !$_POST['prefcolor'])
+			aExit(1, "Ошибка отправки формы!");
+		$pref = (isset($_POST['pref']) && strlen($_POST['pref']))? $_POST['pref']: false;
 		$textcolor = $_POST['textcolor'];
 		$nickcolor = $_POST['nickcolor'];
 		$prefcolor = $_POST['prefcolor'];
@@ -327,7 +329,7 @@ switch ($method) {
 		$f = '] ';
 		$g = '';
 
-        if (!$pref)$fineprefix = $db->safe($prefcolor . $d . $pref . $f . $nickcolor);
+        if ($pref)$fineprefix = $db->safe($prefcolor . $d . $pref . $f . $nickcolor);
             else $fineprefix = $db->safe($nickcolor);
 		$suffix = $db->safe($textcolor . $g);
 		$db->execute("DELETE FROM permissions_entity WHERE name='".$user->name()."'");

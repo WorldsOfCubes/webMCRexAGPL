@@ -31,7 +31,7 @@
 					<div class="col-md-4" align="right"><b>
 						Последний вход в игру:</b></div>
 					<div class="col-md-8">
-						<? echo ($pl->gameLoginLast()) ? View::TimeFrom($pl->gameLoginLast()) : 'Никогда'; ?></div>
+						<? echo ($pl->gameLoginLast()) ? Profile::TimeFrom($pl->gameLoginLast()) : 'Никогда'; ?></div>
 				</div><div class="row">
 				</div><div class="row">
 					<div class="col-md-4" align="right"><b>

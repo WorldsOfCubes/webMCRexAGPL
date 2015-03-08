@@ -382,7 +382,7 @@ function UpdatePrefix(admTrg) {
 
 	var event = function (response) {
 
-		GetById('prefix-update').reset()
+//		GetById('prefix-update').reset()
 		
         GetById('main-error-text').className = 'alert alert-danger'		
 		

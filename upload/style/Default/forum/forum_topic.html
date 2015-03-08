@@ -17,7 +17,7 @@
     <div id="comment-byid-<?php echo $topmess['id']; ?>"><div class="comment-container bg-info" style="width: 100%; margin-bottom: 0px; margin-left: 0px;">
         <div class="comment-avatar" style="vertical-align: top; display: inline-block; position: relative;">
             <a href="#" onclick="LoadProfile('customp',<?php echo $topmess['author_id'];?>); return false">
-                <img class="img-polaroid" src="skin.php?m=<?php echo $ftops['author_id'];?>" width="64" height="64" alt="Пользователь <?php echo $topmess['author_name'];?>">
+                <img class="img-polaroid" src="skin.php?mini=<?php echo $topmess['author_id'];?>" width="64" height="64" alt="Пользователь <?php echo $topmess['author_name'];?>">
             </a>
         </div>
         <div class="comment-self">
@@ -38,7 +38,7 @@
             </div>
             <?php }?>
             <div class="comment-info"> <b><a href="#"  id="author-cbyid-<?php echo $topmess['id']; ?>" onclick="LoadProfile('customp',<?php echo $topmess['author_id'];?>); return false" class="player-name"><?php echo $topmess['author_name'];?></a></b> пишет:</div>
-            <div class="comment-text" id="text-cbyid-<?php echo $topmess['id']; ?>"><?php echo Message::BBDecode($topmess['message']);?><b></b></div>
+            <div class="comment-text" id="text-cbyid-<?php echo $topmess['id']; ?>"><?php echo nl2br(/*htmlspecialchars(*/Message::BBDecode($topmess['message']/*)*/));?><b></b></div>
             <div class="comment-addition">&nbsp;<?php echo date("d.m.Y | H:i", $topmess['date']);?></div>
         </div>
         <div style="display: inline-block; vertical-align: top; padding-left: 4px; padding-top: 4px; text-align: right;">
@@ -53,7 +53,7 @@
     <div id="comment-byid-<?php echo $ftops['id']; ?>"><div class="comment-container" style="width: 100%; border-top: 5px solid #428bca; margin-left: 0px;">
         <div class="comment-avatar" style="vertical-align: top; display: inline-block; position: relative;">
             <a href="#" onclick="LoadProfile('customp',<?php echo $ftops['author_id'];?>); return false">
-                <img class="img-polaroid" src="skin.php?m=<?php echo $ftops['author_id'];?>" width="64" height="64" alt="Пользователь <?php echo $ftops['author_name'];?>">
+                <img class="img-polaroid" src="skin.php?mini=<?php echo $ftops['author_id'];?>" width="64" height="64" alt="Пользователь <?php echo $ftops['author_name'];?>">
             </a>
         </div>
         <div class="comment-self">
@@ -90,7 +90,7 @@
             </div>
             <?php }?>
             <div class="comment-info"> <b><a href="#"  id="author-cbyid-<?php echo $ftops['id']; ?>" onclick="LoadProfile('customp',<?php echo $ftops['author_id'];?>); return false" class="player-name"><?php echo $ftops['author_name'];?></a></b> пишет:</div>
-            <div class="comment-text" id="text-cbyid-<?php echo $ftops['id']; ?>"><?php echo Message::BBDecode($ftops['message']);?><b></b></div>
+            <div class="comment-text" id="text-cbyid-<?php echo $ftops['id']; ?>"><?php echo nl2br(/*htmlspecialchars(*/Message::BBDecode($ftops['message'])/*)*/);?><b></b></div>
             <div class="comment-addition">&nbsp;<?php echo date("d.m.Y | H:i", $ftops['date']);?></div>
         </div>
         <div style="display: inline-block; vertical-align: top; padding-left: 4px; padding-top: 4px; text-align: right;">

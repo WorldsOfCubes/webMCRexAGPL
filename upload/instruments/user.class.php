@@ -353,8 +353,7 @@ Class User {
 		if (!$bd_names['iconomy'])
 			return false;
 
-		$num = (int)$num;
-		if (!$num)
+		if (!(int) $num)
 			return $this->getMoney();
 
 		$new_pl_money = $this->getMoney() + $num;
@@ -373,8 +372,7 @@ Class User {
 		if (!$bd_names['iconomy'])
 			return false;
 
-		$num = (int)$num;
-		if (!$num)
+		if (!(int) $num)
 			return $this->getEcon();
 
 		$new_pl_emoney = $this->getEcon() + $num;

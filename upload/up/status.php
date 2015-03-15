@@ -25,5 +25,5 @@ $user = new User($params['account']);
 if(!$user->id()) exit ('{"error": {"message": "Пользователь не найден"}}');
 $user->addMoney($params['orderSum']);
 
-vtxtlog($ik_payment_timestamp."\t$paymentId произвел платеж на $summ руб");
+//vtxtlog($ik_payment_timestamp."\t$paymentId произвел платеж на $summ руб");
 echo '{"result": {"message":"Запрос успешно обработан"}}';

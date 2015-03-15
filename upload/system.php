@@ -21,6 +21,16 @@ if(!isset($config['smtp_tls'])){ //Корректная работа после 
 	$config['smtp_tls'] = false;
 	ConfigManager::SaveMainConfig();
 }
+if(!isset($config['ik_secret_key']) and isset($config['secret_key'])){ //Корректная работа после введения поддержки TLS/SSL
+	loadTool("alist.class.php");
+	$config['ik_secret_key'] = $config['secret_key'];
+	ConfigManager::SaveMainConfig();
+}
+if(!isset($config['ik_shop_id']) and isset($config['shop_id'])){ //Корректная работа после введения поддержки TLS/SSL
+	loadTool("alist.class.php");
+	$config['ik_shop_id'] = $config['shop_id'];
+	ConfigManager::SaveMainConfig();
+}
 
 if(!isset($config['news_author'])) $config['news_author'] = false;
 

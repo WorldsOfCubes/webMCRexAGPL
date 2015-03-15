@@ -57,31 +57,60 @@
 
 				<?php echo $profile_donate_btns ?>
 				<center>
-					<div class="btn-group"><a href="#donate" role="button" class="btn btn-default" data-toggle="modal">Пополнить
-						счет</a>
+					<div class="btn-group">
+						<a href="#donate-ik" role="button" class="btn btn-default" data-toggle="modal">Пополнить счет [InterKassa]</a>
+						<a href="#donate-up" role="button" class="btn btn-default" data-toggle="modal">Пополнить счет [UnitPay]</a>
 						<a href="#exchange" role="button" class="btn btn-default" data-toggle="modal">Обмен валют</a>
 					</div>
 				</center>
-				<div class="modal fade" id="donate" tabindex="-1" role="dialog" aria-labelledby="donateLabel"
+				<div class="modal fade" id="donate-ik" tabindex="-1" role="dialog" aria-labelledby="donateikLabel"
 				     aria-hidden="true" style="display:none">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-								<h3 id="donateLabel">Укажите сумму</h3>
+								<h3 id="donateikLabel">Укажите сумму</h3>
 							</div>
 							<form target="_blank" name="payment" method="post" action="https://sci.interkassa.com/"
 							      enctype="utf-8">
 								<div class="modal-body">
-									<input type="hidden" name="ik_co_id" value="<?php echo ($donate['shop_id']); ?>">
+									<input type="hidden" name="ik_co_id" value="<?php echo ($donate['ik_shop_id']); ?>">
 
 									<div class="input-group">
-										<input class="input-medium form-control" id="appendedPrependedInput" size="16"
+										<input class="input-medium form-control" size="16"
 										       type="number" name="ik_am"><span class="input-group-addon">р.</span>
 									</div>
 									<input type="hidden" name="ik_pm_no" value="<?php echo ($user->name()); ?>">
 									<input type="hidden" name="ik_desc" value="Пополнение счета игрока"><br>
 									Внимание! Вы сейчас будете перенаправлены на сайт платежной системы Interkassa. Если
+									деньги не пришли, обратитесь к онлайн-консультанту этой системы.
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-default" data-dismiss="modal">Отмена</button>
+									<button class="btn btn-default btn-primary" value="Пополнить">Пополнить</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="modal fade" id="donate-up" tabindex="-1" role="dialog" aria-labelledby="donateupLabel"
+				     aria-hidden="true" style="display:none">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h3 id="donateupLabel">Укажите сумму</h3>
+							</div>
+							<form target="_blank" name="payment" method="get" action="https://unitpay.ru/pay/<?php echo ($donate['up_shop_id']); ?>"
+							      enctype="utf-8">
+								<div class="modal-body">
+									<div class="input-group">
+										<input class="input-medium form-control" size="16"
+										       type="number" name="sum"><span class="input-group-addon">р.</span>
+									</div>
+									<input type="hidden" name="account" value="<?php echo ($user->name()); ?>">
+									<input type="hidden" name="desc" value="Пополнение счета игрока"><br>
+									Внимание! Вы сейчас будете перенаправлены на сайт платежной системы UnitPay. Если
 									деньги не пришли, обратитесь к онлайн-консультанту этой системы.
 								</div>
 								<div class="modal-footer">

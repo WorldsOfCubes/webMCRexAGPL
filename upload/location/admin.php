@@ -659,10 +659,12 @@ if ($do) {
 				$donate['vote'] = InputGet('new_vote', 'POST', 'int');
 				$donate['vote10'] = InputGet('new_vote10', 'POST', 'int');
 				$donate['vote_real'] = InputGet('new_vote_real', 'POST', 'bool');
-				$donate['shop_id'] = InputGet('new_shop_id', 'POST', 'str');
 				$donate['vote_mct_secret_key'] = InputGet('new_vote_mct_secret_key', 'POST', 'str');
 				$donate['vote_topcraft_secret_key'] = InputGet('new_vote_topcraft_secret_key', 'POST', 'str');
-				$donate['secret_key'] = InputGet('new_secret_key', 'POST', 'str');
+				$donate['up_shop_id'] = InputGet('new_up_shop_id', 'POST', 'str');
+				$donate['up_secret_key'] = InputGet('new_up_secret_key', 'POST', 'str');
+				$donate['ik_shop_id'] = InputGet('new_ik_shop_id', 'POST', 'str');
+				$donate['ik_secret_key'] = InputGet('new_ik_secret_key', 'POST', 'str');
 				$donate['ik_secret_key_test'] = InputGet('new_ik_secret_key_test', 'POST', 'str');
 				$donate['ik_testing'] = InputGet('new_ik_testing', 'POST', 'bool');
 

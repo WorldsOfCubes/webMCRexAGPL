@@ -45,12 +45,12 @@
 
 		<label>Секретный ключ MCTop:</label>
 		<span class="help-block">Можно узать в личном кабинете MCTop.</span>
-		<input type="password" class="form-control" style="width:300px" name="new_vote_mct_secret_key"
+		<input type="text" class="form-control" style="width:300px" name="new_vote_mct_secret_key"
 		       value="<?php echo $donate['vote_mct_secret_key'] ?>">
 			   
 		<label>Секретный ключ TopCraft:</label>
 		<span class="help-block">Можно узать в настройках проекта на TopCraft.</span>
-		<input type="password" class="form-control" style="width:300px" name="new_vote_topcraft_secret_key"
+		<input type="text" class="form-control" style="width:300px" name="new_vote_topcraft_secret_key"
 		       value="<?php echo $donate['vote_topcraft_secret_key'] ?>">
 
 		<label class="checkbox">
@@ -59,19 +59,29 @@
 		</label>
 		<span class="help-block">В противном случае он идет на игровую валюту.</span>
 
+		<label>Публичный ключ магазина в UnitPay:</label>
+		<span class="help-block">Можно узать в настройках проекта UnitPay.</span>
+		<input type="text" class="form-control" style="width:300px" name="new_up_shop_id"
+		       value="<?php echo $donate['up_shop_id'] ?>">
+
+		<label>Секретный ключ UnitPay:</label>
+		<span class="help-block">Можно узать в настройках проекта UnitPay.</span>
+		<input type="text" class="form-control" style="width:300px" name="new_up_secret_key"
+		       value="<?php echo $donate['ik_secret_key'] ?>">
+
 		<label>ID магазина в Интеркассе:</label>
 		<span class="help-block">Можно узать в личном кабинете Интеркассы.</span>
-		<input type="text" class="form-control" style="width:300px" name="new_shop_id"
-		       value="<?php echo $donate['shop_id'] ?>">
+		<input type="text" class="form-control" style="width:300px" name="new_ik_shop_id"
+		       value="<?php echo $donate['ik_shop_id'] ?>">
 
 		<label>Секретный ключ Интеркассы:</label>
 		<span class="help-block">Можно узать в личном кабинете Интеркассы.</span>
-		<input type="password" class="form-control" style="width:300px" name="new_secret_key"
-		       value="<?php echo $donate['secret_key'] ?>">
+		<input type="text" class="form-control" style="width:300px" name="new_ik_secret_key"
+		       value="<?php echo $donate['ik_secret_key'] ?>">
 
 		<label>Секретный ключ Интеркассы для тестовых платежей:</label>
 		<span class="help-block">Можно узать в личном кабинете Интеркассы.</span>
-		<input type="password" class="form-control" style="width:300px" name="new_ik_secret_key_test"
+		<input type="text" class="form-control" style="width:300px" name="new_ik_secret_key_test"
 		       value="<?php echo $donate['ik_secret_key_test'] ?>">
 
 		<label class="checkbox">

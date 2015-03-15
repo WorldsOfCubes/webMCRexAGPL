@@ -4,18 +4,18 @@ include('../system.php');
 $db = new DB();
 $db->connect('pay');
 loadTool('log.class.php');
+loadTool('user.class.php');
 function upSign($params, $upKey){
 	// удаляем ненужные параметры
 	unset($params['sign']);
 
-	ksort($params, SORT_STRING);
 	array_push($params, $upKey);
+	ksort($params, SORT_STRING);
 	$sign = implode(":", $params);
-	$sign = md5($sign, true);
+	$sign = md5($sign);
 	return $sign;
 }
 $params = $_GET['params'];
-
 if($params['sign'] != upSign($params, $donate['up_secret_key'])) {
 	Logs::write($params['date']."\tНеверная подпись: {$params['account']} {$params['orderSum']} ");
 	exit('{"error": {"message": "Неверная подпись"}}');

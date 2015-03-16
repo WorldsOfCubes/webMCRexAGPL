@@ -16,7 +16,7 @@ if($params['sign'] != upSign($params, $donate['up_secret_key'])) {
 	exit('{"error": {"message": "Неверная подпись"}}');
 }
 if($_GET['method'] != 'pay') exit ('{"result": {"message":"Запрос успешно обработан"}}');
-$user = new User($params['account']);
+$user = new User($params['account'], $bd_users['login']);
 if(!$user->id()) exit ('{"error": {"message": "Пользователь не найден"}}');
 $user->addMoney($params['orderSum']);
 

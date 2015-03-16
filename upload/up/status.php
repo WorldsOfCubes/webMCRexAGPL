@@ -6,14 +6,9 @@ $db->connect('pay');
 loadTool('log.class.php');
 loadTool('user.class.php');
 function upSign($params, $upKey){
-	// удаляем ненужные параметры
+	ksort($params);
 	unset($params['sign']);
-
-	array_push($params, $upKey);
-	ksort($params, SORT_STRING);
-	$sign = implode(":", $params);
-	$sign = md5($sign);
-	return $sign;
+	return md5(join(null, $params).$upKey);
 }
 $params = $_GET['params'];
 if($params['sign'] != upSign($params, $donate['up_secret_key'])) {

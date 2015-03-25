@@ -470,3 +470,43 @@ a.news-link:hover{
     border-top: 1px solid rgba(255, 255, 255, 0);
     border-bottom: 1px solid rgba(255, 255, 255, 0);
 }
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: -webkit-gradient(linear,left top,right top,color-stop(0%,rgba(0, 0, 64, 0.07)),color-stop(100%,rgba(229, 229, 229, 0.07)));
+    background: -webkit-linear-gradient(left,rgba(202, 202, 202, 0.07) 0%,rgba(0, 0, 64, 0.07) 100%);
+    -webkit-box-shadow: 0 0 1px 0 rgba(0, 0, 0, .15) inset,0 1px 0 0 white;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, .15) inset,0 1px 0 0 white;
+    background-color: #e2e2e2;
+}
+::-webkit-scrollbar-thumb {
+    background: -webkit-gradient(linear,left top,right top,color-stop(0%,rgba(0, 0, 64, 0.05)),color-stop(100%,rgba(221, 221, 221, 0.05)));
+    background: -webkit-linear-gradient(left,rgba(233, 233, 233, 0.05) 0%,rgba(0, 0, 64, 0.05) 100%);
+    -webkit-box-shadow: 0 2px 1px 0 rgba(0, 0, 0, .05);
+    box-shadow: 0 2px 1px 0 rgba(0, 0, 0, .05);
+    background-color: #1B9AD5;
+}
+::-webkit-scrollbar-thumb:hover{
+    background:#2FA4DA;
+}
+::-webkit-scrollbar-thumb:active{
+    background:#2398CE;
+}
+::-webkit-scrollbar,
+::-webkit-scrollbar-thumb {
+    overflow: visible;
+    -webkit-transition-property:all;
+    -webkit-transition-duration: 0.25s, 0.25s;
+    -webkit-transition-timing-function: linear, ease-in;
+    -moz-transition-property:all;
+    -moz-transition-duration:0.25s;
+    -moz-transition-timing-function: linear, ease-in;
+    -o-transition-property:all;
+    -o-transition-duration:0.25s;
+    -o-transition-timing-function: linear, ease-in;
+}
+::-webkit-scrollbar-button {
+    height: 0;
+    display: block;
+    background-color: transparent;
+}

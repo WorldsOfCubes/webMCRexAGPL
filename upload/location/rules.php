@@ -1,7 +1,8 @@
-<?php 
-if (!defined('MCR')) exit;
+<?php
+if (!defined('MCR'))
+	exit;
 
-$page = 'Правила сервера'; 
+$page = 'Правила сервера';
 
 $content_main = View::ShowStaticPage('rules.html');
 

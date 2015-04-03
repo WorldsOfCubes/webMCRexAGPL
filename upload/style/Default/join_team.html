@@ -1,67 +1,82 @@
 <script language="JavaScript" type="text/javascript">
-function CheckLen() {
+	function CheckLen() {
 
-  var s = GetById('comment-add-text').value
-      s = s.replace(/\r\n/g, "22222")
-      s = s.replace(/\n/g, "22222")
-	  s = s.replace(/\'/g, "222222")
-	  s = s.replace(/\"/g, "222222")
-	  
-     return 500-s.length
-}
+		var s = GetById('comment-add-text').value
+		s = s.replace(/\r\n/g, "22222")
+		s = s.replace(/\n/g, "22222")
+		s = s.replace(/\'/g, "222222")
+		s = s.replace(/\"/g, "222222")
 
-function DrawLenInfo(e) {
+		return 500 - s.length
+	}
 
-  e = e || window.event;
-  
-  var code   = e.keyCode?e.keyCode:(e.which?e.which:e.charCode)
-  
-  var used = CheckLen()
+	function DrawLenInfo(e) {
 
-  if ( used <= 0 ) GetById('comment-length').style.color = '#aa2f17' 
-  else             GetById('comment-length').style.color = '#17aa4e' 
+		e = e || window.event;
 
-  GetById('comment-length').innerHTML = used
+		var code = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode)
 
-	switch (code){
-        case 13:
-        case 8:
-        case 9:
-        case 46:
-        case 37:
-        case 38:
-		case 116:
-        case 40:
-        return true;
-    }
-  if ( used <= 0 ) return false
-  else             return true
-  
-}
+		var used = CheckLen()
+
+		if (used <= 0) GetById('comment-length').style.color = '#aa2f17' else             GetById('comment-length').style.color = '#17aa4e'
+
+		GetById('comment-length').innerHTML = used
+
+		switch (code) {
+			case 13:
+			case 8:
+			case 9:
+			case 46:
+			case 37:
+			case 38:
+			case 116:
+			case 40:
+				return true;
+		}
+		if (used <= 0) return false else             return true
+
+	}
 </script>
 <div class="form-block">
-<div class="block-header">Оставить заявку</div>
-<div class="block-line"></div>
-<div class="tab-pane" id="launcher">
-	<?php echo $content; ?>
-	<strong>Все поля обязательны к заполнению!</strong> <br />
-<form method="post">
-    <div align="left"><label for="name"><strong>Твой игровой ник:</strong></label></div>
-	  <input readonly class="form-control" style="width:300px" class="find1" type="text" size="50" name="playername" value="<?php echo $player ?>"/>
-	<div align="left"><label for="subject"><strong>Твое имя:</strong></label></div>
-		<input class="form-control" style="width:300px" class="find1" type="text" size="50" name="realname" placeholder="Полное имя в именительном падеже"/>
-	<div align="left"><label for="subject"><strong>Твоя Фамилия:</strong></label></div>
-		<input class="form-control" style="width:300px" class="find1" type="text" size="50" name="surname" placeholder="Фамилия"/>
-	<div align="left"><label for="subject"><strong>Твой возраст:</strong></label></div>
-	<input class="form-control" style="width:300px" class="find1" type="text" size="50" name="old" placeholder="Набор с 16 лет"/>
+	<div class="block-header">Оставить заявку</div>
+	<div class="block-line"></div>
+	<div class="tab-pane" id="launcher">
+		<?php echo $content; ?>
+		<strong>Все поля обязательны к заполнению!</strong> <br />
 
-<div align="left"><label for="email"><strong>Твой скайп:</strong></label></div>
-	<input class="form-control" style="width:300px" class="find1" type="text" size="50" name="skype" placeholder="Ты должен пройти собеседование по скайпу." value=""/>
-	<div align="left"><label for="subject"><strong>Коротко о себе:</strong></label></div>
+		<form method="post">
+			<div align="left"><label for="name"><strong>Твой игровой ник:</strong></label></div>
+			<input readonly class="form-control" style="width:300px" class="find1" type="text" size="50"
+			       name="playername" value="<?php echo $player ?>" />
 
-<textarea id="comment-add-text" maxlength="500" class="form-control" name="comment" onclick="return DrawLenInfo(event)" onchange="return DrawLenInfo(event)" onkeyup="return DrawLenInfo(event)" onkeypress="return DrawLenInfo(event)" placeholder="Твои достоинства и недостатки"></textarea>
-<div style="margin-left: 24px;">Осталось <div id="comment-length" style="display: inline-block; color: #17aa4e;">500</div> символов</div>
-<p>После отправки и подтверждения заявки у тебя проверят знание <a href="go/rules">правил сервера</a>.</p>
-<input class="btn btn-primary" type="submit" value="Отправить" name="submit" />
-</div>
+			<div align="left"><label for="subject"><strong>Твое имя:</strong></label></div>
+			<input class="form-control" style="width:300px" class="find1" type="text" size="50" name="realname"
+			       placeholder="Полное имя в именительном падеже" />
+
+			<div align="left"><label for="subject"><strong>Твоя Фамилия:</strong></label></div>
+			<input class="form-control" style="width:300px" class="find1" type="text" size="50" name="surname"
+			       placeholder="Фамилия" />
+
+			<div align="left"><label for="subject"><strong>Твой возраст:</strong></label></div>
+			<input class="form-control" style="width:300px" class="find1" type="text" size="50" name="old"
+			       placeholder="Набор с 16 лет" />
+
+			<div align="left"><label for="email"><strong>Твой скайп:</strong></label></div>
+			<input class="form-control" style="width:300px" class="find1" type="text" size="50" name="skype"
+			       placeholder="Ты должен пройти собеседование по скайпу." value="" />
+
+			<div align="left"><label for="subject"><strong>Коротко о себе:</strong></label></div>
+
+			<textarea id="comment-add-text" maxlength="500" class="form-control" name="comment"
+			          onclick="return DrawLenInfo(event)" onchange="return DrawLenInfo(event)"
+			          onkeyup="return DrawLenInfo(event)" onkeypress="return DrawLenInfo(event)"
+			          placeholder="Твои достоинства и недостатки"></textarea>
+
+			<div style="margin-left: 24px;">Осталось
+				<div id="comment-length" style="display: inline-block; color: #17aa4e;">500</div>
+				символов
+			</div>
+			<p>После отправки и подтверждения заявки у тебя проверят знание <a href="go/rules">правил сервера</a>.</p>
+			<input class="btn btn-primary" type="submit" value="Отправить" name="submit" />
+	</div>
 </div>

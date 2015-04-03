@@ -5,10 +5,12 @@ $db = new DB();
 $db->connect('pay');
 
 loadTool('log.class.php');
-function ikSign($params, $ikKey){
+function ikSign($params, $ikKey) {
 	// удаляем ненужные параметры
 	unset($params['ik_sign']);
-	foreach($params as $key => $value) if(! preg_match("/^ik_/is", $key)) unset($params[$key]);
+	foreach ($params as $key => $value)
+		if (!preg_match("/^ik_/is", $key))
+			unset($params[$key]);
 
 	ksort($params, SORT_STRING);
 	array_push($params, $ikKey);
@@ -27,15 +29,16 @@ $sign = trim($_REQUEST['ik_sign']);
 $ik_payment_timestamp = trim($_REQUEST['ik_inv_prc']);
 $secretKey = $donate['ik_secret_key'];
 // тестирование
-if($donate['ik_testing'] and ($paySystem == "test_interkassa_test_xts")){
+if ($donate['ik_testing'] and ($paySystem == "test_interkassa_test_xts")) {
 	$secretKey = $donate['ik_secret_key_test'];
-} elseif($paySystem == "test_interkassa_test_xts") {
+} elseif ($paySystem == "test_interkassa_test_xts") {
 	vtxtlog($ik_payment_timestamp."\t$paymentId не произвел тестовый платеж на $summ руб");
 	exit("OK");
 }
 
-if($kassaId != $donate['ik_shop_id']) exit("Неверный ID кассы");
-if($sign != ikSign($_REQUEST, $secretKey)) {
+if ($kassaId != $donate['ik_shop_id'])
+	exit("Неверный ID кассы");
+if ($sign != ikSign($_REQUEST, $secretKey)) {
 	Logs::write($ik_payment_timestamp."\tНеверная подпись: $sign $summ ");
 	exit("Bad sign");
 }

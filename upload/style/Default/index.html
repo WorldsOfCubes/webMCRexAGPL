@@ -2,133 +2,138 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-	
-    <title><?php echo $config['s_name'] ?> — <?php echo $page; ?> </title>
-	
-	<base href="<?php echo BASE_URL ?>"> 
-	
+	<meta charset="utf-8">
+
+	<title><?php echo $config['s_name'] ?> — <?php echo $page; ?> </title>
+
+	<base href="<?php echo BASE_URL ?>">
+
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <meta name="description" content="<?php echo $config['s_about'] ?>">
-    <meta name="author" content="STRELOK2022"><!-- first version of stylesheet was developed by KillerProst -->
+	<meta name="description" content="<?php echo $config['s_about'] ?>">
+	<meta name="author" content="STRELOK2022">
+	<!-- first version of stylesheet was developed by KillerProst -->
 
-    <link href="<?php View::URL('css/style.css') ?>" rel="stylesheet">
+	<link href="<?php View::URL('css/style.css') ?>" rel="stylesheet">
 	<link href="<?php View::URL('css/serverbar.css') ?>" rel="stylesheet">
 	<link href="<?php View::URL('css/font-awesome.css') ?>" rel="stylesheet">
 
 	<script src="<?php View::URL('js/jquery.js') ?>"></script>
-	<script src="<?php View::URL('js/smiles.js') ?>"></script>	
+	<script src="<?php View::URL('js/smiles.js') ?>"></script>
 	<script src="<?php View::URL('js/tools.js') ?>"></script>
-	
+
 	<script src="<?php View::URL('js/monitoring.js') ?>"></script>
 	<script src="<?php View::URL('js/ajax.js') ?>"></script>
-	
-	<script src="<?php View::URL('js/bootstrap.js') ?>"></script>
-	
-	<?php echo $content_js ?>
-	
-	<link rel="alternate" type="application/rss+xml" title="RSS" href="instruments/rss20/rss.php" />
-	
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
 
-    <link rel="shortcut icon" href="<?php View::URL('ico/favicon.ico') ?>">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php View::URL('ico/apple-touch-icon-144-precomposed.png') ?>">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php View::URL('ico/apple-touch-icon-114-precomposed.png') ?>">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php View::URL('ico/apple-touch-icon-72-precomposed.png') ?>">
-    <link rel="apple-touch-icon-precomposed" href="<?php View::URL('ico/apple-touch-icon-57-precomposed.png') ?>">
-	
+	<script src="<?php View::URL('js/bootstrap.js') ?>"></script>
+
+	<?php echo $content_js ?>
+
+	<link rel="alternate" type="application/rss+xml" title="RSS" href="instruments/rss20/rss.php" />
+
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<link rel="shortcut icon" href="<?php View::URL('ico/favicon.ico') ?>">
+	<link rel="apple-touch-icon-precomposed" sizes="144x144"
+	      href="<?php View::URL('ico/apple-touch-icon-144-precomposed.png') ?>">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114"
+	      href="<?php View::URL('ico/apple-touch-icon-114-precomposed.png') ?>">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72"
+	      href="<?php View::URL('ico/apple-touch-icon-72-precomposed.png') ?>">
+	<link rel="apple-touch-icon-precomposed" href="<?php View::URL('ico/apple-touch-icon-57-precomposed.png') ?>">
+
 </head>
 
 <body>
 <header class="jumbotron subhead">
 
-  <div class="container">
+	<div class="container">
 
-	    <div class="container">
+		<div class="container">
 			<div class="row">
-			    <div class="col-md-9">					
+				<div class="col-md-9">
 					<h1><?php echo $config['s_name'] ?></h1>
+
 					<p class="lead"><?php echo $config['s_about'] ?></p>
 				</div>
 
-				<div class="col-md-3" style="padding-top: 30px;">	
-                    <p class="lead" ><a href="go/start"><b>{LAUNCHER_DOWN_PAGE_LINK}</b></a></p>
-				</div>	
-				
+				<div class="col-md-3" style="padding-top: 30px;">
+					<p class="lead"><a href="go/start"><b>{LAUNCHER_DOWN_PAGE_LINK}</b></a></p>
+				</div>
+
 			</div>
-		</div> 
-  </div>
-  
+		</div>
+	</div>
+
 </header>
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation" >
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 
-      <div class="navbar-header">
-        <div class="container">
-		
-		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-head-menus">
-			<span class="sr-only">{MENU_SHOW_ALL}</span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-		</button>
-		  
-          <a class="navbar-brand" href=""><?php echo $config['s_name'] ?></a>
-		  
-          <div class="collapse navbar-collapse navbar-head-menus">
+	<div class="navbar-header">
+		<div class="container">
 
-	         <?php echo $content_menu; ?>
-			 
-          </div>
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-head-menus">
+				<span class="sr-only">{MENU_SHOW_ALL}</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
 
-        </div>
-      </div>
-	  
+			<a class="navbar-brand" href=""><?php echo $config['s_name'] ?></a>
+
+			<div class="collapse navbar-collapse navbar-head-menus">
+
+				<?php echo $content_menu; ?>
+
+			</div>
+
+		</div>
+	</div>
+
 </nav>
 <!-- END -->
-<div class="container" style="margin-bottom: 50px;">	
-    <div class="container">
-			<div class="row">
+<div class="container" style="margin-bottom: 50px;">
+	<div class="container">
+		<div class="row">
 			<!-- Левый контейнер -->
-				<div class="col-md-4">		
-						
-					<?php echo $content_side ?>
+			<div class="col-md-4">
 
-					<?php echo $content_servers ?>
+				<?php echo $content_side ?>
 
-										
-				</div>
-			<!-- /.Левый контейнер -->
-				
-            <!-- Правый контейнер -->
-				<div class="col-md-8">	
-				<div style="margin-top: 12px;"> 
-				  <ul class="breadcrumb">
-        <li style="text-align: center;"><?php echo $content_advice; ?></li>
-		</ul>
-  </div>
+				<?php echo $content_servers ?>
 
-				    <?php echo $content_main;?> 	
-		
-            	    <div class="inform-block" style="display: none;" id="main-error">
-                       <div class="alert alert-error" id="main-error-text"></div>
-                    </div>
-				</div>
-				
-			<!-- /.Правый контейнер  -->
+
 			</div>
-    </div> 
-</div>
-	<!-- /container -->
-	<footer class="footer-block">	
+			<!-- /.Левый контейнер -->
 
-		   <div style="float: right;"><?php echo FEEDBACK; ?></div>
-           {FOOTER_COPY_BEFORE} <?php echo $config['s_name'] ?> {FOOTER_COPY_AFTER}
-			
-    </footer>
-  </body>
+			<!-- Правый контейнер -->
+			<div class="col-md-8">
+				<div style="margin-top: 12px;">
+					<ul class="breadcrumb">
+						<li style="text-align: center;"><?php echo $content_advice; ?></li>
+					</ul>
+				</div>
+
+				<?php echo $content_main;?>
+
+				<div class="inform-block" style="display: none;" id="main-error">
+					<div class="alert alert-error" id="main-error-text"></div>
+				</div>
+			</div>
+
+			<!-- /.Правый контейнер  -->
+		</div>
+	</div>
+</div>
+<!-- /container -->
+<footer class="footer-block">
+
+	<div style="float: right;"><?php echo FEEDBACK; ?></div>
+	{FOOTER_COPY_BEFORE} <?php echo $config['s_name'] ?> {FOOTER_COPY_AFTER}
+
+</footer>
+</body>
 </html>

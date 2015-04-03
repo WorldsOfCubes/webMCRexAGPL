@@ -1,16 +1,20 @@
 <div id="restore-box" class="form-block-rl" style="padding-bottom: 12px;">
-	<form class="form-inline" action="<?php echo BASE_URL ?>install/install.php" method="post">	
-		  <fieldset>
+	<form class="form-inline" action="<?php echo BASE_URL ?>install/install.php" method="post">
+		<fieldset>
 			<legend>Тип установки</legend>
 
 			<select name="mode" class="form-control" style="width:300px">
-				<option value="usual" <?php echo ($mode == 'usual')? 'selected' : '' ?> >Обычная установка</option>
-				<option value="xauth" <?php echo ($mode == 'xauth')? 'selected' : '' ?> >Совместимость с xAuth</option>
-				<option value="authme" <?php echo ($mode == 'authme')? 'selected' : '' ?> >Совместимость с AuthMe</option>
-				<option value="wocauth" <?php echo ($mode == 'wocauth')? 'selected' : '' ?> >Авторизация по протоколу WoCAuth</option>
+				<option value="usual"
+				<?php echo ($mode == 'usual')? 'selected' : '' ?> >Обычная установка</option>
+				<option value="xauth"
+				<?php echo ($mode == 'xauth')? 'selected' : '' ?> >Совместимость с xAuth</option>
+				<option value="authme"
+				<?php echo ($mode == 'authme')? 'selected' : '' ?> >Совместимость с AuthMe</option>
+				<option value="wocauth"
+				<?php echo ($mode == 'wocauth')? 'selected' : '' ?> >Авторизация по протоколу WoCAuth</option>
 			</select>
-			
+
 			<button type="submit" name="submit" class="btn btn-default">Изменить тип установки</button>
-		  </fieldset>  
+		</fieldset>
 	</form>
 </div>

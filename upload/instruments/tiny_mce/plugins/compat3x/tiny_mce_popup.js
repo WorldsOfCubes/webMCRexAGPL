@@ -25,7 +25,7 @@ tinyMCEPopup = {
 	 *
 	 * @method init
 	 */
-	init : function() {
+	init: function () {
 		var t = this, w, ti, settings;
 
 		// Find window & API
@@ -51,7 +51,10 @@ tinyMCEPopup = {
 		}
 
 		// Setup local DOM
-		t.dom = t.editor.windowManager.createInstance('tinymce.dom.DOMUtils', document, {ownEvents: true, proxy: tinyMCEPopup._eventProxy});
+		t.dom = t.editor.windowManager.createInstance('tinymce.dom.DOMUtils', document, {
+			ownEvents: true,
+			proxy: tinyMCEPopup._eventProxy
+		});
 		t.dom.bind(window, 'ready', t._onDOMLoaded, t);
 
 		// Enables you to skip loading the default css
@@ -71,13 +74,13 @@ tinyMCEPopup = {
 		 * tinyMCEPopup.onInit.add(function(ed) {
 		 *     alert(ed.selection.getContent());
 		 * });
-		 * 
+		 *
 		 * // Executes the init method on page load in some object using the SomeObject scope
 		 * tinyMCEPopup.onInit.add(SomeObject.init, SomeObject);
 		 */
 		t.onInit = {
-			add : function(f, s) {
-				t.listeners.push({func : f, scope : s});
+			add: function (f, s) {
+				t.listeners.push({func: f, scope: s});
 			}
 		};
 
@@ -91,7 +94,7 @@ tinyMCEPopup = {
 	 * @method getWin
 	 * @return {Window} Reference to the parent window that opened the dialog.
 	 */
-	getWin : function() {
+	getWin: function () {
 		// Added frameElement check to fix bug: #2817583
 		return (!window.frameElement && window.dialogArguments) || opener || parent || top;
 	},
@@ -104,7 +107,7 @@ tinyMCEPopup = {
 	 * @param {String} dv Optional default value to return.
 	 * @return {String} Argument value or default value if it wasn't found.
 	 */
-	getWindowArg : function(n, dv) {
+	getWindowArg: function (n, dv) {
 		var v = this.params[n];
 
 		return tinymce.is(v) ? v : dv;
@@ -118,7 +121,7 @@ tinyMCEPopup = {
 	 * @param {String} dv Optional default value to return.
 	 * @return {String} Parameter value or default value if it wasn't found.
 	 */
-	getParam : function(n, dv) {
+	getParam: function (n, dv) {
 		return this.editor.getParam(n, dv);
 	},
 
@@ -130,7 +133,7 @@ tinyMCEPopup = {
 	 * @param {String} dv Optional default value to return.
 	 * @return {String} Language value for the item like "my string" or the default value if it wasn't found.
 	 */
-	getLang : function(n, dv) {
+	getLang: function (n, dv) {
 		return this.editor.getLang(n, dv);
 	},
 
@@ -143,7 +146,7 @@ tinyMCEPopup = {
 	 * @param {Object} val Optional value to pass with the comman like an URL.
 	 * @param {Object} a Optional arguments object.
 	 */
-	execCommand : function(cmd, ui, val, a) {
+	execCommand: function (cmd, ui, val, a) {
 		a = a || {};
 		a.skip_focus = 1;
 
@@ -157,19 +160,15 @@ tinyMCEPopup = {
 	 *
 	 * @method resizeToInnerSize
 	 */
-	resizeToInnerSize : function() {
+	resizeToInnerSize: function () {
 		var t = this;
 
 		// Detach it to workaround a Chrome specific bug
 		// https://sourceforge.net/tracker/?func=detail&atid=635682&aid=2926339&group_id=103281
-		setTimeout(function() {
+		setTimeout(function () {
 			var vp = t.dom.getViewPort(window);
 
-			t.editor.windowManager.resizeBy(
-				t.getWindowArg('mce_width') - vp.w,
-				t.getWindowArg('mce_height') - vp.h,
-				t.id || window
-			);
+			t.editor.windowManager.resizeBy(t.getWindowArg('mce_width') - vp.w, t.getWindowArg('mce_height') - vp.h, t.id || window);
 		}, 10);
 	},
 
@@ -180,8 +179,8 @@ tinyMCEPopup = {
 	 * @method executeOnLoad
 	 * @param {String} s String to evalutate on init.
 	 */
-	executeOnLoad : function(s) {
-		this.onInit.add(function() {
+	executeOnLoad: function (s) {
+		this.onInit.add(function () {
 			eval(s);
 		});
 	},
@@ -192,7 +191,7 @@ tinyMCEPopup = {
 	 *
 	 * @method storeSelection
 	 */
-	storeSelection : function() {
+	storeSelection: function () {
 		this.editor.windowManager.bookmark = tinyMCEPopup.editor.selection.getBookmark(1);
 	},
 
@@ -202,7 +201,7 @@ tinyMCEPopup = {
 	 *
 	 * @method restoreSelection
 	 */
-	restoreSelection : function() {
+	restoreSelection: function () {
 		var t = tinyMCEPopup;
 
 		if (!t.isWindow && tinymce.isIE)
@@ -215,7 +214,7 @@ tinyMCEPopup = {
 	 *
 	 * @method requireLangPack
 	 */
-	requireLangPack : function() {
+	requireLangPack: function () {
 		var t = this, u = t.getWindowArg('plugin_url') || t.getWindowArg('theme_url');
 
 		if (u && t.editor.settings.language && t.features.translate_i18n !== false && t.editor.settings.language_load !== false) {
@@ -236,10 +235,9 @@ tinyMCEPopup = {
 	 * @param {DOMEvent} e DOM event object.
 	 * @param {string} element_id Element id to be filled with the color value from the picker.
 	 */
-	pickColor : function(e, element_id) {
+	pickColor: function (e, element_id) {
 		this.execCommand('mceColorPicker', true, {
-			color : document.getElementById(element_id).value,
-			func : function(c) {
+			color: document.getElementById(element_id).value, func: function (c) {
 				document.getElementById(element_id).value = c;
 
 				try {
@@ -260,7 +258,7 @@ tinyMCEPopup = {
 	 * @param {string} type Type of browser to open image/file/flash.
 	 * @param {string} option Option name to get the file_broswer_callback function name from.
 	 */
-	openBrowser : function(element_id, type, option) {
+	openBrowser: function (element_id, type, option) {
 		tinyMCEPopup.restoreSelection();
 		this.editor.execCallback('file_browser_callback', element_id, document.getElementById(element_id).value, type, window);
 	},
@@ -274,7 +272,7 @@ tinyMCEPopup = {
 	 * @param {function} cb Callback function to be executed after the user has selected ok or cancel.
 	 * @param {Object} s Optional scope to execute the callback in.
 	 */
-	confirm : function(t, cb, s) {
+	confirm: function (t, cb, s) {
 		this.editor.windowManager.confirm(t, cb, s, window);
 	},
 
@@ -287,7 +285,7 @@ tinyMCEPopup = {
 	 * @param {function} cb Callback function to be executed after the user has selected ok.
 	 * @param {Object} s Optional scope to execute the callback in.
 	 */
-	alert : function(tx, cb, s) {
+	alert: function (tx, cb, s) {
 		this.editor.windowManager.alert(tx, cb, s, window);
 	},
 
@@ -296,7 +294,7 @@ tinyMCEPopup = {
 	 *
 	 * @method close
 	 */
-	close : function() {
+	close: function () {
 		var t = this;
 
 		// To avoid domain relaxing issue in Opera
@@ -306,29 +304,28 @@ tinyMCEPopup = {
 		};
 
 		if (tinymce.isOpera)
-			t.getWin().setTimeout(close, 0);
-		else
+			t.getWin().setTimeout(close, 0); else
 			close();
 	},
 
 	// Internal functions	
 
-	_restoreSelection : function() {
+	_restoreSelection: function () {
 		var e = window.event.srcElement;
 
 		if (e.nodeName == 'INPUT' && (e.type == 'submit' || e.type == 'button'))
 			tinyMCEPopup.restoreSelection();
 	},
 
-/*	_restoreSelection : function() {
-		var e = window.event.srcElement;
+	/*	_restoreSelection : function() {
+	 var e = window.event.srcElement;
 
-		// If user focus a non text input or textarea
-		if ((e.nodeName != 'INPUT' && e.nodeName != 'TEXTAREA') || e.type != 'text')
-			tinyMCEPopup.restoreSelection();
-	},*/
+	 // If user focus a non text input or textarea
+	 if ((e.nodeName != 'INPUT' && e.nodeName != 'TEXTAREA') || e.type != 'text')
+	 tinyMCEPopup.restoreSelection();
+	 },*/
 
-	_onDOMLoaded : function() {
+	_onDOMLoaded: function () {
 		var t = tinyMCEPopup, ti = document.title, bm, h, nv;
 
 		// Translate page
@@ -339,7 +336,7 @@ tinyMCEPopup = {
 			if (tinymce.isIE)
 				h = h.replace(/ (value|title|alt)=([^"][^\s>]+)/gi, ' $1="$2"')
 
-			document.dir = t.editor.getParam('directionality','');
+			document.dir = t.editor.getParam('directionality', '');
 
 			if ((nv = t.editor.translate(h)) && nv != h)
 				document.body.innerHTML = nv;
@@ -358,7 +355,7 @@ tinyMCEPopup = {
 			document.attachEvent('onmouseup', tinyMCEPopup._restoreSelection);
 
 			// Add base target element for it since it would fail with modal dialogs
-			t.dom.add(t.dom.select('head')[0], 'base', {target : '_self'});
+			t.dom.add(t.dom.select('head')[0], 'base', {target: '_self'});
 		}
 
 		t.restoreSelection();
@@ -366,24 +363,23 @@ tinyMCEPopup = {
 
 		// Set inline title
 		if (!t.isWindow)
-			t.editor.windowManager.setTitle(window, ti);
-		else
+			t.editor.windowManager.setTitle(window, ti); else
 			window.focus();
 
 		if (!tinymce.isIE && !t.isWindow) {
-			t.dom.bind(document, 'focus', function() {
+			t.dom.bind(document, 'focus', function () {
 				t.editor.windowManager.focus(t.id);
 			});
 		}
 
 		// Patch for accessibility
-		tinymce.each(t.dom.select('select'), function(e) {
+		tinymce.each(t.dom.select('select'), function (e) {
 			e.onkeydown = tinyMCEPopup._accessHandler;
 		});
 
 		// Call onInit
 		// Init must be called before focus so the selection won't get lost by the focus call
-		tinymce.each(t.listeners, function(o) {
+		tinymce.each(t.listeners, function (o) {
 			o.func.call(o.scope, t.editor);
 		});
 
@@ -392,8 +388,8 @@ tinyMCEPopup = {
 			window.focus();
 
 			// Focus element with mceFocus class
-			tinymce.each(document.forms, function(f) {
-				tinymce.each(f.elements, function(e) {
+			tinymce.each(document.forms, function (f) {
+				tinymce.each(f.elements, function (e) {
 					if (t.dom.hasClass(e, 'mceFocus') && !e.disabled) {
 						e.focus();
 						return false; // Break loop
@@ -405,7 +401,7 @@ tinyMCEPopup = {
 		document.onkeyup = tinyMCEPopup._closeWinKeyHandler;
 	},
 
-	_accessHandler : function(e) {
+	_accessHandler: function (e) {
 		e = e || window.event;
 
 		if (e.keyCode == 13 || e.keyCode == 32) {
@@ -418,15 +414,15 @@ tinyMCEPopup = {
 		}
 	},
 
-	_closeWinKeyHandler : function(e) {
+	_closeWinKeyHandler: function (e) {
 		e = e || window.event;
 
 		if (e.keyCode == 27)
 			tinyMCEPopup.close();
 	},
 
-	_eventProxy: function(id) {
-		return function(evt) {
+	_eventProxy: function (id) {
+		return function (evt) {
 			tinyMCEPopup.dom.events.callNativeHandler(id, evt);
 		};
 	}

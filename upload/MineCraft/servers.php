@@ -11,9 +11,7 @@
 //Creepy, 46.174.50.36, 25631, none, 2, 3<::>
 //TheMagicWorld, 46.174.50.23, 25579, none, 2, 3<::>
 
-echo 
-'
+echo '
 Modern, localhost, 25565, none, 2, 3<::>
-'
-;
+';
 ?>

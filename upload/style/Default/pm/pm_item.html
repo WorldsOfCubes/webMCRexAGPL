@@ -1,1 +1,7 @@
-			<tr<? echo ($tmp_pm['viewed'])?'':' class="info"'; ?>><td><? echo $num; ?></td><td><a href="go/pm/view/<? echo $tmp_pm['id']; ?>"><? echo $tmp_pm['topic']; ?></a></td><td><? echo $tmp_pm['date']; ?></td><td><a href="go/user/profile/<? echo $name; ?>"><img src="skin.php?mini=<? echo $tmp_pm['sender_id']; ?>" height="32">&nbsp;<? echo $name; ?></a></td></tr>
+<tr<? echo ($tmp_pm['viewed'])?'':' class="info"'; ?>>
+<td><? echo $num; ?></td>
+<td><a href="go/pm/view/<? echo $tmp_pm['id']; ?>"><? echo $tmp_pm['topic']; ?></a></td>
+<td><? echo $tmp_pm['date']; ?></td>
+<td>
+	<a href="go/user/profile/<? echo $name; ?>"><img src="skin.php?mini=<? echo $tmp_pm['sender_id']; ?>" height="32">&nbsp;<? echo $name; ?>
+	</a></td></tr>

@@ -1,6 +1,6 @@
-<?php 
-if ($mysql_rewrite) 
-BD("DROP TABLE IF EXISTS `{$bd_names['users']}`;");
+<?php
+if ($mysql_rewrite)
+	BD("DROP TABLE IF EXISTS `{$bd_names['users']}`;");
 
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['users']}` (
   `{$bd_users['id']}` bigint(20) NOT NULL AUTO_INCREMENT,

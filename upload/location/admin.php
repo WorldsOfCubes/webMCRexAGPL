@@ -38,7 +38,6 @@ if ($ban_user->id()) {
 	$user_id = $ban_user->id();
 	$user_ip = $ban_user->ip();
 	$user_lvl = $ban_user->lvl();
-
 } else $ban_user = false;
 
 if ($do == 'gettheme')
@@ -47,19 +46,18 @@ if ($do == 'gettheme')
 if (empty($id))
 	$id = false;
 
-function RatioList($selectid = 1)
-{
+function RatioList($selectid = 1) {
 
-	$html_ratio = '<option value="1" ' . ((1 == $selectid) ? 'selected' : '') . '>64x32 | 22x17</option>';
+	$html_ratio = '<option value="1" '.((1 == $selectid) ? 'selected' : '').'>64x32 | 22x17</option>';
 
 	for ($i = 2; $i <= 32; $i = $i + 2)
-		$html_ratio .= '<option value="' . $i . '" ' . (($i == $selectid) ? 'selected' : '') . '>' . (64 * $i) . 'x' . (32 * $i) . ' | ' . (22 * $i) . 'x' . (17 * $i) . '</option>';
+		$html_ratio .= '<option value="'.$i.'" '.(($i == $selectid) ? 'selected' : '').'>'.(64 * $i).'x'.(32 * $i).' | '.(22 * $i).'x'.(17 * $i).'</option>';
 
 	return $html_ratio;
 }
 
 if ($do) {
-// Buffer OFF 
+	// Buffer OFF
 	switch ($do) {
 		case 'gettheme':
 
@@ -73,16 +71,16 @@ if ($do) {
 
 			$url = 'index.php?mode=control&do=filelist';
 			if ($user_id)
-				$url .= '&user_id=' . $user_id;
+				$url .= '&user_id='.$user_id;
 
-			$files_manager = new FileManager('other/', $url . '&');
+			$files_manager = new FileManager('other/', $url.'&');
 			$content_main .= View::ShowStaticPage('filelist_info.html', $st_subdir);
 			$content_main .= $files_manager->ShowAddForm();
 
 			$html .= $files_manager->ShowFilesByUser($curlist, $user_id);
 			break;
 		case 'log':
-			$log_file = MCR_ROOT . 'log.txt';
+			$log_file = MCR_ROOT.'log.txt';
 
 			if (!file_exists($log_file))
 				break;
@@ -98,11 +96,11 @@ if ($do) {
 			$first = $curlist * $max - $max;
 			$last = $curlist * $max - 1;
 
-			$html .= '<b>' . $log_file . '</b><br>';
+			$html .= '<b>'.$log_file.'</b><br>';
 
 			for ($i = $first; $i <= $last; $i++)
 				if (@$file[$i])
-					$html .= $file[$i] . '<br>';
+					$html .= $file[$i].'<br>';
 
 			$arrGen = new View();
 			$html .= $arrGen->arrowsGenerator('index.php?mode=control&do=log&', $curlist, $count, $max);
@@ -110,7 +108,7 @@ if ($do) {
 			break;
 		case 'user':
 
-			$html .= View::ShowStaticPage('user_find.html', $st_subdir . 'user/');
+			$html .= View::ShowStaticPage('user_find.html', $st_subdir.'user/');
 
 			$controlManager = new ControlManager(false, 'index.php?mode=control&');
 			$html .= $controlManager->ShowUserListing($curlist, 'none');
@@ -119,14 +117,14 @@ if ($do) {
 			break;
 		case 'search':
 
-			$html .= View::ShowStaticPage('user_find.html', $st_subdir . 'user/');
+			$html .= View::ShowStaticPage('user_find.html', $st_subdir.'user/');
 
 			if (!empty($_GET["sby"]) and !empty($_GET['input']) and (preg_match("/^[a-zA-Z0-9_-]+$/", $_GET['input']) or preg_match("/[0-9.]+$/", $_GET['input']) or preg_match("/[0-9]+$/", $_GET['input']))) {
 
 				$search_by = $_GET["sby"];
 				$input = $_GET['input'];
 
-				$controlManager = new ControlManager(false, 'index.php?mode=control&do=search&sby=' . $search_by . '&input=' . $input . '&');
+				$controlManager = new ControlManager(false, 'index.php?mode=control&do=search&sby='.$search_by.'&input='.$input.'&');
 				$html .= $controlManager->ShowUserListing($curlist, $search_by, $input);
 			}
 
@@ -142,25 +140,24 @@ if ($do) {
 				sqlConfigSet('email-verification', (isset($_POST['emailver'])) ? 1 : 0);
 
 				$info .= lng('OPTIONS_COMPLETE');
-
 			} elseif (POSTGood('def_skin_male') or POSTGood('def_skin_female')) {
 
 				$female = (POSTGood('def_skin_female')) ? true : false;
-				$tmp_dir = MCRAFT . 'tmp/';
+				$tmp_dir = MCRAFT.'tmp/';
 
-				$default_skin = $tmp_dir . 'default_skins/Char' . (($female) ? '_female' : '') . '.png';
-				$default_skin_md5 = $tmp_dir . 'default_skins/md5' . (($female) ? '_female' : '') . '.md5';
-				$way_buffer_mini = $tmp_dir . 'skin_buffer/default/Char_Mini' . (($female) ? '_female' : '') . '.png';
-				$way_buffer = $tmp_dir . 'skin_buffer/default/Char' . (($female) ? '_female' : '') . '.png';
+				$default_skin = $tmp_dir.'default_skins/Char'.(($female) ? '_female' : '').'.png';
+				$default_skin_md5 = $tmp_dir.'default_skins/md5'.(($female) ? '_female' : '').'.md5';
+				$way_buffer_mini = $tmp_dir.'skin_buffer/default/Char_Mini'.(($female) ? '_female' : '').'.png';
+				$way_buffer = $tmp_dir.'skin_buffer/default/Char'.(($female) ? '_female' : '').'.png';
 
 				$new_file_info = POSTSafeMove(($female) ? 'def_skin_female' : 'def_skin_male', $tmp_dir);
 
 				loadTool('skin.class.php');
 
-				if ($new_file_info and skinGenerator2D::isValidSkin($tmp_dir . $new_file_info['tmp_name']) and rename($tmp_dir . $new_file_info['tmp_name'], $default_skin)) {
+				if ($new_file_info and skinGenerator2D::isValidSkin($tmp_dir.$new_file_info['tmp_name']) and rename($tmp_dir.$new_file_info['tmp_name'], $default_skin)) {
 
 					chmod($default_skin, 0777);
-					$info .= lng('SKIN_CHANGED') . ' (' . ((!$female) ? lng('MALE') : lng('FEMALE')) . ') <br/>';
+					$info .= lng('SKIN_CHANGED').' ('.((!$female) ? lng('MALE') : lng('FEMALE')).') <br/>';
 
 					if (file_exists($default_skin_md5))
 						unlink($default_skin_md5);
@@ -168,8 +165,7 @@ if ($do) {
 						unlink($way_buffer_mini);
 					if (file_exists($way_buffer))
 						unlink($way_buffer);
-
-				} else $info .= lng('UPLOAD_FAIL') . '. (' . ((!$female) ? lng('MALE') : lng('FEMALE')) . ') <br/>';
+				} else $info .= lng('UPLOAD_FAIL').'. ('.((!$female) ? lng('MALE') : lng('FEMALE')).') <br/>';
 			}
 
 			$timeout = (int)sqlConfigGet('next-reg-time');
@@ -196,7 +192,7 @@ if ($do) {
 
 if ($do) {
 
-// Buffer ON 
+	// Buffer ON
 
 	ob_start();
 
@@ -210,7 +206,7 @@ if ($do) {
 			}
 
 			if ($ban_user)
-				include View::Get('user_ban.html', $st_subdir . 'user/');
+				include View::Get('user_ban.html', $st_subdir.'user/');
 
 			break;
 		case 'banip':
@@ -220,10 +216,10 @@ if ($do) {
 				$ban_type = (isset($_POST['banip_all'])) ? 2 : 1;
 				$ban_user_t = (isset($_POST['banip_anduser']) and (int)$_POST['banip_anduser']) ? true : false;
 
-				$db->execute("DELETE FROM {$bd_names['ip_banning']} WHERE IP='" . $db->safe($ban_user->ip()) . "'");
-				$db->execute("INSERT INTO {$bd_names['ip_banning']} (IP, time_start, ban_until, ban_type) VALUES ('" . $db->safe($ban_user->ip()) . "', NOW(), NOW()+INTERVAL " . $db->safe($ban_time) . " DAY, '" . $ban_type . "')");
+				$db->execute("DELETE FROM {$bd_names['ip_banning']} WHERE IP='".$db->safe($ban_user->ip())."'");
+				$db->execute("INSERT INTO {$bd_names['ip_banning']} (IP, time_start, ban_until, ban_type) VALUES ('".$db->safe($ban_user->ip())."', NOW(), NOW()+INTERVAL ".$db->safe($ban_time)." DAY, '".$ban_type."')");
 
-				$info .= lng('ADMIN_BAN_IP') . ' (IP ' . $ban_user->ip() . ') <br/>';
+				$info .= lng('ADMIN_BAN_IP').' (IP '.$ban_user->ip().') <br/>';
 
 				if ($ban_user_t) {
 
@@ -232,7 +228,7 @@ if ($do) {
 				}
 			}
 			if ($ban_user)
-				include View::Get('user_ban_ip.html', $st_subdir . 'user/');
+				include View::Get('user_ban_ip.html', $st_subdir.'user/');
 			break;
 		case 'delete':
 			if (isset($_POST['confirm']) and $ban_user) {
@@ -240,9 +236,8 @@ if ($do) {
 				$ban_user->Delete();
 				$html .= lng('ADMIN_USER_DEL');
 				unset($ban_user);
-
 			} elseif ($ban_user)
-				include View::Get('user_del.html', $st_subdir . 'user/');
+				include View::Get('user_del.html', $st_subdir.'user/');
 
 			break;
 		case 'rcon':
@@ -291,11 +286,11 @@ if ($do) {
 			if ($link_win or $link_osx or $link_lin or $game_news)
 
 				if (ConfigManager::SaveMainConfig())
-					$info .= lng('OPTIONS_COMPLETE'); else $info .= lng('WRITE_FAIL') . ' ( ' . MCR_ROOT . 'main.cfg.php )';
+					$info .= lng('OPTIONS_COMPLETE'); else $info .= lng('WRITE_FAIL').' ( '.MCR_ROOT.'main.cfg.php )';
 
 			$game_lver = sqlConfigGet('protection_key_set');
 			$protection_key = sqlConfigGet('protection-key');
-			$cat_list = '<option value="-1">' . lng('NEWS_LAST') . '</option>';
+			$cat_list = '<option value="-1">'.lng('NEWS_LAST').'</option>';
 			$cat_list .= CategoryManager::GetList($config['game_news']);
 
 			include View::Get('game.html', $st_subdir);
@@ -306,13 +301,11 @@ if ($do) {
 				$new_category = new Category();
 				if ($new_category->Create($_POST['name'], $_POST['lvl'], $_POST['desc']))
 					$info .= lng('CAT_COMPLITE'); else  $info .= lng('CAT_EXIST');
-
 			} elseif ($id and isset($_POST['edit']) and isset($_POST['name']) and isset($_POST['lvl']) and isset($_POST['desc'])) {
 
 				$category = new Category($id);
 				if ($category->Edit($_POST['name'], $_POST['lvl'], $_POST['desc']))
 					$info .= lng('CAT_UPDATED'); else  $info .= lng('CAT_EXIST');
-
 			} elseif ($id and isset($_POST['delete'])) {
 
 				$category = new Category($id);
@@ -324,7 +317,7 @@ if ($do) {
 			}
 
 			$cat_list = CategoryManager::GetList($id);
-			include View::Get('category_header.html', $st_subdir . 'category/');
+			include View::Get('category_header.html', $st_subdir.'category/');
 
 			if ($id) {
 				$cat_item = new Category($id);
@@ -335,12 +328,12 @@ if ($do) {
 					$cat_desc = $cat_item->GetDescription();
 					$cat_priority = $cat_item->GetPriority();
 
-					include View::Get('category_edit.html', $st_subdir . 'category/');
+					include View::Get('category_edit.html', $st_subdir.'category/');
 					if (!$cat_item->IsSystem())
-						include View::Get('category_delete.html', $st_subdir . 'category/');
+						include View::Get('category_delete.html', $st_subdir.'category/');
 				}
 				unset($cat_item);
-			} else include View::Get('category_add.html', $st_subdir . 'category/');
+			} else include View::Get('category_add.html', $st_subdir.'category/');
 			break;
 		case 'group':
 
@@ -350,13 +343,11 @@ if ($do) {
 				$new_group = new Group();
 				if ($new_group->Create($_POST['name'], $_POST['pex_name'], $_POST))
 					$info .= lng('GROUP_COMPLITE'); else  $info .= lng('GROUP_EXIST');
-
 			} elseif ($id and isset($_POST['edit']) and isset($_POST['name'])) {
 
 				$new_group = new Group($id);
 				if ($new_group->Edit($_POST['name'], $_POST['pex_name'], $_POST))
 					$info .= lng('GROUP_UPDATED'); else  $info .= lng('GROUP_EXIST');
-
 			} elseif ($id and isset($_POST['delete'])) {
 
 				$new_group = new Group($id);
@@ -368,7 +359,7 @@ if ($do) {
 			}
 
 			$group_list = GroupManager::GetList($id);
-			include View::Get('group_header.html', $st_subdir . 'group/');
+			include View::Get('group_header.html', $st_subdir.'group/');
 
 			if ($id) {
 
@@ -378,19 +369,19 @@ if ($do) {
 				$html_ratio = RatioList($group['max_ratio']);
 				$group_name = $group_i->GetName();
 
-				include View::Get('group_edit.html', $st_subdir . 'group/');
+				include View::Get('group_edit.html', $st_subdir.'group/');
 				if (!$group_i->IsSystem())
-					include View::Get('group_delete.html', $st_subdir . 'group/');
+					include View::Get('group_delete.html', $st_subdir.'group/');
 				unset($group_i);
 			} else {
 
 				$html_ratio = RatioList();
-				include View::Get('group_add.html', $st_subdir . 'group/');
+				include View::Get('group_add.html', $st_subdir.'group/');
 			}
 			break;
 		case 'server_edit':
 
-			include View::Get('server_edit_header.html', $st_subdir . 'server/');
+			include View::Get('server_edit_header.html', $st_subdir.'server/');
 
 			/* POST data check */
 
@@ -439,7 +430,6 @@ if ($do) {
 						$server->SetConnectWay($serv_address, $serv_port);
 
 					$info .= lng('SERVER_UPDATED');
-
 				} else {
 
 					if (is_bool($serv_method)) {
@@ -464,7 +454,6 @@ if ($do) {
 				$server->SetVisible('side', $serv_side);
 				$server->SetVisible('game', $serv_game);
 				$server->SetVisible('mon', $serv_mon);
-
 			} elseif ($id and isset($_POST['delete'])) {
 
 				$server = new Server($id);
@@ -478,7 +467,7 @@ if ($do) {
 			/* Output */
 
 			if ($id) {
-				$server = new Server($id, $st_subdir . 'server/');
+				$server = new Server($id, $st_subdir.'server/');
 
 				$server->UpdateState(true);
 				$server_info = $server->ShowHolder('mon', 'adm');
@@ -504,9 +493,8 @@ if ($do) {
 				$serv_game = $server->GetVisible('game');
 				$serv_mon = $server->GetVisible('mon');
 
-				include View::Get('server_edit.html', $st_subdir . 'server/');
-
-			} else include View::Get('server_add.html', $st_subdir . 'server/');
+				include View::Get('server_edit.html', $st_subdir.'server/');
+			} else include View::Get('server_add.html', $st_subdir.'server/');
 
 			break;
 		case 'constants':
@@ -523,11 +511,11 @@ if ($do) {
 				$keywords = (isset($_POST['site_keyword'])) ? TextBase::HTMLDestruct($_POST['site_keyword']) : '';
 
 				if (TextBase::StringLen($keywords) > 200) {
-					$info .= lng('INCORRECT_LEN') . ' (' . lng('ADMIN_KEY_WORDS') . ') ' . lng('TO') . ' 200 ' . lng('CHARACTERS');
+					$info .= lng('INCORRECT_LEN').' ('.lng('ADMIN_KEY_WORDS').') '.lng('TO').' 200 '.lng('CHARACTERS');
 					break;
 				}
 				if (!TextBase::StringLen($site_name)) {
-					$info .= lng('INCORRECT') . ' (' . lng('ADMIN_SITE_NAME') . ') ';
+					$info .= lng('INCORRECT').' ('.lng('ADMIN_SITE_NAME').') ';
 					break;
 				}
 
@@ -560,10 +548,10 @@ if ($do) {
 						switch ($result) {
 
 							case 1:
-								$t_error = lng('UPLOAD_FAIL') . '. ( ' . lng('UPLOAD_FORMATS') . ' - zip )';
+								$t_error = lng('UPLOAD_FAIL').'. ( '.lng('UPLOAD_FORMATS').' - zip )';
 								break;
 							case 3:
-								$t_error = lng('TZIP_CREATE_FAIL') . '.';
+								$t_error = lng('TZIP_CREATE_FAIL').'.';
 								break;
 							case 4:
 								$t_error = lng('TZIP_GETINFFILE_FAIL');
@@ -585,8 +573,7 @@ if ($do) {
 								break;
 						}
 
-						$info .= lng('T_INSTALL_FAIL') . ' - ' . $t_error . '</br>';
-
+						$info .= lng('T_INSTALL_FAIL').' - '.$t_error.'</br>';
 					} else {
 
 						loadTool('ajax.php');
@@ -614,7 +601,7 @@ if ($do) {
 				$config['smtp_tls'] = $smtp_tls;
 
 				if (ConfigManager::SaveMainConfig())
-					$info .= lng('OPTIONS_COMPLETE'); else $info .= lng('WRITE_FAIL') . ' ( ' . MCR_ROOT . 'main.cfg.php )';
+					$info .= lng('OPTIONS_COMPLETE'); else $info .= lng('WRITE_FAIL').' ( '.MCR_ROOT.'main.cfg.php )';
 
 				sqlConfigSet('email-name', $email_name);
 				sqlConfigSet('email-mail', $email_mail);
@@ -639,7 +626,7 @@ if ($do) {
 				}
 
 				if ($email_test && !EMail::Send($email_test, 'Mail test', 'Content'))
-					$info .= '<br>' . lng('OPTIONS_MAIL_TEST_FAIL');
+					$info .= '<br>'.lng('OPTIONS_MAIL_TEST_FAIL');
 			}
 
 			$theme_manager = new ThemeManager(false, 'index.php?mode=control&');
@@ -669,7 +656,7 @@ if ($do) {
 				$donate['ik_testing'] = InputGet('new_ik_testing', 'POST', 'bool');
 
 				if (ConfigManager::SaveDonateConfig())
-					$info .= lng('OPTIONS_COMPLETE'); else $info .= lng('WRITE_FAIL') . ' ( ' . MCR_ROOT . 'donate.cfg.php )';
+					$info .= lng('OPTIONS_COMPLETE'); else $info .= lng('WRITE_FAIL').' ( '.MCR_ROOT.'donate.cfg.php )';
 			}
 			include View::Get('donate.html', $st_subdir);
 			break;
@@ -677,22 +664,22 @@ if ($do) {
 			if ($ban_user) {
 				$group_list = GroupManager::GetList($ban_user->group());
 
-				include View::Get('profile_main.html', $st_subdir . 'profile/');
+				include View::Get('profile_main.html', $st_subdir.'profile/');
 
 				$skin_def = $ban_user->defaultSkinTrigger();
 				$cloak_exist = file_exists($ban_user->getCloakFName());
-				$user_img_get = $ban_user->getSkinLink() . '&amp;refresh=' . rand(1000, 9999);
+				$user_img_get = $ban_user->getSkinLink().'&amp;refresh='.rand(1000, 9999);
 
 				if ($cloak_exist or !$skin_def)
-					include View::Get('profile_skin.html', $st_subdir . 'profile/');
+					include View::Get('profile_skin.html', $st_subdir.'profile/');
 				if (!$skin_def)
-					include View::Get('profile_del_skin.html', $st_subdir . 'profile/');
+					include View::Get('profile_del_skin.html', $st_subdir.'profile/');
 				if ($cloak_exist)
-					include View::Get('profile_del_cloak.html', $st_subdir . 'profile/');
+					include View::Get('profile_del_cloak.html', $st_subdir.'profile/');
 				if ($bd_names['iconomy'])
-					include View::Get('profile_money.html', $st_subdir . 'profile/');
+					include View::Get('profile_money.html', $st_subdir.'profile/');
 
-				include View::Get('profile_footer.html', $st_subdir . 'profile/');
+				include View::Get('profile_footer.html', $st_subdir.'profile/');
 			}
 			break;
 
@@ -711,7 +698,6 @@ if ($do) {
 				header("Location: control/forum");
 
 				exit;
-
 			}
 
 
@@ -732,7 +718,6 @@ if ($do) {
 				header("Location: control/forum");
 
 				exit;
-
 			}
 
 
@@ -745,7 +730,6 @@ if ($do) {
 				header("Location: control/forum");
 
 				exit;
-
 			}
 
 
@@ -758,7 +742,6 @@ if ($do) {
 				header("Location: control/forum");
 
 				exit;
-
 			}
 
 
@@ -771,7 +754,6 @@ if ($do) {
 				header("Location: control/forum");
 
 				exit;
-
 			}
 
 
@@ -784,7 +766,6 @@ if ($do) {
 				header("Location: control/forum");
 
 				exit;
-
 			}
 
 
@@ -799,7 +780,6 @@ if ($do) {
 				header("Location: control/forum");
 
 				exit;
-
 			}
 
 
@@ -809,7 +789,6 @@ if ($do) {
 				while ($fpat = $db->fetch_assoc($forum_partition)) {
 
 					$parents[] = $fpat;
-
 				}
 
 
@@ -819,9 +798,7 @@ if ($do) {
 					while ($forums_cont = $db->fetch_assoc($forums)) {
 
 						$value['forums'][] = $forums_cont;
-
 					}
-
 				}
 				unset($value);
 			}
@@ -834,14 +811,12 @@ if ($do) {
 			while ($ftop = $db->fetch_assoc($forum_topics)) {
 
 				$topics[] = $ftop;
-
 			}
 
 
 			while ($ftop_top = $db->fetch_assoc($forum_topics_top)) {
 
 				$topics_top[] = $ftop_top;
-
 			}
 
 
@@ -852,9 +827,9 @@ if ($do) {
 			if (!empty($_GET['ip']) and preg_match("/[0-9.]+$/", $_GET['ip'])) {
 
 				$ip = $_GET['ip'];
-				$db->execute("DELETE FROM {$bd_names['ip_banning']} WHERE IP='" . $db->safe($ip) . "'");
+				$db->execute("DELETE FROM {$bd_names['ip_banning']} WHERE IP='".$db->safe($ip)."'");
 
-				$info .= lng('IP_UNBANNED') . ' ( ' . $ip . ') ';
+				$info .= lng('IP_UNBANNED').' ( '.$ip.') ';
 			}
 			break;
 	}
@@ -872,8 +847,8 @@ if ($do == 'sign') {
 		exit;
 
 	$data[1] = str_replace("\x20", ' ', $data[1]);
-	$data[1] = str_replace(array("\r\n", "\n", "\r"), '<br />', substr($data[1], 0, -1) . '.');
-	$data[1] = '<pre style="word-wrap: break-word; white-space: pre-wrap; font-size: 6px; min-width: 640px;">' . $data[1] . '</pre>';
+	$data[1] = str_replace(array("\r\n", "\n", "\r"), '<br />', substr($data[1], 0, -1).'.');
+	$data[1] = '<pre style="word-wrap: break-word; white-space: pre-wrap; font-size: 6px; min-width: 640px;">'.$data[1].'</pre>';
 
 	echo $data[1];
 	exit;

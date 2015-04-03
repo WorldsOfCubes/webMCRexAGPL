@@ -1,7 +1,7 @@
-<?php 
-if ($mysql_rewrite) 
+<?php
+if ($mysql_rewrite)
 
-BD("ALTER TABLE `{$bd_names['users']}` 
+	BD("ALTER TABLE `{$bd_names['users']}`
 DROP   `{$bd_users['female']}`,
 DROP   `{$bd_users['email']}`,
 DROP   `{$bd_users['tmp']}`,
@@ -16,7 +16,7 @@ DROP   `undress_times`,
 DROP   `default_skin`,
 DROP   `{$bd_users['session']}`,
 DROP   `{$bd_users['clientToken']}`,    
-DROP   `{$bd_users['server']}`;");	
+DROP   `{$bd_users['server']}`;");
 
 BD($bd_alter_users."ADD `{$bd_users['deadtry']}` tinyint(1) DEFAULT 0;");
 BD($bd_alter_users."ADD `{$bd_users['female']}` tinyint(1) NOT NULL DEFAULT '2';");

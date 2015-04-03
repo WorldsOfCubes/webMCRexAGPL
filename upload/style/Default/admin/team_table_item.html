@@ -1,18 +1,36 @@
 <tr>
-<td><center><strong><a href="go/user/profile/<? echo $reqests['name'] ?>" target="_blank"><?php echo $reqests['name'] ?></a></strong></center></td>
-<td><center><strong><?php echo TextBase::HTMLDestruct($reqests['realname']) ?></strong></center></td>
-<td><center><strong><?php echo TextBase::HTMLDestruct($reqests['surname']) ?></strong></center></td>
-<td><center><strong><?php echo TextBase::HTMLDestruct($reqests['old']) ?></strong></center></td>
-<td><center><strong><?php echo TextBase::HTMLDestruct($reqests['skype']) ?></strong></center></td>
+	<td>
+		<center>
+			<strong><a href="go/user/profile/<? echo $reqests['name'] ?>" target="_blank"><?php echo $reqests['name'] ?></a></strong>
+		</center>
+	</td>
+	<td>
+		<center><strong><?php echo TextBase::HTMLDestruct($reqests['realname']) ?></strong></center>
+	</td>
+	<td>
+		<center><strong><?php echo TextBase::HTMLDestruct($reqests['surname']) ?></strong></center>
+	</td>
+	<td>
+		<center><strong><?php echo TextBase::HTMLDestruct($reqests['old']) ?></strong></center>
+	</td>
+	<td>
+		<center><strong><?php echo TextBase::HTMLDestruct($reqests['skype']) ?></strong></center>
+	</td>
 	<form method="post" class="form-inline">
 		<input type="hidden" name="userid" value="<?php echo $reqests['id'] ?>" />
 		<td><?php echo TextBase::HTMLDestruct($reqests['comment']) ?>
 		</td>
 		<td>
 			<select name="answer" class="form-control">
-				<option value="yes" selected="selected" >Принять</option>
+				<option value="yes" selected="selected">Принять</option>
 				<option value="no">Отказать</option>
-				<? if ($user->lvl() >= 15) { ?><option value="del">Удалить</option> <? } ?>
-			</select><center><strong><button class="btn btn-info btn-sm">Отправить</button></strong></center></td>
+				<? if ($user->lvl() >= 15) { ?>
+				<option value="del">Удалить</option>
+				<? } ?>
+			</select>
+			<center><strong>
+				<button class="btn btn-info btn-sm">Отправить</button>
+			</strong></center>
+		</td>
 	</form>
 </tr>

@@ -1,7 +1,8 @@
-<?php 
-if (!defined('MCR')) exit;
+<?php
+if (!defined('MCR'))
+	exit;
 
-$page = 'Карта'; 
+$page = 'Карта';
 
 $content_main = View::ShowStaticPage('map.html');
 

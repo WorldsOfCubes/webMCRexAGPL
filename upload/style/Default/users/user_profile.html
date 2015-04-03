@@ -11,29 +11,40 @@
 					<div class="col-md-4" align="right"><b>
 						Никнейм:</b></div>
 					<div class="col-md-8">
-						<? echo $pl->name(); ?></div>
-				</div><div class="row">
+						<? echo $pl->name(); ?>
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-md-4" align="right"><b>
 						Группа:</b></div>
 					<div class="col-md-8">
-						<? echo $pl->getGroupName(); ?></div>
-				</div><div class="row">
+						<? echo $pl->getGroupName(); ?>
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-md-4" align="right"><b>
 						Уровень предупреждений:</b></div>
 					<div class="col-md-8">
-						<? echo $pl->warnLVL(); ?>%</div>
-				</div><div class="row">
+						<? echo $pl->warnLVL(); ?>%
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-md-4" align="right"><b>
 						Дата регистрации:</b></div>
 					<div class="col-md-8">
-						<? echo ($pl->getStatisticTime('create_time')) ? $pl->getStatisticTime('create_time') : 'Неизвестно'; ?></div>
-				</div><div class="row">
+						<? echo ($pl->getStatisticTime('create_time')) ? $pl->getStatisticTime('create_time') : 'Неизвестно'; ?>
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-md-4" align="right"><b>
 						Последний вход в игру:</b></div>
 					<div class="col-md-8">
-						<? echo ($pl->gameLoginLast()) ? Profile::TimeFrom($pl->gameLoginLast()) : 'Никогда'; ?></div>
-				</div><div class="row">
-				</div><div class="row">
+						<? echo ($pl->gameLoginLast()) ? Profile::TimeFrom($pl->gameLoginLast()) : 'Никогда'; ?>
+					</div>
+				</div>
+				<div class="row">
+				</div>
+				<div class="row">
 					<div class="col-md-4" align="right"><b>
 						Проведенных игр:</b></div>
 					<div class="col-md-8">
@@ -45,11 +56,13 @@
 					<div class="col-md-4" align="right"><b>
 						Тем:</b></div>
 					<div class="col-md-8">
-						<? echo (int) $pl->topics(); ?></div>
+						<? echo (int) $pl->topics(); ?>
+					</div>
 					<div class="col-md-4" align="right"><b>
 						сообщений на форуме:</b></div>
 					<div class="col-md-8">
-						<? echo (int) $pl->posts(); ?></div>
+						<? echo (int) $pl->posts(); ?>
+					</div>
 				</div>
 			</div>
 		</div>

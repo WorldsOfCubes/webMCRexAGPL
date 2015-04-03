@@ -48,9 +48,9 @@ class Mail {
 	  внесено изменение
 	 */
 
-	function Mail($charset="") {
+	function Mail($charset = "") {
 		$this->autoCheck(true);
-		$this->boundary = "--" . md5(uniqid("myboundary"));
+		$this->boundary = "--".md5(uniqid("myboundary"));
 
 
 		if ($charset != "") {
@@ -71,8 +71,7 @@ class Mail {
 
 	function autoCheck($bool) {
 		if ($bool)
-			$this->checkAddress = true;
-		else
+			$this->checkAddress = true; else
 			$this->checkAddress = false;
 	}
 
@@ -85,7 +84,7 @@ class Mail {
 
 	function Subject($subject) {
 
-		$this->xheaders['Subject'] = "=?" . $this->charset . "?Q?" . str_replace("+", "_", str_replace("%", "=", urlencode(strtr($subject, "\r\n", "  ")))) . "?=";
+		$this->xheaders['Subject'] = "=?".$this->charset."?Q?".str_replace("+", "_", str_replace("%", "=", urlencode(strtr($subject, "\r\n", "  "))))."?=";
 	}
 
 	/*
@@ -229,7 +228,7 @@ class Mail {
 	 * 		$text_html в каком формате будет письмо, в тексте или html. по умолчанию стоит текст
 	 */
 
-	function Body($body, $text_html="") {
+	function Body($body, $text_html = "") {
 		$this->body = $body;
 
 		if ($text_html == "html")
@@ -272,7 +271,7 @@ class Mail {
 	  @param string $disposition : инструкция почтовому клиенту как отображать прикрепленный файл ("inline") как часть письма или ("attachment") как прикрепленный файл
 	 */
 
-	function Attach($filename, $webi_filename="", $filetype = "", $disposition = "inline") {
+	function Attach($filename, $webi_filename = "", $filetype = "", $disposition = "inline") {
 		// TODO : если типа файла не указан, ставим неизвестный тип
 		if ($filetype == "")
 			$filetype = "application/x-unknown-content-type";
@@ -299,8 +298,7 @@ class Mail {
 		foreach ($this->sendto as $key => $value) {
 
 			if (strlen($this->names_email['To'][$value]))
-				$temp_mass[] = "=?" . $this->charset . "?Q?" . str_replace("+", "_", str_replace("%", "=", urlencode(strtr($this->names_email['To'][$value], "\r\n", "  ")))) . "?= <" . $value . ">";
-			else
+				$temp_mass[] = "=?".$this->charset."?Q?".str_replace("+", "_", str_replace("%", "=", urlencode(strtr($this->names_email['To'][$value], "\r\n", "  "))))."?= <".$value.">"; else
 				$temp_mass[] = $value;
 		}
 
@@ -315,14 +313,13 @@ class Mail {
 
 		if ($this->receipt) {
 			if (isset($this->xheaders["Reply-To"]))
-				$this->xheaders["Disposition-Notification-To"] = $this->xheaders["Reply-To"];
-			else
+				$this->xheaders["Disposition-Notification-To"] = $this->xheaders["Reply-To"]; else
 				$this->xheaders["Disposition-Notification-To"] = $this->xheaders['From'];
 		}
 
 		if ($this->charset != "") {
 			$this->xheaders["Mime-Version"] = "1.0";
-			$this->xheaders["Content-Type"] = $this->text_html . "; charset=$this->charset";
+			$this->xheaders["Content-Type"] = $this->text_html."; charset=$this->charset";
 			$this->xheaders["Content-Transfer-Encoding"] = $this->ctencoding;
 		}
 
@@ -336,35 +333,31 @@ class Mail {
 		}
 
 
-
 		// создание заголовков если отправка идет через smtp
 		if ($this->smtp_on) {
 
 			// разбиваем (FROM - от кого) на юзера и домен. домен понадобится в заголовке
 			$user_domen = explode('@', $this->xheaders['From']);
 
-			$this->headers = "Date: " . date("D, j M Y G:i:s") . " +0700\r\n";
-			$this->headers .= "Message-ID: <" . rand() . "." . date("YmjHis") . "@" . $user_domen[1] . ">\r\n";
+			$this->headers = "Date: ".date("D, j M Y G:i:s")." +0700\r\n";
+			$this->headers .= "Message-ID: <".rand().".".date("YmjHis")."@".$user_domen[1].">\r\n";
 
 
 			reset($this->xheaders);
-			while (list( $hdr, $value ) = each($this->xheaders)) {
+			while (list($hdr, $value) = each($this->xheaders)) {
 				if ($hdr == "From" and strlen($this->names_email['from']))
-					$this->headers .= $hdr . ": =?" . $this->charset . "?Q?" . str_replace("+", "_", str_replace("%", "=", urlencode(strtr($this->names_email['from'], "\r\n", "  ")))) . "?= <" . $value . ">\r\n";
-				elseif ($hdr == "Reply-To" and strlen($this->names_email['Reply-To']))
-					$this->headers .= $hdr . ": =?" . $this->charset . "?Q?" . str_replace("+", "_", str_replace("%", "=", urlencode(strtr($this->names_email['Reply-To'], "\r\n", "  ")))) . "?= <" . $value . ">\r\n";
+					$this->headers .= $hdr.": =?".$this->charset."?Q?".str_replace("+", "_", str_replace("%", "=", urlencode(strtr($this->names_email['from'], "\r\n", "  "))))."?= <".$value.">\r\n"; elseif ($hdr == "Reply-To" and strlen($this->names_email['Reply-To']))
+					$this->headers .= $hdr.": =?".$this->charset."?Q?".str_replace("+", "_", str_replace("%", "=", urlencode(strtr($this->names_email['Reply-To'], "\r\n", "  "))))."?= <".$value.">\r\n";
 				elseif ($hdr != "BCC")
-					$this->headers .= $hdr . ": " . $value . "\r\n"; // пропускаем заголовок для отправки скрытой копии
+					$this->headers .= $hdr.": ".$value."\r\n"; // пропускаем заголовок для отправки скрытой копии
 			}
-		}
-		// создание заголовоков, если отправка идет через mail()
+		} // создание заголовоков, если отправка идет через mail()
 		else {
 			reset($this->xheaders);
-			while (list( $hdr, $value ) = each($this->xheaders)) {
+			while (list($hdr, $value) = each($this->xheaders)) {
 				if ($hdr == "From" and strlen($this->names_email['from']))
-					$this->headers .= $hdr . ": =?" . $this->charset . "?Q?" . str_replace("+", "_", str_replace("%", "=", urlencode(strtr($this->names_email['from'], "\r\n", "  ")))) . "?= <" . $value . ">\r\n";
-				elseif ($hdr == "Reply-To" and strlen($this->names_email['Reply-To']))
-					$this->headers .= $hdr . ": =?" . $this->charset . "?Q?" . str_replace("+", "_", str_replace("%", "=", urlencode(strtr($this->names_email['Reply-To'], "\r\n", "  ")))) . "?= <" . $value . ">\r\n";
+					$this->headers .= $hdr.": =?".$this->charset."?Q?".str_replace("+", "_", str_replace("%", "=", urlencode(strtr($this->names_email['from'], "\r\n", "  "))))."?= <".$value.">\r\n"; elseif ($hdr == "Reply-To" and strlen($this->names_email['Reply-To']))
+					$this->headers .= $hdr.": =?".$this->charset."?Q?".str_replace("+", "_", str_replace("%", "=", urlencode(strtr($this->names_email['Reply-To'], "\r\n", "  "))))."?= <".$value.">\r\n";
 				elseif ($hdr != "Subject" and $hdr != "To")
 					$this->headers .= "$hdr: $value\n"; // пропускаем заголовки кому и тему... они вставятся сами
 			}
@@ -374,7 +367,7 @@ class Mail {
 	// включение отправки через smtp используя сокеты
 	// после запуска этой функции отправка через smtp включена
 	// для отправки через защищенное соединение сервер нужно указывать с добавлением "ssl://" например так "ssl://smtp.gmail.com"
-	function smtp_on($smtp_serv, $login, $pass, $port=25, $timeout=5) {
+	function smtp_on($smtp_serv, $login, $pass, $port = 25, $timeout = 5) {
 		$this->smtp_on = true; // включаем отправку через smtp
 
 		$this->smtp_serv = $smtp_serv;
@@ -413,9 +406,7 @@ class Mail {
 				return false; // если нет хотя бы одного из основных данных для коннекта, выходим с ошибкой
 
 
-
-
-// разбиваем (FROM - от кого) на юзера и домен. юзер понадобится в приветсвии с сервом
+			// разбиваем (FROM - от кого) на юзера и домен. юзер понадобится в приветсвии с сервом
 			$user_domen = explode('@', $this->xheaders['From']);
 
 
@@ -427,11 +418,11 @@ class Mail {
 				return false;
 			}
 
-			$this->smtp_log .= $data = $this->get_data($smtp_conn) . "\n";
+			$this->smtp_log .= $data = $this->get_data($smtp_conn)."\n";
 
-			fputs($smtp_conn, "EHLO " . $user_domen[0] . "\r\n");
-			$this->smtp_log .= "Я: EHLO " . $user_domen[0] . "\n";
-			$this->smtp_log .= $data = $this->get_data($smtp_conn) . "\n";
+			fputs($smtp_conn, "EHLO ".$user_domen[0]."\r\n");
+			$this->smtp_log .= "Я: EHLO ".$user_domen[0]."\n";
+			$this->smtp_log .= $data = $this->get_data($smtp_conn)."\n";
 			$code = substr($data, 0, 3); // получаем код ответа
 
 			if ($code != 250) {
@@ -442,7 +433,7 @@ class Mail {
 
 			fputs($smtp_conn, "AUTH LOGIN\r\n");
 			$this->smtp_log .= "Я: AUTH LOGIN\n";
-			$this->smtp_log .= $data = $this->get_data($smtp_conn) . "\n";
+			$this->smtp_log .= $data = $this->get_data($smtp_conn)."\n";
 			$code = substr($data, 0, 3);
 
 			if ($code != 334) {
@@ -451,9 +442,9 @@ class Mail {
 				return false;
 			}
 
-			fputs($smtp_conn, base64_encode($this->smtp_login) . "\r\n");
-			$this->smtp_log .= "Я: " . base64_encode($this->smtp_login) . "\n";
-			$this->smtp_log .= $data = $this->get_data($smtp_conn) . "\n";
+			fputs($smtp_conn, base64_encode($this->smtp_login)."\r\n");
+			$this->smtp_log .= "Я: ".base64_encode($this->smtp_login)."\n";
+			$this->smtp_log .= $data = $this->get_data($smtp_conn)."\n";
 
 			$code = substr($data, 0, 3);
 			if ($code != 334) {
@@ -463,9 +454,9 @@ class Mail {
 			}
 
 
-			fputs($smtp_conn, base64_encode($this->smtp_pass) . "\r\n");
-			$this->smtp_log .="Я: " . base64_encode($this->smtp_pass) . "\n";
-			$this->smtp_log .= $data = $this->get_data($smtp_conn) . "\n";
+			fputs($smtp_conn, base64_encode($this->smtp_pass)."\r\n");
+			$this->smtp_log .= "Я: ".base64_encode($this->smtp_pass)."\n";
+			$this->smtp_log .= $data = $this->get_data($smtp_conn)."\n";
 
 			$code = substr($data, 0, 3);
 			if ($code != 235) {
@@ -474,9 +465,9 @@ class Mail {
 				return false;
 			}
 
-			fputs($smtp_conn, "MAIL FROM:<" . $this->xheaders['From'] . "> SIZE=" . strlen($this->headers . "\r\n" . $this->fullBody) . "\r\n");
-			$this->smtp_log .= "Я: MAIL FROM:<" . $this->xheaders['From'] . "> SIZE=" . strlen($this->headers . "\r\n" . $this->fullBody) . "\n";
-			$this->smtp_log .= $data = $this->get_data($smtp_conn) . "\n";
+			fputs($smtp_conn, "MAIL FROM:<".$this->xheaders['From']."> SIZE=".strlen($this->headers."\r\n".$this->fullBody)."\r\n");
+			$this->smtp_log .= "Я: MAIL FROM:<".$this->xheaders['From']."> SIZE=".strlen($this->headers."\r\n".$this->fullBody)."\n";
+			$this->smtp_log .= $data = $this->get_data($smtp_conn)."\n";
 
 			$code = substr($data, 0, 3);
 			if ($code != 250) {
@@ -486,11 +477,10 @@ class Mail {
 			}
 
 
-
 			foreach ($this->smtpsendto as $keywebi => $valuewebi) {
-				fputs($smtp_conn, "RCPT TO:<" . $valuewebi . ">\r\n");
-				$this->smtp_log .= "Я: RCPT TO:<" . $valuewebi . ">\n";
-				$this->smtp_log .= $data = $this->get_data($smtp_conn) . "\n";
+				fputs($smtp_conn, "RCPT TO:<".$valuewebi.">\r\n");
+				$this->smtp_log .= "Я: RCPT TO:<".$valuewebi.">\n";
+				$this->smtp_log .= $data = $this->get_data($smtp_conn)."\n";
 				$code = substr($data, 0, 3);
 				if ($code != 250 AND $code != 251) {
 					$this->smtp_log .= "Сервер не принял команду RCPT TO\n";
@@ -500,11 +490,9 @@ class Mail {
 			}
 
 
-
-
 			fputs($smtp_conn, "DATA\r\n");
-			$this->smtp_log .="Я: DATA\n";
-			$this->smtp_log .= $data = $this->get_data($smtp_conn) . "\n";
+			$this->smtp_log .= "Я: DATA\n";
+			$this->smtp_log .= $data = $this->get_data($smtp_conn)."\n";
 
 			$code = substr($data, 0, 3);
 			if ($code != 354) {
@@ -513,10 +501,10 @@ class Mail {
 				return false;
 			}
 
-			fputs($smtp_conn, $this->headers . "\r\n" . $this->fullBody . "\r\n.\r\n");
-			$this->smtp_log .= "Я: " . $this->headers . "\r\n" . $this->fullBody . "\r\n.\r\n";
+			fputs($smtp_conn, $this->headers."\r\n".$this->fullBody."\r\n.\r\n");
+			$this->smtp_log .= "Я: ".$this->headers."\r\n".$this->fullBody."\r\n.\r\n";
 
-			$this->smtp_log .= $data = $this->get_data($smtp_conn) . "\n";
+			$this->smtp_log .= $data = $this->get_data($smtp_conn)."\n";
 
 			$code = substr($data, 0, 3);
 			if ($code != 250) {
@@ -526,8 +514,8 @@ class Mail {
 			}
 
 			fputs($smtp_conn, "QUIT\r\n");
-			$this->smtp_log .="QUIT\r\n";
-			$this->smtp_log .= $data = $this->get_data($smtp_conn) . "\n";
+			$this->smtp_log .= "QUIT\r\n";
+			$this->smtp_log .= $data = $this->get_data($smtp_conn)."\n";
 			fclose($smtp_conn);
 		}
 		return true;
@@ -546,7 +534,7 @@ class Mail {
 		}
 
 		$this->BuildMail();
-		$mail = $this->headers . "\n\n";
+		$mail = $this->headers."\n\n";
 		$mail .= $this->fullBody;
 		return $mail;
 	}
@@ -562,17 +550,14 @@ class Mail {
 		if (function_exists('filter_list')) {
 			$valid_email = filter_var($address, FILTER_VALIDATE_EMAIL);
 			if ($valid_email !== false)
-				return true;
-			else
+				return true; else
 				return false;
-		}
-		else { // а если php еще старой версии, то проверка валидности пойдет старым способом
+		} else { // а если php еще старой версии, то проверка валидности пойдет старым способом
 			if (ereg(".*<(.+)>", $address, $regs)) {
 				$address = $regs[1];
 			}
 			if (ereg("^[^@  ]+@([a-zA-Z0-9\-]+\.)+([a-zA-Z0-9\-]{2}|net|com|gov|mil|org|edu|int)\$", $address))
-				return true;
-			else
+				return true; else
 				return false;
 		}
 	}
@@ -587,7 +572,7 @@ class Mail {
 	function CheckAdresses($aad) {
 		for ($i = 0; $i < count($aad); $i++) {
 			if (!$this->ValidEmail($aad[$i])) {
-				echo "ошибка : не верный email " . $aad[$i];
+				echo "ошибка : не верный email ".$aad[$i];
 				exit;
 			}
 		}
@@ -602,9 +587,9 @@ class Mail {
 		$this->xheaders["Content-Type"] = "multipart/mixed;\n boundary=\"$this->boundary\"";
 
 		$this->fullBody = "This is a multi-part message in MIME format.\n--$this->boundary\n";
-		$this->fullBody .= "Content-Type: " . $this->text_html . "; charset=$this->charset\nContent-Transfer-Encoding: $this->ctencoding\n\n" . $this->body . "\n";
+		$this->fullBody .= "Content-Type: ".$this->text_html."; charset=$this->charset\nContent-Transfer-Encoding: $this->ctencoding\n\n".$this->body."\n";
 
-		$sep = chr(13) . chr(10);
+		$sep = chr(13).chr(10);
 
 		$ata = array();
 		$k = 0;
@@ -637,7 +622,6 @@ class Mail {
 		}
 		$this->fullBody .= implode($sep, $ata);
 	}
-
 }
 
 // class Mail

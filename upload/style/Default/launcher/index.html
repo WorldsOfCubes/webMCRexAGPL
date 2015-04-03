@@ -2,127 +2,128 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<meta name="Description" content="Minecraft server site" />
-<meta name="robots" content="all,follow" />
-<meta name="author" content="STRELOK2022" />
-<meta name="copyright" content="WorldsOfCubes Team" />
+	<meta name="Description" content="Minecraft server site" />
+	<meta name="robots" content="all,follow" />
+	<meta name="author" content="STRELOK2022" />
+	<meta name="copyright" content="WorldsOfCubes Team" />
 
-<meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<title><?php echo $page_title; ?></title>
+	<title><?php echo $page_title; ?></title>
 
-<base href="<?php echo BASE_URL ?>"> 
- 
-<style type="text/css">
-body {
-    font-family: sans-serif;
-    color: #ffffff;
-}
+	<base href="<?php echo BASE_URL ?>">
 
-table{
-text-align: right;
-margin: 0 auto;
-border:1px;
-border-collapse:separate; 
-width:98%;
-}
+	<style type="text/css">
+		body {
+			font-family: sans-serif;
+			color: #ffffff;
+		}
 
-table td{
-padding:3px; 
-}
+		table {
+			text-align: right;
+			margin: 0 auto;
+			border: 1px;
+			border-collapse: separate;
+			width: 98%;
+		}
 
-table .serverState{
-	background-color: #474747;
-	text-align: center;
-}
+		table td {
+			padding: 3px;
+		}
 
-#player-info {
-border-collapse:collapse;
-}
+		table .serverState {
+			background-color: #474747;
+			text-align: center;
+		}
 
-#player-info td{
-border:1px solid #707070; 
-padding:2;
-}
+		#player-info {
+			border-collapse: collapse;
+		}
 
-.infoPlayers {
-	width:100px; 
-	text-align: right;
-}
+		#player-info td {
+			border: 1px solid #707070;
+			padding: 2;
+		}
 
-a {
-    color: #fdfdfd;
-}
+		.infoPlayers {
+			width: 100px;
+			text-align: right;
+		}
 
-hr {
-   border: 0;
-   color: #111111;
-   background-color: #111111;
-   height: 2px;
-}
+		a {
+			color: #fdfdfd;
+		}
 
-h3 {
-    color: #ffffff;
-    font-size: 16px;
-}
-img {
-    border:0;
-    margin:0;
-}
+		hr {
+			border: 0;
+			color: #111111;
+			background-color: #111111;
+			height: 2px;
+		}
 
-.newsItem {
-  width: 97%;
-  margin:0 auto;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  text-align: left;
-  padding-bottom: 10px; 
-  padding-left: 10px; 
+		h3 {
+			color: #ffffff;
+			font-size: 16px;
+		}
 
-}
+		img {
+			border: 0;
+			margin: 0;
+		}
 
-.title {
-  color: #ffffff;
-  font-size: 18px;
-}
+		.newsItem {
+			width: 97%;
+			margin: 0 auto;
+			margin-bottom: 10px;
+			margin-top: 10px;
+			text-align: left;
+			padding-bottom: 10px;
+			padding-left: 10px;
 
-.text {
-  white-space: pre-wrap;
-  white-space: -moz-pre-wrap;
-  white-space: -pre-wrap;
-  white-space: -o-pre-wrap;
-  word-wrap: break-word; 
-}
+		}
 
-.datetime {
-  color: #ffffff;
-  text-align: right;
-}
+		.title {
+			color: #ffffff;
+			font-size: 18px;
+		}
 
-#adminForm {
-  background: #929292;
-  width: 450px;
-  color: #e5e5e5;
-  margin:0 auto;
-  text-align: center;
-  border: 2px dashed #747474;
-  padding: 4px;
-  padding-bottom: 10px; 
-}
+		.text {
+			white-space: pre-wrap;
+			white-space: -moz-pre-wrap;
+			white-space: -pre-wrap;
+			white-space: -o-pre-wrap;
+			word-wrap: break-word;
+		}
 
-.list-pages {
+		.datetime {
+			color: #ffffff;
+			text-align: right;
+		}
 
- text-align: center;
+		#adminForm {
+			background: #929292;
+			width: 450px;
+			color: #e5e5e5;
+			margin: 0 auto;
+			text-align: center;
+			border: 2px dashed #747474;
+			padding: 4px;
+			padding-bottom: 10px;
+		}
 
-}
+		.list-pages {
 
-.list-pages  a {
+			text-align: center;
 
-color: #f1f1f1;
+		}
 
-}
-</style>
+		.list-pages a {
+
+			color: #f1f1f1;
+
+		}
+	</style>
 
 </head>
 
@@ -130,22 +131,27 @@ color: #f1f1f1;
 
 <table>
 
-<tr>
-	<td align="left"><h1><?php echo $page_title; ?></h1></td>
-	<td rowspan="2" align="center" valign="top" style="width:200px;">
-		<div id="serverInfo"><?php echo $server_state_html; ?></div>
-		<div style="margin-top: 10px; text-align: left; padding: 4;">
-		<p style="font-size: 12px;">Полезные ссылки</p>
-		<p><a href="http://WorldsOfCubes.NET/">WorldsOfCubes Network</a></p>
-		<p><a href="http://CraftSTEVE.ru/">CraftSTEVE</a></p>
-		<p><a href="http://BlogOfCoder.RU/">BlogOfCoder.RU</a></p>
-		
-		
-		</div>
-	</td>
-</tr>
+	<tr>
+		<td align="left"><h1><?php echo $page_title; ?></h1></td>
+		<td rowspan="2" align="center" valign="top" style="width:200px;">
+			<div id="serverInfo"><?php echo $server_state_html; ?></div>
+			<div style="margin-top: 10px; text-align: left; padding: 4;">
+				<p style="font-size: 12px;">Полезные ссылки</p>
 
-<tr><td valign="top"><?php echo $news; ?></td></tr>
+				<p><a href="http://WorldsOfCubes.NET/">WorldsOfCubes Network</a></p>
+
+				<p><a href="http://CraftSTEVE.ru/">CraftSTEVE</a></p>
+
+				<p><a href="http://BlogOfCoder.RU/">BlogOfCoder.RU</a></p>
+
+
+			</div>
+		</td>
+	</tr>
+
+	<tr>
+		<td valign="top"><?php echo $news; ?></td>
+	</tr>
 
 </table>
 

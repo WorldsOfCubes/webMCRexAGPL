@@ -1,7 +1,7 @@
-<?php 
-if ($mysql_rewrite) 
+<?php
+if ($mysql_rewrite)
 
-BD("ALTER TABLE `{$bd_names['users']}` 
+	BD("ALTER TABLE `{$bd_names['users']}`
 DROP `{$bd_users['session']}`,
 DROP `{$bd_users['clientToken']}`,    
 DROP `{$bd_users['server']}`,
@@ -14,7 +14,7 @@ DROP `gameplay_last`,
 DROP `active_last`,
 DROP `play_times`,
 DROP `undress_times`,
-DROP `default_skin`;");	
+DROP `default_skin`;");
 
 BD($bd_alter_users."ADD `{$bd_users['deadtry']}` tinyint(1) DEFAULT 0;");
 BD($bd_alter_users."ADD `{$bd_users['session']}` varchar(255) DEFAULT NULL;");

@@ -76,7 +76,7 @@ Class User {
 					   FROM `{$this->db}`
 					   LEFT JOIN `{$bd_names['iconomy']}` ON `{$bd_names['iconomy']}`.`{$bd_money['login']}`=`{$this->db}`.`{$bd_users['login']}`
 					   LEFT JOIN `{$bd_names['groups']}` ON `{$bd_names['groups']}`.`id`=`{$this->db}`.`{$bd_users['group']}`
-					   WHERE `{$this->db}`.`" . $db->safe($method) . "`='" . $db->safe($input) . "'";
+					   WHERE `{$this->db}`.`".$db->safe($method)."`='".$db->safe($input)."'";
 		$result = $db->execute($sql);
 		if (!$result or $db->num_rows($result) != 1) {
 			$this->id = false;
@@ -99,7 +99,7 @@ Class User {
 		$this->ip = $line[$bd_users['ip']];
 
 		if ($line[$bd_money['bank']] == null) {
-			$db->execute("INSERT INTO `{$bd_names['iconomy']}` (`{$bd_money['login']}`) values ('" . $db->safe($this->name()) . "')");
+			$db->execute("INSERT INTO `{$bd_names['iconomy']}` (`{$bd_money['login']}`) values ('".$db->safe($this->name())."')");
 			$line[$bd_money['bank']] = $line[$bd_money['money']] = 0;
 		}
 		$this->money = floatval($line[$bd_money['bank']]);
@@ -125,7 +125,7 @@ Class User {
 		global $db, $bd_users;
 
 		if ($this->id)
-			$db->execute("UPDATE `{$this->db}` SET `active_last`= NOW() WHERE `{$bd_users['id']}`='" . $this->id . "'");
+			$db->execute("UPDATE `{$this->db}` SET `active_last`= NOW() WHERE `{$bd_users['id']}`='".$this->id."'");
 	}
 
 	public function isOnline() {
@@ -149,7 +149,7 @@ Class User {
 		if (!$this->id)
 			return false;
 
-		$result = $db->execute("SELECT `{$bd_users['password']}` FROM `{$this->db}` WHERE `{$bd_users['id']}`='" . $this->id . "'");
+		$result = $db->execute("SELECT `{$bd_users['password']}` FROM `{$this->db}` WHERE `{$bd_users['id']}`='".$this->id."'");
 		$line = $db->fetch_array($result, MYSQL_NUM);
 
 		$auth_info = array('pass_db' => $line[0], 'pass' => $pass, 'user_id' => $this->id, 'user_name' => $this->name);
@@ -157,7 +157,7 @@ Class User {
 
 		if (!$test_pass) {
 
-			$db->execute("UPDATE `{$this->db}` SET `{$bd_users['deadtry']}`= {$bd_users['deadtry']} + 1 WHERE `{$bd_users['id']}`='" . $this->id . "'");
+			$db->execute("UPDATE `{$this->db}` SET `{$bd_users['deadtry']}`= {$bd_users['deadtry']} + 1 WHERE `{$bd_users['id']}`='".$this->id."'");
 			$this->deadtry++;
 		}
 
@@ -175,7 +175,7 @@ Class User {
 		if ($config['p_logic'] != 'usual' and $config['p_sync'])
 			MCMSAuth::login($this->id());
 
-		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['deadtry']}` = '0', `{$bd_users['tmp']}`='" . $db->safe($tmp) . "', `{$bd_users['ip']}`='" . $db->safe($ip) . "' WHERE `{$bd_users['id']}`='" . $this->id . "'");
+		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['deadtry']}` = '0', `{$bd_users['tmp']}`='".$db->safe($tmp)."', `{$bd_users['ip']}`='".$db->safe($ip)."' WHERE `{$bd_users['id']}`='".$this->id."'");
 
 		$this->tmp = $tmp;
 
@@ -204,7 +204,7 @@ Class User {
 			session_destroy();
 
 		$this->tmp = 0;
-		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['tmp']}`='" . $this->tmp . "' WHERE `{$bd_users['id']}`='" . $this->id . "'");
+		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['tmp']}`='".$this->tmp."' WHERE `{$bd_users['id']}`='".$this->id."'");
 
 		if (isset($_COOKIE['PRTCookie1']))
 			setcookie("PRTCookie1", "", time() - 3600);
@@ -221,12 +221,11 @@ Class User {
 
 		/* Интервал по времени 1 минута */
 
-		$result = $db->execute("SELECT id FROM `{$bd_names['comments']}` WHERE user_id='" . $this->id . "' AND time>NOW()-INTERVAL 1 MINUTE");
+		$result = $db->execute("SELECT id FROM `{$bd_names['comments']}` WHERE user_id='".$this->id."' AND time>NOW()-INTERVAL 1 MINUTE");
 		if ($db->num_rows($result))
 			return false;
 
 		return true;
-
 	}
 
 	public function gameLoginConfirm() {
@@ -235,7 +234,7 @@ Class User {
 		if (!$this->id)
 			return false;
 
-		$db->execute("UPDATE `{$this->db}` SET gameplay_last=NOW(),play_times=play_times+1 WHERE `{$bd_users['id']}`='" . $this->id . "'");
+		$db->execute("UPDATE `{$this->db}` SET gameplay_last=NOW(),play_times=play_times+1 WHERE `{$bd_users['id']}`='".$this->id."'");
 
 		return true;
 	}
@@ -246,10 +245,10 @@ Class User {
 		if (!$this->id)
 			return false;
 
-		$result = $db->execute("SELECT `{$bd_users['id']}` FROM `{$this->db}` WHERE `{$bd_users['server']}` IS NOT NULL and `{$bd_users['id']}`='" . $this->id . "'");
+		$result = $db->execute("SELECT `{$bd_users['id']}` FROM `{$this->db}` WHERE `{$bd_users['server']}` IS NOT NULL and `{$bd_users['id']}`='".$this->id."'");
 
 		if ($db->num_rows($result) == 1)
-			$db->execute("UPDATE `{$this->db}` SET `{$bd_users['server']}`=NULL WHERE `{$bd_users['id']}`='" . $this->id . "'");
+			$db->execute("UPDATE `{$this->db}` SET `{$bd_users['server']}`=NULL WHERE `{$bd_users['id']}`='".$this->id."'");
 
 		return true;
 	}
@@ -260,16 +259,14 @@ Class User {
 		if (!$this->id)
 			return false;
 
-		$result = $db->execute("SELECT `gameplay_last` FROM `{$this->db}` WHERE `gameplay_last` <> '0000-00-00 00:00:00' and `{$bd_users['id']}`='" . $this->id . "'");
+		$result = $db->execute("SELECT `gameplay_last` FROM `{$this->db}` WHERE `gameplay_last` <> '0000-00-00 00:00:00' and `{$bd_users['id']}`='".$this->id."'");
 
 		if ($db->num_rows($result) == 1) {
 
 			$line = $db->fetch_array($result);
 
 			return $line['gameplay_last'];
-
 		} else return false;
-
 	}
 
 	public function getStatisticTime($param) {
@@ -285,7 +282,7 @@ Class User {
 		if ($param === 'create_time')
 			$param = $bd_users['ctime'];
 
-		$result = $db->execute("SELECT `$param` FROM `{$this->db}` WHERE `$param`<>'0000-00-00 00:00:00' and `{$bd_users['id']}`='" . $this->id . "'");
+		$result = $db->execute("SELECT `$param` FROM `{$this->db}` WHERE `$param`<>'0000-00-00 00:00:00' and `{$bd_users['id']}`='".$this->id."'");
 
 		if ($db->num_rows($result) == 1) {
 
@@ -295,9 +292,7 @@ Class User {
 				return date('Y-m-d H:i:s', (int)$line[$param]);    // from UNIX time
 
 			return $line[$param];
-
 		} else return false;
-
 	}
 
 	public function getStatistic() {
@@ -306,7 +301,7 @@ Class User {
 		if (!$this->id)
 			return false;
 
-		$result = $db->execute("SELECT `" . implode("`, `", self::$int_statistic) . "` FROM `{$this->db}` WHERE `{$bd_users['id']}`='" . $this->id . "'");
+		$result = $db->execute("SELECT `".implode("`, `", self::$int_statistic)."` FROM `{$this->db}` WHERE `{$bd_users['id']}`='".$this->id."'");
 
 		if ($db->num_rows($result) == 1)
 
@@ -330,9 +325,9 @@ Class User {
 		$var = abs($var);
 
 		if ($var > 0)
-			$sql_var = $field . $dec . $var; else  $sql_var = "'0'";
+			$sql_var = $field.$dec.$var; else  $sql_var = "'0'";
 
-		$db->execute("UPDATE `{$this->db}` SET `" . $field . "`=" . $sql_var . " WHERE {$bd_users['id']}='" . $this->id . "'");
+		$db->execute("UPDATE `{$this->db}` SET `".$field."`=".$sql_var." WHERE {$bd_users['id']}='".$this->id."'");
 
 		return true;
 	}
@@ -353,13 +348,13 @@ Class User {
 		if (!$bd_names['iconomy'])
 			return false;
 
-		if (!(int) $num)
+		if (!(int)$num)
 			return $this->getMoney();
 
 		$new_pl_money = $this->getMoney() + $num;
 		if ($new_pl_money < 0)
 			$new_pl_money = 0;
-		$db->execute("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['bank']}`='" . $db->safe($new_pl_money) . "' WHERE `{$bd_money['login']}`='" . $db->safe($this->name()) . "'");
+		$db->execute("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['bank']}`='".$db->safe($new_pl_money)."' WHERE `{$bd_money['login']}`='".$db->safe($this->name())."'");
 		$this->money = $new_pl_money;
 		return $new_pl_money;
 	}
@@ -372,26 +367,26 @@ Class User {
 		if (!$bd_names['iconomy'])
 			return false;
 
-		if (!(int) $num)
+		if (!(int)$num)
 			return $this->getEcon();
 
 		$new_pl_emoney = $this->getEcon() + $num;
 		if ($new_pl_emoney < 0)
 			$new_pl_emoney = 0;
 
-		$db->execute("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['money']}`='" . $db->safe($new_pl_emoney) . "' WHERE `{$bd_money['login']}`='" . $db->safe($this->name()) . "'");
+		$db->execute("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['money']}`='".$db->safe($new_pl_emoney)."' WHERE `{$bd_money['login']}`='".$db->safe($this->name())."'");
 		$this->econ = $new_pl_emoney;
 		return $new_pl_emoney;
 	}
 
 	public function getSkinFName() {
 		global $site_ways;
-		return MCRAFT . $site_ways['skins'] . $this->name . '.png';
+		return MCRAFT.$site_ways['skins'].$this->name.'.png';
 	}
 
 	public function getCloakFName() {
 		global $site_ways;
-		return MCRAFT . $site_ways['cloaks'] . $this->name . '.png';
+		return MCRAFT.$site_ways['cloaks'].$this->name.'.png';
 	}
 
 	public function getGroupName() {
@@ -417,45 +412,43 @@ Class User {
 		if (!$this->id)
 			return false;
 
-		$def_dir = MCRAFT . 'tmp/default_skins/';
+		$def_dir = MCRAFT.'tmp/default_skins/';
 
 		if ($this->isFemale())
-			$default_skin_md5 = $def_dir . 'md5_female.md5'; else                     $default_skin_md5 = $def_dir . 'md5.md5';
+			$default_skin_md5 = $def_dir.'md5_female.md5'; else                     $default_skin_md5 = $def_dir.'md5.md5';
 
 		if (file_exists($default_skin_md5)) {
 
 			$md5 = @file($default_skin_md5);
 			if ($md5[0])
 				return $md5[0]; else {
-				vtxtlog('[action.php] error while READING md5 cache file. ' . $default_skin_md5);
+				vtxtlog('[action.php] error while READING md5 cache file. '.$default_skin_md5);
 				return false;
 			}
 		}
 
 		if ($this->isFemale())
-			$default_skin = $def_dir . 'Char_female.png'; else                     $default_skin = $def_dir . 'Char.png';
+			$default_skin = $def_dir.'Char_female.png'; else                     $default_skin = $def_dir.'Char.png';
 
 		if (file_exists($default_skin)) {
 
 			$md5 = md5_file($default_skin);
 			if (!$md5) {
-				vtxtlog('[action.php] md5 generate error. ' . $default_skin);
+				vtxtlog('[action.php] md5 generate error. '.$default_skin);
 				return false;
 			}
 
 			if ($fp = fopen($default_skin_md5, 'w')) {
 				if (!fwrite($fp, $md5))
-					vtxtlog('[action.php] error while SAVE cache file. ' . $default_skin_md5);
+					vtxtlog('[action.php] error while SAVE cache file. '.$default_skin_md5);
 				fclose($fp);
-			} else  vtxtlog('[action.php] error while CREATE cache file. ' . $default_skin_md5);
+			} else  vtxtlog('[action.php] error while CREATE cache file. '.$default_skin_md5);
 
 			return $md5;
-
 		} else {
-			vtxtlog('[action.php] default skin file missing. ' . $default_skin);
+			vtxtlog('[action.php] default skin file missing. '.$default_skin);
 			return false;
 		}
-
 	}
 
 	public function defaultSkinTrigger($new_value = -1) { /* is player use unique skin */
@@ -488,13 +481,12 @@ Class User {
 		$db->execute("UPDATE `{$this->db}` SET default_skin='$new_value' WHERE `{$bd_users['id']}`='{$this->id()}'");
 
 		return ($new_value) ? true : false;
-
 	}
 
 	public function deleteBuffer() {
 
-		$mini = MCRAFT . 'tmp/skin_buffer/' . $this->name . '_Mini.png';
-		$skin = MCRAFT . 'tmp/skin_buffer/' . $this->name . '.png';
+		$mini = MCRAFT.'tmp/skin_buffer/'.$this->name.'_Mini.png';
+		$skin = MCRAFT.'tmp/skin_buffer/'.$this->name.'.png';
 
 		if (file_exists($mini))
 			unlink($mini);
@@ -509,7 +501,7 @@ Class User {
 
 		$this->deleteSkin();
 
-		$default_skin = MCRAFT . 'tmp/default_skins/Char' . (($this->isFemale()) ? '_female' : '') . '.png';
+		$default_skin = MCRAFT.'tmp/default_skins/Char'.(($this->isFemale()) ? '_female' : '').'.png';
 
 		if (!copy($default_skin, $this->getSkinFName()))
 			vtxtlog('[SetDefaultSkin] error while COPY default skin for new user.'); else $this->defaultSkinTrigger(true);
@@ -528,7 +520,7 @@ Class User {
 		if (!preg_match("/^[a-zA-Z0-9_-]+$/", $newname))
 			return 1401;
 
-		$result = $db->execute("SELECT `{$bd_users['login']}` FROM `{$this->db}` WHERE `{$bd_users['login']}`='" . $db->safe($newname) . "'");
+		$result = $db->execute("SELECT `{$bd_users['login']}` FROM `{$this->db}` WHERE `{$bd_users['login']}`='".$db->safe($newname)."'");
 
 		if ($db->num_rows($result))
 			return 1402;
@@ -536,9 +528,9 @@ Class User {
 		if ((strlen($newname) < 4) or (strlen($newname) > 15))
 			return 1403;
 
-		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['login']}`='" . $db->safe($newname) . "' WHERE `{$bd_users['login']}`='" . $db->safe($this->name) . "'");
-		$db->execute("UPDATE `pm` SET `reciver`='" . $db->safe($newname) . "' WHERE `reciver`='" . $db->safe($this->name) . "'");
-		$db->execute("UPDATE `pm` SET `sender`='" . $db->safe($newname) . "' WHERE `sender`='" . $db->safe($this->name) . "'");
+		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['login']}`='".$db->safe($newname)."' WHERE `{$bd_users['login']}`='".$db->safe($this->name)."'");
+		$db->execute("UPDATE `pm` SET `reciver`='".$db->safe($newname)."' WHERE `reciver`='".$db->safe($this->name)."'");
+		$db->execute("UPDATE `pm` SET `sender`='".$db->safe($newname)."' WHERE `sender`='".$db->safe($this->name)."'");
 
 		if (!empty($_SESSION['user_name']) and $_SESSION['user_name'] == $this->name)
 			$_SESSION['user_name'] = $newname;
@@ -546,21 +538,21 @@ Class User {
 		/* Переименование файла скина и плаща */
 
 		$way_tmp_old = $this->getSkinFName();
-		$way_tmp_new = MCRAFT . $site_ways['skins'] . $newname . '.png';
+		$way_tmp_new = MCRAFT.$site_ways['skins'].$newname.'.png';
 
 		if (file_exists($way_tmp_old) and !file_exists($way_tmp_new))
 			rename($way_tmp_old, $way_tmp_new);
 
 		$way_tmp_old = $this->getCloakFName();
-		$way_tmp_new = MCRAFT . $site_ways['cloaks'] . $newname . '.png';
+		$way_tmp_new = MCRAFT.$site_ways['cloaks'].$newname.'.png';
 
 		if (file_exists($way_tmp_old) and !file_exists($way_tmp_new))
 			rename($way_tmp_old, $way_tmp_new);
 
-		$buff_mini = MCRAFT . 'tmp/skin_buffer/' . $this->name . '_Mini.png';
-		$buff_mini_new = MCRAFT . 'tmp/skin_buffer/' . $newname . '.png';
-		$buff_skin = MCRAFT . 'tmp/skin_buffer/' . $this->name . '.png';
-		$buff_skin_new = MCRAFT . 'tmp/skin_buffer/' . $newname . '.png';
+		$buff_mini = MCRAFT.'tmp/skin_buffer/'.$this->name.'_Mini.png';
+		$buff_mini_new = MCRAFT.'tmp/skin_buffer/'.$newname.'.png';
+		$buff_skin = MCRAFT.'tmp/skin_buffer/'.$this->name.'.png';
+		$buff_skin_new = MCRAFT.'tmp/skin_buffer/'.$newname.'.png';
 
 		if (file_exists($buff_mini))
 			rename($buff_mini, $buff_mini_new);
@@ -570,7 +562,6 @@ Class User {
 		$this->name = $newname;
 
 		return 1;
-
 	}
 
 	public function changePassword($newpass, $repass = false, $pass = false) {
@@ -589,7 +580,7 @@ Class User {
 			if (!preg_match($regular, $pass) or !preg_match($regular, $newpass))
 				return 1501;
 
-			$result = $db->execute("SELECT `{$bd_users['password']}` FROM `{$this->db}` WHERE `{$bd_users['login']}`='" . $db->safe($this->name) . "'");
+			$result = $db->execute("SELECT `{$bd_users['password']}` FROM `{$this->db}` WHERE `{$bd_users['login']}`='".$db->safe($this->name)."'");
 			$line = $db->fetch_array($result, MYSQL_NUM);
 
 			if ($line == NULL or !MCRAuth::checkPass(array('pass_db' => $line[0], 'pass' => $pass, 'user_id' => $this->id, 'user_name' => $this->name)))
@@ -603,7 +594,7 @@ Class User {
 		if (($len < $minlen) or ($len > $maxlen))
 			return 1503;
 
-		($config['p_logic'] == 'wocauth') ? $db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='" . MCRAuth::createPass($newpass) . "', `pass_set`=1 WHERE `{$bd_users['login']}`='" . $db->safe($this->name) . "'") : $db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='" . MCRAuth::createPass($newpass) . "' WHERE `{$bd_users['login']}`='" . $db->safe($this->name) . "'");
+		($config['p_logic'] == 'wocauth') ? $db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='".MCRAuth::createPass($newpass)."', `pass_set`=1 WHERE `{$bd_users['login']}`='".$db->safe($this->name)."'") : $db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='".MCRAuth::createPass($newpass)."' WHERE `{$bd_users['login']}`='".$db->safe($this->name)."'");
 		$this->pass_set = true;
 		return 1;
 	}
@@ -617,18 +608,18 @@ Class User {
 		if ($newgroup == $this->group)
 			return false;
 
-		$result = $db->execute("SELECT `name` FROM `{$bd_names['groups']}` WHERE `id`='" . $db->safe($newgroup) . "'");
+		$result = $db->execute("SELECT `name` FROM `{$bd_names['groups']}` WHERE `id`='".$db->safe($newgroup)."'");
 
 		if (!$db->num_rows($result))
 			return false;
 		$result = $db->fetch_array($result);
 
-		$db->execute("UPDATE {$this->db} SET `{$bd_users['group']}`='" . $db->safe($newgroup) . "' WHERE `{$bd_users['id']}`='" . $this->id . "'");
+		$db->execute("UPDATE {$this->db} SET `{$bd_users['group']}`='".$db->safe($newgroup)."' WHERE `{$bd_users['id']}`='".$this->id."'");
 
 		$group = new Group($newgroup);
 		$this->permissions = $group->GetAllPermissions();
-		$db->execute("DELETE FROM `permissions_inheritance` WHERE child='" . $this->name . "';");
-		$db->execute("INSERT INTO permissions_inheritance (id, child, parent, type, world) VALUES (NULL, '" . $this->name . "', '" . $db->safe($group->GetPexName()) . "', '1', NULL)");
+		$db->execute("DELETE FROM `permissions_inheritance` WHERE child='".$this->name."';");
+		$db->execute("INSERT INTO permissions_inheritance (id, child, parent, type, world) VALUES (NULL, '".$this->name."', '".$db->safe($group->GetPexName())."', '1', NULL)");
 
 		$this->group_name = $result['name'];
 		$this->group = $newgroup;
@@ -648,7 +639,7 @@ Class User {
 		if ((int)$this->gender() == $female)
 			return false;
 
-		$db->execute("UPDATE {$this->db} SET `{$bd_users['female']}`='$isFemale' WHERE `{$bd_users['id']}`='" . $this->id . "'");
+		$db->execute("UPDATE {$this->db} SET `{$bd_users['female']}`='$isFemale' WHERE `{$bd_users['id']}`='".$this->id."'");
 
 		$this->gender = $female;
 		$this->female = ($female) ? true : false;
@@ -668,19 +659,18 @@ Class User {
 
 			if (!$verification)
 				return 1;
-
 		} else {
 
-			$result = $db->execute("SELECT `id` FROM {$this->db} WHERE `{$bd_users['email']}`='" . $db->safe($email) . "' AND `{$bd_users['id']}` != '" . $this->id . "' ");
+			$result = $db->execute("SELECT `id` FROM {$this->db} WHERE `{$bd_users['email']}`='".$db->safe($email)."' AND `{$bd_users['id']}` != '".$this->id."' ");
 			if ($db->num_rows($result))
 				return 1902;
 		}
 
 		if ($verification) {
 
-			$subject = lng('MAIL_CONFIRM') . ' - ' . sqlConfigGet('email-name');
-			$http_link = 'http://' . $_SERVER['SERVER_NAME'] . BASE_URL . 'register.php?id=' . $this->id() . '&verificate=' . $this->getVerificationStr();
-			$message = '<html><body><p>' . lng('MAIL_CONFIRM_MES') . '. <a href="' . $http_link . '">' . lng('OPEN') . '</a></p><p>' . lng('MAIL_CONFIRM_MES_END') . '</p></body></html>';
+			$subject = lng('MAIL_CONFIRM').' - '.sqlConfigGet('email-name');
+			$http_link = 'http://'.$_SERVER['SERVER_NAME'].BASE_URL.'register.php?id='.$this->id().'&verificate='.$this->getVerificationStr();
+			$message = '<html><body><p>'.lng('MAIL_CONFIRM_MES').'. <a href="'.$http_link.'">'.lng('OPEN').'</a></p><p>'.lng('MAIL_CONFIRM_MES_END').'</p></body></html>';
 
 			$send_result = EMail::Send($email, $subject, $message);
 
@@ -690,7 +680,7 @@ Class User {
 
 		if ($email != $this->email)
 
-			$db->execute("UPDATE {$this->db} SET `{$bd_users['email']}`='" . $db->safe($email) . "' WHERE `{$bd_users['id']}`='" . $this->id . "'");
+			$db->execute("UPDATE {$this->db} SET `{$bd_users['email']}`='".$db->safe($email)."' WHERE `{$bd_users['id']}`='".$this->id."'");
 
 		$this->email = $email;
 
@@ -720,11 +710,11 @@ Class User {
 
 		if (($mini and $use_def_skin) or (!file_exists($way_cloak) and $use_def_skin))
 
-			$get_p .= 'female=' . (($female) ? '1' : '0'); else
-			$get_p .= 'user_name=' . $name;
+			$get_p .= 'female='.(($female) ? '1' : '0'); else
+			$get_p .= 'user_name='.$name;
 
 		if ($refresh)
-			$get_p .= $amp . 'refresh=' . rand(1000, 9999);
+			$get_p .= $amp.'refresh='.rand(1000, 9999);
 
 		return $get_p;
 	}
@@ -738,13 +728,13 @@ Class User {
 		if (!POSTGood($post_name))
 			return 1604;
 
-		$tmp_dir = MCRAFT . 'tmp/';
+		$tmp_dir = MCRAFT.'tmp/';
 
 		$new_file_info = POSTSafeMove($post_name, $tmp_dir);
 		if (!$new_file_info)
 			return 1610;
 
-		$way = $tmp_dir . $new_file_info['tmp_name'];
+		$way = $tmp_dir.$new_file_info['tmp_name'];
 
 		if ((int)$this->getPermission('max_fsize') < $new_file_info['size_mb'] * 1024) {
 
@@ -768,7 +758,7 @@ Class User {
 			chmod($new_way, 0777); else {
 
 			unlink($way);
-			vtxtlog('[Ошибка модуля загрузки] Ошибка копирования [' . $way . '] в [' . $new_way . '] . Проверьте доступ на ЧТЕНИЕ \ ЗАПИСЬ соответствующих папок.');
+			vtxtlog('[Ошибка модуля загрузки] Ошибка копирования ['.$way.'] в ['.$new_way.'] . Проверьте доступ на ЧТЕНИЕ \ ЗАПИСЬ соответствующих папок.');
 			return 1611;
 		}
 
@@ -781,7 +771,7 @@ Class User {
 
 		$this->deleteBuffer();
 
-		$db->execute("UPDATE `{$this->db}` SET `undress_times`=`undress_times`+1 WHERE `{$bd_users['id']}`='" . $this->id() . "'");
+		$db->execute("UPDATE `{$this->db}` SET `undress_times`=`undress_times`+1 WHERE `{$bd_users['id']}`='".$this->id()."'");
 		return 1;
 	}
 
@@ -797,7 +787,7 @@ Class User {
 		$this->deleteSkin();
 		$this->deleteBuffer();
 
-		$result = $db->execute("SELECT `id` FROM `{$bd_names['comments']}` WHERE `user_id`='" . $this->id . "'");
+		$result = $db->execute("SELECT `id` FROM `{$bd_names['comments']}` WHERE `user_id`='".$this->id."'");
 		if ($db->num_rows($result) != 0) {
 
 			while ($line = $db->fetch_array($result, MYSQL_NUM)) {
@@ -808,7 +798,7 @@ Class User {
 			}
 		}
 
-		$db->execute("DELETE FROM `{$this->db}` WHERE `{$bd_users['id']}`= '" . $this->id() . "'");
+		$db->execute("DELETE FROM `{$this->db}` WHERE `{$bd_users['id']}`= '".$this->id()."'");
 
 		$this->id = false;
 		return true;
@@ -825,7 +815,7 @@ Class User {
 			sqlConfigSet('email-verification-salt', $salt);
 		}
 
-		return md5($this->id() . $salt);
+		return md5($this->id().$salt);
 	}
 
 	public function getPermission($param) {
@@ -943,7 +933,7 @@ Class Group extends TextBase {
 		if (!in_array($param, $this->pavailable))
 			return -1;
 
-		$result = $db->execute("SELECT `$param` FROM `{$this->db}` WHERE `id`='" . $this->id . "'");
+		$result = $db->execute("SELECT `$param` FROM `{$this->db}` WHERE `id`='".$this->id."'");
 
 		if ($db->num_rows($result) == 1) {
 
@@ -954,7 +944,6 @@ Class Group extends TextBase {
 
 				$value = ($line[0]) ? true : false;
 			return $value;
-
 		} else return -1;
 	}
 
@@ -963,9 +952,9 @@ Class Group extends TextBase {
 		$sql_names = null;
 
 		for ($i = 0; $i < sizeof($this->pavailable); $i++)
-			($sql_names)? $sql_names .= ",`{$this->pavailable[$i]}`" : $sql_names .= "`{$this->pavailable[$i]}`";
+			($sql_names) ? $sql_names .= ",`{$this->pavailable[$i]}`" : $sql_names .= "`{$this->pavailable[$i]}`";
 
-		$result = $db->execute("SELECT $sql_names FROM `{$this->db}` WHERE `id`='" . $this->id . "'");
+		$result = $db->execute("SELECT $sql_names FROM `{$this->db}` WHERE `id`='".$this->id."'");
 		return $db->fetch_array($result, MYSQL_ASSOC);
 	}
 
@@ -974,7 +963,7 @@ Class Group extends TextBase {
 		if (!$this->id)
 			return false;
 
-		$result = $db->execute("SELECT COUNT(*) FROM `{$this->db}` WHERE `id`='" . $this->id . "'");
+		$result = $db->execute("SELECT COUNT(*) FROM `{$this->db}` WHERE `id`='".$this->id."'");
 		$num = $db->fetch_array($result, MYSQL_NUM);
 
 		if ($num[0])
@@ -992,7 +981,7 @@ Class Group extends TextBase {
 		if (!$name or !TextBase::StringLen($name))
 			return false;
 
-		$result = $db->execute("SELECT COUNT(*) FROM `{$this->db}` WHERE `name`='" . $db->safe($name) . "'");
+		$result = $db->execute("SELECT COUNT(*) FROM `{$this->db}` WHERE `name`='".$db->safe($name)."'");
 		$num = $db->fetch_array($result, MYSQL_NUM);
 		if ($num[0])
 			return false;
@@ -1014,7 +1003,7 @@ Class Group extends TextBase {
 				$sql_vars .= ",'$value'"; else $sql_vars .= "'$value'";
 		}
 
-		$result = $db->execute("INSERT INTO `{$this->db}` (`name`, `pex_name`,$sql_names) values ('" . $db->safe($name) . "','" . $db->safe($pex_name) . "',$sql_vars)");
+		$result = $db->execute("INSERT INTO `{$this->db}` (`name`, `pex_name`,$sql_names) values ('".$db->safe($name)."','".$db->safe($pex_name)."',$sql_vars)");
 		if ($result and $db->affected_rows())
 			$this->id = $db->insert_id(); else return false;
 
@@ -1023,7 +1012,7 @@ Class Group extends TextBase {
 
 	public function GetName() {
 		global $db;
-		$result = $db->execute("SELECT `name` FROM `{$this->db}` WHERE `id`='" . $this->id . "'");
+		$result = $db->execute("SELECT `name` FROM `{$this->db}` WHERE `id`='".$this->id."'");
 
 		if ($db->num_rows($result) != 1)
 			return false;
@@ -1034,7 +1023,7 @@ Class Group extends TextBase {
 
 	public function GetPexName() {
 		global $db;
-		$result = $db->execute("SELECT `pex_name` FROM `{$this->db}` WHERE `id`='" . $this->id . "'");
+		$result = $db->execute("SELECT `pex_name` FROM `{$this->db}` WHERE `id`='".$this->id."'");
 
 		if ($db->num_rows($result) != 1) {
 			return false;
@@ -1045,7 +1034,7 @@ Class Group extends TextBase {
 
 	public function IsSystem() {
 		global $db;
-		$result = $db->execute("SELECT `system` FROM `{$this->db}` WHERE `id`='" . $this->id . "'");
+		$result = $db->execute("SELECT `system` FROM `{$this->db}` WHERE `id`='".$this->id."'");
 
 		if ($db->num_rows($result) != 1)
 			return false;
@@ -1061,7 +1050,7 @@ Class Group extends TextBase {
 		if (!$name or !TextBase::StringLen($name))
 			return false;
 
-		$result = $db->execute("SELECT COUNT(*) FROM `{$this->db}` WHERE `name`='" . $db->safe($name) . "' and `id`!='" . $this->id . "'");
+		$result = $db->execute("SELECT COUNT(*) FROM `{$this->db}` WHERE `name`='".$db->safe($name)."' and `id`!='".$this->id."'");
 		$num = $db->fetch_array($result, MYSQL_NUM);
 		if ($num[0])
 			return false;
@@ -1076,7 +1065,6 @@ Class Group extends TextBase {
 
 				if ($key != 'max_fsize' and $key != 'max_ratio' and $key != 'lvl')
 					$value = ($permissions[$key]) ? 1 : 0; else                $value = $db->safe((int)$permissions[$key]);
-
 			} else $value = 0;
 
 			$sql .= ",`$key`='$value'";
@@ -1085,8 +1073,8 @@ Class Group extends TextBase {
 		if (!$sql)
 			$sql = '';
 
-		$result = $db->execute("UPDATE `{$this->db}` SET `name`='" . $db->safe($name) . "'$sql WHERE `id`='" . $this->id . "'");
-		$result = $db->execute("UPDATE `{$this->db}` SET `pex_name`='" . $db->safe($pex_name) . "'$sql WHERE `id`='" . $this->id . "'");
+		$result = $db->execute("UPDATE `{$this->db}` SET `name`='".$db->safe($name)."'$sql WHERE `id`='".$this->id."'");
+		$result = $db->execute("UPDATE `{$this->db}` SET `pex_name`='".$db->safe($pex_name)."'$sql WHERE `id`='".$this->id."'");
 		if ($result and $db->affected_rows())
 			return true;
 
@@ -1101,7 +1089,7 @@ Class Group extends TextBase {
 		if ($this->IsSystem())
 			return false;
 
-		$result = $db->execute("SELECT `id` FROM `{$bd_names['users']}` WHERE `group`='" . $this->id . "'");
+		$result = $db->execute("SELECT `id` FROM `{$bd_names['users']}` WHERE `group`='".$this->id."'");
 		if ($db->num_rows($result) != 0) {
 
 			while ($line = $db->fetch_array($result, MYSQL_NUM)) {
@@ -1112,7 +1100,7 @@ Class Group extends TextBase {
 			}
 		}
 
-		$result = $db->execute("DELETE FROM `{$this->db}` WHERE `id` = '" . $this->id . "' and `system` = '0'");
+		$result = $db->execute("DELETE FROM `{$this->db}` WHERE `id` = '".$this->id."' and `system` = '0'");
 
 		$this->id = false;
 		if ($result and $db->affected_rows())
@@ -1131,7 +1119,7 @@ Class GroupManager {
 		$group_list = '';
 
 		while ($line = $db->fetch_array($result, MYSQL_ASSOC))
-			$group_list .= '<option value="' . $line['id'] . '" ' . (($selected == $line['id']) ? 'selected' : '') . '>' . $line['name'] . '</option>';
+			$group_list .= '<option value="'.$line['id'].'" '.(($selected == $line['id']) ? 'selected' : '').'>'.$line['name'].'</option>';
 
 		return $group_list;
 	}

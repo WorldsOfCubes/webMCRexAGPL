@@ -90,10 +90,10 @@ class Profile extends View {
 		$tmpParam = $this->user->email();
 		$user_info['email'] = array(($tmpParam) ? $tmpParam : lng('NOT_SET'), 'Почта');
 
-		$user_info['vote'] = array($this->user->voted() . " раз", 'Голосовал');
+		$user_info['vote'] = array($this->user->voted()." раз", 'Голосовал');
 
-		$user_info['money'] = array($this->user->getMoney() . $donate['currency_donate'], 'Донат-счет');
-		$user_info['econ'] = array($this->user->getEcon() . $donate['currency_ingame'], 'Игровой баланс');
+		$user_info['money'] = array($this->user->getMoney().$donate['currency_donate'], 'Донат-счет');
+		$user_info['econ'] = array($this->user->getEcon().$donate['currency_ingame'], 'Игровой баланс');
 
 		if ($this->admin_mode && !$this->self_ignore) {
 			$user_info['ip'] = array($this->user->ip(), 'IP');

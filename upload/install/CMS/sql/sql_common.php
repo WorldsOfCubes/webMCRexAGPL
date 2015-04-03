@@ -1,11 +1,11 @@
-<?php 
+<?php
 /* SQL COMMON TABLES CREATE + ADD DEFAULT INFO + UPDATES */
 
 BD("SET FOREIGN_KEY_CHECKS=0;");
 
 if ($mysql_rewrite) {
 
-BD("DROP TABLE IF EXISTS `{$bd_names['ip_banning']}`,
+	BD("DROP TABLE IF EXISTS `{$bd_names['ip_banning']}`,
                         `{$bd_names['news']}`,
                         `{$bd_names['news_categorys']}`,
                         `{$bd_names['likes']}`,
@@ -24,7 +24,7 @@ BD("DROP TABLE IF EXISTS `{$bd_names['ip_banning']}`,
 }
 
 /* CREATE TABLES */
-	
+
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['likes']}` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
@@ -199,85 +199,84 @@ if (!BD_ColumnExist($bd_names['users'], 'pass_set') && $mode == "wocauth")
 
 if (!BD_ColumnExist($bd_names['ip_banning'], 'ban_type'))
 
-BD("ALTER TABLE `{$bd_names['ip_banning']}` ADD `ban_type` tinyint(1) NOT NULL DEFAULT 1;");
+	BD("ALTER TABLE `{$bd_names['ip_banning']}` ADD `ban_type` tinyint(1) NOT NULL DEFAULT 1;");
 
-if (!BD_ColumnExist($bd_names['ip_banning'], 'reason'))	
+if (!BD_ColumnExist($bd_names['ip_banning'], 'reason'))
 
-BD("ALTER TABLE `{$bd_names['ip_banning']}`  ADD `reason` varchar(255) DEFAULT NULL;");
-	
+	BD("ALTER TABLE `{$bd_names['ip_banning']}`  ADD `reason` varchar(255) DEFAULT NULL;");
+
 /* webMCR 2.1 UPDATE */
 
 if (!BD_ColumnExist($bd_names['news'], 'user_id')) {
 
-BD("ALTER TABLE `{$bd_names['news']}` 
+	BD("ALTER TABLE `{$bd_names['news']}`
 	ADD `user_id` bigint(20) NOT NULL,
 	ADD `dislikes` int(10) DEFAULT 0,
 	ADD `likes` int(10) DEFAULT 0;");
 	
-BD("ALTER TABLE `{$bd_names['news']}`	ADD KEY `category_id` (`category_id`),
+	BD("ALTER TABLE `{$bd_names['news']}`	ADD KEY `category_id` (`category_id`),
 										ADD KEY `user_id` (`user_id`);");
-					
-BD("ALTER TABLE `{$bd_names['comments']}`	ADD KEY `user_id` (`user_id`),
+
+	BD("ALTER TABLE `{$bd_names['comments']}`	ADD KEY `user_id` (`user_id`),
 											ADD	KEY `item_id` (`item_id`);");
 
-BD("ALTER TABLE `{$bd_names['users']}`	ADD	KEY `group_id` (`{$bd_users['group']}`);");
-
+	BD("ALTER TABLE `{$bd_names['users']}`	ADD	KEY `group_id` (`{$bd_users['group']}`);");
 }
 
 /* webMCR 2.15 UPDATE */
 if (!BD_ColumnExist($bd_names['users'], $bd_users['deadtry'])) {
 
-BD("ALTER TABLE `{$bd_names['users']}`	ADD `{$bd_users['deadtry']}` tinyint(1) DEFAULT 0;");	
+	BD("ALTER TABLE `{$bd_names['users']}`	ADD `{$bd_users['deadtry']}` tinyint(1) DEFAULT 0;");
 }
 
 /* webMCR 2.25b UPDATE */
 if (!BD_ColumnExist($bd_names['users'], $bd_users['clientToken'])) {
 
-BD("ALTER TABLE `{$bd_names['users']}` ADD `{$bd_users['clientToken']}` varchar(255) DEFAULT NULL;");	
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `{$bd_users['clientToken']}` varchar(255) DEFAULT NULL;");
 }
 
 /* webMCR 2.3 UPDATE */
 if (!BD_ColumnExist($bd_names['servers'], 'service_user')) {
 
-BD("ALTER TABLE `{$bd_names['servers']}` ADD `service_user` char(64) default NULL;");
-BD("ALTER TABLE `{$bd_names['news']}` ADD `hits` int(10) DEFAULT 0;");	
+	BD("ALTER TABLE `{$bd_names['servers']}` ADD `service_user` char(64) default NULL;");
+	BD("ALTER TABLE `{$bd_names['news']}` ADD `hits` int(10) DEFAULT 0;");
 }
 
 if (!BD_ColumnExist($bd_names['news'], 'hide_vote'))
 
-BD("ALTER TABLE `{$bd_names['news']}` ADD `hide_vote` tinyint(1) NOT NULL DEFAULT 0;");	
+	BD("ALTER TABLE `{$bd_names['news']}` ADD `hide_vote` tinyint(1) NOT NULL DEFAULT 0;");
 
 /* webMCR 2.31 UPDATE */
 if (!BD_ColumnExist($bd_names['comments'], 'item_type')) {
 
-BD("ALTER TABLE `{$bd_names['comments']}` ADD `item_type` smallint(3) DEFAULT ". ItemType::News .";");
-BD("ALTER TABLE `{$bd_names['comments']}` DROP KEY `item_id`");
-BD("ALTER TABLE `{$bd_names['comments']}` ADD KEY `uniq_item` (`item_id`, `item_type`);");
+	BD("ALTER TABLE `{$bd_names['comments']}` ADD `item_type` smallint(3) DEFAULT ".ItemType::News.";");
+	BD("ALTER TABLE `{$bd_names['comments']}` DROP KEY `item_id`");
+	BD("ALTER TABLE `{$bd_names['comments']}` ADD KEY `uniq_item` (`item_id`, `item_type`);");
 
-BD("ALTER TABLE `{$bd_names['news']}` CHANGE COLUMN `hide_vote` `vote` tinyint(1) NOT NULL DEFAULT 1;");
-BD("ALTER TABLE `{$bd_names['news']}` ADD `discus` tinyint(1) NOT NULL DEFAULT 1;");
-BD("ALTER TABLE `{$bd_names['news']}` ADD `comments` int(10) NOT NULL DEFAULT 0;");
+	BD("ALTER TABLE `{$bd_names['news']}` CHANGE COLUMN `hide_vote` `vote` tinyint(1) NOT NULL DEFAULT 1;");
+	BD("ALTER TABLE `{$bd_names['news']}` ADD `discus` tinyint(1) NOT NULL DEFAULT 1;");
+	BD("ALTER TABLE `{$bd_names['news']}` ADD `comments` int(10) NOT NULL DEFAULT 0;");
 }
 
 /* webMCRex 1.235b_r2 UPDATE */
 if (!BD_ColumnExist($bd_names['users'], 'vote')) {
 
-BD("ALTER TABLE `{$bd_names['users']}` ADD `vote` smallint(10) DEFAULT 0;");
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `vote` smallint(10) DEFAULT 0;");
 }
 
 /* webMCRex 2.0 UPDATE */
 if (!BD_ColumnExist($bd_names['groups'], 'pex_name')) {
 
-BD("ALTER TABLE `{$bd_names['groups']}` ADD `pex_name` char(64) NOT NULL;");
-BD("ALTER TABLE `{$bd_names['users']}` ADD `warn_lvl` smallint(10) DEFAULT 0;");
-BD("ALTER TABLE `{$bd_names['users']}` ADD `topics` smallint(10) DEFAULT 0;");
-BD("ALTER TABLE `{$bd_names['users']}` ADD `posts` smallint(10) DEFAULT 0;");
+	BD("ALTER TABLE `{$bd_names['groups']}` ADD `pex_name` char(64) NOT NULL;");
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `warn_lvl` smallint(10) DEFAULT 0;");
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `topics` smallint(10) DEFAULT 0;");
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `posts` smallint(10) DEFAULT 0;");
 }
 
 /* webMCRex 2.0b40 UPDATE */
 if (!BD_ColumnExist($bd_names['groups'], 'change_prefix')) {
 
-BD("ALTER TABLE `{$bd_names['groups']}` ADD `change_prefix` SMALLINT(1) NOT NULL DEFAULT 0;");
+	BD("ALTER TABLE `{$bd_names['groups']}` ADD `change_prefix` SMALLINT(1) NOT NULL DEFAULT 0;");
 }
 
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['action_log']}` (

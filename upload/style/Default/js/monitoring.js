@@ -86,7 +86,8 @@ function ProgressBarManager(className, static_text) {
 	function parseIntZero(value) {
 		value = parseInt(value)
 
-		if (isNaN(value)) return 0 else return value
+		if (isNaN(value)) return 0
+		else return value
 	}
 
 	function getDivsByClass(className) {
@@ -113,7 +114,8 @@ function ProgressBarManager(className, static_text) {
 
 		if (from < to) setTimeout(function () {
 			AnimateBar(pid, from, to)
-		}, 35) else PBars[pid].bar.style.width = to + '%'
+		}, 35)
+		else PBars[pid].bar.style.width = to + '%'
 	}
 
 	function MoveImage(pid) {

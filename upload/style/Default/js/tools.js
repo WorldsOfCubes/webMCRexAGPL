@@ -231,7 +231,8 @@ function BlockVisible(itemID, state) {
 
 	if (state == null) {
 
-		if (item.style.display == 'block') item.style.display = 'none' else item.style.display = 'block'
+		if (item.style.display == 'block') item.style.display = 'none'
+		else item.style.display = 'block'
 
 		return true
 	}
@@ -264,13 +265,15 @@ function toggleButton(id) {
 function getValById(id) {
 
 	var el = GetById(id)
-	if (el == null || el.value == null) return null else return el.value
+	if (el == null || el.value == null) return null
+	else return el.value
 
 }
 
 function insertInBegin(elem, refElem) {
 	if (typeof refElem.firstChild == 'undefined')
-		return refElem.appendChild(elem) else
+		return refElem.appendChild(elem)
+	else
 		return refElem.insertBefore(elem, refElem.firstChild);
 }
 
@@ -283,7 +286,9 @@ function getIframeDocument(iframeNode) {
 
 function IframeOnLoadEvent(iframeNode, event) {
 
-	if (iframeNode.attachEvent) iframeNode.attachEvent('onload', event) else if (iframe.addEventListener) iframeNode.addEventListener('load', event, false) else iframeNode.onload = event
+	if (iframeNode.attachEvent) iframeNode.attachEvent('onload', event)
+	else if (iframe.addEventListener) iframeNode.addEventListener('load', event, false)
+	else iframeNode.onload = event
 }
 
 function clearFileInputField(Id) {

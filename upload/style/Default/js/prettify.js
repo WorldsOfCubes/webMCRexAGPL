@@ -19,7 +19,8 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
 		function h(a) {
 			for (var f = a.substring(1, a.length - 1).match(/\\u[\dA-Fa-f]{4}|\\x[\dA-Fa-f]{2}|\\[0-3][0-7]{0,2}|\\[0-7]{1,2}|\\[\S\s]|[^\\]/g), a = [], b = [], o = f[0] === "^", c = o ? 1 : 0, i = f.length; c < i; ++c) {
 				var j = f[c];
-				if (/\\[bdsw]/i.test(j))a.push(j); else {
+				if (/\\[bdsw]/i.test(j))a.push(j);
+				else {
 					var j = m(j), d;
 					c + 2 < i && "-" === f[c + 1] ? (d = m(f[c + 2]), c += 2) : d = j;
 					b.push([j, d]);
@@ -57,7 +58,8 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
 
 		for (var t = 0, s = !1, l = !1, p = 0, d = a.length; p < d; ++p) {
 			var g = a[p];
-			if (g.ignoreCase)l = !0; else if (/[a-z]/i.test(g.source.replace(/\\u[\da-f]{4}|\\x[\da-f]{2}|\\[^UXux]/gi, ""))) {
+			if (g.ignoreCase)l = !0;
+			else if (/[a-z]/i.test(g.source.replace(/\\u[\da-f]{4}|\\x[\da-f]{2}|\\[^UXux]/gi, ""))) {
 				s = !0;
 				l = !1;
 				break
@@ -101,9 +103,11 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
 		function e(a) {
 			for (var l = a.d, p = [l, "pln"], d = 0, g = a.a.match(y) || [], r = {}, n = 0, z = g.length; n < z; ++n) {
 				var f = g[n], b = r[f], o = void 0, c;
-				if (typeof b === "string")c = !1; else {
+				if (typeof b === "string")c = !1;
+				else {
 					var i = h[f.charAt(0)];
-					if (i)o = f.match(i[1]), b = i[0]; else {
+					if (i)o = f.match(i[1]), b = i[0];
+					else {
 						for (c = 0; c < t; ++c)if (i = m[c], o = f.match(i[1])) {
 							b = i[0];
 							break
@@ -165,7 +169,8 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
 			switch (a.nodeType) {
 				case 1:
 					if (k.test(a.className))break;
-					if ("BR" === a.nodeName)h(a), a.parentNode && a.parentNode.removeChild(a); else for (a = a.firstChild; a; a = a.nextSibling)e(a);
+					if ("BR" === a.nodeName)h(a), a.parentNode && a.parentNode.removeChild(a);
+					else for (a = a.firstChild; a; a = a.nextSibling)e(a);
 					break;
 				case 3:
 				case 4:

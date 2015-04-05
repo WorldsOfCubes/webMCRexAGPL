@@ -304,7 +304,8 @@ tinyMCEPopup = {
 		};
 
 		if (tinymce.isOpera)
-			t.getWin().setTimeout(close, 0); else
+			t.getWin().setTimeout(close, 0);
+		else
 			close();
 	},
 
@@ -363,7 +364,8 @@ tinyMCEPopup = {
 
 		// Set inline title
 		if (!t.isWindow)
-			t.editor.windowManager.setTitle(window, ti); else
+			t.editor.windowManager.setTitle(window, ti);
+		else
 			window.focus();
 
 		if (!tinymce.isIE && !t.isWindow) {

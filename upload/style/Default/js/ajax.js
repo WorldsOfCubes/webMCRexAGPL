@@ -15,7 +15,8 @@ function DeleteComment(id) {
 			$(this).hide()
 			var commentTrash = GetById('comment-byid-' + id)
 
-			if (commentTrash == null) document.location.reload(true) else commentTrash.parentNode.removeChild(commentTrash)
+			if (commentTrash == null) document.location.reload(true)
+			else commentTrash.parentNode.removeChild(commentTrash)
 		});
 	}
 
@@ -56,7 +57,8 @@ function Like(dislike, id, type) {
 				like.innerHTML = parseInt(like.innerHTML) + 1
 			}
 
-		else if (dislike) dlike.innerHTML = parseInt(dlike.innerHTML) + 1 else like.innerHTML = parseInt(like.innerHTML) + 1
+		else if (dislike) dlike.innerHTML = parseInt(dlike.innerHTML) + 1
+		else like.innerHTML = parseInt(like.innerHTML) + 1
 	}
 
 	SendByXmlHttp('action.php', 'method=like&dislike=' + encodeURIComponent(dislike) + '&type=' + encodeURIComponent(type) + '&id=' + encodeURIComponent(id), event)
@@ -90,7 +92,8 @@ function PostComment(script) {
 			var new_comment = document.createElement("div")
 			new_comment.innerHTML += response['comment_html']
 
-			if (response['comment_revers']) GetById('comments-main').appendChild(new_comment) else insertInBegin(new_comment, GetById('comments-main'))
+			if (response['comment_revers']) GetById('comments-main').appendChild(new_comment)
+			else insertInBegin(new_comment, GetById('comments-main'))
 
 			$(new_comment).hide().fadeIn(1000);
 		}

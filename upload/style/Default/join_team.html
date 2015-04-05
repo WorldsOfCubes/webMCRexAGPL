@@ -18,7 +18,8 @@
 
 		var used = CheckLen()
 
-		if (used <= 0) GetById('comment-length').style.color = '#aa2f17' else             GetById('comment-length').style.color = '#17aa4e'
+		if (used <= 0) GetById('comment-length').style.color = '#aa2f17'
+		else             GetById('comment-length').style.color = '#17aa4e'
 
 		GetById('comment-length').innerHTML = used
 
@@ -33,7 +34,8 @@
 			case 40:
 				return true;
 		}
-		if (used <= 0) return false else             return true
+		if (used <= 0) return false
+		else             return true
 
 	}
 </script>

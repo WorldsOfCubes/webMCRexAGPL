@@ -123,7 +123,8 @@
 			return null == t ? -1 : g.call(t, e, n)
 		}, merge: function (e, t) {
 			var n = t.length, r = e.length, i = 0;
-			if ("number" == typeof n)for (; n > i; i++)e[r++] = t[i]; else while (t[i] !== undefined)e[r++] = t[i++];
+			if ("number" == typeof n)for (; n > i; i++)e[r++] = t[i];
+			else while (t[i] !== undefined)e[r++] = t[i++];
 			return e.length = r, e
 		}, grep: function (e, t, n) {
 			var r, i = [], o = 0, s = e.length;
@@ -131,7 +132,8 @@
 			return i
 		}, map: function (e, t, n) {
 			var r, i = 0, o = e.length, s = j(e), a = [];
-			if (s)for (; o > i; i++)r = t(e[i], i, n), null != r && (a[a.length] = r); else for (i in e)r = t(e[i], i, n), null != r && (a[a.length] = r);
+			if (s)for (; o > i; i++)r = t(e[i], i, n), null != r && (a[a.length] = r);
+			else for (i in e)r = t(e[i], i, n), null != r && (a[a.length] = r);
 			return f.apply([], a)
 		}, guid: 1, proxy: function (e, t) {
 			var n, r, i;
@@ -623,7 +625,8 @@
 			}, a, !0), f = [function (e, n, r) {
 				return !s && (r || n !== u) || ((t = n).nodeType ? c(e, n, r) : p(e, n, r))
 			}];
-			for (; o > l; l++)if (n = i.relative[e[l].type])f = [yt(vt(f), n)]; else {
+			for (; o > l; l++)if (n = i.relative[e[l].type])f = [yt(vt(f), n)];
+			else {
 				if (n = i.filter[e[l].type].apply(null, e[l].matches), n[v]) {
 					for (r = ++l; o > r; r++)if (i.relative[e[r].type])break;
 					return bt(l > 1 && vt(f), l > 1 && mt(e.slice(0, l - 1).concat({value: " " === e[l - 2].type ? "*" : ""})).replace(z, "$1"), n, r > l && wt(e.slice(l, r)), o > r && wt(e = e.slice(r)), o > r && mt(e))
@@ -842,7 +845,9 @@
 			return this.cache[n] || (this.cache[n] = {}), n
 		}, set: function (e, t, n) {
 			var r, i = this.key(e), o = this.cache[i];
-			if ("string" == typeof t)o[t] = n; else if (x.isEmptyObject(o))x.extend(this.cache[i], t); else for (r in t)o[r] = t[r];
+			if ("string" == typeof t)o[t] = n;
+			else if (x.isEmptyObject(o))x.extend(this.cache[i], t);
+			else for (r in t)o[r] = t[r];
 			return o
 		}, get: function (e, t) {
 			var n = this.cache[this.key(e)];
@@ -852,7 +857,8 @@
 			return t === undefined || t && "string" == typeof t && n === undefined ? (r = this.get(e, t), r !== undefined ? r : this.get(e, x.camelCase(t))) : (this.set(e, t, n), n !== undefined ? n : t)
 		}, remove: function (e, t) {
 			var n, r, i, o = this.key(e), s = this.cache[o];
-			if (t === undefined)this.cache[o] = {}; else {
+			if (t === undefined)this.cache[o] = {};
+			else {
 				x.isArray(t) ? r = t.concat(t.map(x.camelCase)) : (i = x.camelCase(t), t in s ? r = [t, i] : (r = i, r = r in s ? [r] : r.match(w) || [])), n = r.length;
 				while (n--)delete s[r[n]]
 			}
@@ -1263,7 +1269,8 @@
 				for (s in e)this.on(s, t, n, e[s], i);
 				return this
 			}
-			if (null == n && null == r ? (r = t, n = t = undefined) : null == r && ("string" == typeof t ? (r = n, n = undefined) : (r = n, n = t, t = undefined)), r === !1)r = Y; else if (!r)return this;
+			if (null == n && null == r ? (r = t, n = t = undefined) : null == r && ("string" == typeof t ? (r = n, n = undefined) : (r = n, n = t, t = undefined)), r === !1)r = Y;
+			else if (!r)return this;
 			return 1 === i && (o = r, r = function (e) {
 				return x().off(e), o.apply(this, arguments)
 			}, r.guid = o.guid || (o.guid = x.guid++)), this.each(function () {
@@ -1501,11 +1508,13 @@
 		clone: function (e, t, n) {
 			var r, i, o, s, a = e.cloneNode(!0), u = x.contains(e.ownerDocument, e);
 			if (!(x.support.noCloneChecked || 1 !== e.nodeType && 11 !== e.nodeType || x.isXMLDoc(e)))for (s = mt(a), o = mt(e), r = 0, i = o.length; i > r; r++)yt(o[r], s[r]);
-			if (t)if (n)for (o = o || mt(e), s = s || mt(a), r = 0, i = o.length; i > r; r++)gt(o[r], s[r]); else gt(e, a);
+			if (t)if (n)for (o = o || mt(e), s = s || mt(a), r = 0, i = o.length; i > r; r++)gt(o[r], s[r]);
+			else gt(e, a);
 			return s = mt(a, "script"), s.length > 0 && dt(s, !u && mt(e, "script")), a
 		}, buildFragment: function (e, t, n, r) {
 			var i, o, s, a, u, l, c = 0, p = e.length, f = t.createDocumentFragment(), h = [];
-			for (; p > c; c++)if (i = e[c], i || 0 === i)if ("object" === x.type(i))x.merge(h, i.nodeType ? [i] : i); else if (rt.test(i)) {
+			for (; p > c; c++)if (i = e[c], i || 0 === i)if ("object" === x.type(i))x.merge(h, i.nodeType ? [i] : i);
+			else if (rt.test(i)) {
 				o = o || f.appendChild(t.createElement("div")), s = (nt.exec(i) || ["", ""])[1].toLowerCase(), a = ct[s] || ct._default, o.innerHTML = a[1] + i.replace(tt, "<$1></$2>") + a[2], l = a[0];
 				while (l--)o = o.lastChild;
 				x.merge(h, o.childNodes), o = f.firstChild, o.textContent = ""
@@ -1767,14 +1776,17 @@
 		};
 		if (t === undefined && (t = x.ajaxSettings && x.ajaxSettings.traditional), x.isArray(e) || e.jquery && !x.isPlainObject(e))x.each(e, function () {
 			i(this.name, this.value)
-		}); else for (n in e)_t(n, e[n], t, i);
+		});
+		else for (n in e)_t(n, e[n], t, i);
 		return r.join("&").replace(Wt, "+")
 	};
 	function _t(e, t, n, r) {
 		var i;
 		if (x.isArray(t))x.each(t, function (t, i) {
 			n || $t.test(e) ? r(e, i) : _t(e + "[" + ("object" == typeof i ? t : "") + "]", i, n, r)
-		}); else if (n || "object" !== x.type(t))r(e, t); else for (i in t)_t(e + "[" + i + "]", t[i], n, r)
+		});
+		else if (n || "object" !== x.type(t))r(e, t);
+		else for (i in t)_t(e + "[" + i + "]", t[i], n, r)
 	}
 
 	x.each("blur focus focusin focusout load resize scroll unload click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup error contextmenu".split(" "), function (e, t) {
@@ -1887,7 +1899,8 @@
 					return v || (c.mimeType = e), this
 				}, statusCode: function (e) {
 					var t;
-					if (e)if (2 > v)for (t in e)g[t] = [g[t], e[t]]; else T.always(e[T.status]);
+					if (e)if (2 > v)for (t in e)g[t] = [g[t], e[t]];
+					else T.always(e[T.status]);
 					return this
 				}, abort: function (e) {
 					var t = e || b;
@@ -1936,7 +1949,8 @@
 			u.unshift(i);
 			break
 		}
-		if (u[0]in n)o = u[0]; else {
+		if (u[0]in n)o = u[0];
+		else {
 			for (i in n) {
 				if (!u[0] || e.converters[i + " " + u[0]]) {
 					o = i;
@@ -1953,16 +1967,18 @@
 		var i, o, s, a, u, l = {}, c = e.dataTypes.slice();
 		if (c[1])for (s in e.converters)l[s.toLowerCase()] = e.converters[s];
 		o = c.shift();
-		while (o)if (e.responseFields[o] && (n[e.responseFields[o]] = t), !u && r && e.dataFilter && (t = e.dataFilter(t, e.dataType)), u = o, o = c.shift())if ("*" === o)o = u; else if ("*" !== u && u !== o) {
+		while (o)if (e.responseFields[o] && (n[e.responseFields[o]] = t), !u && r && e.dataFilter && (t = e.dataFilter(t, e.dataType)), u = o, o = c.shift())if ("*" === o)o = u;
+		else if ("*" !== u && u !== o) {
 			if (s = l[u + " " + o] || l["* " + o], !s)for (i in l)if (a = i.split(" "), a[1] === o && (s = l[u + " " + a[0]] || l["* " + a[0]])) {
 				s === !0 ? s = l[i] : l[i] !== !0 && (o = a[0], c.unshift(a[1]));
 				break
 			}
-			if (s !== !0)if (s && e["throws"])t = s(t); else try {
-				t = s(t)
-			} catch (p) {
-				return {state: "parsererror", error: s ? p : "No conversion from " + u + " to " + o}
-			}
+			if (s !== !0)if (s && e["throws"])t = s(t);
+			else try {
+					t = s(t)
+				} catch (p) {
+					return {state: "parsererror", error: s ? p : "No conversion from " + u + " to " + o}
+				}
 		}
 		return {state: "success", data: t}
 	}
@@ -2187,7 +2203,8 @@
 			};
 			return "string" != typeof e && (n = t, t = e, e = undefined), t && e !== !1 && this.queue(e || "fx", []), this.each(function () {
 				var t = !0, i = null != e && e + "queueHooks", o = x.timers, s = q.get(this);
-				if (i)s[i] && s[i].stop && r(s[i]); else for (i in s)s[i] && s[i].stop && Cn.test(i) && r(s[i]);
+				if (i)s[i] && s[i].stop && r(s[i]);
+				else for (i in s)s[i] && s[i].stop && Cn.test(i) && r(s[i]);
 				for (i = o.length; i--;)o[i].elem !== this || null != e && o[i].queue !== e || (o[i].anim.stop(n), t = !1, o.splice(i, 1));
 				(t || !n) && x.dequeue(this, e)
 			})

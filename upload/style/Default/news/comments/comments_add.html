@@ -22,7 +22,8 @@
 
 		var used = CheckLen()
 
-		if (used <= 0) GetById('comment-length').style.color = '#aa2f17' else             GetById('comment-length').style.color = '#17aa4e'
+		if (used <= 0) GetById('comment-length').style.color = '#aa2f17'
+		else             GetById('comment-length').style.color = '#17aa4e'
 
 		GetById('comment-length').innerHTML = used
 
@@ -37,7 +38,8 @@
 			case 40:
 				return true;
 		}
-		if (used <= 0) return false else             return true
+		if (used <= 0) return false
+		else             return true
 
 	}
 
@@ -49,7 +51,8 @@
 
 			var s = document.selection.createRange()
 
-			if (s.text) s.text = str1 + s.text + str2 else obj.value = obj.value + str1 + str2
+			if (s.text) s.text = str1 + s.text + str2
+			else obj.value = obj.value + str1 + str2
 
 			return true
 
@@ -85,11 +88,15 @@
 		rep[4] = '[quote="Имя"][/quote]';
 		rep[5] = '[spoiler=Имя][/spoiler]';
 
-		if (bb <= 2) tag_insert(GetById('comment-add-text'), '[' + rep[bb] + ']', '[/' + rep[bb] + ']') else if (bb == 3) tag_insert(GetById('comment-add-text'), '[url="', '"]Открыть[/url]') else if (bb == 5) tag_insert(GetById('comment-add-text'), '[spoiler=Открыть спойлер]', '[/spoiler]') else GetById('comment-add-text').value = GetById('comment-add-text').value + rep[bb]
+		if (bb <= 2) tag_insert(GetById('comment-add-text'), '[' + rep[bb] + ']', '[/' + rep[bb] + ']')
+		else if (bb == 3) tag_insert(GetById('comment-add-text'), '[url="', '"]Открыть[/url]')
+		else if (bb == 5) tag_insert(GetById('comment-add-text'), '[spoiler=Открыть спойлер]', '[/spoiler]')
+		else GetById('comment-add-text').value = GetById('comment-add-text').value + rep[bb]
 
 		var used = CheckLen()
 		GetById('comment-length').innerHTML = used
-		if (used <= 0) GetById('comment-length').style.color = '#aa2f17' else             GetById('comment-length').style.color = '#17aa4e'
+		if (used <= 0) GetById('comment-length').style.color = '#aa2f17'
+		else             GetById('comment-length').style.color = '#17aa4e'
 
 		return false;
 
@@ -121,7 +128,8 @@
 		var comm_add = GetById('comment-add-text')
 
 		var text_self = ''
-		if (text.innerText)         text_self = text.innerText else if (text.textContent)  text_self = text.textContent // W3C-compliant
+		if (text.innerText)         text_self = text.innerText
+		else if (text.textContent)  text_self = text.textContent // W3C-compliant
 
 		comm_add.value += '[quote="' + author.innerHTML + '"]' + text_self + '[/quote]'
 

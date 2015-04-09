@@ -30,9 +30,13 @@ RewriteRule ^go/options/([\w]+)/?$ index.php?mode=options&result=$1 [L]
 RewriteRule ^go/banlist/([^/]+)/?$ index.php?mode=banlist&page=$1 [L,NE]
 
 RewriteRule ^go/user/([^/]+)/?$ index.php?mode=user&page=$1 [L,NE]
+RewriteRule ^go/user/search/([^/]+)/?$ index.php?mode=user&search=$1 [L,NE]
+RewriteRule ^go/user/search/([^/]+)/([^/]+)/?$ index.php?mode=user&search=$1&do=$2 [L,NE]
 RewriteRule ^go/user/profile/([^/]+)/?$ index.php?mode=user&name=$1 [L,NE]
 
 RewriteRule ^go/users/([^/]+)/?$ index.php?mode=user&do=$1 [L,NE]
+RewriteRule ^go/users/search/([^/]+)/?$ index.php?mode=user&search=$1 [L,NE]
+RewriteRule ^go/users/search/([^/]+)/([^/]+)/?$ index.php?mode=user&search=$1&do=$2 [L,NE]
 RewriteRule ^go/users/profile/([^/]+)/?$ index.php?mode=user&do=full&name=$1 [L,NE]
 
 RewriteRule ^go/pm/([^/]+)/?$ index.php?mode=pm&do=$1 [L,NE]

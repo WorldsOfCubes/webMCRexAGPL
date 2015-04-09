@@ -5,6 +5,12 @@
 		<div class="row">
 			<div class="col-md-4">
 				<img width="100%" src="skin.php?mini=<? echo $pl->id(); ?>">
+				<?php if($user and $user->lvl() > 0): ?>
+					<a href="/go/pm/write/<? echo $pl->name(); ?>" class="btn btn-primary btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-pencil"></i> Написать ЛС</a>
+					<?php if($user->lvl() >= 15): ?>
+						<a href="?mode=control&do=profile&user_id=<? echo $pl->id(); ?>" class="btn btn-danger btn-block" style="margin-top: 5px"><i class="fa fa-edit"></i> Править пользователя</a>
+					<?php endif ?>
+				<?php endif ?>
 			</div>
 			<div class="col-md-8">
 				<div class="row">
@@ -59,7 +65,7 @@
 						<? echo (int) $pl->topics(); ?>
 					</div>
 					<div class="col-md-4" align="right"><b>
-						сообщений на форуме:</b></div>
+						Сообщений на форуме:</b></div>
 					<div class="col-md-8">
 						<? echo (int) $pl->posts(); ?>
 					</div>

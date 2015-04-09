@@ -2,6 +2,20 @@
 	<div class="block-header">Список пользователей</div>
 	<div class="block-line"></div>
 	<div class="tab-pane" id="launcher">
+		<form class="form-inline" onsubmit="Search(); return false;" style="margin-bottom: 10px;">
+			<div class="input-group input-group-lg">
+				<div class="input-group-addon">Найти пользователя:</div>
+				<input type="search" class="form-control" id="search" value="<?php echo $search ?>">
+				<span class="input-group-btn">
+					<input type="submit" class="btn btn-default" value="Искать!" onclick="Search()">
+				</span>
+			</div>
+		</form>
+		<script type="application/javascript">
+			function Search() {
+				document.location.href = "go/users/search/" +  GetById('search').value;
+			}
+		</script>
 		<table class="table table-hover">
 			<tr>
 				<th>№</th>

@@ -5,6 +5,11 @@ $menu->SetItemActive('users');
 
 $num_by_page = 25;
 
+if(isset($_POST['search']) and strlen($_POST['search'])) {
+	header("Refresh: 0; url=" . BASE_URL . (!$config['rewrite'])? "go/users/search/{$_POST['search']}/" : "?mode=users&search={$_POST['search']}&do=");
+	die();
+}
+
 loadTool('profile.class.php');
 if (isset($_GET['do']))
 	$do = $_GET['do']; elseif (isset($_POST['do']))
@@ -30,11 +35,15 @@ if ($do == 'full' or isset($_GET['name']) or isset($_POST['name'])) {
 		$do = 1;
 	$page = lng('USERS_LIST');
 	$first = ((int)$do - 1) * $num_by_page;
+	if(isset($_GET['search']) and strlen($_GET['search'])) {
+		$where = " WHERE {$bd_users['login']} LIKE '%".$db->safe($_GET['search'])."%'";
+		$search = TextBase::HTMLDestruct($db->safe($_GET['search']));
+	} else $where = $search = '';
 	$query = $db->execute("SELECT `{$bd_names['users']}`.`{$bd_users['id']}`, `{$bd_names['users']}`.`{$bd_users['login']}`, `{$bd_names['users']}`.`{$bd_users['female']}`, `{$bd_names['users']}`.default_skin, `{$bd_names['groups']}`.name AS group_name
 				FROM `{$bd_names['users']}`
 				LEFT JOIN `{$bd_names['groups']}`
 				ON `{$bd_names['groups']}`.id = `{$bd_names['users']}`.`{$bd_users['group']}`
-				ORDER BY `{$bd_names['users']}`.`{$bd_users['login']}` ASC
+				$where ORDER BY `{$bd_names['users']}`.`{$bd_users['login']}` ASC
 				LIMIT $first, $num_by_page");
 	$content_list = '';
 	$num = $first + 1;
@@ -48,8 +57,9 @@ if ($do == 'full' or isset($_GET['name']) or isset($_POST['name'])) {
 	include View::Get('users_list.html', $path);
 	$content_main = ob_get_clean();
 
-	$result = $db->execute("SELECT COUNT(*) FROM `{$bd_names['users']}`");
+	$result = $db->execute("SELECT COUNT(*) FROM `{$bd_names['users']}`$where");
 	$line = $db->fetch_array($result);
 	$view = new View("users/");
-	$content_main .= $view->arrowsGenerator(Rewrite::GetURL('users'), $do, $line[0], $num_by_page, "pagin");
+	$url = (!$config['rewrite'])? ((strlen($search))?"go/users/search/$search/":"go/users/") : ((strlen($search))?"?mode=users&search=$search&do=":"?mode=users&do=");
+	$content_main .= $view->arrowsGenerator($url, $do, $line[0], $num_by_page, "pagin");
 }

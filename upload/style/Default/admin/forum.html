@@ -47,9 +47,11 @@
 									<td>
 										<input type="text" name="prior" value="<?php echo $forum['priority']; ?>" class="form-control" placeholder="Приоритет" />
 									</td>
-									<td style="vertical-align: middle">
-										<button type="submit" class="btn btn-primary btn-xs" style="margin-right: 5px;">Обновить приоритет</button>
-										<a href="?mode=control&do=forum&iddel=<?php echo $forum['id']; ?>" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-trash" title="Удалить форум"></i></a>
+									<td style="vertical-align: middle; width: 170px;">
+										<div class="btn-group btn-group-xs">
+											<button type="submit" class="btn btn-primary">Обновить приоритет</button>
+											<a href="?mode=control&do=forum&iddel=<?php echo $forum['id']; ?>" class="btn btn-danger"><i class="glyphicon glyphicon-trash" title="Удалить форум"></i></a>
+										</div>
 									</td>
 								</form>
 							</tr>
@@ -103,13 +105,15 @@
 							<a href="/go/forum/view/<?php echo $toplist_top['partition_id'];?>/1" class="forum-link"></a>
 							<?php echo $toplist_top['forum_name']; ?>
 						</td>
-						<td style="text-align: center;" class="td-main">
-							<a href="?mode=control&do=forum&downid=<?php echo $toplist_top['id'];?>" class="btn btn-xs btn-warning" title="Снять тему с фиксации"><i class="glyphicon glyphicon-arrow-down"></i></a>
-							<?php if($toplist_top['closed'] == 'N') {?>
-							<a href="?mode=control&do=forum&lock=<?php echo $toplist_top['id'];?>" class="btn btn-xs btn-info" title="Закрыть тему"><i class="glyphicon glyphicon-lock"></i></a><?php }?>
-							<?php if($toplist_top['closed'] == 'Y') {?>
-							<a href="?mode=control&do=forum&unlock=<?php echo $toplist_top['id'];?>" class="btn btn-xs btn-info" title="Открыть тему"><i class="glyphicon glyphicon-unlock"></i></a><?php }?>
-							<a href="?mode=control&do=forum&delid=<?php echo $toplist_top['id'];?>" class="btn btn-xs btn-danger" title="Удалить тему"><i class="glyphicon glyphicon-trash"></i></a>
+						<td style="text-align: center; width: 88px;" class="td-main">
+							<div class="btn-group btn-group-xs">
+								<a href="?mode=control&do=forum&downid=<?php echo $toplist_top['id'];?>" class="btn btn-warning" title="Снять тему с фиксации"><i class="glyphicon glyphicon-arrow-down"></i></a>
+								<?php if($toplist_top['closed'] == 'N') {?>
+								<a href="?mode=control&do=forum&lock=<?php echo $toplist_top['id'];?>" class="btn btn-info" title="Закрыть тему"><i class="glyphicon glyphicon-lock"></i></a><?php }?>
+								<?php if($toplist_top['closed'] == 'Y') {?>
+								<a href="?mode=control&do=forum&unlock=<?php echo $toplist_top['id'];?>" class="btn btn-info" title="Открыть тему"><i class="glyphicon glyphicon-unlock"></i></a><?php }?>
+								<a href="?mode=control&do=forum&delid=<?php echo $toplist_top['id'];?>" class="btn btn-danger" title="Удалить тему"><i class="glyphicon glyphicon-trash"></i></a>
+							</div>
 						</td>
 					</tr>
 					<?php }} else { echo ''; } ?>
@@ -129,13 +133,15 @@
 							<a href="/go/forum/view/<?php echo $toplist['partition_id'];?>/1" class="forum-link"></a>
 							<?php echo $toplist['forum_name']; ?>
 						</td>
-						<td style="text-align: center;" class="td-main">
-							<a href="?mode=control&do=forum&topid=<?php echo $toplist['id'];?>" class="btn btn-xs btn-success" title="Зафиксировать тему вверху"><i class="glyphicon glyphicon-arrow-up"></i></a>
-							<?php if($toplist['closed'] == 'N') {?>
-							<a href="?mode=control&do=forum&lock=<?php echo $toplist['id'];?>" class="btn btn-xs btn-info" title="Закрыть тему"><i class="glyphicon glyphicon-lock"></i></a><?php }?>
-							<?php if($toplist['closed'] == 'Y') {?>
-							<a href="?mode=control&do=forum&unlock=<?php echo $toplist['id'];?>" class="btn btn-xs btn-info" title="Открыть"><i class="glyphicon glyphicon-unlock"></i></a><?php }?>
-							<a href="?mode=control&do=forum&delid=<?php echo $toplist['id'];?>" class="btn btn-xs btn-danger" title="Удалить тему"><i class="glyphicon glyphicon-trash"></i></a>
+						<td style="text-align: center; width: 88px;" class="td-main">
+							<div class="btn-group btn-group-xs">
+								<a href="?mode=control&do=forum&topid=<?php echo $toplist['id'];?>" class="btn btn-success" title="Зафиксировать тему вверху"><i class="glyphicon glyphicon-arrow-up"></i></a>
+								<?php if($toplist['closed'] == 'N') {?>
+								<a href="?mode=control&do=forum&lock=<?php echo $toplist['id'];?>" class="btn btn-info" title="Закрыть тему"><i class="glyphicon glyphicon-lock"></i></a><?php }?>
+								<?php if($toplist['closed'] == 'Y') {?>
+								<a href="?mode=control&do=forum&unlock=<?php echo $toplist['id'];?>" class="btn btn-info" title="Открыть"><i class="glyphicon glyphicon-unlock"></i></a><?php }?>
+								<a href="?mode=control&do=forum&delid=<?php echo $toplist['id'];?>" class="btn btn-danger" title="Удалить тему"><i class="glyphicon glyphicon-trash"></i></a>
+							</div>
 						</td>
 					</tr>
 					<?php }} else { ?>

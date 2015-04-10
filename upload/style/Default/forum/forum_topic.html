@@ -11,7 +11,7 @@
 			<a href="/index.php?mode=forum&do=main&down=<?php echo $topic_id;?>">Открепить тему</a> | <?php } ?>
 			<?php if(!empty($user) && $user->lvl() > 13 ) { ?>
 			<a href="/index.php?mode=forum&do=main&unlock=<?php echo $topic_id;?>">Открыть тему</a> | <?php } ?>
-			<i class="glyphicon glyphicon-lock" style="font-size:20px" title="Тема закрыта"></i></div>
+			<i class="fa fa-lock" style="font-size:20px" title="Тема закрыта"></i></div>
 		<?php }?>
 		<?php if( $lock['closed'] == 'N' && !empty($user) && $user->lvl() > 13 ) { ?>
 		<div class="pull-right"><?php if( $toped['top'] == 'N' && !empty($user) && $user->lvl() > 13 ) { ?>
@@ -19,7 +19,7 @@
 			<?php if( $toped['top'] == 'Y' && !empty($user) && $user->lvl() > 13 ) { ?>
 			<a href="/index.php?mode=forum&do=main&down=<?php echo $topic_id;?>">Открепить тему</a> |<?php } ?>
 			<a href="/index.php?mode=forum&do=main&lock=<?php echo $topic_id;?>">Закрыть тему</a> |
-			<i class="glyphicon glyphicon-unlock" style="font-size:20px" title="Тема открыта"></i></div>
+			<i class="fa fa-unlock-alt" style="font-size:20px" title="Тема открыта"></i></div>
 		<?php }?>
 	</div>
 	<?php foreach($tpmess as $topmess) { ?>

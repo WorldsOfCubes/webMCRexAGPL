@@ -88,7 +88,7 @@ function accss_deny() {
 }
 
 function show_error($html, $page) {
-	global $config, $content_js, $content_advice, $content_side, $user;
+	global $config, $content_js, $content_advice, $content_side, $user, $db;
 	if (!empty($user)) {
 		$player = $user->name();
 		$player_id = $user->id();

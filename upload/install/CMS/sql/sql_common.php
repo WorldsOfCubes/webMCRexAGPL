@@ -268,7 +268,6 @@ if (!BD_ColumnExist($bd_names['users'], 'vote')) {
 if (!BD_ColumnExist($bd_names['groups'], 'pex_name')) {
 
 	BD("ALTER TABLE `{$bd_names['groups']}` ADD `pex_name` char(64) NOT NULL;");
-	BD("ALTER TABLE `{$bd_names['users']}` ADD `warn_lvl` smallint(10) DEFAULT 0;");
 	BD("ALTER TABLE `{$bd_names['users']}` ADD `topics` smallint(10) DEFAULT 0;");
 	BD("ALTER TABLE `{$bd_names['users']}` ADD `posts` smallint(10) DEFAULT 0;");
 }
@@ -337,14 +336,26 @@ BD("CREATE TABLE `unbans` (
 ) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;");
 
 BD("CREATE TABLE IF NOT EXISTS `banlist` (
-`name` varchar(32) NOT NULL,
-`reason` text NOT NULL,
-`admin` varchar(32) NOT NULL,
-`time` bigint(20) NOT NULL,
-`temptime` bigint(20) NOT NULL,
-`id` int(11) NOT NULL AUTO_INCREMENT,
-`type` int(1) NOT NULL DEFAULT '0',
-PRIMARY KEY (`id`)
+  `name` varchar(32) NOT NULL,
+  `reason` text NOT NULL,
+  `admin` varchar(32) NOT NULL,
+  `time` bigint(20) NOT NULL,
+  `temptime` bigint(20) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;");
+
+BD("CREATE TABLE IF NOT EXISTS `warnings` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `uid` BIGINT(20) NOT NULL,
+  `mid` BIGINT(20) NOT NULL,
+  `percentage` INT(11) NOT NULL,
+  `reason` text NOT NULL,
+  `time` DATETIME NOT NULL,
+  `expires` DATE NOT NULL,
+  `type` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;");
 
 BD("CREATE TABLE IF NOT EXISTS `banlistip` (

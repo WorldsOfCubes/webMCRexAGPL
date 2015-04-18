@@ -5,11 +5,6 @@ $menu->SetItemActive('users');
 
 $num_by_page = 25;
 
-if(isset($_POST['search']) and strlen($_POST['search'])) {
-	header("Refresh: 0; url=" . BASE_URL . (!$config['rewrite'])? "go/users/search/{$_POST['search']}/" : "?mode=users&search={$_POST['search']}&do=");
-	die();
-}
-
 loadTool('profile.class.php');
 if (isset($_GET['do']))
 	$do = $_GET['do']; elseif (isset($_POST['do']))
@@ -45,21 +40,24 @@ if ($do == 'full' or isset($_GET['name']) or isset($_POST['name'])) {
 				ON `{$bd_names['groups']}`.id = `{$bd_names['users']}`.`{$bd_users['group']}`
 				$where ORDER BY `{$bd_names['users']}`.`{$bd_users['login']}` ASC
 				LIMIT $first, $num_by_page");
-	$content_list = '';
-	$num = $first + 1;
-	while ($tmp_user = $db->fetch_assoc($query, 0)) {
-		ob_start();
-		include View::Get('users_item.html', $path);
-		$content_list .= ob_get_clean();
-		$num++;
-	}
+	if ($db->num_rows($query)) {
+		$content_list = '';
+		$num = $first + 1;
+		while ($tmp_user = $db->fetch_assoc($query, 0)) {
+			ob_start();
+			include View::Get('users_item.html', $path);
+			$content_list .= ob_get_clean();
+			$num++;
+		}
+
+		$result = $db->execute("SELECT COUNT(*) FROM `{$bd_names['users']}`$where");
+		$line = $db->fetch_array($result);
+		$view = new View("users/");
+		$url = (!$config['rewrite']) ? ((strlen($search)) ? "go/users/search/$search/" : "go/users/") : ((strlen($search)) ? "?mode=users&search=$search&do=" : "?mode=users&do=");
+
+	} else $content_list = View::ShowStaticPage('no_users.html', $path);
 	ob_start();
 	include View::Get('users_list.html', $path);
 	$content_main = ob_get_clean();
-
-	$result = $db->execute("SELECT COUNT(*) FROM `{$bd_names['users']}`$where");
-	$line = $db->fetch_array($result);
-	$view = new View("users/");
-	$url = (!$config['rewrite'])? ((strlen($search))?"go/users/search/$search/":"go/users/") : ((strlen($search))?"?mode=users&search=$search&do=":"?mode=users&do=");
-	$content_main .= $view->arrowsGenerator($url, $do, $line[0], $num_by_page, "pagin");
+	if ($db->num_rows($query)) $content_main .= $view->arrowsGenerator($url, $do, $line[0], $num_by_page, "pagin");
 }

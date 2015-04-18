@@ -1,0 +1,29 @@
+<div class="form-block">
+	<div class="block-header">Предупреждения пользователя</div>
+	<div class="block-line"></div>
+	<div class="tab-pane" id="launcher">
+		За нарушения правил пользователю выдаются предупреждения. Здесь показаны предупреждения пользователя <b><?php echo $pl->name()?></b>.
+	</div>
+	<form class="form-inline" method="post">
+		<input type="text" name="reason" class="form-control" placeholder="Причина">
+		<input class="form-control spp" title="Дата окончания действия" data-trigger="focus" data-content="После конца срока действия предупреждений они не будут учитываться при подсчете уровня предупреждения" data-placement="top" id="datepicker" type="date" size="50" name="expires" placeholder="ГГГГ-ММ-ДД" style="width: 10em"/>
+		<input type="number" name="points" class="form-control" placeholder="%" style="width: 5em">
+		<input type="submit" class="btn btn-default" value="Вынести предупреждение">
+	</form>
+	<table class="table table-hover">
+		<tr>
+			<th>Кем выдано</th>
+			<th>Дата выдачи</th>
+			<th>Дата окончания действия</th>
+			<th>Причина</th>
+			<th>%</th>
+		</tr>
+		<? echo $warn_list; ?>
+		<tr>
+			<th colspan="4">
+				Итого активных предупреждений:
+			</th>
+			<td><?php echo $pl->warnLVL()?></td>
+		</tr>
+	</table>
+</div>

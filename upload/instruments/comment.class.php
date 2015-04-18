@@ -38,7 +38,7 @@ class CommentList extends View {
 
 		if ($this->parent_obj === false)
 			return '';
-		if (empty($user) or !$user->getPermission('add_comm'))
+		if (empty($user) or !$user->getPermission('add_comm') or $user->warnLVL() >= 100)
 			return '';
 
 		$id = $this->parent_obj->id();
@@ -148,7 +148,7 @@ class Comments_Item extends Item {
 		return true;
 	}
 
-	public function aCreate($message, $fUser, $item_id, $item_type, $antibot = 'antibot') {
+	public function aCreate($message, User $fUser, $item_id, $item_type, $antibot = 'antibot') {
 		global $ajax_message, $config;
 
 		if ($this->id)

@@ -43,7 +43,7 @@ function InitJS() {
 	global $addition_events;
 
 	$init_js = "var pbm; var way_style = '".DEF_STYLE_URL."'; var cur_style = '".View::GetURL()."'; var base_url  = '".BASE_URL."';";
-	$init_js .= "window.onload = function () { mcr_init(); $('.stt').tooltip(); $('.spp').popover(); ".$addition_events." } ";
+	$init_js .= "window.onload = function () { mcr_init(); $('.stt').tooltip(); $('.spp').popover(); $('#datepicker').datepicker(); ".$addition_events." } ";
 	return '<script type="text/javascript">'.$init_js.'</script>';
 }
 
@@ -179,9 +179,11 @@ loadTool("template.class.php");
 $parser = new TemplateParser();
 $html_page = $parser->parse($html_page);
 echo $html_page;
-//echo (memory_get_usage() - $mem_start)/1024 . "КБ памяти использовано";
-//echo "\n<br />SQL запросов сделано: ".$queries."\r\n";
-$timer_end = microtime();
-$timer_total = round($timer_end - $timer_start, 7);
-//echo "\n<br />Страница сгенерирована за ".$timer_total." секунд\r\n";
+if(isset($config['debug']) and $config['debug']) {
+	echo (memory_get_usage() - $mem_start)/1024 . "КБ памяти использовано";
+	echo "\n<br />SQL запросов сделано: ".$queries."\r\n";
+	$timer_end = microtime();
+	$timer_total = round($timer_end - $timer_start, 7);
+	echo "\n<br />Страница сгенерирована за ".$timer_total." секунд\r\n";
+}
 ?>

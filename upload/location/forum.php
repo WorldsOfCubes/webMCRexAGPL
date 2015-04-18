@@ -173,7 +173,7 @@ switch ($do) {
 		}
 
 		//Добавление сообщения
-		if (!empty($user) && $user->lvl() > 0) {
+		if (!empty($user) && $user->lvl() > 0 && $user->warnLVL() < 100) {
 
 			if (!empty($_POST['topic_id']) && !empty($_POST['message']) && $_POST['topic_id'] == $topic_id) {
 				$message = $_POST['message'];
@@ -211,7 +211,7 @@ switch ($do) {
 		$toped = $db->fetch_assoc($toped);
 
 
-		if (!empty($user) && $user->lvl() > 0) {
+		if (!empty($user) && $user->lvl() > 0 && $user->warnLVL() < 100) {
 			if ($lock['closed'] == 'N') {
 				ob_start();
 				include View::Get('forum_mess_add.html', $path);
@@ -237,7 +237,7 @@ switch ($do) {
 		return;
 		break;
 	case 'add': //добавление топиков
-		if (!empty($user) && $user->lvl() > 0) {
+		if (!empty($user) && $user->lvl() > 0 && $user->warnLVL() < 100) {
 			$forum_id = $_GET['id'];
 
 			$topic_information = $db->execute("SELECT name FROM forum_partition WHERE id = '$forum_id'");

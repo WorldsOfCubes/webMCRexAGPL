@@ -1,0 +1,23 @@
+<div class="form-block">
+	<div class="block-header">Предупреждения пользователя</div>
+	<div class="block-line"></div>
+	<div class="tab-pane" id="launcher">
+		За нарушения правил пользователю выдаются предупреждения. Здесь показаны предупреждения пользователя <b><?php echo $pl->name()?></b>.
+	</div>
+	<table class="table table-hover">
+		<tr>
+			<th>Кем выдано</th>
+			<th>Дата выдачи</th>
+			<th>Дата окончания действия</th>
+			<th>Причина</th>
+			<th>%</th>
+		</tr>
+		<? echo $warn_list; ?>
+		<tr>
+			<th colspan="4">
+				Итого активных предупреждений:
+			</th>
+			<td><?php echo $pl->warnLVL()?></td>
+		</tr>
+	</table>
+</div>

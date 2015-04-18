@@ -93,7 +93,6 @@ Class User {
 
 		$this->group_name = $line['group_name'];
 		$this->lvl = $line['lvl'];
-		$this->warn_lvl = (int)$line['warn_lvl'];
 
 		$this->tmp = $line[$bd_users['tmp']];
 		$this->ip = $line[$bd_users['ip']];
@@ -118,7 +117,23 @@ Class User {
 		$this->gender = (is_numeric($gender)) ? (int)$gender : (($gender == 'female' or $gender == 'male') ? (($gender == 'female') ? 1 : 0) : 10);
 		$this->female = ($this->gender == 1) ? true : false;
 
+		$this->warn_lvl = 0;
+		$query = $db->execute("SELECT `percentage` FROM `warnings` WHERE `uid`={$this->id} AND `expires` > NOW()");
+		while($tmp = $db->fetch_array($query))
+			$this->warn_lvl += $tmp['percentage'];
+
 		return true;
+	}
+
+	public function warn($type, $reason, $expires, $points) {
+		global $db, $user;
+		if (!$user) exit;
+		$db->execute("INSERT INTO `warnings` (`time`, `type`, `reason`, `expires`, `uid`, `mid`, `percentage`) VALUES (NOW(), $type, '{$db->safe($reason)}', '{$db->safe($expires)}', {$this->id}, " . $user->id() . ", $points)");
+
+		$this->warn_lvl = 0;
+		$query = $db->execute("SELECT `percentage` FROM `warnings` WHERE `uid`={$this->id} AND `expires` > NOW()");
+		while($tmp = $db->fetch_array($query))
+			$this->warn_lvl += $tmp['percentage'];
 	}
 
 	public function activity() {
@@ -213,7 +228,7 @@ Class User {
 	public function canPostComment() {
 		global $db, $bd_names;
 
-		if (!$this->getPermission('add_comm'))
+		if (!$this->getPermission('add_comm') or $this->warnLVL() >= 100)
 			return false;
 
 		if ($this->group() == 3)

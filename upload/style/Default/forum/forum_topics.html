@@ -1,4 +1,4 @@
-<?php if (!empty($user) && $user->lvl() > 1) { ?>
+<?php if (!empty($user) && $user->lvl() > 1 && $user->warnLVL() < 100) { ?>
 <a href="/go/forum/add/<?php echo $forum_id;?>" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">Новая тема</a><?php } ?>
 <div class="panel panel-default">
 	<div class="panel-heading">

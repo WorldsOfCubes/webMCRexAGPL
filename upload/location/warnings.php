@@ -34,3 +34,4 @@ $warn_list = ob_get_clean();
 ob_start();
 include View::Get('index.html', $dir . $subdir);
 $content_main .= ob_get_clean();
+$page = 'Просмотр предупреждений пользователя - ' . $pl->name();

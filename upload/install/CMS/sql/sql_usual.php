@@ -22,8 +22,7 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['users']}` (
   `default_skin` tinyint(1) NOT NULL DEFAULT '1',
   `{$bd_users['session']}` varchar(255) default NULL,
   `{$bd_users['clientToken']}` varchar(255) default NULL,
-  `{$bd_users['server']}` varchar(255) default NULL,  
-  `warn_lvl` smallint(10) DEFAULT '0',
+  `{$bd_users['server']}` varchar(255) default NULL,
   `topics` smallint(10) DEFAULT '0',
   `posts` smallint(10) DEFAULT '0',
 

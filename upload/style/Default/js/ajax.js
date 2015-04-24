@@ -166,9 +166,8 @@ function RestoreStart() {
 		image.onload = function () {
 
 			image.id = "antibot-visual"
-			image.className = "img-polaroid"
-			image.width = 70
-			image.height = 30
+			image.style = "margin: 0;"
+			image.height = 22
 			GetById('restore-img-holder').appendChild(image)
 		}
 	} else img_obj.src = img_src
@@ -457,9 +456,8 @@ function Login() {
 					BlockVisible('login-antibot-form', true)
 
 					image.id = "login-img-visual"
-					image.className = "img-polaroid"
-					image.width = 70
-					image.height = 30
+					image.style = "margin: 0"
+					image.height = 22
 					GetById('login-img-holder').appendChild(image)
 				}
 

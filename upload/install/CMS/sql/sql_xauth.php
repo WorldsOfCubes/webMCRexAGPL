@@ -31,6 +31,8 @@ BD($bd_alter_users."ADD `play_times` int(10) NOT NULL DEFAULT 0;");
 BD($bd_alter_users."ADD `undress_times` int(10) NOT NULL DEFAULT 0;");
 BD($bd_alter_users."ADD `default_skin` tinyint(1) NOT NULL DEFAULT '1';");
 BD($bd_alter_users."ADD `vote` int(10) NOT NULL DEFAULT 0;");
+BD($bd_alter_users."ADD `topics` smallint(10) DEFAULT '0';");
+BD($bd_alter_users."ADD `posts` smallint(10) DEFAULT '0';");
 
 /* Права для групп. Нет возможности изменить пароль */
 

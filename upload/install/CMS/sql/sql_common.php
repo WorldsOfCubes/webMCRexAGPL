@@ -264,10 +264,14 @@ if (!BD_ColumnExist($bd_names['users'], 'vote')) {
 	BD("ALTER TABLE `{$bd_names['users']}` ADD `vote` smallint(10) DEFAULT 0;");
 }
 
-/* webMCRex 2.0 UPDATE */
+/* webMCRex 2.0b2 UPDATE */
 if (!BD_ColumnExist($bd_names['groups'], 'pex_name')) {
 
 	BD("ALTER TABLE `{$bd_names['groups']}` ADD `pex_name` char(64) NOT NULL;");
+}
+
+/* webMCRex 2.0b4 UPDATE */
+if (!BD_ColumnExist($bd_names['users'], 'topics')) {
 	BD("ALTER TABLE `{$bd_names['users']}` ADD `topics` smallint(10) DEFAULT 0;");
 	BD("ALTER TABLE `{$bd_names['users']}` ADD `posts` smallint(10) DEFAULT 0;");
 }

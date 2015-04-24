@@ -25,9 +25,12 @@
 
 				<div id="login-antibot-form" style="margin-bottom: 10px; display: none;">
 
-					<div style="display: inline-block;" id="login-img-holder"></div>
-					<input id="auth-antibot" type="text" name="antibot" placeholder="Код:" maxlength="4"
-					       class="antibot" />
+
+					<div class="input-group input-group-lg">
+						<span class="input-group-addon" id="basic-addon1"><div id="login-img-holder"></div></span>
+						<input id="auth-antibot" type="text" name="antibot" class="form-control" aria-describedby="basic-addon1" placeholder="{CODE}" maxlength="4" class="antibot" />
+					</div>
+
 
 				</div>
 
@@ -153,13 +156,15 @@
 						class="glyphicon glyphicon-envelope"></i></span><input type="text" class="form-control"
 				                                                               id="restore-email" name="email"
 				                                                               placeholder="{EMAIL}" /></div>
+				<div class="input-group input-group-lg" style="margin-top: 5px;">
+					<span class="input-group-addon">
+						<div style="margin: 0; padding: 0" id="restore-img-holder"></div>
+					</span>
+					<input type="text" id="antibot" class="form-control" placeholder="{CODE}" maxlength="4" class="antibot" />
+				</div>
 
 				<div>
 
-					<div style="display: inline-block;margin-bottom: 0px;margin-top: 5px;" id="restore-img-holder"
-					     class="thumbnail"></div>
-					<input id="antibot" type="text" class="form-control" name="antibot" placeholder="{CODE}"
-					       maxlength="4" class="antibot" />
 
 				</div>
 

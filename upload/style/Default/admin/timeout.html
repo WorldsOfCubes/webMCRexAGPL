@@ -13,7 +13,7 @@
 					<fieldset>
 						<label>Таймаут: ( часы ) </label>
 						<span class="help-block">Время после которого посетитель сайта сможет повторно зарегистрироваться на сайте. 0 - без ограничений</span>
-						<input type="text" name="timeout" value="<?php echo $timeout ?>">
+						<input type="text" class="form-control" style="width:300px" name="timeout" value="<?php echo $timeout ?>">
 						<label class="checkbox">
 							<input type="checkbox" name="emailver" value="1" <?php echo ($verification)?'checked="checked"':'' ?>> Подтверждение почтового ящика
 						</label>

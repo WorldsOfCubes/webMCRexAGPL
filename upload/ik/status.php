@@ -43,7 +43,7 @@ if ($sign != ikSign($_REQUEST, $secretKey)) {
 	exit("Bad sign");
 }
 loadTool('user.class.php');
-$user = new User($paymentId);
+$user = new User($paymentId, $bd_users['login']);
 $user->addMoney($summ);
 //$db->execute("UPDATE `{$bd_names['iconomy']}` SET `{$bd_money['bank']}`=`{$bd_money['bank']}`+$summ WHERE `{$bd_money['login']}`='$paymentId'");
 

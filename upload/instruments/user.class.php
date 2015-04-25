@@ -68,7 +68,6 @@ Class User {
 					   `vote`,
 					   `{$this->db}`.`posts`,
 					   `{$this->db}`.`topics`,
-					   `{$this->db}`.`warn_lvl`,
 					   `{$bd_names['iconomy']}`.`{$bd_money['bank']}`,
 					   `{$bd_names['iconomy']}`.`{$bd_money['money']}`,
 					   `{$bd_names['groups']}`.`lvl`,

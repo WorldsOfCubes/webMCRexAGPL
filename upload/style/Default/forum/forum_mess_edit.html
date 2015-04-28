@@ -104,14 +104,14 @@
 	<div class="block-line"></div>
 	<div class="btn-toolbar" style="margin-bottom:5px;">
 		<div class="btn-group">
-			<button class="btn btn-default" onclick="return bbcode(0)"><b>b</b></button>
-			<button class="btn btn-default" onclick="return bbcode(1)"><i>i</i></button>
-			<button class="btn btn-default" onclick="return bbcode(2)"><u>u</u></button>
+			<button class="btn btn-default" onclick="bbcode(0); return false;"><b>b</b></button>
+			<button class="btn btn-default" onclick="bbcode(1); return false;"><i>i</i></button>
+			<button class="btn btn-default" onclick="bbcode(2); return false;"><u>u</u></button>
 		</div>
 		<div class="btn-group">
-			<button class="btn btn-default" onclick="return bbcode(3)">Ссылка</button>
-			<button class="btn btn-default" onclick="return bbcode(4)">Цитата</button>
-			<button class="btn btn-default" onclick="return bbcode(5)">Спойлер</button>
+			<button class="btn btn-default" onclick="bbcode(3); return false;">Ссылка</button>
+			<button class="btn btn-default" onclick="bbcode(4); return false;">Цитата</button>
+			<button class="btn btn-default" onclick="bbcode(5); return false;">Спойлер</button>
 		</div>
 		<form method="post" action="">
 			<input type="hidden" name="id" value="<?php echo $msg_id; ?>" />

@@ -7,7 +7,7 @@
 				<img width="100%" src="skin.php?mini=<? echo $pl->id(); ?>">
 				<?php if($user and $user->lvl() > 0): ?>
 					<a href="/go/pm/write/<? echo $pl->name(); ?>" class="btn btn-primary btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-pencil"></i> Написать ЛС</a>
-						<a href="<?php echo ($config['rewrite'])? '?mode=warnings&user=' . $pl->name(): 'go/warnings/' . $pl->name() ?>" class="btn btn-warning btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-warning-sign"></i> Предупреждения</a>
+						<a href="<?php echo (!$config['rewrite'])? '?mode=warnings&user=' . $pl->name(): 'go/warnings/' . $pl->name() ?>" class="btn btn-warning btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-warning-sign"></i> Предупреждения</a>
 					<?php if($user->lvl() >= 15): ?>
 						<a href="?mode=control&do=profile&user_id=<? echo $pl->id(); ?>" class="btn btn-danger btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-edit"></i> Править пользователя</a>
 					<?php endif ?>

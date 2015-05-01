@@ -3,11 +3,22 @@ $bd_users = array(
 
 	/* Valid AuthMe fields */
 
-	'login' => 'username', 'id' => 'id', 'password' => 'password', 'ip' => 'ip',
-
+	'login' => 'username',
+	'id' => 'id',
+	'password' => 'password',
+	'ip' => 'ip',
 	/* Required MCR fields */
 
-	'deadtry' => 'mcr_deadtry', 'email' => 'mcr_email', 'female' => 'mcr_gender', 'ctime' => 'mcr_regtime', 'group' => 'mcr_group', 'tmp' => 'mcr_tmp', 'session' => 'mcr_session', 'server' => 'mcr_server', 'clientToken' => 'mcr_clientToken');
+	'deadtry' => 'mcr_deadtry',
+	'email' => 'mcr_email',
+	'female' => 'mcr_gender',
+	'ctime' => 'mcr_regtime',
+	'group' => 'mcr_group',
+	'tmp' => 'mcr_tmp',
+	'session' => 'mcr_session',
+	'server' => 'mcr_server',
+	'clientToken' => 'mcr_clientToken'
+);
 
 /* Common AuthMe fields */
 

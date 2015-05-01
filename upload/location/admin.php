@@ -693,7 +693,7 @@ if ($do) {
 
 				$prior = intval($_POST['prior']);
 
-				$db->execute("UPDATE forum_partition SET priority = '$prior' WHERE id = '$id'");
+				$db->execute("UPDATE `{$bd_names['forum_part']}` SET priority = '$prior' WHERE id = '$id'");
 
 				header("Location: control/forum");
 
@@ -705,15 +705,15 @@ if ($do) {
 
 				$id = intval($_GET['iddel']);
 
-				$par_id = $db->execute("SELECT id FROM forum_partition WHERE parent_id = '$id'");
+				$par_id = $db->execute("SELECT id FROM `{$bd_names['forum_part']}` WHERE parent_id = '$id'");
 
 				$parid = $db->fetch_assoc($par_id);
 
-				$db->execute("DELETE FROM forum_partition WHERE id = '$id' OR parent_id = '$id'");
+				$db->execute("DELETE FROM `{$bd_names['forum_part']}` WHERE id = '$id' OR parent_id = '$id'");
 
-				$db->execute("DELETE FROM forum_topics WHERE partition_id = '{$parid['id']}'");
+				$db->execute("DELETE FROM `{$bd_names['forum_topics']}` WHERE partition_id = '{$parid['id']}'");
 
-				$db->execute("DELETE FROM forum_messages WHERE partition_id = '{$parid['id']}'");
+				$db->execute("DELETE FROM `{$bd_names['forum_mess']}` WHERE partition_id = '{$parid['id']}'");
 
 				header("Location: control/forum");
 
@@ -725,7 +725,7 @@ if ($do) {
 
 				$id = intval($_GET['topid']);
 
-				$db->execute("UPDATE forum_topics SET top = 'Y' WHERE id = '$id'");
+				$db->execute("UPDATE `{$bd_names['forum_topics']}` SET top = 'Y' WHERE id = '$id'");
 
 				header("Location: control/forum");
 
@@ -737,7 +737,7 @@ if ($do) {
 
 				$id = intval($_GET['downid']);
 
-				$db->execute("UPDATE forum_topics SET top = 'N' WHERE id = '$id'");
+				$db->execute("UPDATE `{$bd_names['forum_topics']}` SET top = 'N' WHERE id = '$id'");
 
 				header("Location: control/forum");
 
@@ -749,7 +749,7 @@ if ($do) {
 
 				$id = intval($_GET['lock']);
 
-				$db->execute("UPDATE forum_topics SET closed = 'Y' WHERE id = '$id'");
+				$db->execute("UPDATE `{$bd_names['forum_topics']}` SET closed = 'Y' WHERE id = '$id'");
 
 				header("Location: control/forum");
 
@@ -761,7 +761,7 @@ if ($do) {
 
 				$id = intval($_GET['unlock']);
 
-				$db->execute("UPDATE forum_topics SET closed = 'N' WHERE id = '$id'");
+				$db->execute("UPDATE `{$bd_names['forum_topics']}` SET closed = 'N' WHERE id = '$id'");
 
 				header("Location: control/forum");
 
@@ -773,9 +773,9 @@ if ($do) {
 
 				$id = intval($_GET['delid']);
 
-				$db->execute("DELETE FROM forum_messages WHERE topic_ = '$id'");
+				$db->execute("DELETE FROM `{$bd_names['forum_mess']}` WHERE topic_ = '$id'");
 
-				$db->execute("DELETE FROM forum_topics WHERE id = '$id'");
+				$db->execute("DELETE FROM `{$bd_names['forum_topics']}` WHERE id = '$id'");
 
 				header("Location: control/forum");
 
@@ -803,9 +803,9 @@ if ($do) {
 				unset($value);
 			}
 
-			$forum_topics = $db->execute("SELECT ft.*, acc.login as author_name, fp.name as forum_name, (SELECT MAX(fm.date) FROM forum_messages fm WHERE fm.topic_id = ft.id) as lastdate FROM forum_topics ft, accounts acc, forum_partition fp WHERE ft.author_id = acc.id AND fp.id = ft.partition_id AND ft.top = 'N' ORDER BY lastdate DESC");
+			$forum_topics = $db->execute("SELECT ft.*, acc.`{$bd_users['login']}` as author_name, fp.name as forum_name, (SELECT MAX(fm.date) FROM `{$bd_names['forum_mess']}` fm WHERE fm.topic_id = ft.id) as lastdate FROM `{$bd_names['forum_topics']}` ft, `{$bd_names['users']}` acc, `{$bd_names['forum_part']}` fp WHERE ft.author_id = acc.id AND fp.id = ft.partition_id AND ft.top = 'N' ORDER BY lastdate DESC");
 
-			$forum_topics_top = $db->execute("SELECT ft.*, acc.login as author_name, fp.name as forum_name, (SELECT MAX(fm.date) FROM forum_messages fm WHERE fm.topic_id = ft.id) as lastdate FROM forum_topics ft, accounts acc, forum_partition fp WHERE ft.author_id = acc.id AND fp.id = ft.partition_id AND ft.top = 'Y' ORDER BY lastdate DESC");
+			$forum_topics_top = $db->execute("SELECT ft.*, acc.`{$bd_users['login']}` as author_name, fp.name as forum_name, (SELECT MAX(fm.date) FROM `{$bd_names['forum_mess']}` fm WHERE fm.topic_id = ft.id) as lastdate FROM `{$bd_names['forum_topics']}` ft, `{$bd_names['users']}` acc, `{$bd_names['forum_part']}` fp WHERE ft.author_id = acc.id AND fp.id = ft.partition_id AND ft.top = 'Y' ORDER BY lastdate DESC");
 
 
 			while ($ftop = $db->fetch_assoc($forum_topics)) {

@@ -3,11 +3,22 @@ $bd_users = array(
 
 	/* Valid xAuth fields */
 
-	'login' => 'playername', 'id' => 'id', 'email' => 'email', 'ctime' => 'registerdate', 'password' => 'password',
-
+	'login' => 'playername',
+	'id' => 'id',
+	'email' => 'email',
+	'ctime' => 'registerdate',
+	'password' => 'password',
 	/* Required MCR fields */
 
-	'deadtry' => 'mcr_deadtry', 'female' => 'mcr_gender', 'ip' => 'mcr_ip', 'group' => 'mcr_group', 'tmp' => 'mcr_tmp', 'session' => 'mcr_session', 'server' => 'mcr_server', 'clientToken' => 'mcr_clientToken');
+	'deadtry' => 'mcr_deadtry',
+	'female' => 'mcr_gender',
+	'ip' => 'mcr_ip',
+	'group' => 'mcr_group',
+	'tmp' => 'mcr_tmp',
+	'session' => 'mcr_session',
+	'server' => 'mcr_server',
+	'clientToken' => 'mcr_clientToken'
+);
 
 /* Common xAuth fields */
 

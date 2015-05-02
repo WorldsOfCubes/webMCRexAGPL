@@ -178,7 +178,7 @@ switch ($do) {
 				if (CaptchaCheck(0, false)) {
 					$selectpart = $db->execute("SELECT partition_id FROM `{$bd_names['forum_topics']}` WHERE id = '{$_POST['topic_id']}'");
 					$selectpart = $db->fetch_assoc($selectpart);
-					$db->execute("INSERT INTO ``{$bd_names['forum_mess']}``(`topic_id`, `author_id`, `message`, `date`, `partition_id`) VALUES ('$topic_id','".$user->id()."','".$db->safe($message)."','$time', '{$selectpart['partition_id']}')");
+					$db->execute("INSERT INTO `{$bd_names['forum_mess']}`(`topic_id`, `author_id`, `message`, `date`, `partition_id`) VALUES ('$topic_id','".$user->id()."','".$db->safe($message)."','$time', '{$selectpart['partition_id']}')");
 					$db->execute("UPDATE `{$bd_names['users']}` SET `posts`=`posts`+1 WHERE `{$bd_users['login']}`='".$user->name()."'");
 				} else {
 					$info = 'Неверный код проверки';
@@ -224,7 +224,7 @@ switch ($do) {
 		include View::Get('forum_topic.html', $path);
 		$content_main = ob_get_clean();
 
-		$pagin_topics = $db->execute("SELECT COUNT(*) FROM ``{$bd_names['forum_mess']}`` WHERE `topic_id` = '$topic_id'");
+		$pagin_topics = $db->execute("SELECT COUNT(*) FROM `{$bd_names['forum_mess']}` WHERE `topic_id` = '$topic_id'");
 		$pagin_line = $db->fetch_array($pagin_topics);
 		$view = new View("forum/paginator/");
 		$content_main .= $view->arrowsGenerator('/go/forum/view/topic/'.$topic_id."/", $page, $pagin_line[0], $num_by_page, "pagin");

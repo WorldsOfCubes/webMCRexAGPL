@@ -71,7 +71,7 @@
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 								<h3 id="donateikLabel">Укажите сумму</h3>
 							</div>
-							<form target="_blank" name="payment" method="post" action="https://sci.interkassa.com/"
+							<form name="payment" method="post" action="https://sci.interkassa.com/"
 							      enctype="utf-8">
 								<div class="modal-body">
 									<input type="hidden" name="ik_co_id" value="<?php echo ($donate['ik_shop_id']); ?>">
@@ -86,7 +86,7 @@
 									деньги не пришли, обратитесь к онлайн-консультанту этой системы.
 								</div>
 								<div class="modal-footer">
-									<button class="btn btn-default" data-dismiss="modal">Отмена</button>
+									<button class="btn btn-default" type="button" data-dismiss="modal">Отмена</button>
 									<button class="btn btn-default btn-primary" value="Пополнить">Пополнить</button>
 								</div>
 							</form>
@@ -101,7 +101,7 @@
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 								<h3 id="donateupLabel">Укажите сумму</h3>
 							</div>
-							<form target="_blank" name="payment" method="get" action="https://unitpay.ru/pay/<?php echo ($donate['up_shop_id']); ?>"
+							<form name="payment" method="get" action="https://unitpay.ru/pay/<?php echo ($donate['up_shop_id']); ?>"
 							      enctype="utf-8">
 								<div class="modal-body">
 									<div class="input-group">
@@ -114,7 +114,7 @@
 									деньги не пришли, обратитесь к онлайн-консультанту этой системы.
 								</div>
 								<div class="modal-footer">
-									<button class="btn btn-default" data-dismiss="modal">Отмена</button>
+									<button class="btn btn-default" type="button" data-dismiss="modal">Отмена</button>
 									<button class="btn btn-default btn-primary" value="Пополнить">Пополнить</button>
 								</div>
 							</form>
@@ -141,7 +141,7 @@
 									</div>
 								</div>
 								<div class="modal-footer">
-									<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Отмена
+									<button class="btn btn-default" type="button" data-dismiss="modal" aria-hidden="true">Отмена
 									</button>
 									<input TYPE="submit" class="btn btn-primary" name="buym" value="Обмен">
 								</div>
@@ -154,7 +154,7 @@
 				<p style="color:red"><b>Внимание!</b> В случае вайпа администрация за утерянные деньги/статусы
 				                                      ответственности не несет и не возмещает их!
 
-				<p> Подробнее о VIP и Premium статусах можно узнать на специальной <a href="go/donate">странице</a>.
+				<!--p> Подробнее о VIP и Premium статусах можно узнать на специальной <a href="go/donate">странице</a>.</p-->
 
 				<p> Продление статуса в 2 раза дешевле его покупки!
 

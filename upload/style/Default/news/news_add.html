@@ -3,54 +3,54 @@
 <div class="form-block">
 
 	<div class="block-header"><?php echo $editorTitle ?></div>
-	
-	<div class="block-line"></div>
-	
-	<form action="go/news_add" name="adminform" method="post">
-	
-	<input type="hidden" name="editMode" value="<?php echo $editMode ?>">
 
-	<div class="input-group col-md-5" style="float: right;height:20px">
-		<span class="input-group-addon">Категория:</span>
-		<select name="cid" class="form-control" style="display:inline"><?php echo $cat_list; ?></select>
-	</div>  
-	
-	<div class="input-group col-md-5" style="height:20px">
-	
-		<span class="input-group-addon">Заголовок:</span>
-		
-		<input type="text" name="title" class="form-control" style="display: inline" value="<?php echo $editTitle ?>" />
-		
-	</div>  
-	
-	<label>Вводная часть:</label>
-	
-	<textarea class="form-control" style="height:100px;" name="message"><?php echo $editMessage; ?></textarea>
-	
-	<label style="padding-top: 10px;">Подробное описание: </label>
-	
-	<textarea class="form-control" style="height:200px;" name="message_full"><?php echo $editMessage_Full; ?></textarea>
-	
 	<div class="block-line"></div>
-	
-	<label class="checkbox">
-			
-			<input type="checkbox" name="hide_vote" value="1" <?php echo (!$editInfo['vote']) ? 'checked="checked"': '' ?>> Без голосования			
-			
-	</label>
-	
-	<label class="checkbox">
-	
-	<input type="checkbox" name="hide_discus" value="1" <?php echo (!$editInfo['discus']) ? 'checked="checked"': '' ?>> Без обсуждения
-	
-	<div class="block-line"></div>
-	
-	</label>
-	
-	<div style="float: right;">	
-		<input class="btn btn-default" type="submit" value="<?php echo $editorButton; ?>" />
-	</div>
-	
-	</form>	
-	
+
+	<form action="go/news_add" name="adminform" method="post">
+
+		<input type="hidden" name="editMode" value="<?php echo $editMode ?>">
+
+		<div class="input-group col-md-5" style="float: right;height:20px">
+			<span class="input-group-addon">Категория:</span>
+			<select name="cid" class="form-control" style="display:inline"><?php echo $cat_list; ?></select>
+		</div>
+
+		<div class="input-group col-md-5" style="height:20px">
+
+			<span class="input-group-addon">Заголовок:</span>
+
+			<input type="text" name="title" class="form-control" style="display: inline" value="<?php echo $editTitle ?>" />
+
+		</div>
+
+		<label>Вводная часть:</label>
+
+		<textarea class="form-control" style="height:100px;" name="message"><?php echo $editMessage; ?></textarea>
+
+		<label style="padding-top: 10px;">Подробное описание: </label>
+
+		<textarea class="form-control" style="height:200px;" name="message_full"><?php echo $editMessage_Full; ?></textarea>
+
+		<div class="block-line"></div>
+
+		<label class="checkbox">
+
+			<input type="checkbox" name="hide_vote" value="1" <?php echo (!$editInfo['vote']) ? 'checked="checked"': '' ?>> Без голосования
+
+		</label>
+
+		<label class="checkbox">
+
+			<input type="checkbox" name="hide_discus" value="1" <?php echo (!$editInfo['discus']) ? 'checked="checked"': '' ?>> Без обсуждения
+
+			<div class="block-line"></div>
+
+		</label>
+
+		<div style="float: right;">
+			<input class="btn btn-default" type="submit" value="<?php echo $editorButton; ?>" />
+		</div>
+
+	</form>
+
 </div>

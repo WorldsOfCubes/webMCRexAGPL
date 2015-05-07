@@ -1,0 +1,79 @@
+<?php if (!empty($user) && $user->lvl() > 1 && $user->warnLVL() < 100) { ?>
+<a href="/go/forum/add/<?php echo $forum_id;?>" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">Новая тема</a><?php } ?>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<a href="/go/forum/"><?php echo lng('FORUM')?></a> &raquo; <?php echo $name;?>
+	</div>
+	<table class="table table-bordered">
+		<tr>
+			<th>Информация о теме</th>
+			<th style="text-align: center;">Дата создания</th>
+			<th style="text-align: center;">Последнее сообщение</th>
+		</tr>
+		<?php if(isset($topics_top) && count($topics_top) > 0) { foreach($topics_top as $toplist_top) { ?>
+		<tr class="active" style="border: 1px solid #000;">
+			<td class="td-main">
+				<a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
+				<?php echo $toplist_top['title']; ?>
+				<i class="glyphicon glyphicon-pushpin pull-right" style="margin-left: 6px;" title="Тема закреплена"></i>
+				<?php if($toplist_top['closed'] == 'Y') { ?>
+				<i class="glyphicon glyphicon-lock pull-right" title="Тема закрыта"></i><?php }?>
+				<span style="display: block; color: #7f8c8d;">Автор: <?php echo $toplist_top['author_name']; ?></span>
+			</td>
+			<td style="text-align: center;" class="td-main">
+				<a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
+				<?php echo date("d.m.Y в H:i", $toplist_top['date']); ?>
+			</td>
+			<td style="text-align: center;" class="td-main">
+				<a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
+				<?php echo date("d.m.Y в H:i", $toplist_top['lastdate']); ?>
+			</td>
+		</tr>
+		<?php }} else { echo ''; } ?>
+		<?php if(isset($topics) && count($topics) > 0) { foreach($topics as $toplist) { ?>
+		<tr>
+			<td class="td-main">
+				<a href="/go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
+				<?php if($toplist['closed'] == 'Y') { ?>
+				<i class="glyphicon glyphicon-lock pull-right" title="Тема закрыта"></i> <?php }?>
+				<?php echo $toplist['title']; ?>
+				<span style="display: block; color: #7f8c8d;">Автор: <?php echo $toplist['author_name']; ?></span>
+			</td>
+			<td style="text-align: center;" class="td-main">
+				<a href="/go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
+				<?php echo date("d.m.Y в H:i", $toplist['date']); ?>
+			</td>
+			<td style="text-align: center;" class="td-main">
+				<a href="/go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
+				<?php echo date("d.m.Y в H:i", $toplist['lastdate']); ?>
+			</td>
+		</tr>
+		<?php }} else { ?>
+		<tr>
+			<td class="td-main">Тем нет</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<?php }?>
+	</table>
+</div>
+
+<style>
+	.td-main {
+		position: relative;
+		vertical-align: middle !important;
+	}
+
+	.forum-link {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	tr:hover > td {
+		background: #d9edf7;
+	}
+
+</style>

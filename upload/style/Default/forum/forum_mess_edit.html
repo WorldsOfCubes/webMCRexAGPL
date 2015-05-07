@@ -1,0 +1,147 @@
+<script language="JavaScript" type="text/javascript">
+	function tag_insert(obj, str1, str2) {
+
+		obj.focus()
+
+		if (document.selection) {
+
+			var s = document.selection.createRange()
+
+			if (s.text) s.text = str1 + s.text + str2
+			else obj.value = obj.value + str1 + str2
+
+			return true
+
+		} else if (typeof(obj.selectionStart) == "number") { // Opera, FireFox
+
+			if (obj.selectionStart != obj.selectionEnd) {
+
+				var start = obj.selectionStart
+				var end = obj.selectionEnd
+
+				s = obj.value.substr(start, end - start)
+
+				obj.value = obj.value.substr(0, start) + str1 + s + str2 + obj.value.substr(end)
+
+			} else
+
+				obj.value = obj.value + str1 + str2
+
+			return true;
+		}
+
+		return false;
+	}
+
+	function bbcode(bb) {
+
+		var rep = [];
+
+		rep[0] = "b";
+		rep[1] = "i";
+		rep[2] = "u";
+		rep[3] = '[url="http://www.example.com"]Открыть[/url]';
+		rep[4] = '[quote="Имя"][/quote]';
+		rep[5] = '[spoiler=Имя][/spoiler]';
+
+		if (bb <= 2) tag_insert(GetById('comment-add-text'), '[' + rep[bb] + ']', '[/' + rep[bb] + ']')
+		else if (bb == 3) tag_insert(GetById('comment-add-text'), '[url="', '"]Открыть[/url]')
+		else if (bb == 5) tag_insert(GetById('comment-add-text'), '[spoiler=Открыть спойлер]', '[/spoiler]')
+		else GetById('comment-add-text').value = GetById('comment-add-text').value + rep[bb]
+
+		var used = CheckLen()
+		GetById('comment-length').innerHTML = used
+		if (used <= 0) GetById('comment-length').style.color = '#aa2f17'
+		else             GetById('comment-length').style.color = '#17aa4e'
+
+		return false;
+
+	}
+
+	function cAddSmile(id) {
+		var comm_add = GetById('comment-add-text')
+		comm_add.value += smiles[id].smile
+
+		return false
+	}
+
+	function cDrawSmiles() {
+
+		var smile_holder = GetById('comment-smile-list')
+
+		if (smile_holder.innerHTML.length) return false
+
+		for (var i = 0; i <= smiles.length - 1; ++i)
+			smile_holder.innerHTML += '<a href="#" onclick="return cAddSmile(' + i + ')" class="smile"><img src="' + base_url + way_style + 'img/smiles/' + smiles[i].image + '" alt="Смайлик"/></a>'
+	}
+
+	function Quote(id) {
+
+		var text = GetById('text-cbyid-' + id)
+		if (text == null) return false
+		var author = GetById('author-cbyid-' + id)
+		if (author == null) return false
+		var comm_add = GetById('comment-add-text')
+
+		var text_self = ''
+		if (text.innerText)         text_self = text.innerText
+		else if (text.textContent)  text_self = text.textContent // W3C-compliant
+
+		comm_add.value += '[quote="' + author.innerHTML + '"]' + text_self + '[/quote]'
+
+		return false
+	}
+</script>
+
+<div class="inform-block" style="display: none;" id="comment-error">
+	<div class="alert alert-error" id="comment-error-text"></div>
+</div>
+
+<div class="form-block">
+
+	<div class="block-header">Редактировать сообщение</div>
+
+	<div class="block-line"></div>
+	<div class="btn-toolbar" style="margin-bottom:5px;">
+		<div class="btn-group">
+			<button class="btn btn-default" onclick="bbcode(0); return false;"><b>b</b></button>
+			<button class="btn btn-default" onclick="bbcode(1); return false;"><i>i</i></button>
+			<button class="btn btn-default" onclick="bbcode(2); return false;"><u>u</u></button>
+		</div>
+		<div class="btn-group">
+			<button class="btn btn-default" onclick="bbcode(3); return false;">Ссылка</button>
+			<button class="btn btn-default" onclick="bbcode(4); return false;">Цитата</button>
+			<button class="btn btn-default" onclick="bbcode(5); return false;">Спойлер</button>
+		</div>
+		<form method="post" action="">
+			<input type="hidden" name="id" value="<?php echo $msg_id; ?>" />
+
+			<div class="btn-group">
+
+				<button class="btn btn-default" onclick="BlockVisible('comment-smile-list'); cDrawSmiles(); return false">Смайлики
+					<span class="caret"></span></button>
+
+			</div>
+
+	</div>
+
+	<div id="comment-smile-list" style="display: none; white-space: normal; padding-bottom: 6px; "></div>
+
+	<div class="block-line"></div>
+
+	<div style="text-align: center;">
+
+		<textarea id="comment-add-text" required="*" class="form-control" style="height:100px" name="message" onclick="return DrawLenInfo(event)" onchange="return DrawLenInfo(event)" onkeyup="return DrawLenInfo(event)" onkeypress="return DrawLenInfo(event)"><?php echo $message; ?></textarea>
+
+	</div>
+
+	<div class="block-line"></div>
+	<div class="pull-left"><span style="color: red;"><?php if(isset($info)) { echo $info;} ?></span></div>
+	<div style="float: right;height:24px;margin-bottom:5px">
+		<img id="comment-captcha" src="instruments/captcha/captcha.php?refresh=<?php echo rand(1337,31337) ?>" class="img-thumbnail" alt="Код подтверждения" width="70" height="24" style="margin:0px" />
+		<input id="antibot" type="text" name="antibot" placeholder="" maxlength="4" class="form-control" style="width: 88px;display:inline; margin-bottom: -10px;" />
+		<input id="comment-button" class="btn btn-default" type="submit" value="Редактировать" />
+
+	</div>
+	</form>
+</div>

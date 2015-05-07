@@ -1,11 +1,14 @@
 <?php
-if (!defined('MCR')) exit;
-if (empty($user) or !$user->getPermission('add_news')) { accss_deny(); }
+if (!defined('MCR'))
+	exit;
+if (empty($user) or !$user->getPermission('add_news')) {
+	accss_deny();
+}
 
 loadTool('upload.class.php');
 loadTool('catalog.class.php');
 
-$page = 'Добавить новость';    
+$page = 'Добавить новость';
 
 LoadTinyMCE();
 

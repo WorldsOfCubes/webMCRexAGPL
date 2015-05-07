@@ -24,16 +24,44 @@ RewriteRule ^category/([^/]+)/?$ index.php?cid=$1 [L,NE]
 RewriteRule ^list/([^/]+)/?$ index.php?l=$1 [L,NE]
 RewriteRule ^control/([^/]+)/?$ index.php?mode=control&do=$1 [L,NE]
 
-RewriteRule ^get/([^/]+)/?$ action.php?method=download&file=$1 [L,NE]
-
 RewriteRule ^go/([^/]+)/?$ index.php?mode=$1 [L,NE]
 RewriteRule ^go/options/([\w]+)/?$ index.php?mode=options&result=$1 [L]
 
+RewriteRule ^go/warnings/([^/]+)/?$ index.php?mode=warnings&user=$1 [L]
+
+RewriteRule ^go/banlist/([^/]+)/?$ index.php?mode=banlist&page=$1 [L,NE]
+
+RewriteRule ^go/user/([^/]+)/?$ index.php?mode=user&page=$1 [L,NE]
+RewriteRule ^go/user/search/([^/]+)/?$ index.php?mode=user&search=$1 [L,NE]
+RewriteRule ^go/user/search/([^/]+)/([^/]+)/?$ index.php?mode=user&search=$1&do=$2 [L,NE]
+RewriteRule ^go/user/profile/([^/]+)/?$ index.php?mode=user&name=$1 [L,NE]
+
+RewriteRule ^go/users/([^/]+)/?$ index.php?mode=user&do=$1 [L,NE]
+RewriteRule ^go/users/search/([^/]+)/?$ index.php?mode=user&search=$1 [L,NE]
+RewriteRule ^go/users/search/([^/]+)/([^/]+)/?$ index.php?mode=user&search=$1&do=$2 [L,NE]
+RewriteRule ^go/users/profile/([^/]+)/?$ index.php?mode=user&do=full&name=$1 [L,NE]
+
+RewriteRule ^go/pm/([^/]+)/?$ index.php?mode=pm&do=$1 [L,NE]
+RewriteRule ^go/pm/inbox/([^/]+)/?$ index.php?mode=pm&do=inbox&page=$1 [L,NE]
+RewriteRule ^go/pm/outbox/([^/]+)/?$ index.php?mode=pm&do=outbox&page=$1 [L,NE]
+RewriteRule ^go/pm/write/([^/]+)/?$ index.php?mode=pm&do=write&name=$1 [L,NE]
+RewriteRule ^go/pm/delete/([^/]+)/?$ index.php?mode=pm&do=delete&id=$1 [L,NE]
+RewriteRule ^go/pm/view/([^/]+)/?$ index.php?mode=pm&do=view&id=$1 [L,NE]
+
+RewriteRule ^go/forum/([^/]+)/?$ index.php?mode=forum&id=$1 [L,NE]
+RewriteRule ^go/forum/mainadd/([^/]+)/?$ index.php?mode=forum&do=mainadd&id=$1 [L,NE]
+RewriteRule ^go/forum/view/([^/]+)/([^/]+)/?$ index.php?mode=forum&do=viewforum&id=$1&page=$2 [L,NE]
+RewriteRule ^go/forum/add/([^/]+)/?$ index.php?mode=forum&do=add&id=$1 [L,NE]
+RewriteRule ^go/forum/view/topic/([^/]+)/([^/]+)/?$ index.php?mode=forum&do=viewtopic&id=$1&page=$2 [L,NE]
+RewriteRule ^go/forum/edit/([^/]+)/?$ index.php?mode=forum&do=edit&id=$1 [L,NE]
+
+RewriteRule ^get/([^/]+)/?$ action.php?method=download&file=$1 [L,NE]
 
 RewriteRule  ^authenticate$ MineCraft/auth16x.php [L]
 RewriteRule  ^invalidate$ MineCraft/invalidate16x.php [L]
 RewriteRule  ^refresh$ MineCraft/refresh16x.php [L]
-RewriteRule  ^game/joinserver.jsp MineCraft/joinserver.php [L,NE]
+RewriteRule  ^joinserver.jsp MineCraft/joinserver.php [L,NE]
+RewriteRule  ^checkserver.jsp MineCraft/checkserver.php [L,NE]
 
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d

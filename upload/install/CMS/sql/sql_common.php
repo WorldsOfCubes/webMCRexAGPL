@@ -1,11 +1,11 @@
-<?php 
+<?php
 /* SQL COMMON TABLES CREATE + ADD DEFAULT INFO + UPDATES */
 
 BD("SET FOREIGN_KEY_CHECKS=0;");
 
 if ($mysql_rewrite) {
 
-BD("DROP TABLE IF EXISTS `{$bd_names['ip_banning']}`,
+	BD("DROP TABLE IF EXISTS `{$bd_names['ip_banning']}`,
                         `{$bd_names['news']}`,
                         `{$bd_names['news_categorys']}`,
                         `{$bd_names['likes']}`,
@@ -15,6 +15,9 @@ BD("DROP TABLE IF EXISTS `{$bd_names['ip_banning']}`,
                         `{$bd_names['servers']}`,
                         `{$bd_names['iconomy']}`,
                         `{$bd_names['groups']}`,
+                        `{$bd_names['forum_part']}`,
+                        `{$bd_names['forum_topics']}`,
+                        `{$bd_names['forum_mess']}`,
                         `banlist`,
                         `banlistip`,
                         `permissions`,
@@ -24,7 +27,7 @@ BD("DROP TABLE IF EXISTS `{$bd_names['ip_banning']}`,
 }
 
 /* CREATE TABLES */
-	
+
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['likes']}` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
@@ -32,6 +35,29 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['likes']}` (
   `item_type` smallint(3) NOT NULL DEFAULT 1,
   `var` tinyint(1) NOT NULL DEFAULT -1,
   PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;");
+
+BD("CREATE TABLE `pm` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `date` datetime DEFAULT NULL,
+  `sender` char(32) DEFAULT NULL,
+  `reciver` char(32) DEFAULT NULL,
+  `viewed` int(11) NOT NULL DEFAULT '0',
+  `topic` char(255) DEFAULT NULL,
+  `text` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;");
+
+BD("CREATE TABLE `reqests` (
+	`id` INT(255) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(30) NOT NULL COLLATE 'utf8_unicode_ci',
+	`realname` VARCHAR(30) NOT NULL COLLATE 'utf8_unicode_ci',
+	`surname` VARCHAR(255) NOT NULL,
+	`old` VARCHAR(20) NOT NULL COLLATE 'utf8_unicode_ci',
+	`skype` VARCHAR(20) NOT NULL,
+	`answer` VARCHAR(5) NOT NULL DEFAULT '1',
+	`comment` VARCHAR(500) NOT NULL,
+	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;");
 
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['files']}` (
@@ -99,12 +125,14 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['servers']}` (
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['groups']}` (
   `id`      int(10) NOT NULL AUTO_INCREMENT,
   `name`   char(64) NOT NULL,
+  `pex_name`   char(64) NOT NULL,
   `lvl`     int(10) NOT NULL DEFAULT 1,
   `system` tinyint(1) NOT NULL DEFAULT 0,
   `change_skin` tinyint(1) NOT NULL DEFAULT 0,  
   `change_pass` tinyint(1) NOT NULL DEFAULT 0,
   `change_login` tinyint(1) NOT NULL DEFAULT 0,
   `change_cloak` tinyint(1) NOT NULL DEFAULT 0,
+  `change_prefix` tinyint(1) NOT NULL DEFAULT 0,
   `add_news` tinyint(1) NOT NULL DEFAULT 0,
   `add_comm` tinyint(1) NOT NULL DEFAULT 0,
   `adm_comm` tinyint(1) NOT NULL DEFAULT 0,
@@ -138,9 +166,7 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['data']}` (
   `value` varchar(255) DEFAULT NULL,
   UNIQUE KEY `property` (`property`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-
 /* DEFAULT INFO ADD */
-
 BD("INSERT INTO `{$bd_names['news_categorys']}` (`id`,`name`) VALUES (1,'Без категории');");
 
 BD("INSERT INTO `{$bd_names['data']}` (`property`, `value`) VALUES
@@ -168,73 +194,95 @@ BD("INSERT INTO `{$bd_names['data']}` (`property`, `value`) VALUES
 ('email-name', 'Info'),
 ('email-mail', 'noreply@noreply.ru');");
 
+if (!BD_ColumnExist($bd_names['users'], 'pass_set') && $mode == "wocauth")
+
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `pass_set` tinyint(1) NOT NULL DEFAULT 0;");
+
 /* webMCR 2.05 UPDATE */
 
 if (!BD_ColumnExist($bd_names['ip_banning'], 'ban_type'))
 
-BD("ALTER TABLE `{$bd_names['ip_banning']}` ADD `ban_type` tinyint(1) NOT NULL DEFAULT 1;");
+	BD("ALTER TABLE `{$bd_names['ip_banning']}` ADD `ban_type` tinyint(1) NOT NULL DEFAULT 1;");
 
-if (!BD_ColumnExist($bd_names['ip_banning'], 'reason'))	
+if (!BD_ColumnExist($bd_names['ip_banning'], 'reason'))
 
-BD("ALTER TABLE `{$bd_names['ip_banning']}`  ADD `reason` varchar(255) DEFAULT NULL;");
-	
+	BD("ALTER TABLE `{$bd_names['ip_banning']}`  ADD `reason` varchar(255) DEFAULT NULL;");
+
 /* webMCR 2.1 UPDATE */
 
 if (!BD_ColumnExist($bd_names['news'], 'user_id')) {
 
-BD("ALTER TABLE `{$bd_names['news']}` 
+	BD("ALTER TABLE `{$bd_names['news']}`
 	ADD `user_id` bigint(20) NOT NULL,
 	ADD `dislikes` int(10) DEFAULT 0,
 	ADD `likes` int(10) DEFAULT 0;");
 	
-BD("ALTER TABLE `{$bd_names['news']}`	ADD KEY `category_id` (`category_id`),
+	BD("ALTER TABLE `{$bd_names['news']}`	ADD KEY `category_id` (`category_id`),
 										ADD KEY `user_id` (`user_id`);");
-					
-BD("ALTER TABLE `{$bd_names['comments']}`	ADD KEY `user_id` (`user_id`),
+
+	BD("ALTER TABLE `{$bd_names['comments']}`	ADD KEY `user_id` (`user_id`),
 											ADD	KEY `item_id` (`item_id`);");
 
-BD("ALTER TABLE `{$bd_names['users']}`	ADD	KEY `group_id` (`{$bd_users['group']}`);");	
-}	
+	BD("ALTER TABLE `{$bd_names['users']}`	ADD	KEY `group_id` (`{$bd_users['group']}`);");
+}
 
 /* webMCR 2.15 UPDATE */
 if (!BD_ColumnExist($bd_names['users'], $bd_users['deadtry'])) {
 
-BD("ALTER TABLE `{$bd_names['users']}`	ADD `{$bd_users['deadtry']}` tinyint(1) DEFAULT 0;");	
+	BD("ALTER TABLE `{$bd_names['users']}`	ADD `{$bd_users['deadtry']}` tinyint(1) DEFAULT 0;");
 }
 
 /* webMCR 2.25b UPDATE */
 if (!BD_ColumnExist($bd_names['users'], $bd_users['clientToken'])) {
 
-BD("ALTER TABLE `{$bd_names['users']}` ADD `{$bd_users['clientToken']}` varchar(255) DEFAULT NULL;");	
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `{$bd_users['clientToken']}` varchar(255) DEFAULT NULL;");
 }
 
 /* webMCR 2.3 UPDATE */
 if (!BD_ColumnExist($bd_names['servers'], 'service_user')) {
 
-BD("ALTER TABLE `{$bd_names['servers']}` ADD `service_user` char(64) default NULL;");
-BD("ALTER TABLE `{$bd_names['news']}` ADD `hits` int(10) DEFAULT 0;");	
+	BD("ALTER TABLE `{$bd_names['servers']}` ADD `service_user` char(64) default NULL;");
+	BD("ALTER TABLE `{$bd_names['news']}` ADD `hits` int(10) DEFAULT 0;");
 }
 
 if (!BD_ColumnExist($bd_names['news'], 'hide_vote'))
 
-BD("ALTER TABLE `{$bd_names['news']}` ADD `hide_vote` tinyint(1) NOT NULL DEFAULT 0;");	
+	BD("ALTER TABLE `{$bd_names['news']}` ADD `hide_vote` tinyint(1) NOT NULL DEFAULT 0;");
 
 /* webMCR 2.31 UPDATE */
 if (!BD_ColumnExist($bd_names['comments'], 'item_type')) {
 
-BD("ALTER TABLE `{$bd_names['comments']}` ADD `item_type` smallint(3) DEFAULT ". ItemType::News .";");
-BD("ALTER TABLE `{$bd_names['comments']}` DROP KEY `item_id`");
-BD("ALTER TABLE `{$bd_names['comments']}` ADD KEY `uniq_item` (`item_id`, `item_type`);");
+	BD("ALTER TABLE `{$bd_names['comments']}` ADD `item_type` smallint(3) DEFAULT ".ItemType::News.";");
+	BD("ALTER TABLE `{$bd_names['comments']}` DROP KEY `item_id`");
+	BD("ALTER TABLE `{$bd_names['comments']}` ADD KEY `uniq_item` (`item_id`, `item_type`);");
 
-BD("ALTER TABLE `{$bd_names['news']}` CHANGE COLUMN `hide_vote` `vote` tinyint(1) NOT NULL DEFAULT 1;");
-BD("ALTER TABLE `{$bd_names['news']}` ADD `discus` tinyint(1) NOT NULL DEFAULT 1;");
-BD("ALTER TABLE `{$bd_names['news']}` ADD `comments` int(10) NOT NULL DEFAULT 0;");
+	BD("ALTER TABLE `{$bd_names['news']}` CHANGE COLUMN `hide_vote` `vote` tinyint(1) NOT NULL DEFAULT 1;");
+	BD("ALTER TABLE `{$bd_names['news']}` ADD `discus` tinyint(1) NOT NULL DEFAULT 1;");
+	BD("ALTER TABLE `{$bd_names['news']}` ADD `comments` int(10) NOT NULL DEFAULT 0;");
 }
 
 /* webMCRex 1.235b_r2 UPDATE */
 if (!BD_ColumnExist($bd_names['users'], 'vote')) {
 
-BD("ALTER TABLE `{$bd_names['users']}` ADD `vote` smallint(10) DEFAULT 0;");
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `vote` smallint(10) DEFAULT 0;");
+}
+
+/* webMCRex 2.0b2 UPDATE */
+if (!BD_ColumnExist($bd_names['groups'], 'pex_name')) {
+
+	BD("ALTER TABLE `{$bd_names['groups']}` ADD `pex_name` char(64) NOT NULL;");
+}
+
+/* webMCRex 2.0b4 UPDATE */
+if (!BD_ColumnExist($bd_names['users'], 'topics')) {
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `topics` smallint(10) DEFAULT 0;");
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `posts` smallint(10) DEFAULT 0;");
+}
+
+/* webMCRex 2.0b40 UPDATE */
+if (!BD_ColumnExist($bd_names['groups'], 'change_prefix')) {
+
+	BD("ALTER TABLE `{$bd_names['groups']}` ADD `change_prefix` SMALLINT(1) NOT NULL DEFAULT 0;");
 }
 
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['action_log']}` (
@@ -245,15 +293,6 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['action_log']}` (
   `info` varchar(255) NOT NULL,
   PRIMARY KEY (`IP`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-
-BD("INSERT INTO `{$bd_names['groups']}` 
-(`id`,`name`,`lvl`,`system`,`change_skin`,`change_pass`,`change_login`,`change_cloak`,`add_news`,`add_comm`,`adm_comm`) VALUES 
-(1,'Пользователь',2,1,1,1,0,0,0,1,0), 
-(2,'Заблокированный',0,1,0,0,0,0,0,0,0), 
-(3,'Администратор',15,1,1,1,1,1,1,1,1), 
-(4,'Непроверенный',1,1,0,0,0,0,0,0,0), 
-(5,'VIP',5,1,1,1,0,1,0,1,0),
-(6,'Premium',6,1,1,1,0,1,0,1,0);");
 
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['iconomy']}` (
 `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -304,14 +343,26 @@ BD("CREATE TABLE `unbans` (
 ) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;");
 
 BD("CREATE TABLE IF NOT EXISTS `banlist` (
-`name` varchar(32) NOT NULL,
-`reason` text NOT NULL,
-`admin` varchar(32) NOT NULL,
-`time` bigint(20) NOT NULL,
-`temptime` bigint(20) NOT NULL,
-`id` int(11) NOT NULL AUTO_INCREMENT,
-`type` int(1) NOT NULL DEFAULT '0',
-PRIMARY KEY (`id`)
+  `name` varchar(32) NOT NULL,
+  `reason` text NOT NULL,
+  `admin` varchar(32) NOT NULL,
+  `time` bigint(20) NOT NULL,
+  `temptime` bigint(20) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;");
+
+BD("CREATE TABLE IF NOT EXISTS `warnings` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `uid` BIGINT(20) NOT NULL,
+  `mid` BIGINT(20) NOT NULL,
+  `percentage` INT(11) NOT NULL,
+  `reason` text NOT NULL,
+  `time` DATETIME NOT NULL,
+  `expires` DATE NOT NULL,
+  `type` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;");
 
 BD("CREATE TABLE IF NOT EXISTS `banlistip` (
@@ -319,3 +370,39 @@ BD("CREATE TABLE IF NOT EXISTS `banlistip` (
 `lastip` tinytext NOT NULL,
 PRIMARY KEY (`name`)
 ) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;");
+
+/*Forum update*/
+BD("CREATE TABLE IF NOT EXISTS `{$bd_names['forum_part']}` (
+`id` int(11) NOT NULL,
+  `parent_id` int(11) DEFAULT '0',
+  `priority` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8");
+
+BD("CREATE TABLE IF NOT EXISTS `{$bd_names['forum_topics']}` (
+  `id` int(11) NOT NULL,
+  `partition_id` int(11) NOT NULL,
+  `author_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `date` int(11) NOT NULL,
+  `top` char(1) NOT NULL DEFAULT 'N',
+  `closed` char(1) NOT NULL DEFAULT 'N'
+) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;");
+
+BD("CREATE TABLE IF NOT EXISTS `{$bd_names['forum_mess']}` (
+  `id` int(11) NOT NULL,
+  `partition_id` int(11) NOT NULL,
+  `topic_id` int(11) NOT NULL,
+  `author_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `date` int(11) NOT NULL,
+  `topmsg` char(1) NOT NULL DEFAULT 'N'
+) ENGINE=MyISAM AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;");
+
+BD("ALTER TABLE `{$bd_names['forum_part']}` ADD PRIMARY KEY (`id`);");
+BD("ALTER TABLE `{$bd_names['forum_topics']}` ADD PRIMARY KEY (`id`);");
+BD("ALTER TABLE `{$bd_names['forum_mess']}` ADD PRIMARY KEY (`id`);");
+BD("ALTER TABLE `{$bd_names['forum_part']}` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1");
+BD("ALTER TABLE `{$bd_names['forum_topics']}` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1");
+BD("ALTER TABLE `{$bd_names['forum_mess']}` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1");

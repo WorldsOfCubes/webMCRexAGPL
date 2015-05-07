@@ -1,0 +1,176 @@
+<div class="tabbable" style="margin-top: 12px; padding: 10px;">
+
+	<ul class="nav nav-tabs">
+
+		<li class="active"><a href="#tab1" data-toggle="tab">Управление категориями и форумами</a></li>
+		<li><a href="#tab2" data-toggle="tab">Управление темами</a></li>
+	</ul>
+
+	<div class="tab-content">
+
+		<div class="tab-pane active" id="tab1">
+			<div class="bg-danger" style="padding: 10px; margin-bottom: 15px;"><b>Внимание:</b>
+
+				<p>
+					<i>Выбранный приоритет может быть любым числом и сортировка будет проходить от большего(Сверху списка) к меньшему(Снизу списка)</i>
+				</p></div>
+			<?php if(isset($parents) && count($parents) > 0) { foreach($parents as $prnts) { ?>
+			<div class="panel panel-default" style="margin-top: 30px;">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse<?php echo $prnts['id']; ?>">
+							<i class="glyphicon glyphicon-list"></i><strong> <?php echo $prnts['name'];?></strong>
+						</a>
+					</h4>
+				</div>
+				<div id="collapse<?php echo $prnts['id']; ?>" class="panel-collapse collapse">
+					<div class="panel-body">
+						<form style="text-align: center; margin-bottom: 10px;" action="?mode=control&do=forum" method="POST">
+							<input type="hidden" name="id" value="<?php echo $prnts['id']; ?>" />
+							<input type="text" name="prior" value="<?php echo $prnts['priority']; ?>" class="form-control" style="margin-right: 5px; margin-top: -10px; width: auto; display: inline;" placeholder="Приоритет" />
+							<button type="submit" class="btn btn-primary" style="margin-right: 5px; margin-top: -4px;">Обновить приоритет</button>
+							<a href="?mode=control&do=forum&iddel=<?php echo $prnts['id']; ?>" style="margin-top: -4px;" class="btn btn-danger">
+								<i class="glyphicon glyphicon-trash" title="Удалить категорию"></i>
+							</a>
+						</form>
+						<table class="table table-bordered">
+							<tr>
+								<th>Название форума</th>
+								<th>Приоритет</th>
+								<th>Действие</th>
+							</tr>
+							<?php if(isset($prnts['forums']) && count($prnts['forums']) > 0) foreach($prnts['forums'] as $forum) { ?>
+							<tr>
+								<form action="?mode=control&do=forum" method="POST">
+									<input type="hidden" name="id" value="<?php echo $forum['id']; ?>" />
+									<td style="vertical-align: middle;"><?php echo $forum['name']; ?></td>
+									<td>
+										<input type="text" name="prior" value="<?php echo $forum['priority']; ?>" class="form-control" placeholder="Приоритет" />
+									</td>
+									<td style="vertical-align: middle; width: 170px;">
+										<div class="btn-group btn-group-xs">
+											<button type="submit" class="btn btn-primary">Обновить приоритет</button>
+											<a href="?mode=control&do=forum&iddel=<?php echo $forum['id']; ?>" class="btn btn-danger"><i class="glyphicon glyphicon-trash" title="Удалить форум"></i></a>
+										</div>
+									</td>
+								</form>
+							</tr>
+							<?php } else { ?>
+							<tr>
+								<td>Форумов нет</td>
+								<td></td>
+								<td></td>
+							</tr>
+							<?php } ?>
+						</table>
+					</div>
+				</div>
+			</div>
+			<?php }} else { ?>
+			<div class="bg-warning" style="padding: 10px;"><b><h2>Категорий нет</h2></b></div>
+			<?php } ?>
+		</div>
+
+		<div class="tab-pane" id="tab2">
+			<div class="bg-danger" style="padding: 10px; margin-bottom: 15px;"><b>Внимание:</b>
+
+				<p>
+					<i>При клике на тему вы попадете на страницу с таковой, а при клике на название форума попадете на форум, где хранится выбранная тема</i>
+				</p></div>
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Список тем из всех форумов
+				</div>
+				<table class="table table-bordered">
+					<tr>
+						<th>Информация о теме</th>
+						<th style="text-align: center;">Дата создания
+							<span style="display: block; color: #7f8c8d;">Последнее сообщение</span></th>
+						<th style="text-align: center;">Форум</th>
+						<th style="text-align: center;">Действия</th>
+					</tr>
+					<?php if(isset($topics_top) && count($topics_top) > 0) { foreach($topics_top as $toplist_top) { ?>
+					<tr class="active" style="border: 1px solid #000;">
+						<td class="td-main">
+							<a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
+							<?php echo $toplist_top['title']; ?>
+							<span style="display: block; color: #7f8c8d;">Автор: <?php echo $toplist_top['author_name']; ?></span>
+						</td>
+						<td style="text-align: center;" class="td-main">
+							<a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
+							<?php echo date("d.m.Y в H:i", $toplist_top['date']); ?>
+							<span style="display: block; color: #7f8c8d"><?php echo date("d.m.Y в H:i", $toplist_top['lastdate']); ?></span>
+						</td>
+						<td style="text-align: center;" class="td-main">
+							<a href="/go/forum/view/<?php echo $toplist_top['partition_id'];?>/1" class="forum-link"></a>
+							<?php echo $toplist_top['forum_name']; ?>
+						</td>
+						<td style="text-align: center; width: 88px;" class="td-main">
+							<div class="btn-group btn-group-xs">
+								<a href="?mode=control&do=forum&downid=<?php echo $toplist_top['id'];?>" class="btn btn-warning" title="Снять тему с фиксации"><i class="glyphicon glyphicon-arrow-down"></i></a>
+								<?php if($toplist_top['closed'] == 'N') {?>
+								<a href="?mode=control&do=forum&lock=<?php echo $toplist_top['id'];?>" class="btn btn-info" title="Закрыть тему"><i class="glyphicon glyphicon-lock"></i></a><?php }?>
+								<?php if($toplist_top['closed'] == 'Y') {?>
+								<a href="?mode=control&do=forum&unlock=<?php echo $toplist_top['id'];?>" class="btn btn-info" title="Открыть тему"><i class="glyphicon glyphicon-unlock"></i></a><?php }?>
+								<a href="?mode=control&do=forum&delid=<?php echo $toplist_top['id'];?>" class="btn btn-danger" title="Удалить тему"><i class="glyphicon glyphicon-trash"></i></a>
+							</div>
+						</td>
+					</tr>
+					<?php }} else { echo ''; } ?>
+					<?php if(isset($topics) && count($topics) > 0) { foreach($topics as $toplist) { ?>
+					<tr>
+						<td class="td-main">
+							<a href="/go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
+							<?php echo $toplist['title']; ?>
+							<span style="display: block; color: #7f8c8d;">Автор: <?php echo $toplist['author_name']; ?></span>
+						</td>
+						<td style="text-align: center;" class="td-main">
+							<a href="/go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
+							<?php echo date("d.m.Y в H:i", $toplist['date']); ?>
+							<span style="display: block; color: #7f8c8d"><?php echo date("d.m.Y в H:i", $toplist['lastdate']); ?></span>
+						</td>
+						<td style="text-align: center;" class="td-main">
+							<a href="/go/forum/view/<?php echo $toplist['partition_id'];?>/1" class="forum-link"></a>
+							<?php echo $toplist['forum_name']; ?>
+						</td>
+						<td style="text-align: center; width: 88px;" class="td-main">
+							<div class="btn-group btn-group-xs">
+								<a href="?mode=control&do=forum&topid=<?php echo $toplist['id'];?>" class="btn btn-success" title="Зафиксировать тему вверху"><i class="glyphicon glyphicon-arrow-up"></i></a>
+								<?php if($toplist['closed'] == 'N') {?>
+								<a href="?mode=control&do=forum&lock=<?php echo $toplist['id'];?>" class="btn btn-info" title="Закрыть тему"><i class="glyphicon glyphicon-lock"></i></a><?php }?>
+								<?php if($toplist['closed'] == 'Y') {?>
+								<a href="?mode=control&do=forum&unlock=<?php echo $toplist['id'];?>" class="btn btn-info" title="Открыть"><i class="glyphicon glyphicon-unlock"></i></a><?php }?>
+								<a href="?mode=control&do=forum&delid=<?php echo $toplist['id'];?>" class="btn btn-danger" title="Удалить тему"><i class="glyphicon glyphicon-trash"></i></a>
+							</div>
+						</td>
+					</tr>
+					<?php }} else { ?>
+					<tr>
+						<td class="td-main">Тем нет</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<?php }?>
+				</table>
+			</div>
+		</div>
+	</div>
+	<style>
+		.td-main {
+			position: relative;
+			vertical-align: middle !important;
+		}
+
+		.forum-link {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		tr:hover > td {
+			background: #d9edf7;
+		}
+
+	</style>

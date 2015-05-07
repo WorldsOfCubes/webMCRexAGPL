@@ -1,0 +1,77 @@
+<div class="form-block">
+	<div class="block-header">Профиль пользователя <? echo $pl->name(); ?></div>
+	<div class="block-line"></div>
+	<div class="tab-pane" id="launcher">
+		<div class="row">
+			<div class="col-md-4">
+				<img width="100%" src="skin.php?mini=<? echo $pl->id(); ?>">
+				<?php if($user and $user->lvl() > 0): ?>
+					<a href="/go/pm/write/<? echo $pl->name(); ?>" class="btn btn-primary btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-pencil"></i> Написать ЛС</a>
+						<a href="<?php echo (!$config['rewrite'])? '?mode=warnings&user=' . $pl->name(): 'go/warnings/' . $pl->name() ?>" class="btn btn-warning btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-warning-sign"></i> Предупреждения</a>
+					<?php if($user->lvl() >= 15): ?>
+						<a href="?mode=control&do=profile&user_id=<? echo $pl->id(); ?>" class="btn btn-danger btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-edit"></i> Править пользователя</a>
+					<?php endif ?>
+				<?php endif ?>
+			</div>
+			<div class="col-md-8">
+				<div class="row">
+					<div class="col-md-4" align="right"><b>
+						Никнейм:</b></div>
+					<div class="col-md-8">
+						<? echo $pl->name(); ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4" align="right"><b>
+						Группа:</b></div>
+					<div class="col-md-8">
+						<? echo $pl->getGroupName(); ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4" align="right"><b>
+						Уровень предупреждений:</b></div>
+					<div class="col-md-8">
+						<? echo $pl->warnLVL(); ?>%
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4" align="right"><b>
+						Дата регистрации:</b></div>
+					<div class="col-md-8">
+						<? echo ($pl->getStatisticTime('create_time')) ? $pl->getStatisticTime('create_time') : 'Неизвестно'; ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4" align="right"><b>
+						Последний вход в игру:</b></div>
+					<div class="col-md-8">
+						<? echo ($pl->gameLoginLast()) ? Profile::TimeFrom($pl->gameLoginLast()) : 'Никогда'; ?>
+					</div>
+				</div>
+				<div class="row">
+				</div>
+				<div class="row">
+					<div class="col-md-4" align="right"><b>
+						Проведенных игр:</b></div>
+					<div class="col-md-8">
+						<? echo (int) $stat['play_times']; ?></div>
+					<div class="col-md-4" align="right"><b>
+						Комментарии:</b></div>
+					<div class="col-md-8">
+						<? echo (int) $stat['comments_num']; ?></div>
+					<div class="col-md-4" align="right"><b>
+						Тем:</b></div>
+					<div class="col-md-8">
+						<? echo (int) $pl->topics(); ?>
+					</div>
+					<div class="col-md-4" align="right"><b>
+						Сообщений на форуме:</b></div>
+					<div class="col-md-8">
+						<? echo (int) $pl->posts(); ?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,7 +1,8 @@
 <?php
-if (!defined('MCR')) exit;
+if (!defined('MCR'))
+	exit;
 
-$page = 'Как начать играть'; 
+$page = 'Как начать играть';
 
 $content_main = View::ShowStaticPage('guide.html');
 

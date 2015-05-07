@@ -1,0 +1,35 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<a href="/go/forum/"><?php echo lng('FORUM')?></a> &raquo; <?php echo lng('FORUM_SETTINGS');?>
+	</div>
+	<form action="" style="margin-top: 15px;" method="POST">
+		<div class="form-group input-group" style="padding: 10px;">
+			<span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+			<input type="text" class="form-control" name="cat_name" placeholder="Введите название категории" required="*">
+		</div>
+		<div class="form-group" style="padding: 10px;">
+			<button type="submit" class="btn btn-primary btn-block">Создать категорию</button>
+		</div>
+	</form>
+	<hr />
+	<form action="" method="POST">
+		<div class="form-group input-group" style="padding: 10px;">
+			<span class="input-group-addon"><span class="glyphicon glyphicon-list-alt"></span></span>
+			<select name="category" class="form-control" required="*">
+				<option disabled="" selected="">-Выберите категорию-</option>
+				<?php echo $list_cat; ?>
+			</select>
+		</div>
+		<div class="form-group input-group" style="padding: 10px;">
+			<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+			<input type="text" class="form-control" name="name" placeholder="Введите название форума" required="*">
+		</div>
+		<div class="form-group input-group" style="padding: 10px;">
+			<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+			<input type="text" class="form-control" name="description" placeholder="Введите описание форума" required="*">
+		</div>
+		<div class="form-group" style="padding: 10px;">
+			<button type="submit" class="btn btn-primary btn-block">Создать форум</button>
+		</div>
+	</form>
+</div>

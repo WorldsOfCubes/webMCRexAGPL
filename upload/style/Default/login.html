@@ -1,138 +1,184 @@
-<div class="inform-block" style="display: none;" id="loginform-error"><div class="alert alert-danger" id="loginform-error-text">Вы не авторизованы</div></div>
+<div class="inform-block" style="display: none;" id="loginform-error">
+	<div class="alert alert-danger" id="loginform-error-text">Вы не авторизованы</div>
+</div>
 
 <div id="login-box" class="panel panel-default" style="border-radius: 0px;margin-top:12px;padding-bottom: 10px">
-  <div class="panel-heading">
-    <h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> Авторизация</h3>
-  </div>
-  <div class="panel-body">
-<form action="login.php" method="post" id="loginform">
-<div style="text-align: center;">
-
-    <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="auth-login" class="form-control" type="text" name="login" placeholder="Логин или e-mail" /></div>
-    <div class="input-group" style="margin-top:5px"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input id="auth-pass" class="form-control" type="password" name="pass" placeholder="Пароль" /></div>
-    <div style="float:right"><a href="#" style="color: #656565;" onclick="RestoreStart(); return false;">Забыли пароль?</a></div> <label style="margin:0 0 0 48px; text-align: left; padding-bottom:2px;" class="checkbox"><input type="checkbox" id="auth-save" name="save" value="1" /> Запомнить</label>
-		 
-		<div id="login-antibot-form" style="margin-bottom: 10px; display: none;">
-		 
-			<div style="display: inline-block;" id="login-img-holder"></div>
-			<input id="auth-antibot" type="text" name="antibot" placeholder="Код:" maxlength="4" class="antibot"/>
-
-		</div>
-		 
-
-	<div class="btn-group" style="text-align:center">
-		<input type="submit" class="btn btn-sm btn-primary" id="login" onclick="Login(); return false;" value="Войти">
-		<input type="button" class="btn btn-sm btn-info" onclick="BlockVisible('reg-box',true); BlockVisible('login-box',false); return false " value="Создать аккаунт">
+	<div class="panel-heading">
+		<h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> {AUTH}</h3>
 	</div>
+	<div class="panel-body">
+		<form action="login.php" method="post" id="loginform">
+			<div style="text-align: center;">
+
+				<div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input
+						id="auth-login" class="form-control" type="text" name="login" placeholder="{AUTH_LOGIN}" />
+				</div>
+				<div class="input-group" style="margin-top:5px"><span class="input-group-addon"><i
+						class="glyphicon glyphicon-lock"></i></span><input id="auth-pass" class="form-control"
+				                                                           type="password" name="pass"
+				                                                           placeholder="{PASS}" /></div>
+				<div style="float:right">
+					<a href="#" style="color: #656565;" onclick="RestoreStart(); return false;">{RESTOREPASS_LINK}</a>
+				</div>
+				<label style="margin:0 0 0 48px; text-align: left; padding-bottom:2px;" class="checkbox"><input
+						type="checkbox" id="auth-save" name="save" value="1" /> {SAVE_SESSION}</label>
+
+				<div id="login-antibot-form" style="margin-bottom: 10px; display: none;">
 
 
-	
-</div>
-</form>
-</div>
+					<div class="input-group input-group-lg">
+						<span class="input-group-addon" id="basic-addon1"><div id="login-img-holder"></div></span>
+						<input id="auth-antibot" type="text" name="antibot" class="form-control" aria-describedby="basic-addon1" placeholder="{CODE}" maxlength="4" class="antibot" />
+					</div>
+
+
+				</div>
+
+
+				<div class="btn-group" style="text-align:center">
+					<input type="submit" class="btn btn-sm btn-primary" id="login" onclick="Login(); return false;"
+					       value="{ENTER}">
+					<input type="button" class="btn btn-sm btn-info"
+					       onclick="BlockVisible('reg-box',true); BlockVisible('login-box',false); return false "
+					       value="{REGISTER}">
+				</div>
+
+
+			</div>
+		</form>
+	</div>
 </div>
 
 <script type="text/javascript">
-function BlockHidden(itemID,state) {
+	function BlockHidden(itemID, state) {
 
-	var item = GetById(itemID)
-	if (item == null) return false
+		var item = GetById(itemID)
+		if (item == null) return false
 
-	if (state == null) {
-	
-		if (item.style.visibility == 'visible') item.style.visibility = 'hidden'
-		else item.style.visibility = 'visible '
-		
+		if (state == null) {
+
+			if (item.style.visibility == 'visible') item.style.visibility = 'hidden'
+			else item.style.visibility = 'visible '
+
+			return true
+		}
+
+		var styleText = 'visible'
+
+		if (state == false)  styleText = 'hidden'
+
+		item.style.visibility = styleText
+
 		return true
 	}
-	
-	var styleText = 'visible'
 
-	if (state == false)  styleText = 'hidden'
-	
-	item.style.visibility = styleText
-	
-	return true	
-}
+	function RegisterF() {
+		// var img  = GetById('register-femaleimg')
+		var text = GetById('create-gender')
+		var post = GetById('register-female')
 
-function RegisterF(){
-// var img  = GetById('register-femaleimg')
-var text = GetById('create-gender') 
-var post = GetById('register-female') 
+		if (text.innerHTML == '{GIRL}') {
+			text.innerHTML = '{BOY}'
+			post.value = 0
+			// BlockHidden('register-femaleimg',false)
+		} else {
+			text.innerHTML = '{GIRL}'
+			post.value = 1
+			// BlockHidden('register-femaleimg',true)
+		}
 
-	if (text.innerHTML == 'Девочка') {
-		text.innerHTML = 'Мальчик'
-		post.value = 0
-		// BlockHidden('register-femaleimg',false)
-	} else {
-		text.innerHTML = 'Девочка'
-		post.value = 1
-		// BlockHidden('register-femaleimg',true)
+		return false
 	}
-	
-return false
-}
 </script>
 
-<div id="reg-box" style= "display: none;border-radius: 0px;margin-top:12px;padding-bottom: 10px;" class="panel panel-default">
+<div id="reg-box" style="display: none;border-radius: 0px;margin-top:12px;padding-bottom: 10px;"
+     class="panel panel-default">
 
-  <div class="panel-heading">
-    <h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> Регистрация</h3>
-  </div>
-  <div class="panel-body">
-
-<form autocomplete="off" action="reg.php" method="post" id="regform" style="margin-bottom: 10px;">
-		
-	<div style="text-align: center;">
-
-		 <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input type="text" id="register-login" class="form-control" name="login" placeholder="Логин" /></div>
-		 <div class="input-group" style="margin-top:5px"><span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span><input type="email" class="form-control" id="register-email" name="email" placeholder="Email" /></div>
-		 <div class="input-group" style="margin-top:5px"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input type="password" id="register-pass" class="form-control" name="passwd" placeholder="Пароль" /></div>
-		 <div class="input-group" style="margin-top:5px"><span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span><input type="password" id="register-repass" class="form-control" name="repasswd" placeholder="Повтор пароля" /></div>
-         
-		 <input type="hidden" id="register-female" name="female" value="0" />		 
-         <div class="female-input">Пол: <span id="create-gender">Мальчик</span><img src="<?php View::URL('img/ribbon.png') ?>" style="display: none; visibility: hidden;" alt="Девочка" id="register-femaleimg"/><a href="#" onclick="return RegisterF()">></a></div>
-		 
-	<div class="btn-group">
-			<input type="button" class="btn btn-sm btn-success" id="create" onclick="Register(); return false;" value="Создать">
-			<input type="button" class="btn btn-sm btn-primary" onclick="BlockVisible('reg-box',false); BlockVisible('login-box',true); return false " value="Авторизация">
+	<div class="panel-heading">
+		<h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> {REGISTER}</h3>
 	</div>
+	<div class="panel-body">
 
-	</div>
+		<form autocomplete="off" action="reg.php" method="post" id="regform" style="margin-bottom: 10px;">
 
-</form>
-	
-</div>
-</div>
+			<div style="text-align: center;">
 
-<div id="restore-box" style= "display: none;border-radius: 0px;margin-top:12px;padding-bottom: 10px;" class="panel panel-default">
+				<div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input
+						type="text" id="register-login" class="form-control" name="login" placeholder="{USERNAME}" />
+				</div>
+				<div class="input-group" style="margin-top:5px"><span class="input-group-addon"><i
+						class="glyphicon glyphicon-envelope"></i></span><input type="email" class="form-control"
+				                                                               id="register-email" name="email"
+				                                                               placeholder="{EMAIL}" /></div>
+				<div class="input-group" style="margin-top:5px"><span class="input-group-addon"><i
+						class="glyphicon glyphicon-lock"></i></span><input type="password" id="register-pass"
+				                                                           class="form-control" name="passwd"
+				                                                           placeholder="{PASS}" /></div>
+				<div class="input-group" style="margin-top:5px"><span class="input-group-addon"><i
+						class="glyphicon glyphicon-lock"></i></span><input type="password" id="register-repass"
+				                                                           class="form-control" name="repasswd"
+				                                                           placeholder="{REPASS}" /></div>
 
-  <div class="panel-heading">
-    <h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> Восстановление пароля</h3>
-  </div>
-  <div class="panel-body">
+				<input type="hidden" id="register-female" name="female" value="0" />
 
-<form autocomplete="off" action="action.php" method="post" id="restoreform" style="margin-bottom: 10px;">
-	
-	<div style="text-align: center;">
+				<div class="female-input">{GENDER}: <span id="create-gender">{BOY}</span><img
+						src="<?php View::URL('img/ribbon.png') ?>" style="display: none; visibility: hidden;"
+						alt="{GIRL}" id="register-femaleimg" /><a href="#" onclick="return RegisterF()">></a></div>
 
-		 <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span><input type="text" class="form-control" id="restore-email" name="email" placeholder="Email" /></div>
-		 
-		 <div>
-		 
-		  <div style="display: inline-block;margin-bottom: 0px;margin-top: 5px;" id="restore-img-holder" class="thumbnail"></div>
-		 <input id="antibot" type="text" class="form-control" name="antibot" placeholder="Код:" maxlength="4" class="antibot"/>
+				<div class="btn-group">
+					<input type="button" class="btn btn-sm btn-success" id="create" onclick="Register(); return false;"
+					       value="{REGISTER}">
+					<input type="button" class="btn btn-sm btn-primary"
+					       onclick="BlockVisible('reg-box',false); BlockVisible('login-box',true); return false "
+					       value="{AUTH}">
+				</div>
 
-		 </div>
-		 
-		 <div class="btn-group" style="margin-top:5px">
-			<input type="button" class="btn btn-sm btn-danger" id="restore" onclick="Restore(); return false;" value="Восстановить пароль">
-			<input type="button" class="btn btn-sm btn-primary" onclick="BlockVisible('restore-box',false); BlockVisible('login-box',true); return false;" value="Отмена">
-		 </div>
+			</div>
+
+		</form>
 
 	</div>
-
-</form>
-	
 </div>
+
+<div id="restore-box" style="display: none;border-radius: 0px;margin-top:12px;padding-bottom: 10px;"
+     class="panel panel-default">
+
+	<div class="panel-heading">
+		<h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> {RESTOREPASS}</h3>
+	</div>
+	<div class="panel-body">
+
+		<form autocomplete="off" action="action.php" method="post" id="restoreform" style="margin-bottom: 10px;">
+
+			<div style="text-align: center;">
+
+				<div class="input-group"><span class="input-group-addon"><i
+						class="glyphicon glyphicon-envelope"></i></span><input type="text" class="form-control"
+				                                                               id="restore-email" name="email"
+				                                                               placeholder="{EMAIL}" /></div>
+				<div class="input-group input-group-lg" style="margin-top: 5px;">
+					<span class="input-group-addon">
+						<div style="margin: 0; padding: 0" id="restore-img-holder"></div>
+					</span>
+					<input type="text" id="antibot" class="form-control" placeholder="{CODE}" maxlength="4" class="antibot" />
+				</div>
+
+				<div>
+
+
+				</div>
+
+				<div class="btn-group" style="margin-top:5px">
+					<input type="button" class="btn btn-sm btn-danger" id="restore" onclick="Restore(); return false;"
+					       value="{RESTOREPASS}">
+					<input type="button" class="btn btn-sm btn-primary"
+					       onclick="BlockVisible('restore-box',false); BlockVisible('login-box',true); return false;"
+					       value="{CANCEL}">
+				</div>
+
+			</div>
+
+		</form>
+
+	</div>
 </div>

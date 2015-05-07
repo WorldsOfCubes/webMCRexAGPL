@@ -1,34 +1,35 @@
 <form action="index.php?mode=control&do=update" method="post" id="updateform" enctype="multipart/form-data">
-  <fieldset>
-  
-    <legend>Настройки игры</legend> 
-	
-	<label>Категория новостей <a href="<?php echo $site_ways['mcraft'] ?>news.php">игровой новостной ленты</a>:</label>
-	<select name="game_news" class="form-control" style="width:300px"><?php echo $cat_list ?></select>
-	
-	<label>Cсылка на лончер (Windows):</label>
-	<span class="help-block">Ссылка, выводимая в шаблоне (<?php echo MCR_STYLE; ?>start_game.html) (<a href="index.php?mode=start">Страница</a>)</span>
-    <input type="text" class="form-control" style="width:300px" name="link_win" value="<?php echo sqlConfigGet('game-link-win') ?>">
+	<fieldset>
 
-	<label>Cсылка на лончер (OS X):</label>
-	<span class="help-block">Ссылка, выводимая в шаблоне (<?php echo MCR_STYLE; ?>start_game.html) (<a href="index.php?mode=start">Страница</a>)</span>
-    <input type="text" class="form-control" style="width:300px" name="link_osx" value="<?php echo sqlConfigGet('game-link-osx') ?>">
-	
-	<label>Cсылка на лончер (Linux):</label>
-	<span class="help-block">Ссылка, выводимая в шаблоне (<?php echo MCR_STYLE; ?>start_game.html) (<a href="index.php?mode=start">Страница</a>)</span>
-    <input type="text" class="form-control" style="width:300px" name="link_lin" value="<?php echo sqlConfigGet('game-link-lin') ?>">	
-	
-	<label>Версия лончера:</label>
-	<span class="help-block">При запросе авторизации, лончер передает свою версию. При несовпадении версии лончера и заданной здесь, авторизация будет отклонена.</span>
-    <input type="text" class="form-control" style="width:300px" name="launcher_set" value="<?php echo sqlConfigGet('launcher-version') ?>">	
-	
-	<label>Ключ защиты сессии лончера:</label>
-	<span class="help-block">Необходим защиты паролей и сессии в лончере. </span>
-    <input type="text" name="protection_key_set" class="form-control" style="width:300px" value="<?php echo sqlConfigGet('protection-key') ?>">
-	
-	<br/>				 
-	
-  <button type="submit" class="btn btn-default">Изменить</button>
-  
-  </fieldset>  
+		<legend>Настройки игры</legend>
+
+		<label>Категория новостей
+			<a href="<?php echo $site_ways['mcraft'] ?>news.php">игровой новостной ленты</a>:</label>
+		<select name="game_news" class="form-control" style="width:300px"><?php echo $cat_list ?></select>
+
+		<label>Cсылка на лончер (Windows):</label>
+		<span class="help-block">Ссылка, выводимая в шаблоне (<?php echo MCR_STYLE; ?>start_game.html) (<a href="index.php?mode=start">Страница</a>)</span>
+		<input type="text" class="form-control" style="width:300px" name="link_win" value="<?php echo sqlConfigGet('game-link-win') ?>">
+
+		<label>Cсылка на лончер (OS X):</label>
+		<span class="help-block">Ссылка, выводимая в шаблоне (<?php echo MCR_STYLE; ?>start_game.html) (<a href="index.php?mode=start">Страница</a>)</span>
+		<input type="text" class="form-control" style="width:300px" name="link_osx" value="<?php echo sqlConfigGet('game-link-osx') ?>">
+
+		<label>Cсылка на лончер (Linux):</label>
+		<span class="help-block">Ссылка, выводимая в шаблоне (<?php echo MCR_STYLE; ?>start_game.html) (<a href="index.php?mode=start">Страница</a>)</span>
+		<input type="text" class="form-control" style="width:300px" name="link_lin" value="<?php echo sqlConfigGet('game-link-lin') ?>">
+
+		<label>Версия лончера:</label>
+		<span class="help-block">При запросе авторизации, лончер передает свою версию. При несовпадении версии лончера и заданной здесь, авторизация будет отклонена.</span>
+		<input type="text" class="form-control" style="width:300px" name="launcher_set" value="<?php echo sqlConfigGet('launcher-version') ?>">
+
+		<label>Ключ защиты сессии лончера:</label>
+		<span class="help-block">Необходим защиты паролей и сессии в лончере. </span>
+		<input type="text" name="protection_key_set" class="form-control" style="width:300px" value="<?php echo sqlConfigGet('protection-key') ?>">
+
+		<br />
+
+		<button type="submit" class="btn btn-default">Изменить</button>
+
+	</fieldset>
 </form>

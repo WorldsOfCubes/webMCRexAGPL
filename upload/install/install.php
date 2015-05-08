@@ -168,6 +168,10 @@ function createWays() {
 			mkdir(MCR_ROOT.$site_ways['mcraft'].$value, 0777, true);
 }
 
+function loadTool($name, $sub_dir = '') {
+	require_once(MCR_ROOT.'instruments/'.$sub_dir.$name);
+}
+
 function BD($query) {
 	global $db;
 	return $db->execute($query, false);

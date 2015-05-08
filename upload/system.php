@@ -71,14 +71,7 @@ function BDConnect($log_script = 'default') {
 /* Системные функции */
 
 function loadTool($name, $sub_dir = '') {
-	global $mcr_tools;
-
-	if (in_array($name, $mcr_tools))
-		return;
-
-	$mcr_tools[] = $name;
-
-	require(MCR_ROOT.'instruments/'.$sub_dir.$name);
+	require_once(MCR_ROOT.'instruments/'.$sub_dir.$name);
 }
 
 function lng($key, $lang = false) {

@@ -172,13 +172,15 @@ include('./location/side.php');
 $content_js .= InitJS();
 if (!empty($user) and $mode != 'pm')
 	$content_side .= CheckPM();
-ob_start();
+//ob_start();
+if ($tpl_cache_info['updated'])
+	TemplateParser::UpdateCacheInfo();
 include View::Get('index.html');
-$html_page = ob_get_clean();
-loadTool("template.class.php");
-$parser = new TemplateParser();
-$html_page = $parser->parse($html_page);
-echo $html_page;
+//$html_page = ob_get_clean();
+//loadTool("template.class.php");
+//$parser = new TemplateParser();
+//$html_page = $parser->parse($html_page);
+//echo $html_page;
 if(isset($config['debug']) and $config['debug']) {
 	echo (memory_get_usage() - $mem_start)/1024 . "КБ памяти использовано";
 	echo "\n<br />SQL запросов сделано: ".$queries."\r\n";

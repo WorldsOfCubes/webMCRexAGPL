@@ -265,8 +265,6 @@ function CanAccess($ban_type = 1) {
 
 	if ($num) {
 
-		mysql_close($link);
-
 		if ($ban_type == 2)
 			exit('(-_-)zzZ <br>'.lng('IP_BANNED'));
 		return false;

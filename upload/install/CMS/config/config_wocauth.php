@@ -62,6 +62,7 @@ $config = array(/* MySQL connection */
 );
 
 $site_ways = array(
+	'cache' => 'cache/',
 	'style' => 'style/',
 	'mcraft' => 'MineCraft/',
 	'skins' => 'MinecraftSkins/',

@@ -545,6 +545,16 @@ Class User {
 		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['login']}`='".$db->safe($newname)."' WHERE `{$bd_users['login']}`='".$db->safe($this->name)."'");
 		$db->execute("UPDATE `pm` SET `reciver`='".$db->safe($newname)."' WHERE `reciver`='".$db->safe($this->name)."'");
 		$db->execute("UPDATE `pm` SET `sender`='".$db->safe($newname)."' WHERE `sender`='".$db->safe($this->name)."'");
+		
+		/* Говнокод от KobaltMR(-а) */
+		// А не, я уже переписал))
+		$db->execute("UPDATE `{$bd_names['iconomy']}` SET `username` = '".$db->safe($newname)."' WHERE `username` = '".$db->safe($this->name)."'");
+		$db->execute("UPDATE `permissions_entity` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
+		$db->execute("UPDATE `permissions_inheritance` SET `child` = '".$db->safe($newname)."' WHERE `child` = '".$db->safe($this->name)."'");
+		$db->execute("UPDATE `reqests` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
+		$db->execute("UPDATE `permissions` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
+		$db->execute("UPDATE `banlist` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
+		$db->execute("UPDATE `banlistip` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
 
 		if (!empty($_SESSION['user_name']) and $_SESSION['user_name'] == $this->name)
 			$_SESSION['user_name'] = $newname;

@@ -61,13 +61,31 @@ class Profile extends View {
 	}
 
 	public function Show($modal_mode = true) {
-		global $donate;
+		global $donate, $config;
 		if (!$this->user)
 			return false;
 
 		$statistic = $this->user->getStatistic();
 
 		$main_info['name'] = $this->user->name();
+		$user_info['group'] = array($this->user->getGroupName(), 'Группа');
+
+		if ($this->admin_mode or $this->self_ignore) {
+			if (isset($config['woc_id']) and isset($config['security_key']) and $this->self_ignore){
+				if (!$this->user->wocid()) {
+					ob_start();
+					include View::Get('common_woc_connect_button.html', 'other/');
+					$woc_connect = ob_get_clean();
+					if (!strlen($this->user->woctoken())) $woc_connect = "Не подключено";
+				} else $woc_connect = 'Подключено';
+				$user_info['woc_connect'] = array($woc_connect, 'Аккаунт WoC');
+			}
+			$tmpParam = $this->user->email();
+			$user_info['email'] = array(($tmpParam) ? $tmpParam : lng('NOT_SET'), 'Почта');
+
+			$user_info['money'] = array($this->user->getMoney().$donate['currency_donate'], 'Донат-счет');
+			$user_info['econ'] = array($this->user->getEcon().$donate['currency_ingame'], 'Игровой баланс');
+		}
 
 		$tmpParam = $this->user->getStatisticTime('active_last');
 		$main_info['active_last'] = ($tmpParam) ? self::TimeFrom($tmpParam) : 'Никогда'; // toDo show Online \ Offline	
@@ -75,7 +93,6 @@ class Profile extends View {
 		$main_info['skin'] = $this->user->getSkinLink(false, '&amp;', true);
 		$main_info['female'] = ($this->user->isFemale()) ? 1 : 0;
 
-		$user_info['group'] = array($this->user->getGroupName(), 'Группа');
 		$user_info['play_times'] = array((int)$statistic['play_times'], 'Проведенных игр');
 
 		$tmpParam = $this->user->gameLoginLast();
@@ -86,16 +103,12 @@ class Profile extends View {
 		$user_info['create_time'] = array(($tmpParam) ? $tmpParam : 'Неизвестно', 'Дата регистрации');
 
 		$user_info['comments_num'] = array((int)$statistic['comments_num'], 'Комментарии');
-
-		$tmpParam = $this->user->email();
-		$user_info['email'] = array(($tmpParam) ? $tmpParam : lng('NOT_SET'), 'Почта');
+		$user_info['topics'] = array((int)$this->user->topics(), 'Тем');
+		$user_info['posts'] = array((int)$this->user->posts(), 'Сообщений на форуме');
 
 		$user_info['vote'] = array($this->user->voted()." раз", 'Голосовал');
 
-		$user_info['money'] = array($this->user->getMoney().$donate['currency_donate'], 'Донат-счет');
-		$user_info['econ'] = array($this->user->getEcon().$donate['currency_ingame'], 'Игровой баланс');
-
-		if ($this->admin_mode && !$this->self_ignore) {
+		if ($this->admin_mode or $this->self_ignore) {
 			$user_info['ip'] = array($this->user->ip(), 'IP');
 		}
 

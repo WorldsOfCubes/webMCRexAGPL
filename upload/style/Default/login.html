@@ -2,14 +2,19 @@
 	<div class="alert alert-danger" id="loginform-error-text">Вы не авторизованы</div>
 </div>
 
+<?php if(isset($config['woc_id']) and isset($config['security_key'])): ?>
+	<button class="btn btn-default btn-block" style="margin-top: 13px;" onclick="popup('https://auth.worldsofcubes.net/<?=$config['woc_id']?>', 864, 480, '_woc_login'); return false;">
+		<img height="14" src="//worldsofcubes.net/style/Default/ico/favicon.ico"> Войти через WorldsOfCubes
+	</button>
+<?php endif ?>
+
 <div id="login-box" class="panel panel-default" style="border-radius: 0px;margin-top:12px;padding-bottom: 10px">
 	<div class="panel-heading">
 		<h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> {AUTH}</h3>
 	</div>
 	<div class="panel-body">
-		<form action="login.php" method="post" id="loginform">
+		<form action="login.php" method="post" id="loginform" style="margin-top: 10px;">
 			<div style="text-align: center;">
-
 				<div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input
 						id="auth-login" class="form-control" type="text" name="login" placeholder="{AUTH_LOGIN}" />
 				</div>
@@ -42,8 +47,6 @@
 					       onclick="BlockVisible('reg-box',true); BlockVisible('login-box',false); return false "
 					       value="{REGISTER}">
 				</div>
-
-
 			</div>
 		</form>
 	</div>

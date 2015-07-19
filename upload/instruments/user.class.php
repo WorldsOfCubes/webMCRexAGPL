@@ -8,6 +8,8 @@ if (!defined('MCR'))
 Class User {
 	private $db;
 	private $id;
+	private $wocid;
+	private $woctoken;
 	private $pass_set;
 
 	private $tmp;
@@ -63,11 +65,14 @@ Class User {
 					   `{$this->db}`.`{$bd_users['ip']}`,
 					   `{$this->db}`.`{$bd_users['email']}`,
 					   `{$this->db}`.`{$bd_users['deadtry']}`,
+					   `{$this->db}`.`{$bd_users['password']}`,
 					   `{$this->db}`.`{$bd_users['female']}`,
 					   `{$this->db}`.`{$bd_users['group']}`,
 					   `vote`,
 					   `{$this->db}`.`posts`,
 					   `{$this->db}`.`topics`,
+					   `{$this->db}`.`wocid`,
+					   `{$this->db}`.`woctoken`,
 					   `{$bd_names['iconomy']}`.`{$bd_money['bank']}`,
 					   `{$bd_names['iconomy']}`.`{$bd_money['money']}`,
 					   `{$bd_names['groups']}`.`lvl`,
@@ -84,8 +89,10 @@ Class User {
 
 		$line = $db->fetch_array($result, MYSQL_ASSOC);
 		$this->id = (int)$line[$bd_users['id']];
+		$this->wocid = (int)$line['wocid'];
+		$this->woctoken = $line['woctoken'];
 		$this->name = $line[$bd_users['login']];
-		$this->pass_set = ($config['p_logic'] == 'wocauth') ? (boolean)$line['pass_set'] : true;
+		$this->pass_set = (strlen($line['password'])) ? true : false;
 		$this->group = (int)$line[$bd_users['group']];
 		$group_temp = new Group($this->group);
 		$this->permissions = $group_temp->GetAllPermissions();
@@ -189,7 +196,9 @@ Class User {
 		if ($config['p_logic'] != 'usual' and $config['p_sync'])
 			MCMSAuth::login($this->id());
 
-		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['deadtry']}` = '0', `{$bd_users['tmp']}`='".$db->safe($tmp)."', `{$bd_users['ip']}`='".$db->safe($ip)."' WHERE `{$bd_users['id']}`='".$this->id."'");
+		$this->woctoken = randString(rand(16,32));
+
+		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['deadtry']}` = '0', `{$bd_users['tmp']}`='".$db->safe($tmp)."', `woctoken`='".$this->woctoken."', `{$bd_users['ip']}`='".$db->safe($ip)."' WHERE `{$bd_users['id']}`='".$this->id."'");
 
 		$this->tmp = $tmp;
 
@@ -218,7 +227,8 @@ Class User {
 			session_destroy();
 
 		$this->tmp = 0;
-		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['tmp']}`='".$this->tmp."' WHERE `{$bd_users['id']}`='".$this->id."'");
+		$this->woctoken = '';
+		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['tmp']}`='".$this->tmp."', `woctoken`='".$this->woctoken."' WHERE `{$bd_users['id']}`='".$this->id."'");
 
 		if (isset($_COOKIE['PRTCookie1']))
 			setcookie("PRTCookie1", "", time() - 3600);
@@ -872,6 +882,14 @@ Class User {
 
 	public function pass_set() {
 		return $this->pass_set;
+	}
+
+	public function wocid() {
+		return $this->wocid;
+	}
+
+	public function woctoken() {
+		return $this->woctoken;
 	}
 
 	public function Exist() {

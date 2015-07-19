@@ -1,7 +1,7 @@
 <?php if ($modal_mode) { ?>
 
 <div class="block-header">Профиль пользователя
-	<div style="display: inline-block;" id="<?php echo $this->id ?>-name"><?php echo $main_info['name'] ?></div>
+	<div style="display: inline-block;" id="<?php echo $this->id ?>-name"><a href="go/user/profile/<?php echo $main_info['name'] ?>"><?php echo $main_info['name'] ?></a></div>
 	<div style="display: inline-block; float: right;">
 		<a href="#" onclick="BlockVisible('<?php echo $this->id ?>', false); return false">Закрыть</a></div>
 </div>
@@ -33,15 +33,5 @@
 		<div class="longleft"><?php echo $info[1] ?>:</div>
 		<div id="<?php echo $this->id ?>-group" class="longright"><?php echo $info[0] ?></div>
 	</div>
-
-	<?php } if ($this->admin_mode) { ?>
-
-	<div class="info">
-		<div class="longleft">Действия:</div>
-		<div id="<?php echo $this->id ?>-play_last" class="longright">
-			<a href="index.php?mode=control&amp;do=profile&amp;user_id=<?php echo $this->user->id() ?>">Редактировать</a>
-		</div>
-	</div>
-
 	<?php } ?>
 </div>

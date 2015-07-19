@@ -5,8 +5,30 @@ error_reporting(E_ALL);
 
 define('MCR_ROOT', dirname(dirname(__FILE__)).'/');
 include MCR_ROOT."instruments/locale/ru_RU.php";
+
 $mode = (!empty($_POST['mode']) or !empty($_GET['mode'])) ? ((empty($_GET['mode'])) ? $_POST['mode'] : $_GET['mode']) : $mode = 'usual';
 $step = (!empty($_POST['step'])) ? (int)$_POST['step'] : $step = 1;
+if (file_exists(MCR_ROOT.'main.cfg.php')) {
+	include MCR_ROOT.'main.cfg.php';
+
+	if (!$config['install']) {
+		header('Location: '.BASE_URL);
+		exit;
+	}
+	$mode = $config['p_logic'];
+} else {
+
+	include './CMS/config/config_usual.php';
+
+	if ($mode != 'usual') {
+
+		foreach ($bd_names as $key => $value)
+			if ($value)
+				$bd_names[$key] = $bd_names_PREFIX.$value;
+
+		include './CMS/config/config_'.$mode.'.php';
+	}
+}
 
 switch ($mode) { /* Допустимые идентификаторы CMS */
 	case 'wocauth':
@@ -28,36 +50,6 @@ define('BASE_URL', Root_url());
 
 require_once(MCR_ROOT.'instruments/base.class.php');
 require_once(MCR_ROOT.'instruments/alist.class.php');
-
-if (file_exists(MCR_ROOT.'main.cfg.php')) {
-	include MCR_ROOT.'main.cfg.php';
-
-	if (!$config['install']) {
-		header('Location: '.BASE_URL);
-		exit;
-	} elseif ($config['p_logic'] != $mode) /* Установка была не завершена, файл существует и режим установки не совпадает с выбранным - удаляем */
-
-		if (unlink(MCR_ROOT.'main.cfg.php')) {
-			header('Location: '.BASE_URL.'install/install.php?mode='.$mode);
-			exit;
-		} else {
-			echo 'Файл '.MCR_ROOT.'main.cfg.php уже существует. Удалите его, для продолжения установки.';
-			exit;
-		}
-} else {
-
-	include './CMS/config/config_usual.php';
-
-	if ($mode != 'usual') {
-		
-		foreach ($bd_names as $key => $value)
-			
-			if ($value)
-				$bd_names[$key] = $bd_names_PREFIX.$value;
-		
-		include './CMS/config/config_'.$mode.'.php';
-	}
-}
 
 define('MCR_STYLE', MCR_ROOT.$site_ways['style']);
 
@@ -409,6 +401,7 @@ if ($cErr) {
 }
 switch ($step) {
 	case 1:
+		echo $mode;
 		include View::Get('install_method.html', $i_sd);
 		include View::Get('install.html', $i_sd);
 		break;

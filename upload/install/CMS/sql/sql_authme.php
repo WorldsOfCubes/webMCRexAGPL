@@ -20,8 +20,10 @@ DROP   `{$bd_users['server']}`;");
 
 BD($bd_alter_users."ADD `{$bd_users['deadtry']}` tinyint(1) DEFAULT 0;");
 BD($bd_alter_users."ADD `{$bd_users['female']}` tinyint(1) NOT NULL DEFAULT '2';");
+BD($bd_alter_users."ADD `wocid` bigint(20) NOT NULL DEFAULT 0;");
 BD($bd_alter_users."ADD `{$bd_users['email']}` varchar(50) DEFAULT NULL;");
 BD($bd_alter_users."ADD `{$bd_users['tmp']}` char(32) NOT NULL DEFAULT '0';");
+BD($bd_alter_users."ADD `woctoken` char(32) DEFAULT NULL;");
 BD($bd_alter_users."ADD `{$bd_users['group']}` int(10) NOT NULL DEFAULT 1;");
 BD($bd_alter_users."ADD `comments_num` int(10) NOT NULL DEFAULT 0;");
 BD($bd_alter_users."ADD `gameplay_last` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';");

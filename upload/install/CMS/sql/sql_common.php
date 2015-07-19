@@ -285,6 +285,12 @@ if (!BD_ColumnExist($bd_names['groups'], 'change_prefix')) {
 	BD("ALTER TABLE `{$bd_names['groups']}` ADD `change_prefix` SMALLINT(1) NOT NULL DEFAULT 0;");
 }
 
+/* webMCRex 2.1b4 UPDATE */
+if (!BD_ColumnExist($bd_names['users'], 'wocid')) {
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `wocid` SMALLINT(1) NOT NULL DEFAULT 0;");
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `woctoken` char(32) DEFAULT NULL;");
+}
+
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['action_log']}` (
   `IP` varchar(16) NOT NULL,
   `first_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',

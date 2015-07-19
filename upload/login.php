@@ -39,7 +39,7 @@ if (isset($_GET['out'])) {
 	if ($tmp_user->lvl() <= 0)
 		aExit(4, lng('USER_BANNED'));
 
-	$tmp_user->login(randString(15), GetRealIp(), (!empty($_POST['save'])) ? true : false);
+	$tmp_user->login(randString(rand(16,32)), GetRealIp(), (!empty($_POST['save'])) ? true : false);
 	aExit(0, 'success');
 }
 ?>

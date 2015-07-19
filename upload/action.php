@@ -6,6 +6,8 @@ if (empty($_POST['method']) and empty($_GET['method']))
 	exit;
 $method = (isset($_POST['method'])) ? $_POST['method'] : $_GET['method'];
 
+if((!isset($config['debug']) or !$config['debug']) and is_dir(MCR_ROOT.'install'))
+	exit("Please remove 'install' directory");
 switch ($method) {
 	case 'comment':
 	case 'del_com':

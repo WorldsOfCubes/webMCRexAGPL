@@ -132,7 +132,10 @@ if ($mode == 'side')
 	$mode = $config['s_dpage'];
 if ($mode == 'users')
 	$mode = 'user';
-
+if((!isset($config['debug']) or !$config['debug']) and is_dir(MCR_ROOT.'install')){
+	$content_main = View::ShowStaticPage('remove_install.html', 'other/install/');
+	$page = lng('REMOVE_INSTALL_FOLDER');
+} else
 switch ($mode) {
 	case 'start':
 		$page = 'Начать игру';

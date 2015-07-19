@@ -16,7 +16,8 @@ if (!empty($user)) {
 	if ($mode == 'restorepassword')
 		$addition_events .= "RestoreStart();";
 	if ($config['p_logic'] == 'esauth')
-		include View::Get('login_es.html'); elseif ($config['p_logic'] == 'wocauth')
+		include View::Get('login_es.html');
+	elseif ($config['p_logic'] == 'wocauth')
 		include View::Get('login_woc.html');
 	else
 		include View::Get('login.html');

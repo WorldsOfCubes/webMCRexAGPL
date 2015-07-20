@@ -57,9 +57,7 @@ Class User {
 				return false;
 			}
 		}
-		$add_params = ($config['p_logic'] == 'wocauth') ? "
-					   `{$this->db}`.`pass_set`," : '';
-		$sql = "SELECT `{$this->db}`.`{$bd_users['login']}`,$add_params
+		$sql = "SELECT `{$this->db}`.`{$bd_users['login']}`,
 					   `{$this->db}`.`{$bd_users['id']}`,
 					   `{$this->db}`.`{$bd_users['tmp']}`,
 					   `{$this->db}`.`{$bd_users['ip']}`,
@@ -628,7 +626,7 @@ Class User {
 		if (($len < $minlen) or ($len > $maxlen))
 			return 1503;
 
-		($config['p_logic'] == 'wocauth') ? $db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='".MCRAuth::createPass($newpass)."', `pass_set`=1 WHERE `{$bd_users['login']}`='".$db->safe($this->name)."'") : $db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='".MCRAuth::createPass($newpass)."' WHERE `{$bd_users['login']}`='".$db->safe($this->name)."'");
+		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='".MCRAuth::createPass($newpass)."' WHERE `{$bd_users['login']}`='".$db->safe($this->name)."'");
 		$this->pass_set = true;
 		return 1;
 	}

@@ -50,10 +50,10 @@ class TemplateParser {
 			$parsed = self::ParseText(file_get_contents($tpl_file));
 			file_put_contents(MCR_ROOT . "{$site_ways['cache']}$mask.php", $parsed);
 			$tpl_cache_info['updated'] = true;
-			$tpl_cache_info[$mask] = time() +/*18*/00 . "<::>" . ($tpl_md5 = md5_file($tpl_file));
+			$tpl_cache_info[$mask] = time() +1800 . "<::>" . ($tpl_md5 = md5_file($tpl_file));
 		} elseif ($info[0] < time() and $info[1] == ($tpl_md5 = md5_file($tpl_file))) {
 			$tpl_cache_info['updated'] = true;
-			$tpl_cache_info[$mask] = time() + /*18*/00 . "<::>" . $tpl_md5;
+			$tpl_cache_info[$mask] = time() + 1800 . "<::>" . $tpl_md5;
 		}
 		return MCR_ROOT . "{$site_ways['cache']}$mask.php";
 	}

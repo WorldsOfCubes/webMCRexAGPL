@@ -345,9 +345,13 @@ if ($do) {
 					$info .= lng('GROUP_COMPLITE'); else  $info .= lng('GROUP_EXIST');
 			} elseif ($id and isset($_POST['edit']) and isset($_POST['name'])) {
 
-				$new_group = new Group($id);
-				if ($new_group->Edit($_POST['name'], $_POST['pex_name'], $_POST))
-					$info .= lng('GROUP_UPDATED'); else  $info .= lng('GROUP_EXIST');
+				if(!isset($_POST['passwd']) or !$user->authenticate($_POST['passwd'])){
+					$info .= lng('WRONG_PASSWORD');
+				} else {
+					$new_group = new Group($id);
+					if ($new_group->Edit($_POST['name'], $_POST['pex_name'], $_POST))
+						$info .= lng('GROUP_UPDATED'); else  $info .= lng('GROUP_EXIST');
+				}
 			} elseif ($id and isset($_POST['delete'])) {
 
 				$new_group = new Group($id);
@@ -362,7 +366,6 @@ if ($do) {
 			include View::Get('group_header.html', $st_subdir.'group/');
 
 			if ($id) {
-
 				$group_i = new Group($id);
 				$group = $group_i->GetAllPermissions();
 				$group_pex = $group_i->GetPexName();

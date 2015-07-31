@@ -234,8 +234,13 @@ switch ($method) {
 
 		$mod_user = $user;
 
-		if ($user->lvl() >= 15 and !empty($_POST['user_id']))
+		if ($user->lvl() >= 15 and !empty($_POST['user_id'])) {
+
+			if(!isset($_POST['passwrd']) or ! $user->authenticate($_POST['passwrd']))
+				aExit(2, lng("WRONG_PASSWORD"));
+
 			$mod_user = new User((int)$_POST['user_id']);
+		}
 
 		if (!$mod_user->id())
 			aExit(2, lng('USER_NOT_EXIST'));

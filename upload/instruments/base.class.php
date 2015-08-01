@@ -1,5 +1,5 @@
 <?php
-define('MCR', '2.5b1');
+define('MCR', '2.5b2');
 define('DEV', true);
 define('EX', '2');
 define('PROGNAME', 'webMCRex '.MCR);
@@ -10,7 +10,7 @@ class webMCRex {
 	public static $dev = DEV;
 	public static function checkVersion($force = false) {
 		global $checkverrunned;
-		if(time() - sqlConfigGet('checked_version') > 3600 or $force and empty($checkverrunned)) {
+		if((time() - sqlConfigGet('latest-update-date') > 3600 or $force) and empty($checkverrunned)) {
 			$socket = curl_init();
 			$url = (self::$dev)?'https://api.webmcrex.com/?ver=latest':'https://api.webmcrex.com/?ver=stable';
 			curl_setopt_array($socket, array(

@@ -1,8 +1,39 @@
 <?php
-define('MCR', '2.5b0');
+define('MCR', '2.5b1');
+define('DEV', true);
 define('EX', '2');
 define('PROGNAME', 'webMCRex '.MCR);
 define('FEEDBACK', '<a href="http://webmcrex.com">'.PROGNAME.'</a> &copy; 2013-2015 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.NET">WoC Team</a>');
+
+class webMCRex {
+	public static $version = MCR;
+	public static $dev = DEV;
+	public static function checkVersion($force = false) {
+		global $checkverrunned;
+		if(time() - sqlConfigGet('checked_version') > 3600 or $force and empty($checkverrunned)) {
+			$socket = curl_init();
+			$url = (self::$dev)?'https://api.webmcrex.com/?ver=latest':'https://api.webmcrex.com/?ver=stable';
+			curl_setopt_array($socket, array(
+				CURLOPT_URL => $url,
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_SSL_VERIFYPEER => 0,
+				CURLOPT_SSL_VERIFYHOST => 0
+			));
+			$response = curl_exec($socket);
+			$error = curl_error($socket);
+			$http_code = curl_getinfo($socket, CURLINFO_HTTP_CODE);
+			curl_close($socket);
+			if ($http_code == 200) {
+				sqlConfigSet('latest-update-date', time());
+				$response = explode(':', $response);
+				sqlConfigSet('latest-version-tag', $response[0]);
+				sqlConfigSet('latest-version-name', $response[1]);
+			} else vtxtlog('Error: Unable to connect to webMCRex version server with error: ' . $error);
+			$checkverrunned = true;
+		}
+		return strtolower(self::$version) == str_replace('_', ' ', sqlConfigGet('latest-version-tag'));
+	}
+}
 
 /* Base class for objects with Show method */
 
@@ -232,20 +263,29 @@ class ItemType {  // stock types
 
 	/** @const */
 	public static $SQLConfigVar = array(
-
-		'rcon-port', 'rcon-serv', 'rcon-pass',
-
+		'rcon-port',
+		'rcon-serv',
+		'rcon-pass',
 		'next-reg-time',
-
-		'email-verification', 'email-verification-salt', 'email-name', 'email-mail',
-
+		'email-verification',
+		'email-verification-salt',
+		'email-name',
+		'email-mail',
 		'json-verification-salt',
-
-		'protection-key', 'launcher-version',
-
-		'game-link-win', 'game-link-osx', 'game-link-lin',
-
-		'smtp-user', 'smtp-pass', 'smtp-host', 'smtp-port', 'smtp-hello',);
+		'protection-key',
+		'launcher-version',
+		'game-link-win',
+		'game-link-osx',
+		'game-link-lin',
+		'smtp-user',
+		'smtp-pass',
+		'smtp-host',
+		'smtp-port',
+		'smtp-hello',
+		'latest-update-date',
+		'latest-version-tag',
+		'latest-version-name',
+	);
 }
 
 Class TextBase {
@@ -339,7 +379,7 @@ Class DB {
 	public function sql_config_get($property) {
 		if (!in_array($property, ItemType::$SQLConfigVar))
 			return false;
-		return $this->sql_config[$property];
+		return (isset($this->sql_config[$property]))?$this->sql_config[$property]:0;
 	}
 
 	public function sql_config_set($property, $value) {

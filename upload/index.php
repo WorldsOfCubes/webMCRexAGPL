@@ -170,6 +170,11 @@ if ($user and !$user->pass_set()) {
 	include View::Get('wocpassunset.html', 'other/');
 	$content_main = ob_get_clean().$content_main;
 }
+if ($user and $user->lvl() >= 15 and !webMCRex::checkVersion()) {
+	ob_start();
+	include View::Get('new_ver_availible.html', 'other/');
+	$content_main = ob_get_clean().$content_main;
+}
 $content_menu = $menu->Show();
 include('./location/side.php');
 $content_js .= InitJS();

@@ -5,11 +5,13 @@ if ($mysql_rewrite)
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['users']}` (
   `{$bd_users['id']}` bigint(20) NOT NULL AUTO_INCREMENT,
   `{$bd_users['login']}` char(32) DEFAULT NULL,
+  `wocid` bigint(20) NOT NULL DEFAULT 0,
   `{$bd_users['female']}` tinyint(1) NOT NULL DEFAULT '2',
   `{$bd_users['deadtry']}` tinyint(1) DEFAULT 0,
   `{$bd_users['email']}` varchar(50) default NULL,
   `{$bd_users['password']}` char(32) DEFAULT NULL,
   `{$bd_users['tmp']}` char(32) NOT NULL DEFAULT '0',
+  `woctoken` bigint(20) NOT NULL DEFAULT 0,
   `{$bd_users['ip']}` varchar(16) DEFAULT NULL,
   `{$bd_users['group']}` int(10) NOT NULL DEFAULT 1,
   `comments_num` int(10) NOT NULL DEFAULT 0,

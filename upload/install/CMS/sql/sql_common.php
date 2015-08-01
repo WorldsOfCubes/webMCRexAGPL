@@ -194,10 +194,6 @@ BD("INSERT INTO `{$bd_names['data']}` (`property`, `value`) VALUES
 ('email-name', 'Info'),
 ('email-mail', 'noreply@noreply.ru');");
 
-if (!BD_ColumnExist($bd_names['users'], 'pass_set') && $mode == "wocauth")
-
-	BD("ALTER TABLE `{$bd_names['users']}` ADD `pass_set` tinyint(1) NOT NULL DEFAULT 0;");
-
 /* webMCR 2.05 UPDATE */
 
 if (!BD_ColumnExist($bd_names['ip_banning'], 'ban_type'))
@@ -283,6 +279,12 @@ if (!BD_ColumnExist($bd_names['users'], 'topics')) {
 if (!BD_ColumnExist($bd_names['groups'], 'change_prefix')) {
 
 	BD("ALTER TABLE `{$bd_names['groups']}` ADD `change_prefix` SMALLINT(1) NOT NULL DEFAULT 0;");
+}
+
+/* webMCRex 2.1b4 UPDATE, fixed in 2.0b5 */
+if (!BD_ColumnExist($bd_names['users'], 'wocid')) {
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `wocid` bigint(20) NOT NULL DEFAULT 0;");
+	BD("ALTER TABLE `{$bd_names['users']}` ADD `woctoken` char(32) NOT NULL DEFAULT '';");
 }
 
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['action_log']}` (

@@ -345,9 +345,13 @@ if ($do) {
 					$info .= lng('GROUP_COMPLITE'); else  $info .= lng('GROUP_EXIST');
 			} elseif ($id and isset($_POST['edit']) and isset($_POST['name'])) {
 
-				$new_group = new Group($id);
-				if ($new_group->Edit($_POST['name'], $_POST['pex_name'], $_POST))
-					$info .= lng('GROUP_UPDATED'); else  $info .= lng('GROUP_EXIST');
+				if(!isset($_POST['passwd']) or !$user->authenticate($_POST['passwd'])){
+					$info .= lng('WRONG_PASSWORD');
+				} else {
+					$new_group = new Group($id);
+					if ($new_group->Edit($_POST['name'], $_POST['pex_name'], $_POST))
+						$info .= lng('GROUP_UPDATED'); else  $info .= lng('GROUP_EXIST');
+				}
 			} elseif ($id and isset($_POST['delete'])) {
 
 				$new_group = new Group($id);
@@ -362,7 +366,6 @@ if ($do) {
 			include View::Get('group_header.html', $st_subdir.'group/');
 
 			if ($id) {
-
 				$group_i = new Group($id);
 				$group = $group_i->GetAllPermissions();
 				$group_pex = $group_i->GetPexName();
@@ -534,6 +537,9 @@ if ($do) {
 
 				$email_test = InputGet('email_test', 'POST', 'str');
 
+				$woc_id = InputGet('woc_id', 'POST', 'str');
+				$security_key = InputGet('security_key', 'POST', 'str');
+
 				if (ThemeManager::GetThemeInfo($theme_id) === false)
 					$theme_id = false; else
 
@@ -599,6 +605,14 @@ if ($do) {
 				$config['install'] = $site_install;
 				$config['smtp'] = $smtp;
 				$config['smtp_tls'] = $smtp_tls;
+
+				$config['woc_id'] = $woc_id;
+				$config['security_key'] = $security_key;
+
+				if(!strlen($config['woc_id']) or !strlen($config['security_key'])) {
+					unset($config['woc_id']);
+					unset($config['security_key']);
+				}
 
 				if (ConfigManager::SaveMainConfig())
 					$info .= lng('OPTIONS_COMPLETE'); else $info .= lng('WRITE_FAIL').' ( '.MCR_ROOT.'main.cfg.php )';

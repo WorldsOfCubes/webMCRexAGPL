@@ -24,8 +24,6 @@ loadTool('ajax.php');
 if ($config['offline']) {
 	aExit(2, lng('REG_BLOCKED_SITE'));
 }
-if ($config['p_logic'] == 'wocauth')
-	aExit(2, lng('REG_BLOCKED_PROTOCOL'));
 $db = new DB();
 $db->connect('register');
 

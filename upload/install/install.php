@@ -4,14 +4,36 @@ header('Content-Type: text/html; charset=UTF-8');
 error_reporting(E_ALL);
 
 define('MCR_ROOT', dirname(dirname(__FILE__)).'/');
+define('BASE_URL', Root_url());
 include MCR_ROOT."instruments/locale/ru_RU.php";
+
+require_once(MCR_ROOT.'instruments/base.class.php');
+
 $mode = (!empty($_POST['mode']) or !empty($_GET['mode'])) ? ((empty($_GET['mode'])) ? $_POST['mode'] : $_GET['mode']) : $mode = 'usual';
 $step = (!empty($_POST['step'])) ? (int)$_POST['step'] : $step = 1;
+if (file_exists(MCR_ROOT.'main.cfg.php')) {
+	include MCR_ROOT.'main.cfg.php';
+
+	if (!$config['install']) {
+		header('Location: '.BASE_URL);
+		exit;
+	}
+	$mode = $config['p_logic'];
+} else {
+
+	include './CMS/config/config_usual.php';
+
+	if ($mode != 'usual') {
+
+		foreach ($bd_names as $key => $value)
+			if ($value)
+				$bd_names[$key] = $bd_names_PREFIX.$value;
+
+		include './CMS/config/config_'.$mode.'.php';
+	}
+}
 
 switch ($mode) { /* Допустимые идентификаторы CMS */
-	case 'wocauth':
-		$main_cms = 'WoCAuth';
-		break; /* [+] */
 	case 'xauth':
 		$main_cms = 'xAuth';
 		break; /* [+] */
@@ -24,40 +46,7 @@ switch ($mode) { /* Допустимые идентификаторы CMS */
 		break;
 }
 
-define('BASE_URL', Root_url());
-
-require_once(MCR_ROOT.'instruments/base.class.php');
 require_once(MCR_ROOT.'instruments/alist.class.php');
-
-if (file_exists(MCR_ROOT.'main.cfg.php')) {
-	include MCR_ROOT.'main.cfg.php';
-
-	if (!$config['install']) {
-		header('Location: '.BASE_URL);
-		exit;
-	} elseif ($config['p_logic'] != $mode) /* Установка была не завершена, файл существует и режим установки не совпадает с выбранным - удаляем */
-
-		if (unlink(MCR_ROOT.'main.cfg.php')) {
-			header('Location: '.BASE_URL.'install/install.php?mode='.$mode);
-			exit;
-		} else {
-			echo 'Файл '.MCR_ROOT.'main.cfg.php уже существует. Удалите его, для продолжения установки.';
-			exit;
-		}
-} else {
-
-	include './CMS/config/config_usual.php';
-
-	if ($mode != 'usual') {
-		
-		foreach ($bd_names as $key => $value)
-			
-			if ($value)
-				$bd_names[$key] = $bd_names_PREFIX.$value;
-		
-		include './CMS/config/config_'.$mode.'.php';
-	}
-}
 
 define('MCR_STYLE', MCR_ROOT.$site_ways['style']);
 
@@ -166,6 +155,10 @@ function createWays() {
 	foreach ($site_ways as $key => $value)
 		if ($value and in_array($key, $create_ways) and !is_dir(MCR_ROOT.$site_ways['mcraft'].$value))
 			mkdir(MCR_ROOT.$site_ways['mcraft'].$value, 0777, true);
+}
+
+function loadTool($name, $sub_dir = '') {
+	require_once(MCR_ROOT.'instruments/'.$sub_dir.$name);
 }
 
 function BD($query) {
@@ -333,27 +326,17 @@ if (isset($_POST['step']))
 
 				$result = BD("SELECT `{$bd_users['id']}` FROM `{$bd_names['users']}` WHERE `{$bd_users['login']}`='$site_user'");
 
-				if (is_bool($result) and $result == false and $mode != 'wocauth') {
+				if (is_bool($result) and $result == false) {
 					$info = 'Название таблицы пользователей указано неверно.';
 					break;
 				}
-				if ($mode != 'wocauth' and !$db->num_rows($result)) {
+				if (!$db->num_rows($result)) {
 					$info = 'Пользователь с таким именем не найден.';
 					break;
 				}
 
-				if ($mode != 'wocauth')
 					$line = $db->fetch_array($result, MYSQL_NUM);
 
-				if ($mode == 'wocauth') {
-
-					$config['security_key'] = ConfigPostStr('woc_security_key');
-					$config['woc_id'] = ConfigPostInt('woc_id');
-					$user = ConfigPostStr('site_user');
-
-					$result = BD("INSERT INTO `{$bd_names['users']}` ("."`{$bd_users['login']}`,"."`{$bd_users['ip']}`,"."`{$bd_users['group']}`,"."`{$bd_users['ctime']}`)"." VALUES ('$user','".GetRealIp()."','3',NOW())"." ON DUPLICATE KEY UPDATE `{$bd_users['login']}`='$user',`{$bd_users['group']}`='3'");
-					//			if (is_bool($result) and $result == false) { $info = 'Название таблицы c дополнительными данными указано неверно.'; break; }
-				}
 
 
 				if ($mode == 'xauth' and !CreateAdmin($site_user))
@@ -405,6 +388,7 @@ if ($cErr) {
 }
 switch ($step) {
 	case 1:
+		echo $mode;
 		include View::Get('install_method.html', $i_sd);
 		include View::Get('install.html', $i_sd);
 		break;
@@ -413,7 +397,6 @@ switch ($step) {
 			case 'usual':
 				include View::Get('install_user.html', $i_sd);
 				break;
-			case 'wocauth':
 			case 'xauth':
 				include View::Get('install_'.$mode.'.html', $i_sd);
 				break;

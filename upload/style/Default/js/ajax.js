@@ -473,6 +473,15 @@ function Login() {
 	SendByXmlHttp('login.php', 'login=' + encodeURIComponent(login) + '&pass=' + encodeURIComponent(pass) + '&save=' + encodeURIComponent(save_session) + addition_post, event)
 	return false
 }
+function popup(url, width, height, name) {
+	if (!name)
+	{
+		name = '_popup';
+	}
+
+	window.open(url.replace(/&amp;/g, '&'), name, 'height=' + height + ',resizable=yes,scrollbars=yes, width=' + width);
+	return false;
+}
 $(document).ready(function () {
 	jQuery(document).on('click', '.spoiler-tlink', function (e) {
 		e.preventDefault()

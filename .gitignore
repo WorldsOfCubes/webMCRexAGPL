@@ -10,3 +10,4 @@ upload/MineCraft/tmp/skin_buffer/
 upload/main.cfg.php
 *log.txt
 log.txt
+upload/cache/*.php

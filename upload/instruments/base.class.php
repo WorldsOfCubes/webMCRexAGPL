@@ -1,5 +1,5 @@
 <?php
-define('MCR', '2.0');
+define('MCR', '2.1');
 define('EX', '2');
 define('PROGNAME', 'webMCRex '.MCR);
 define('FEEDBACK', '<a href="http://webmcrex.com">'.PROGNAME.'</a> &copy; 2013-2015 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.NET">WoC Team</a>');
@@ -71,19 +71,21 @@ Class View {
 
 	public static function Get($way, $base_ = false) {
 		global $config;
-
+		loadTool("template.class.php");
 		$base = ($base_) ? $base_ : '';
 
 		if (empty ($config['s_theme']))
 			$theme_dir = ''; else {
 
 			if ($config['s_theme'] === self::def_theme)
-				return MCR_STYLE.self::def_theme.'/'.$base.$way;
+				return TemplateParser::MakeCache(MCR_STYLE.self::def_theme.'/'.$base.$way,
+					str_replace('/', '', $base) . '_' . str_replace('/', '', $way) . '_' . self::def_theme);
 
 			$theme_dir = $config['s_theme'].'/';
 		}
 
-		return MCR_STYLE.((file_exists(MCR_STYLE.$theme_dir.$base.$way)) ? $theme_dir : self::def_theme.'/').$base.$way;
+		return TemplateParser::MakeCache(MCR_STYLE.((file_exists(MCR_STYLE.$theme_dir.$base.$way)) ? $theme_dir : self::def_theme.'/').$base.$way,
+			str_replace('/', '', $base) . '_' . str_replace('/', '', $way) . '_' . $config['s_theme']);
 	}
 
 	public function arrowsGenerator($link, $curpage, $itemsnum, $per_page, $prefix = false) {

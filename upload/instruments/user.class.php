@@ -8,6 +8,8 @@ if (!defined('MCR'))
 Class User {
 	private $db;
 	private $id;
+	private $wocid;
+	private $woctoken;
 	private $pass_set;
 
 	private $tmp;
@@ -55,19 +57,20 @@ Class User {
 				return false;
 			}
 		}
-		$add_params = ($config['p_logic'] == 'wocauth') ? "
-					   `{$this->db}`.`pass_set`," : '';
-		$sql = "SELECT `{$this->db}`.`{$bd_users['login']}`,$add_params
+		$sql = "SELECT `{$this->db}`.`{$bd_users['login']}`,
 					   `{$this->db}`.`{$bd_users['id']}`,
 					   `{$this->db}`.`{$bd_users['tmp']}`,
 					   `{$this->db}`.`{$bd_users['ip']}`,
 					   `{$this->db}`.`{$bd_users['email']}`,
 					   `{$this->db}`.`{$bd_users['deadtry']}`,
+					   `{$this->db}`.`{$bd_users['password']}`,
 					   `{$this->db}`.`{$bd_users['female']}`,
 					   `{$this->db}`.`{$bd_users['group']}`,
 					   `vote`,
 					   `{$this->db}`.`posts`,
 					   `{$this->db}`.`topics`,
+					   `{$this->db}`.`wocid`,
+					   `{$this->db}`.`woctoken`,
 					   `{$bd_names['iconomy']}`.`{$bd_money['bank']}`,
 					   `{$bd_names['iconomy']}`.`{$bd_money['money']}`,
 					   `{$bd_names['groups']}`.`lvl`,
@@ -84,8 +87,10 @@ Class User {
 
 		$line = $db->fetch_array($result, MYSQL_ASSOC);
 		$this->id = (int)$line[$bd_users['id']];
+		$this->wocid = (int)$line['wocid'];
+		$this->woctoken = $line['woctoken'];
 		$this->name = $line[$bd_users['login']];
-		$this->pass_set = ($config['p_logic'] == 'wocauth') ? (boolean)$line['pass_set'] : true;
+		$this->pass_set = (strlen($line['password'])) ? true : false;
 		$this->group = (int)$line[$bd_users['group']];
 		$group_temp = new Group($this->group);
 		$this->permissions = $group_temp->GetAllPermissions();
@@ -189,7 +194,9 @@ Class User {
 		if ($config['p_logic'] != 'usual' and $config['p_sync'])
 			MCMSAuth::login($this->id());
 
-		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['deadtry']}` = '0', `{$bd_users['tmp']}`='".$db->safe($tmp)."', `{$bd_users['ip']}`='".$db->safe($ip)."' WHERE `{$bd_users['id']}`='".$this->id."'");
+		$this->woctoken = randString(rand(16,32));
+
+		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['deadtry']}` = '0', `{$bd_users['tmp']}`='".$db->safe($tmp)."', `woctoken`='".$this->woctoken."', `{$bd_users['ip']}`='".$db->safe($ip)."' WHERE `{$bd_users['id']}`='".$this->id."'");
 
 		$this->tmp = $tmp;
 
@@ -218,7 +225,8 @@ Class User {
 			session_destroy();
 
 		$this->tmp = 0;
-		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['tmp']}`='".$this->tmp."' WHERE `{$bd_users['id']}`='".$this->id."'");
+		$this->woctoken = '';
+		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['tmp']}`='".$this->tmp."', `woctoken`='".$this->woctoken."' WHERE `{$bd_users['id']}`='".$this->id."'");
 
 		if (isset($_COOKIE['PRTCookie1']))
 			setcookie("PRTCookie1", "", time() - 3600);
@@ -545,6 +553,16 @@ Class User {
 		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['login']}`='".$db->safe($newname)."' WHERE `{$bd_users['login']}`='".$db->safe($this->name)."'");
 		$db->execute("UPDATE `pm` SET `reciver`='".$db->safe($newname)."' WHERE `reciver`='".$db->safe($this->name)."'");
 		$db->execute("UPDATE `pm` SET `sender`='".$db->safe($newname)."' WHERE `sender`='".$db->safe($this->name)."'");
+		
+		/* Говнокод от KobaltMR(-а) */
+		// А не, я уже переписал))
+		$db->execute("UPDATE `{$bd_names['iconomy']}` SET `username` = '".$db->safe($newname)."' WHERE `username` = '".$db->safe($this->name)."'");
+		$db->execute("UPDATE `permissions_entity` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
+		$db->execute("UPDATE `permissions_inheritance` SET `child` = '".$db->safe($newname)."' WHERE `child` = '".$db->safe($this->name)."'");
+		$db->execute("UPDATE `reqests` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
+		$db->execute("UPDATE `permissions` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
+		$db->execute("UPDATE `banlist` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
+		$db->execute("UPDATE `banlistip` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
 
 		if (!empty($_SESSION['user_name']) and $_SESSION['user_name'] == $this->name)
 			$_SESSION['user_name'] = $newname;
@@ -608,7 +626,7 @@ Class User {
 		if (($len < $minlen) or ($len > $maxlen))
 			return 1503;
 
-		($config['p_logic'] == 'wocauth') ? $db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='".MCRAuth::createPass($newpass)."', `pass_set`=1 WHERE `{$bd_users['login']}`='".$db->safe($this->name)."'") : $db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='".MCRAuth::createPass($newpass)."' WHERE `{$bd_users['login']}`='".$db->safe($this->name)."'");
+		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['password']}`='".MCRAuth::createPass($newpass)."' WHERE `{$bd_users['login']}`='".$db->safe($this->name)."'");
 		$this->pass_set = true;
 		return 1;
 	}
@@ -862,6 +880,14 @@ Class User {
 
 	public function pass_set() {
 		return $this->pass_set;
+	}
+
+	public function wocid() {
+		return $this->wocid;
+	}
+
+	public function woctoken() {
+		return $this->woctoken;
 	}
 
 	public function Exist() {

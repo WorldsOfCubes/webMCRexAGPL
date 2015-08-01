@@ -6,6 +6,8 @@ if (empty($_POST['method']) and empty($_GET['method']))
 	exit;
 $method = (isset($_POST['method'])) ? $_POST['method'] : $_GET['method'];
 
+if((!isset($config['debug']) or !$config['debug']) and is_dir(MCR_ROOT.'install'))
+	exit("Please remove 'install' directory");
 switch ($method) {
 	case 'comment':
 	case 'del_com':
@@ -232,8 +234,13 @@ switch ($method) {
 
 		$mod_user = $user;
 
-		if ($user->lvl() >= 15 and !empty($_POST['user_id']))
+		if ($user->lvl() >= 15 and !empty($_POST['user_id'])) {
+
+			if(!isset($_POST['passwrd']) or ! $user->authenticate($_POST['passwrd']))
+				aExit(2, lng("WRONG_PASSWORD"));
+
 			$mod_user = new User((int)$_POST['user_id']);
+		}
 
 		if (!$mod_user->id())
 			aExit(2, lng('USER_NOT_EXIST'));

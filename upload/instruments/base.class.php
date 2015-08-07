@@ -1,18 +1,18 @@
 <?php
-define('MCR', '2.5b1');
+define('MCR', '2.5b2');
 define('DEV', true);
 define('EX', '2');
 define('PROGNAME', 'webMCRex '.MCR);
 define('FEEDBACK', '<a href="http://webmcrex.com">'.PROGNAME.'</a> &copy; 2013-2015 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.NET">WoC Team</a>');
 
 class webMCRex {
-	public static $version = MCR;
-	public static $dev = DEV;
+	const version = MCR;
+	const dev = DEV;
 	public static function checkVersion($force = false) {
 		global $checkverrunned;
 		if((time() - sqlConfigGet('latest-update-date') > 3600 or $force) and empty($checkverrunned)) {
 			$socket = curl_init();
-			$url = (self::$dev)?'https://api.webmcrex.com/?ver=latest':'https://api.webmcrex.com/?ver=stable';
+			$url = (self::dev)?'https://api.webmcrex.com/?ver=latest':'https://api.webmcrex.com/?ver=stable';
 			curl_setopt_array($socket, array(
 				CURLOPT_URL => $url,
 				CURLOPT_RETURNTRANSFER => true,
@@ -31,7 +31,7 @@ class webMCRex {
 			} else vtxtlog('Error: Unable to connect to webMCRex version server with error: ' . $error);
 			$checkverrunned = true;
 		}
-		return strtolower(self::$version) == str_replace('_', ' ', sqlConfigGet('latest-version-tag'));
+		return strtolower(self::version) == str_replace('_', ' ', sqlConfigGet('latest-version-tag'));
 	}
 }
 
@@ -260,6 +260,7 @@ class ItemType {  // stock types
 	const Comment = 2;
 	const Skin = 3;
 	const Server = 4;
+	const PM = 5;
 
 	/** @const */
 	public static $SQLConfigVar = array(
@@ -434,14 +435,14 @@ Class DB {
 		}
 	}
 
-	public function fetch_array($query) {
+	public function fetch_array($query, $result_type = MYSQL_BOTH) {
 		switch ($this->method) {
 			case 'mysql':
-				return mysql_fetch_array($query);
+				return mysql_fetch_array($query, $result_type);
 				break;
 			case 'mysqli':
 			default:
-				return mysqli_fetch_array($query);
+				return mysqli_fetch_array($query, $result_type);
 				break;
 		}
 	}

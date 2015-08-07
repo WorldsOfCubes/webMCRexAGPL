@@ -45,6 +45,7 @@ BD("CREATE TABLE `pm` (
   `viewed` int(11) NOT NULL DEFAULT '0',
   `topic` char(255) DEFAULT NULL,
   `text` text,
+  `hide_for` bigint(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;");
 
@@ -166,6 +167,55 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['data']}` (
   `value` varchar(255) DEFAULT NULL,
   UNIQUE KEY `property` (`property`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+
+BD("CREATE TABLE IF NOT EXISTS `{$bd_names['forum_part']}` (
+`id` int(11) NOT NULL,
+  `parent_id` int(11) DEFAULT '0',
+  `priority` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8");
+
+BD("CREATE TABLE IF NOT EXISTS `{$bd_names['forum_topics']}` (
+  `id` int(11) NOT NULL,
+  `partition_id` int(11) NOT NULL,
+  `author_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `date` int(11) NOT NULL,
+  `top` char(1) NOT NULL DEFAULT 'N',
+  `closed` char(1) NOT NULL DEFAULT 'N'
+) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;");
+
+BD("CREATE TABLE IF NOT EXISTS `{$bd_names['forum_mess']}` (
+  `id` int(11) NOT NULL,
+  `partition_id` int(11) NOT NULL,
+  `topic_id` int(11) NOT NULL,
+  `author_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `date` int(11) NOT NULL,
+  `topmsg` char(1) NOT NULL DEFAULT 'N'
+) ENGINE=MyISAM AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;");
+
+/* Игорь косорукая тварь */
+BD("ALTER TABLE `{$bd_names['forum_part']}` ADD PRIMARY KEY (`id`);");
+BD("ALTER TABLE `{$bd_names['forum_topics']}` ADD PRIMARY KEY (`id`);");
+BD("ALTER TABLE `{$bd_names['forum_mess']}` ADD PRIMARY KEY (`id`);");
+BD("ALTER TABLE `{$bd_names['forum_part']}` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1");
+BD("ALTER TABLE `{$bd_names['forum_topics']}` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1");
+BD("ALTER TABLE `{$bd_names['forum_mess']}` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1");
+
+BD("CREATE TABLE IF NOT EXISTS `warnings` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `uid` BIGINT(20) NOT NULL,
+  `mid` BIGINT(20) NOT NULL,
+  `percentage` INT(11) NOT NULL,
+  `reason` text NOT NULL,
+  `time` DATETIME NOT NULL,
+  `expires` DATE NOT NULL,
+  `type` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;");
+
 /* DEFAULT INFO ADD */
 BD("INSERT INTO `{$bd_names['news_categorys']}` (`id`,`name`) VALUES (1,'Без категории');");
 
@@ -287,6 +337,11 @@ if (!BD_ColumnExist($bd_names['users'], 'wocid')) {
 	BD("ALTER TABLE `{$bd_names['users']}` ADD `woctoken` char(32) NOT NULL DEFAULT '';");
 }
 
+/* webMCRex 2.5b2 UPDATE */
+if (!BD_ColumnExist('pm', 'hide_for')) {
+	BD("ALTER TABLE `pm` ADD `hide_for` bigint(20) NOT NULL DEFAULT 0;");
+}
+
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['action_log']}` (
   `IP` varchar(16) NOT NULL,
   `first_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -355,56 +410,8 @@ BD("CREATE TABLE IF NOT EXISTS `banlist` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;");
 
-BD("CREATE TABLE IF NOT EXISTS `warnings` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `uid` BIGINT(20) NOT NULL,
-  `mid` BIGINT(20) NOT NULL,
-  `percentage` INT(11) NOT NULL,
-  `reason` text NOT NULL,
-  `time` DATETIME NOT NULL,
-  `expires` DATE NOT NULL,
-  `type` int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;");
-
 BD("CREATE TABLE IF NOT EXISTS `banlistip` (
 `name` varchar(32) NOT NULL,
 `lastip` tinytext NOT NULL,
 PRIMARY KEY (`name`)
 ) ENGINE=MyISAM CHARSET=utf8 AUTO_INCREMENT=1;");
-
-/*Forum update*/
-BD("CREATE TABLE IF NOT EXISTS `{$bd_names['forum_part']}` (
-`id` int(11) NOT NULL,
-  `parent_id` int(11) DEFAULT '0',
-  `priority` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8");
-
-BD("CREATE TABLE IF NOT EXISTS `{$bd_names['forum_topics']}` (
-  `id` int(11) NOT NULL,
-  `partition_id` int(11) NOT NULL,
-  `author_id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `date` int(11) NOT NULL,
-  `top` char(1) NOT NULL DEFAULT 'N',
-  `closed` char(1) NOT NULL DEFAULT 'N'
-) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;");
-
-BD("CREATE TABLE IF NOT EXISTS `{$bd_names['forum_mess']}` (
-  `id` int(11) NOT NULL,
-  `partition_id` int(11) NOT NULL,
-  `topic_id` int(11) NOT NULL,
-  `author_id` int(11) NOT NULL,
-  `message` text NOT NULL,
-  `date` int(11) NOT NULL,
-  `topmsg` char(1) NOT NULL DEFAULT 'N'
-) ENGINE=MyISAM AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;");
-
-BD("ALTER TABLE `{$bd_names['forum_part']}` ADD PRIMARY KEY (`id`);");
-BD("ALTER TABLE `{$bd_names['forum_topics']}` ADD PRIMARY KEY (`id`);");
-BD("ALTER TABLE `{$bd_names['forum_mess']}` ADD PRIMARY KEY (`id`);");
-BD("ALTER TABLE `{$bd_names['forum_part']}` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1");
-BD("ALTER TABLE `{$bd_names['forum_topics']}` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1");
-BD("ALTER TABLE `{$bd_names['forum_mess']}` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1");

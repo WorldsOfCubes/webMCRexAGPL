@@ -12,7 +12,8 @@ loadTool('user.class.php');
 MCRAuth::userLoad();
 
 
-function GetRandomAdvice() {
+function GetRandomAdvice()
+{
 	return ($quotes = @file(View::Get('sovet.txt'))) ? $quotes[rand(0, sizeof($quotes) - 1)] : "Советов нет";
 }
 
@@ -20,10 +21,11 @@ $addition_events = '';
 $content_main = '';
 $content_side = '';
 $content_js = '';
-function LoadTinyMCE() {
+function LoadTinyMCE()
+{
 	global $addition_events, $content_js;
 
-	if (!file_exists(MCR_ROOT.'instruments/tiny_mce/tinymce.min.js'))
+	if (!file_exists(MCR_ROOT . 'instruments/tiny_mce/tinymce.min.js'))
 		return false;
 
 	$tmce = 'tinymce.init({';
@@ -34,17 +36,18 @@ function LoadTinyMCE() {
 	$tmce .= '});';
 
 	$addition_events .= $tmce;
-	$content_js .= '<script type="text/javascript" src="'.BASE_URL.'instruments/tiny_mce/tinymce.min.js"></script>';
+	$content_js .= '<script type="text/javascript" src="' . BASE_URL . 'instruments/tiny_mce/tinymce.min.js"></script>';
 
 	return true;
 }
 
-function InitJS() {
+function InitJS()
+{
 	global $addition_events;
 
-	$init_js = "var pbm; var way_style = '".DEF_STYLE_URL."'; var cur_style = '".View::GetURL()."'; var base_url  = '".BASE_URL."';";
-	$init_js .= "window.onload = function () { mcr_init(); $('.stt').tooltip(); $('.spp').popover(); $('#datepicker').datepicker(); ".$addition_events." } ";
-	return '<script type="text/javascript">'.$init_js.'</script>';
+	$init_js = "var pbm; var way_style = '" . DEF_STYLE_URL . "'; var cur_style = '" . View::GetURL() . "'; var base_url  = '" . BASE_URL . "';";
+	$init_js .= "window.onload = function () { mcr_init(); $('.stt').tooltip(); $('.spp').popover(); $('#datepicker').datepicker(); " . $addition_events . " } ";
+	return '<script type="text/javascript">' . $init_js . '</script>';
 }
 
 $content_advice = GetRandomAdvice();
@@ -83,11 +86,13 @@ if ($config['offline'] and (empty($user) or $user->group() != 3)) {
 	echo $html_page;
 	exit;
 }
-function accss_deny() {
+function accss_deny()
+{
 	show_error('accsess_denied', 'Доступ запрещен');
 }
 
-function show_error($html, $page) {
+function show_error($html, $page)
+{
 	global $config, $content_js, $content_advice, $content_side, $user, $db;
 	if (!empty($user)) {
 		$player = $user->name();
@@ -105,7 +110,7 @@ function show_error($html, $page) {
 	$content_menu = $menu->Show();
 	$content_js .= InitJS();
 	$mode = 'denied';
-	$content_main = View::ShowStaticPage($html.'.html');
+	$content_main = View::ShowStaticPage($html . '.html');
 	include('./location/side.php');
 	ob_start();
 	include View::Get('index.html');
@@ -132,48 +137,58 @@ if ($mode == 'side')
 	$mode = $config['s_dpage'];
 if ($mode == 'users')
 	$mode = 'user';
-if((!isset($config['debug']) or !$config['debug']) and is_dir(MCR_ROOT.'install')){
+if ((!isset($config['debug']) or !$config['debug']) and is_dir(MCR_ROOT . 'install')) {
 	$content_main = View::ShowStaticPage('remove_install.html', 'other/install/');
 	$page = lng('REMOVE_INSTALL_FOLDER');
 } else
-switch ($mode) {
-	case 'start':
-		$page = 'Начать игру';
-		$content_main = View::ShowStaticPage('start_game.html');
-		break;
-	case 'register':
-	case 'restorepassword':
-	case 'news':
-		include('./location/news.php');
-		break;
-	case 'news_full':
-		include('./location/news_full.php');
-		break;
-	case 'options':
-		include('./location/options.php');
-		break;
-	case 'news_add':
-		include('./location/news_add.php');
-		break;
-	case 'control':
-		include('./location/admin.php');
-		break;
-	default:
-		if (!preg_match("/^[a-zA-Z0-9_-]+$/", $mode) or !file_exists(MCR_ROOT.'/location/'.$mode.'.php'))
-			$mode = "404";
-
-		include(MCR_ROOT.'/location/'.$mode.'.php');
-		break;
-}
+	switch ($mode) {
+		case 'start':
+			$page = 'Начать игру';
+			$content_main = View::ShowStaticPage('start_game.html');
+			break;
+		case 'register':
+		case 'restorepassword':
+		case 'news':
+			include('./location/news.php');
+			break;
+		case 'news_full':
+			include('./location/news_full.php');
+			break;
+		case 'options':
+			include('./location/options.php');
+			break;
+		case 'news_add':
+			include('./location/news_add.php');
+			break;
+		case 'control':
+			include('./location/admin.php');
+			break;
+		default:
+			if (!file_exists(MCR_ROOT . '/location/' . $mode . '.php')) {
+				$statpage = $db->execute("SELECT `pages`.*, `{$bd_names['users']}`.`{$bd_users['login']}` as name FROM `{$bd_names['users']}`, `pages` WHERE `url`='{$db->safe($mode)}' AND `{$bd_names['users']}`.`{$bd_users['id']}`=`pages`.`author`");
+				if ($statpage and $db->num_rows($statpage) == 1) {
+					$mode = 'statpage';
+					$statpage = $db->fetch_array($statpage);
+					ob_start();
+					include View::Get('statpage.html', 'other/');
+					$content_main = ob_get_clean();
+					$menu->SetItemActive($statpage['menu_item']);
+					$page = $statpage['title'];
+				} else $mode = "404";
+			}
+			if ($mode != 'statpage' && !preg_match("/^[a-zA-Z0-9_-]+$/", $mode)) $mode = "404";
+			if ($mode != 'statpage') include(MCR_ROOT . '/location/' . $mode . '.php');
+			break;
+	}
 if ($user and !$user->pass_set()) {
 	ob_start();
 	include View::Get('wocpassunset.html', 'other/');
-	$content_main = ob_get_clean().$content_main;
+	$content_main = ob_get_clean() . $content_main;
 }
 if ($user and $user->lvl() >= 15 and !webMCRex::checkVersion()) {
 	ob_start();
 	include View::Get('new_ver_availible.html', 'other/');
-	$content_main = ob_get_clean().$content_main;
+	$content_main = ob_get_clean() . $content_main;
 }
 $content_menu = $menu->Show();
 include('./location/side.php');
@@ -189,11 +204,11 @@ include View::Get('index.html');
 //$parser = new TemplateParser();
 //$html_page = $parser->parse($html_page);
 //echo $html_page;
-if(isset($config['debug']) and $config['debug']) {
-	echo (memory_get_usage() - $mem_start)/1024 . "КБ памяти использовано";
-	echo "\n<br />SQL запросов сделано: ".$queries."\r\n";
+if (isset($config['debug']) and $config['debug']) {
+	echo (memory_get_usage() - $mem_start) / 1024 . "КБ памяти использовано";
+	echo "\n<br />SQL запросов сделано: " . $queries . "\r\n";
 	$timer_end = microtime();
 	$timer_total = round($timer_end - $timer_start, 7);
-	echo "\n<br />Страница сгенерирована за ".$timer_total." секунд\r\n";
+	echo "\n<br />Страница сгенерирована за " . $timer_total . " секунд\r\n";
 }
 ?>

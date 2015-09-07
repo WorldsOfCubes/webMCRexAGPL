@@ -36,7 +36,6 @@ function mcr_init() {
 	pbm.Live(100, 100)
 
 	mcr_pass_init = true
-	console.log('Часто смотришь в консоль? А может, и с разработкой webMCRex поможешь? Репозиторий тут: https://bitbucket.org/WorldsOfCubes/webmcrex/ Ты знаешь что делать ;)')
 }
 
 /* Prototypes */

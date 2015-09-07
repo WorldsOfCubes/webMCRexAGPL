@@ -92,21 +92,6 @@ BD("CREATE TABLE IF NOT EXISTS `{$bd_names['news']}` (
   KEY `user_id` (`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
 
-BD("CREATE TABLE `pages` (
-	`id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-	`author` BIGINT(20) NOT NULL,
-	`url` VARCHAR(50) NOT NULL,
-	`menu_item` VARCHAR(50) NOT NULL,
-	`title` VARCHAR(50) NOT NULL,
-	`title_inbody` VARCHAR(50) NOT NULL,
-	`content` LONGTEXT NOT NULL,
-	`created` DATETIME NOT NULL,
-	`updated` DATETIME NULL DEFAULT NULL,
-	`show_info` TINYINT(1) NOT NULL DEFAULT '0',
-	PRIMARY KEY (`id`),
-	UNIQUE INDEX `UNIQUE KEY` (`url`)
-)  DEFAULT CHARSET=utf8 ENGINE=MyISAM AUTO_INCREMENT=1;");
-
 BD("CREATE TABLE IF NOT EXISTS `{$bd_names['news_categorys']}` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` char(255) NOT NULL,
@@ -320,12 +305,6 @@ if (!BD_ColumnExist($bd_names['comments'], 'item_type')) {
 	BD("ALTER TABLE `{$bd_names['news']}` CHANGE COLUMN `hide_vote` `vote` tinyint(1) NOT NULL DEFAULT 1;");
 	BD("ALTER TABLE `{$bd_names['news']}` ADD `discus` tinyint(1) NOT NULL DEFAULT 1;");
 	BD("ALTER TABLE `{$bd_names['news']}` ADD `comments` int(10) NOT NULL DEFAULT 0;");
-}
-
-/* webMCRex 1.235a UPDATE */
-if (!BD_ColumnExist($bd_names['iconomy'], $bd_money['bank'])) {
-
-	BD("ALTER TABLE `{$bd_names['iconomy']}` ADD `{$bd_money['bank']}` double(64,2) NOT NULL DEFAULT '0.00';");
 }
 
 /* webMCRex 1.235b_r2 UPDATE */

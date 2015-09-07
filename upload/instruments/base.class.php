@@ -1,5 +1,5 @@
 <?php
-define('MCR', '2.5b2');
+define('MCR', '2.5b3');
 define('DEV', true);
 define('EX', '2');
 define('PROGNAME', 'webMCRex '.MCR);

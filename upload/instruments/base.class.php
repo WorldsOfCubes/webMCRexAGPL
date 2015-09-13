@@ -1,5 +1,5 @@
 <?php
-define('MCR', '2.5b3');
+define('MCR', '2.5b4');
 define('DEV', true);
 define('EX', '2');
 define('PROGNAME', 'webMCRex '.MCR);
@@ -28,7 +28,7 @@ class webMCRex {
 				$response = explode(':', $response);
 				sqlConfigSet('latest-version-tag', $response[0]);
 				sqlConfigSet('latest-version-name', $response[1]);
-			} else vtxtlog('Error: Unable to connect to webMCRex version server with error: ' . $error);
+			} else vtxtlog('Error: Unable to connect to webMCRex version server with error: ' . $http_code . ' ' . $error);
 			$checkverrunned = true;
 		}
 		return strtolower(self::version) == str_replace('_', ' ', sqlConfigGet('latest-version-tag'));

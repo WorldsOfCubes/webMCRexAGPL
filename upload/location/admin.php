@@ -896,7 +896,7 @@ if ($do) {
 				$content = $_POST['content'];
 				$menu_item = $_POST['menu_item'];
 				$show_info = (isset($_POST['show_info']))? 1:0;
-				$result = (isset($id))?
+				$result = (isset($_GET['id']))?
 					$db->execute("UPDATE `pages` SET `title`='{$db->safe($title)}', `title_inbody`='{$db->safe($title_inbody)}',"
 								." `url`='{$db->safe($url)}', `content`='{$db->safe($content)}', `updated`=NOW(),"
 								." `menu_item`='{$db->safe($menu_item)}', `show_info`='{$db->safe($show_info)}' WHERE `id`={$db->safe($id)}"):

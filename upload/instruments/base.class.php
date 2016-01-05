@@ -87,7 +87,7 @@ Class View {
 			return $current_st_url;
 
 		if (DEF_STYLE_URL === $current_st_url)
-			return DEF_STYLE_URL.$way; else return (file_exists(MCR_STYLE.$config['s_theme'].'/'.$way) ? $current_st_url : DEF_STYLE_URL).$way;
+			return BASE_URL . DEF_STYLE_URL.$way; else return (file_exists(MCR_STYLE.$config['s_theme'].'/'.$way) ? $current_st_url : DEF_STYLE_URL).$way;
 	}
 
 	public static function URL($way = false) {
@@ -997,6 +997,6 @@ Class Rewrite {
 			} else $str .= '?'.$get_params[0].'='.$url_data;
 		}
 
-		return $str;
+		return BASE_URL . $str;
 	}
 }

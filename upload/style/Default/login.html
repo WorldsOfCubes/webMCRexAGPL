@@ -13,7 +13,7 @@
 		<h3 class="panel-title"><i class="glyphicon glyphicon-user"></i> {AUTH}</h3>
 	</div>
 	<div class="panel-body">
-		<form action="login.php" method="post" id="loginform" style="margin-top: 10px;">
+		<form action="<?php echo BASE_URL ?>login.php" method="post" id="loginform" style="margin-top: 10px;">
 			<div style="text-align: center;">
 				<div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input
 						id="auth-login" class="form-control" type="text" name="login" placeholder="{AUTH_LOGIN}" />
@@ -102,7 +102,7 @@
 	</div>
 	<div class="panel-body">
 
-		<form autocomplete="off" action="reg.php" method="post" id="regform" style="margin-bottom: 10px;">
+		<form autocomplete="off" action="<?php echo BASE_URL ?>reg.php" method="post" id="regform" style="margin-bottom: 10px;">
 
 			<div style="text-align: center;">
 
@@ -151,7 +151,7 @@
 	</div>
 	<div class="panel-body">
 
-		<form autocomplete="off" action="action.php" method="post" id="restoreform" style="margin-bottom: 10px;">
+		<form autocomplete="off" action="<?php echo BASE_URL ?>action.php" method="post" id="restoreform" style="margin-bottom: 10px;">
 
 			<div style="text-align: center;">
 

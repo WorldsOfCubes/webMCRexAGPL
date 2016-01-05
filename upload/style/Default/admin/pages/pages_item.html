@@ -1,10 +1,10 @@
 <tr>
-	<td><a href="go/<?php echo $tmp_page['url']?>"><?php echo $tmp_page['title']?></a></td>
+	<td><a href="<?php echo BASE_URL ?>go/<?php echo $tmp_page['url']?>"><?php echo $tmp_page['title']?></a></td>
 	<td><div class="stt" title="<?php if($tmp_page['updated']) echo 'Обновлено '.$tmp_page['updated']?>"><?php echo $tmp_page['created']?></div></td>
 	<td>
 		<div class="btn-group btn-group-xs">
-			<a href="?mode=admin&do=page_edit&id=<?php echo $tmp_page['id']?>" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
-			<a href="?mode=admin&do=pages&del_id=<?php echo $tmp_page['id']?>&p=<?php echo $p?>" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+			<a href="<?php echo BASE_URL ?>?mode=admin&do=page_edit&id=<?php echo $tmp_page['id']?>" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
+			<a href="<?php echo BASE_URL ?>?mode=admin&do=pages&del_id=<?php echo $tmp_page['id']?>&p=<?php echo $p?>" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
 		</div>
 	</td>
 </tr>

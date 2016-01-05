@@ -5,15 +5,15 @@
 	<div class="panel-body">
 		<div class="row ">
 
-			<div class="col-md-5 center-mobile">
-				<img id="profile-mini" class="img-thumbnail" src="skin.php<?php echo $user->getSkinLink(true) ?>" style="max-width: 124px" />
+			<div class="col-xs-5 center-mobile">
+				<img id="profile-mini" class="img-thumbnail" src="<?php echo BASE_URL . "skin.php" . $user->getSkinLink(true) ?>" style="max-width: 124px" />
 			</div>
-			<div class="col-md-7 center-mobile" style="margin-top: 5px">
+			<div class="col-xs-7 center-mobile" style="margin-top: 5px">
 				<p><i class="glyphicon glyphicon-user"></i> <b>Логин:</b> <span id="profile-mini-name"><?php echo $player; ?></span></p>
 
 				<p><i class="glyphicon glyphicon-list-alt"></i> <b>Группа:</b> <?php echo $player_group; ?></p>
 
-				<p><i class="glyphicon glyphicon-warning-sign"></i> <b>Предупреждения:</b> <a href="go/warnings" class="news-link"><?php echo $user->warnLVL() ?> %</a></p>
+				<p><i class="glyphicon glyphicon-warning-sign"></i> <b>Предупреждения:</b> <a href="<?php echo BASE_URL ?>go/warnings" class="news-link"><?php echo $user->warnLVL() ?> %</a></p>
 
 				<p><a href="login.php?out=1" class="btn btn-default btn-sm btn-block" >Выход</a></p>
 			</div>

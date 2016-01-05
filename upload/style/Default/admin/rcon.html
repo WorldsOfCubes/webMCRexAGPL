@@ -269,7 +269,7 @@
 			<div style="background:#747474; text-align:center;">Ввод команды</div>
 
 			<div style="background:#818181; text-align:center; padding: 5px;">
-				<form class="form-inline" action="instruments/mcraft.rcon.php" method="POST" name="command_form" id="rcon-form">
+				<form class="form-inline" action="<?php echo BASE_URL ?>instruments/mcraft.rcon.php" method="POST" name="command_form" id="rcon-form">
 					<input type="hidden" id="command_ip" name="IP" />
 					<input type="hidden" id="command_pass" name="pass" />
 					<input type="hidden" id="command_port" name="port" />
@@ -284,6 +284,6 @@
 	</div>
 </div>
 
-<form action="../mcraft.rcon.php" method="POST" name="userlist_form" target="systemFrame" style="display: none;">
+<form action="<?php echo BASE_URL ?>instruments/mcraft.rcon.php" method="POST" name="userlist_form" target="systemFrame" style="display: none;">
 	<input type="hidden" name="userlist" value="1" />
 </form>

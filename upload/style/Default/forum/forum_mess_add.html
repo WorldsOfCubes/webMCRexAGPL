@@ -127,12 +127,12 @@
 	<div id="comment-smile-list" style="display: none; white-space: normal; padding-bottom: 6px; "></div>
 
 	<div class="block-line"></div>
-	<form method="post" action="">
-		<input required="*" id="comment-item-topic" type="hidden" name="topic_id" value="<?php echo $topic_id ?>" />
+	<form method="post">
+		<input required="1" id="comment-item-topic" type="hidden" name="topic_id" value="<?php echo $topic_id ?>" />
 
 		<div style="text-align: center;">
 
-			<textarea id="comment-add-text" required="*" class="form-control" style="height:100px" name="message" onclick="return DrawLenInfo(event)" onchange="return DrawLenInfo(event)" onkeyup="return DrawLenInfo(event)" onkeypress="return DrawLenInfo(event)"></textarea>
+			<textarea id="comment-add-text" required="1" class="form-control" style="height:100px" name="message" onclick="return DrawLenInfo(event)" onchange="return DrawLenInfo(event)" onkeyup="return DrawLenInfo(event)" onkeypress="return DrawLenInfo(event)"></textarea>
 
 		</div>
 

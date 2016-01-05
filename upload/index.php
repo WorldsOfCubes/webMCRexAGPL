@@ -124,7 +124,6 @@ function show_error($html, $page)
 
 $menu = new Menu();
 
-
 $mode = $config['s_dpage'];
 
 if (isset($_GET['id']) and !isset($_GET['mode']))

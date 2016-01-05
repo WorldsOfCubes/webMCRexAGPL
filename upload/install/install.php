@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 
 define('MCR_ROOT', dirname(dirname(__FILE__)).'/');
 define('BASE_URL', Root_url());
+define('MCR_LANG', 'ru_RU');
 include MCR_ROOT."instruments/locale/ru_RU.php";
 
 require_once(MCR_ROOT.'instruments/base.class.php');
@@ -241,7 +242,10 @@ function CreateAdmin($site_user) {
 
 		require_once(MCR_ROOT.'instruments/auth/'.$config['p_logic'].'.php');
 
-		BD("INSERT INTO `{$bd_names['users']}` ("."`{$bd_users['login']}`,"."`{$bd_users['password']}`,"."`{$bd_users['ip']}`,"."`{$bd_users['group']}`,"."`{$bd_users['ctime']}`,"."`{$bd_users['email']}`".",`{$bd_users['female']}`) "."VALUES('$site_user','".MCRAuth::createPass($site_password)."','".GetRealIp()."',3,NOW(),'$site_email',$site_gender)"."ON DUPLICATE KEY UPDATE `{$bd_users['group']}`='3',`{$bd_users['password']}`='".MCRAuth::createPass($site_password)."',`{$bd_users['email']}`='$site_email'");
+		BD("INSERT INTO `{$bd_names['users']}` ("."`{$bd_users['login']}`,"."`{$bd_users['password']}`,"."`{$bd_users['ip']}`,"
+			."`{$bd_users['group']}`,"."`{$bd_users['ctime']}`,"."`{$bd_users['email']}`".",`{$bd_users['female']}`) "
+			."VALUES('$site_user','".MCRAuth::createPass($site_password)."','".GetRealIp()."',3,NOW(),'$site_email',$site_gender)"
+			."ON DUPLICATE KEY UPDATE `{$bd_users['group']}`='3',`{$bd_users['password']}`='".MCRAuth::createPass($site_password)."',`{$bd_users['email']}`='$site_email'");
 		$result = true;
 	}
 

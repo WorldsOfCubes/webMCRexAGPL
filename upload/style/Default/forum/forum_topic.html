@@ -1,7 +1,7 @@
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<a href="/go/forum/"><?php echo lng('FORUM')?></a> &raquo;
-		<a href="/go/forum/view/<?php echo $topic_info['part_id'];?>/1"><?php echo $topic_info['part_name'];?></a> &raquo; <?php echo $topic_info['title'];?>
+		<a href="<?php echo BASE_URL ?>go/forum/"><?php echo lng('FORUM')?></a> &raquo;
+		<a href="<?php echo BASE_URL ?>go/forum/view/<?php echo $topic_info['part_id'];?>/1"><?php echo $topic_info['part_name'];?></a> &raquo; <?php echo $topic_info['title'];?>
 
 		<?php if( $lock['closed'] == 'Y' ) { ?>
 		<div class="pull-right">
@@ -38,10 +38,10 @@
 					</button>
 
 					<ul class="dropdown-menu">
-						<form action="" method="POST">
+						<form method="POST">
 							<input type="hidden" name="mess_id" value="<?php echo $topmess['id'] ?>" />
 							<li>
-								<a href="/go/forum/edit/<?php echo $topmess['id'] ?>" style="background: none; border: none; color: #000; padding-left: 6px;"><i class="glyphicon glyphicon-pencil"></i> Редактировать</a>
+								<a href="<?php echo BASE_URL ?>go/forum/edit/<?php echo $topmess['id'] ?>" style="background: none; border: none; color: #000; padding-left: 6px;"><i class="glyphicon glyphicon-pencil"></i> Редактировать</a>
 							</li>
 							<li>
 								<button type="submit" style="background: none; border: none;">
@@ -84,10 +84,10 @@
 					</button>
 
 					<ul class="dropdown-menu">
-						<form action="" method="POST">
+						<form method="POST">
 							<input type="hidden" name="mess_id" value="<?php echo $ftops['id'] ?>" />
 							<li>
-								<a href="/go/forum/edit/<?php echo $ftops['id'] ?>" style="background: none; border: none; color: #000; padding-left: 6px;"><i class="glyphicon glyphicon-pencil"></i> Редактировать</a>
+								<a href="<?php echo BASE_URL ?>go/forum/edit/<?php echo $ftops['id'] ?>" style="background: none; border: none; color: #000; padding-left: 6px;"><i class="glyphicon glyphicon-pencil"></i> Редактировать</a>
 							</li>
 							<li>
 								<button type="submit" style="background: none; border: none;">
@@ -106,7 +106,7 @@
 					</button>
 
 					<ul class="dropdown-menu">
-						<form action="" method="POST">
+						<form method="POST">
 							<input type="hidden" name="mess_id" value="<?php echo $ftops['id'] ?>" />
 							<input type="hidden" name="mess_auth" value="<?php echo $ftops['author_id'] ?>" />
 							<li>

@@ -1,4 +1,4 @@
-<form action="index.php?mode=control&amp;do=constants" method="post" enctype="multipart/form-data">
+<form action="<?php echo BASE_URL ?>index.php?mode=control&amp;do=constants" method="post" enctype="multipart/form-data">
 
 	<div class="tabbable" style="margin-top: 12px; padding: 10px;">
 
@@ -42,9 +42,9 @@
 				<span class="help-block">Рекомендуется включить, если вы намерены разрешить использование HD скинов на вашем сайте.</span>
 
 				<label class="checkbox">
-					<input type="checkbox" name="rewrite" value="1" <?php echo ($config['rewrite'])?'checked="checked"':'' ?>> Простые ссылки на новости
+					<input type="checkbox" name="rewrite" value="1" checked disabled> Простые ссылки на новости
 				</label>
-				<span class="help-block">Если сервер использует модуль mod_rewrite, можно активировать эту опцию для замены ссылок вида site.ru/index.php?id=2334 на site.ru/news/2334</span>
+				<span class="help-block">Если сервер использует модуль mod_rewrite, можно активировать эту опцию для замены ссылок вида site.ru/index.php?id=2334 на site.ru/news/2334. Обратите внимание! В дальнейшем мы не будем поддерживать серверы без Rewrite Engine!</span>
 
 			</div>
 
@@ -84,7 +84,11 @@
 
 				<label>Приветствие:</label>
 
-				<input type="text" class="form-control" style="width:300px" name="smtp_hello" value="<?php echo sqlConfigGet('smtp-hello');  ?>">
+
+				<select class="form-control" style="width:300px" name="smtp_hello">
+					<option value="HELO"<?php echo (sqlConfigGet('smtp-hello') != "EHLO")?" selected":''?>>HELO</option>
+					<option value="EHLO"<?php echo (sqlConfigGet('smtp-hello') == "EHLO")?" selected":''?>>EHLO</option>
+				</select>
 				<span class="help-block">Системное сообщение приветствия, как правило либо HELO либо EHLO . Не менять без необходимости</span>
 
 			</div>
@@ -116,7 +120,7 @@
 				</div>
 
 				<label class="checkbox">
-					<input type="checkbox" name="log" value="1" <?php echo ($config['log'])?'checked="checked"':'' ?>> Запись лога (<a href="index.php?mode=control&do=log">Просмотр</a>)
+					<input type="checkbox" name="log" value="1" <?php echo ($config['log'])?'checked="checked"':'' ?>> Запись лога (<a href="<?php echo BASE_URL ?>index.php?mode=control&do=log">Просмотр</a>)
 				</label>
 				<span class="help-block">Запись сообщений об ошибках веб приложения в файл <?php echo MCR_ROOT.'log.txt' ?> . Обнуление файла при размере > 50мб</span>
 

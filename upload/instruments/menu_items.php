@@ -4,7 +4,7 @@ $menu_items = array(
 	0 => array(
 		'main' => array(
 			'name' => '<i class="glyphicon glyphicon-home"></i> ' . lng('HOME'),
-			'url' => '',
+			'url' => BASE_URL,
 			'parent_id' => -1,
 			'lvl' => -1,
 			'permission' => -1,
@@ -267,7 +267,7 @@ $menu_items = array(
 		),
 		'exit' => array(
 			'name' => '<i class="glyphicon glyphicon-log-out"></i> ' . lng('EXIT'),
-			'url' => 'login.php?out=1',
+			'url' => BASE_URL . 'login.php?out=1',
 			'parent_id' => -1,
 			'lvl' => 1,
 			'permission' => -1,

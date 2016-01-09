@@ -17,4 +17,6 @@ while ($result = $db->fetch_assoc($query)) {
 		$i++;
 	}
 }
+
+header('Content-Type: text/html; charset=utf-8');
 echo("Снято $i статусов");

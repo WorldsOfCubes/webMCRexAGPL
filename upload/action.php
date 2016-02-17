@@ -6,6 +6,7 @@ if (empty($_POST['method']) and empty($_GET['method']))
 	exit;
 $method = (isset($_POST['method'])) ? $_POST['method'] : $_GET['method'];
 
+require('./system.php');
 if((!isset($config['debug']) or !$config['debug']) and is_dir(MCR_ROOT.'install'))
 	exit("Please remove 'install' directory");
 switch ($method) {
@@ -19,7 +20,6 @@ switch ($method) {
 	case 'like':
 	case 'delete_file':
 
-		require('./system.php');
 		loadTool('ajax.php');
 		loadTool('user.class.php');
 		if ($method == 'upload' or $method == 'delete_file')
@@ -36,8 +36,6 @@ switch ($method) {
 
 		break;
 	case 'download':
-
-		require('./system.php');
 		loadTool('upload.class.php');
 
 		$db = new DB();

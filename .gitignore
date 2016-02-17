@@ -11,3 +11,4 @@ upload/main.cfg.php
 *log.txt
 log.txt
 upload/cache/*.php
+upload/MineCraft/userdata/

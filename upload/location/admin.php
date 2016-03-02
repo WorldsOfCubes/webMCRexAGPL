@@ -985,7 +985,7 @@ if ($do) {
 			$parent_options = ob_get_clean();
 			include View::Get('item_edit.html', 'admin/menu/');
 			$menu = new Menu();
-			$menu->SetItemActive('menu_edit');
+			$menu->SetItemActive(($edit)?'menu':'menu_add');
 			break;
 		case 'menu':
 			if(isset($_POST['submit'])) {
@@ -1003,11 +1003,13 @@ if ($do) {
 				$query = $db->execute("SELECT * FROM `menu` WHERE `id`='{$db->safe($_POST['delete'])}'");
 				if ($db->num_rows($query)) {
 					$query = $db->fetch_array($query);
-					$db->execute("DELETE FROM `menu` WHERE `txtid`='{$query['txtid']}'");
-					$db->execute((isset($_POST['delete_children']))?
-						"DELETE FROM `menu` WHERE `parent_id`='{$query['txtid']}'":
-						"UPDATE `menu` SET `pareny_id`='{$query['parent_id']}' WHERE `parent_id`='{$query['txtid']}'"
-					);
+					if(!$query['system']){
+						$db->execute("DELETE FROM `menu` WHERE `txtid`='{$query['txtid']}'");
+						$db->execute((isset($_POST['delete_children']))?
+							"DELETE FROM `menu` WHERE `parent_id`='{$query['txtid']}'":
+							"UPDATE `menu` SET `pareny_id`='{$query['parent_id']}' WHERE `parent_id`='{$query['txtid']}'"
+						);
+					}
 				}
 			}
 			$query = $db->execute("SELECT `menu`.*, `pages`.`title` FROM `menu` LEFT JOIN `pages` ON `pages`.`menu_item`=`menu`.`txtid` ORDER BY `menu`.`align` ASC, `menu`.`priority` DESC");
@@ -1022,7 +1024,7 @@ if ($do) {
 			ShowMenu($a, 1);
 			echo View::ShowStaticPage('list_end.html', $st_subdir . 'menu/');
 			$menu = new Menu();
-			$menu->SetItemActive('menu_edit');
+			$menu->SetItemActive('menu');
 			break;
 	}
 

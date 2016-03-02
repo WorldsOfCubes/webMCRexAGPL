@@ -909,7 +909,7 @@ Class Menu extends View {
 	private function show_item ($id, &$item, $kid = false) {
 		global $user;
 		$c = 0; $sub = '';
-		if (isset($item['right']) and !($user and $user->getPermission($item['permission'])))
+		if ((!$user and -1 != $item['lvl']) or ($user and $user->lvl() < $this->menu_items[$id]['lvl']) or ($this->menu_items[$id]['permission'] != '-1' and !$user) or ($this->menu_items[$id]['permission'] != '-1' and $user and !$user->getPermission($this->menu_items[$id]['permission'])))
 			return '';
 		foreach ($this->menu_items as $tmp_id => $tmp_item)
 			if ($tmp_item['parent_id'] and $tmp_item['parent_id'] == $id) {

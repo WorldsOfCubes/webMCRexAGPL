@@ -31,7 +31,7 @@
 	<div class="news-footer">
 
 		<?php echo $date; ?> <span class="divider">|</span> <?php echo $time ?><? if($config['news_author']):?>
-		<span class="divider">|</span> <a href="go/user/profile/<?php echo $uname ?>"><?php echo $uname ?></a><?endif?>
+		<span class="divider">|</span> <a href="<?php echo BASE_URL ?>go/user/profile/<?php echo $uname ?>"><?php echo $uname ?></a><?endif?>
 		<span class="divider">|</span>
 		<a class="news-link-f" href="<?php echo $category_link ?>"><?php echo $category; ?></a>
 

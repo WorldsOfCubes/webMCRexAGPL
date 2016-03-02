@@ -38,7 +38,7 @@ class TemplateParser {
 		return $html_parsed; //отдаем результат
 	}
 	public static function MakeCache($tpl_file, $mask) {
-		global $tpl_cache_info, $site_ways;
+		global $tpl_cache_info, $site_ways, $config;
 		if(!file_exists($tpl_file))
 			return View::Get("404.html");
 		if(!isset($tpl_cache_info)) $tpl_cache_info = array();
@@ -46,7 +46,7 @@ class TemplateParser {
 		if(isset($tpl_cache_info[$mask])){
 			$info = explode("<::>", $tpl_cache_info[$mask]);
 		}
-		if(!isset($tpl_cache_info[$mask]) or ($info[0] < time() and $info[1] != ($tpl_md5 = md5_file($tpl_file)))) {
+		if((!isset($tpl_cache_info[$mask]) or ($info[0] < time() and $info[1] != ($tpl_md5 = md5_file($tpl_file)))) or !$config['cache_on']) {
 			$parsed = self::ParseText(file_get_contents($tpl_file));
 			file_put_contents(MCR_ROOT . "{$site_ways['cache']}$mask.php", $parsed);
 			$tpl_cache_info['updated'] = true;

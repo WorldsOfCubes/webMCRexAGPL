@@ -1,0 +1,28 @@
+<tr class="row"><td style="vertical-align: middle" class="col-xs-8"><?php echo $pre ?><a href="<?php echo $menu_item['url'] ?>"><?php echo $menu_item['name'] ?></a></td><td class="col-xs-2"><input type="number" class="form-control" name="menu_item_<?php echo $menu_item['txtid'] ?>" value="<?php echo $menu_item['priority'] ?>"></td><td class="col-xs-2"><div class="btn-group"><a href="<?php echo BASE_URL?>?mode=control&do=menu_edit&id=<?php echo $menu_item['id'] ?>" class="btn btn-warning"><i class="glyphicon glyphicon-edit"></i></a><a href="#del_<?php echo $menu_item['id'] ?>" role="button" class="btn btn-danger" data-toggle="modal"><i class="glyphicon glyphicon-remove"></i></a></div></td></tr>
+<div class="modal fade" id="del_<?php echo $menu_item['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="del_<?php echo $menu_item['id'] ?>Label"
+     aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3 id="del_<?php echo $menu_item['id'] ?>Label">Обмен на внутриигровую валюту</h3>
+			</div>
+			<form method="post">
+				<div class="modal-body">
+					<label class="checkbox">
+						<input type="checkbox" name="delete_children" value="1"> Удалить потомки
+					</label>
+					<div class="alert alert-info">
+						В противном случае потомки "перебросятся" на родительский пункт меню. <b>Осторожно! При удалении пункта, у потомков которого есть свои потомки эти потомки потомков останутся в БД, но удалить, изменить или сделать видимыми через админку не получится! Придется модифицировать БД!</b>
+					</div>
+					<input type="hidden" name="delete" value="<?php echo $menu_item['id'] ?>">
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-default" type="button" data-dismiss="modal" aria-hidden="true">Отмена
+					</button>
+					<input TYPE="submit" class="btn btn-danger" value="Удалить">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

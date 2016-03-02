@@ -104,6 +104,14 @@
 				<input type="text" class="form-control" style="width:300px" name="security_key" value="<?php echo (isset($config['security_key']))?$config['security_key']:''; ?>">
 
 				<label class="checkbox">
+					<input type="checkbox" name="cache_on" value="1" <?php echo ($config['cache_on'])?'checked="checked"':'' ?>> Включить кеширование шаблонов
+				</label>
+
+				<div class="alert alert-info">
+					Нужно отключить только если вы активно редактируете шаблон. <b>Отключение кеша значительно нагружает сервер и может увеличить время загрузки страниц более чем в десять раз!</b>
+				</div>
+
+				<label class="checkbox">
 					<input type="checkbox" name="site_offline" value="1" <?php echo ($config['offline'])?'checked="checked"':'' ?>> Закрыть сайт ( режим "Технических работ" )
 				</label>
 

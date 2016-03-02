@@ -1,0 +1,6 @@
+<li class="dropdown-submenu<?php if ($item['active']) { ?> active<?php } ?>">
+	<a tabindex="-1" href="<?php echo $item['url'] ?>"><?php echo $item['name'] ?></a>
+	<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+		<?php echo $sub ?>
+	</ul>
+</li>

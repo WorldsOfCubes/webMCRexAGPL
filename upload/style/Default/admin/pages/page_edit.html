@@ -26,7 +26,10 @@
 		<p>
 			<div class="input-group">
 				<span class="input-group-addon">Пункт меню</span>
-				<input type="text" class="form-control" name="menu_item" placeholder="Идентификатор пункта меню. Может быть пустым." value="<?php echo $menu_item?>">
+				<select class="form-control" name="menu_item">
+					<option value="">Никакой</option>
+					<?php echo $menu_items ?>
+				</select>
 			</div>
 		</p>
 		<label class="checkbox">

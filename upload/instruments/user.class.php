@@ -85,7 +85,7 @@ Class User {
 			return false;
 		}
 
-		$line = $db->fetch_array($result, MYSQL_ASSOC);
+		$line = $db->fetch_array($result, MYSQLI_ASSOC);
 		$this->id = (int)$line[$bd_users['id']];
 		$this->wocid = (int)$line['wocid'];
 		$this->woctoken = $line['woctoken'];
@@ -733,7 +733,7 @@ Class User {
 			$get_p .= 'm=1';
 
 		if ($this->id() === false)
-			return $get_p;
+			return BASE_URL . $get_p;
 
 		if ($get_p !== '?')
 			$get_p .= $amp;

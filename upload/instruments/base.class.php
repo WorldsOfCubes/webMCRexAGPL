@@ -1,5 +1,5 @@
 <?php
-define('MCR', '2.5b6');
+define('MCR', '2.5b7');
 define('DEV', true);
 define('EX', '2');
 define('PROGNAME', 'webMCRex '.MCR);
@@ -774,7 +774,7 @@ Class Menu extends View {
 			}
 
 			$this->menu_items = $menu_items;
-		} else $this->menu_items = array(0 => array(), 1 => array());
+		} else $this->menu_items = array();
 	}
 
 	private static function array_insert_before(&$array, $var, $key_name) {
@@ -935,6 +935,7 @@ Class Menu extends View {
 		include View::Get('menu/menu.html');
 		$menu_align = "pull-right";
 		include View::Get('menu/menu.html');
+//		var_dump($this->menu_items);
 		return ob_get_clean();
 	}
 }

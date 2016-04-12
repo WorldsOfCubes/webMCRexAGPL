@@ -6,7 +6,7 @@
 
 	<div id="last-files"></div>
 
-	<form class="form-inline" id="file-upload" action="action.php" method="post" enctype="multipart/form-data">
+	<form class="form-inline" id="file-upload" action="<?php echo BASE_URL ?>action.php" method="post" enctype="multipart/form-data">
 		<fieldset>
 			<input type="hidden" name="method" value="upload" />
 			<input type="file" name="new_file" onchange="UploadFile()" title="Выбрать файл..." />

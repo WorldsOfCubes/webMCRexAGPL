@@ -16,7 +16,7 @@
 		</div>
 	</div>
 
-	<div class="tabbable" style="display: inline-block;">
+	<div class="tabbable">
 		<div class="tab-content">
 
 			<div class="tab-pane active" id="tab1" style="margin-top: 6px;">
@@ -27,7 +27,7 @@
 
 			<div class="tab-pane" id="tab2">
 
-				<form id="profile-update" autocomplete="off" action="action.php" method="post"
+				<form id="profile-update" autocomplete="off" action="<?php echo BASE_URL ?>action.php" method="post"
 				      enctype="multipart/form-data" class="form-horizontal" role="form">
 
 					<input type="hidden" name="method" value="profile" />
@@ -46,20 +46,39 @@
 
 			</div>
 
-			<div class="tab-pane" id="tab3" style="margin-top: 6px;">
+			<div class="tab-pane" id="tab3">
 
-
-				<b>Ваш статус:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <?php echo $player_group ?><br>
-				<b>Донат-счет:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b> <?php echo $player_money . $donate['currency_donate'] ?>
-				<br>
-				<b>Игровой счет:</b>&nbsp;&nbsp; <?php echo $player_econ . $donate['currency_ingame'] ?>
-				<br>
+				<div class="row">
+					<div class="col-xs-4">
+						<b>Ваш статус:</b>
+					</div>
+					<div class="col-xs-8">
+						<?php echo $player_group ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<b>Донат-счет:</b>
+					</div>
+					<div class="col-xs-8">
+						<?php echo $player_money . $donate['currency_donate'] ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<b>Игровой счет:</b>
+					</div>
+					<div class="col-xs-8">
+						<?php echo $player_econ . $donate['currency_ingame'] ?>
+					</div>
+				</div>
 
 				<?php echo $profile_donate_btns ?>
 				<center>
-					<div class="btn-group">
+					<div class="btn-group-vertical" style="align-self: center">
 						<a href="#donate-ik" role="button" class="btn btn-default" data-toggle="modal">Пополнить счет [InterKassa]</a>
 						<a href="#donate-up" role="button" class="btn btn-default" data-toggle="modal">Пополнить счет [UnitPay]</a>
+						<a href="#donate-ya" role="button" class="btn btn-default" data-toggle="modal">Пополнить счет [Яндекс.Деньги, Банковская карта]</a>
 						<a href="#exchange" role="button" class="btn btn-default" data-toggle="modal">Обмен валют</a>
 					</div>
 				</center>
@@ -144,6 +163,62 @@
 									<button class="btn btn-default" type="button" data-dismiss="modal" aria-hidden="true">Отмена
 									</button>
 									<input TYPE="submit" class="btn btn-primary" name="buym" value="Обмен">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<script language="JavaScript">
+					function SetYaSum() {
+						amount_due = GetById('ya_sum_to_get')
+						sum = GetById('ya_sum')
+						sum_txt = GetById('ya_sum_txt')
+						switch (GetById('ya_type').value) {
+							case 'PC':
+								sum_txt.innerHTML = (sum.value = ((amount_due.value / 0.995) + 0.01).toFixed(2))
+								break
+							case 'AC':
+								sum_txt.innerHTML = (sum.value = ((amount_due.value / 0.98) + 0.01).toFixed(2))
+								break
+							default:
+								return false
+								break
+						}
+						return true
+					}
+				</script>
+				<div class="modal fade" id="donate-ya" tabindex="-1" role="dialog" aria-labelledby="donateyaLabel"
+				     aria-hidden="true" style="display:none">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h3 id="donateyaLabel">Укажите сумму</h3>
+							</div>
+							<form name="payment" method="POST" action="https://money.yandex.ru/quickpay/confirm.xml"
+							      enctype="utf-8" onsubmit="SetYaSum()" target="_blank">
+								<div class="modal-body">
+									<div class="input-group">
+										<input class="input-medium form-control" size="16" type="number" id="ya_sum_to_get" onchange="SetYaSum()" onkeypress="SetYaSum()" onkeyup="SetYaSum()"><span class="input-group-addon">р.</span>
+										<select name="paymentType" class="form-control" id="ya_type" onchange="SetYaSum()" onkeypress="SetYaSum()" onkeyup="SetYaSum()">
+											<option value="PC">Кошелек Яндекс.Денег (коммиссия 0,5%)</option>
+											<option value="AC">Visa/MasterCard (коммиссия 2%)</option>
+										</select>
+									</div>
+									<input type="hidden" name="receiver" value="<?php echo ($donate['ya_shop_id']); ?>">
+									<input type="hidden" name="label" value="<?php echo ($user->name()); ?>">
+									<input type="hidden" name="formcomment" value="<?php echo $config['s_name']?>">
+									<input type="hidden" name="short-dest" value="Пополнение счета">
+									<input type="hidden" name="targets" value="Внутриигровая покупка">
+									<input type="hidden" name="sum" value="0" id="ya_sum">
+									<input type="hidden" name="quickpay-form" value="shop">
+									Вы должны будуте заплатить <b id="ya_sum_txt">0</b> рублей.<br/>
+									Внимание! Вы сейчас будете перенаправлены на сайт платежной системы Яндекс.Деньги. Если
+									деньги не пришли, обратитесь к онлайн-консультанту этой системы.
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-default" type="button" data-dismiss="modal">Отмена</button>
+									<button class="btn btn-default btn-primary" value="Пополнить">Пополнить</button>
 								</div>
 							</form>
 						</div>

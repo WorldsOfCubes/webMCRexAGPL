@@ -26,23 +26,29 @@ if (!isset($config['smtp_tls'])) { //Корректная работа посл�
 	$config['smtp_tls'] = false;
 	ConfigManager::SaveMainConfig();
 }
-if (!isset($config['ik_secret_key']) and isset($config['secret_key'])) { //Корректная работа после введения поддержки UnitPay
+if (!isset($donate['ik_secret_key']) and isset($donate['secret_key'])) { //Корректная работа после введения поддержки UnitPay
 	loadTool("alist.class.php");
-	$config['ik_secret_key'] = $config['secret_key'];
+	$donate['ik_secret_key'] = $donate['secret_key'];
+	$donate['up_secret_key'] = '';
 	ConfigManager::SaveMainConfig();
 }
-if (!isset($config['ik_shop_id']) and isset($config['shop_id'])) { //Корректная работа после введения поддержки UntPay
+if (!isset($donate['ik_shop_id']) and isset($donate['shop_id'])) { //Корректная работа после введения поддержки UntPay
 	loadTool("alist.class.php");
-	$config['ik_shop_id'] = $config['shop_id'];
+	$donate['ik_shop_id'] = $donate['shop_id'];
+	$donate['up_shop_id'] = '';
 	ConfigManager::SaveMainConfig();
 }
-
+if (!isset($donate['ya_shop_id']) or !isset($donate['ya_secret_key'])) { //Корректная работа после введения поддержки Yandex.Money
+	loadTool("alist.class.php");
+	$donate['ya_shop_id'] = '';
+	$donate['ya_secret_key'] = '';
+	ConfigManager::SaveMainConfig();
+}
 if (!isset($config['cache_on'])) { //Корректная работа после введения поддержки возможности отключения кеша
 	loadTool("alist.class.php");
 	$config['cache_on'] = true;
 	ConfigManager::SaveMainConfig();
 }
-
 if (!isset($config['news_author']))
 	$config['news_author'] = false;
 

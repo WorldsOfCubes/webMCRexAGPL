@@ -78,6 +78,18 @@ $menu->AddItem($page, BASE_URL.'install/install.php', true);
 $create_ways = array("skins", "cloaks", "distrib");
 $content_menu = $menu->Show();
 
+if (!Mode_rewrite()) {
+	$content_main = View::ShowStaticPage('install_norewrite.html', $i_sd);
+	ob_start();
+	include View::Get('index.html');
+	$content_page = ob_get_clean();
+	require_once(MCR_ROOT.'instruments/template.class.php');
+	$temp = new TemplateParser();
+	$content_page = $temp->parse($content_page);
+	echo $content_page;
+	exit();
+}
+
 function checkBaseRequire() {
 	global $cErr, $site_ways, $create_ways;
 
@@ -121,7 +133,7 @@ function checkRWOut($fname, $create = false) {
 
 	$is_dir = substr_count($fname, '.');
 
-	if (!checkRW($fname, $create))
+	if (file_exists($fname) and !checkRW($fname, $create))
 
 		$cErr .= '<p>'.($is_dir ? 'Файл' : 'Папка').' '.$fname.' . Нет доступа для чтения \ записи </p>';
 }
@@ -392,7 +404,7 @@ if ($cErr) {
 }
 switch ($step) {
 	case 1:
-		echo $mode;
+//		echo $mode;
 		include View::Get('install_method.html', $i_sd);
 		include View::Get('install.html', $i_sd);
 		break;

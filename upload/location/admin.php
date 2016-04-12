@@ -1007,7 +1007,7 @@ if ($do) {
 						$db->execute("DELETE FROM `menu` WHERE `txtid`='{$query['txtid']}'");
 						$db->execute((isset($_POST['delete_children']))?
 							"DELETE FROM `menu` WHERE `parent_id`='{$query['txtid']}'":
-							"UPDATE `menu` SET `pareny_id`='{$query['parent_id']}' WHERE `parent_id`='{$query['txtid']}'"
+							"UPDATE `menu` SET `parent_id`='{$query['parent_id']}' WHERE `parent_id`='{$query['txtid']}'"
 						);
 					}
 				}

@@ -10,7 +10,7 @@ $page = 'Набор в модераторы - форма заявки';
 
 
 $sql2 = $db->execute('SELECT * FROM `reqests` WHERE `name`="'.$_SESSION['user_name'].'"');
-$resultsql2 = $db->fetch_array($sql2, 0);
+$resultsql2 = $db->fetch_array($sql2);
 
 if (!isset($_POST['playername']) && !isset($_POST['realname']) && !isset($_POST['surname']) && !isset($_POST['old']) && !isset($_POST['skype'])) {
 } elseif (isset($_POST['playername']) && isset($_POST['realname']) && isset($_POST['surname']) && isset($_POST['old']) && isset($_POST['skype'])) {
@@ -44,7 +44,7 @@ if (!isset($_POST['playername']) && !isset($_POST['realname']) && !isset($_POST[
 }
 
 $sql2 = $db->execute('SELECT * FROM `reqests` WHERE `name`="'.$_SESSION['user_name'].'"');
-$resultsql2 = $db->fetch_array($sql2, 0);
+$resultsql2 = $db->fetch_array($sql2);
 
 if ($resultsql2['answer'] == $check) {
 	$content = '';

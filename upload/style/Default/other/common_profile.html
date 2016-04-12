@@ -1,7 +1,7 @@
 <?php if ($modal_mode) { ?>
 
 <div class="block-header">Профиль пользователя
-	<div style="display: inline-block;" id="<?php echo $this->id ?>-name"><a href="go/user/profile/<?php echo $main_info['name'] ?>"><?php echo $main_info['name'] ?></a></div>
+	<div style="display: inline-block;" id="<?php echo $this->id ?>-name"><a href="<?php echo BASE_URL ?>go/user/profile/<?php echo $main_info['name'] ?>"><?php echo $main_info['name'] ?></a></div>
 	<div style="display: inline-block; float: right;">
 		<a href="#" onclick="BlockVisible('<?php echo $this->id ?>', false); return false">Закрыть</a></div>
 </div>

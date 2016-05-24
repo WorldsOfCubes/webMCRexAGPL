@@ -21,33 +21,28 @@ require(MCR_ROOT.'instruments/locale/'.MCR_LANG.'.php');
 require(MCR_ROOT.'main.cfg.php');
 require(MCR_ROOT.'donate.cfg.php');
 
-if (!isset($config['smtp_tls'])) { //Корректная работа после введения поддержки TLS/SSL
+if (!isset($config['smtp_tls'])) { //Корректная работа после введения поддержки TLS/SSL в SMTP
 	loadTool("alist.class.php");
 	$config['smtp_tls'] = false;
-	ConfigManager::SaveMainConfig();
 }
 if (!isset($donate['ik_secret_key']) and isset($donate['secret_key'])) { //Корректная работа после введения поддержки UnitPay
 	loadTool("alist.class.php");
 	$donate['ik_secret_key'] = $donate['secret_key'];
 	$donate['up_secret_key'] = '';
-	ConfigManager::SaveMainConfig();
 }
 if (!isset($donate['ik_shop_id']) and isset($donate['shop_id'])) { //Корректная работа после введения поддержки UntPay
 	loadTool("alist.class.php");
 	$donate['ik_shop_id'] = $donate['shop_id'];
 	$donate['up_shop_id'] = '';
-	ConfigManager::SaveMainConfig();
 }
 if (!isset($donate['ya_shop_id']) or !isset($donate['ya_secret_key'])) { //Корректная работа после введения поддержки Yandex.Money
 	loadTool("alist.class.php");
 	$donate['ya_shop_id'] = '';
 	$donate['ya_secret_key'] = '';
-	ConfigManager::SaveMainConfig();
 }
 if (!isset($config['cache_on'])) { //Корректная работа после введения поддержки возможности отключения кеша
 	loadTool("alist.class.php");
 	$config['cache_on'] = true;
-	ConfigManager::SaveMainConfig();
 }
 if (!isset($config['news_author']))
 	$config['news_author'] = false;

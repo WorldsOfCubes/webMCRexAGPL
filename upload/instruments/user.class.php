@@ -132,6 +132,7 @@ Class User {
 	public function warn($type, $reason, $expires, $points) {
 		global $db, $user;
 		if (!$user) exit;
+		$points = (int) $points;
 		$db->execute("INSERT INTO `warnings` (`time`, `type`, `reason`, `expires`, `uid`, `mid`, `percentage`) VALUES (NOW(), $type, '{$db->safe($reason)}', '{$db->safe($expires)}', {$this->id}, " . $user->id() . ", $points)");
 
 		$this->warn_lvl = 0;
@@ -532,7 +533,7 @@ Class User {
 	}
 
 	public function changeName($newname) {
-		global $db, $bd_users, $site_ways;
+		global $db, $bd_users, $bd_names, $site_ways;
 
 		if (!$this->id)
 			return 0;
@@ -553,13 +554,11 @@ Class User {
 		$db->execute("UPDATE `{$this->db}` SET `{$bd_users['login']}`='".$db->safe($newname)."' WHERE `{$bd_users['login']}`='".$db->safe($this->name)."'");
 		$db->execute("UPDATE `pm` SET `reciver`='".$db->safe($newname)."' WHERE `reciver`='".$db->safe($this->name)."'");
 		$db->execute("UPDATE `pm` SET `sender`='".$db->safe($newname)."' WHERE `sender`='".$db->safe($this->name)."'");
-		
-		/* Говнокод от KobaltMR(-а) */
-		// А не, я уже переписал))
 		$db->execute("UPDATE `{$bd_names['iconomy']}` SET `username` = '".$db->safe($newname)."' WHERE `username` = '".$db->safe($this->name)."'");
 		$db->execute("UPDATE `permissions_entity` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
 		$db->execute("UPDATE `permissions_inheritance` SET `child` = '".$db->safe($newname)."' WHERE `child` = '".$db->safe($this->name)."'");
 		$db->execute("UPDATE `reqests` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
+		$db->execute("UPDATE `unbans` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
 		$db->execute("UPDATE `permissions` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
 		$db->execute("UPDATE `banlist` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");
 		$db->execute("UPDATE `banlistip` SET `name` = '".$db->safe($newname)."' WHERE `name` = '".$db->safe($this->name)."'");

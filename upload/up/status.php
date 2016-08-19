@@ -11,6 +11,8 @@ function upSign($params, $upKey) {
 	return md5(join(null, $params).$upKey);
 }
 
+if (!isset($_GET['params']))
+	exit ('{"error": {"message": "Ничего не передано"}}');
 $params = $_GET['params'];
 if ($params['sign'] != upSign($params, $donate['up_secret_key'])) {
 	Logs::write($params['date']."\tНеверная подпись: {$params['account']} {$params['orderSum']} ");

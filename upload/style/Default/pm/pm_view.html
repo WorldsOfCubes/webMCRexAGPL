@@ -2,7 +2,7 @@
 	<div class="block-header">
 		<div class="row">
 			<div class="col-md-3">
-				<a href="go/user/profile/<? echo $pl->name(); ?>"><? echo $pl->name(); ?></a>
+				<a href="<?php echo BASE_URL ?>go/user/profile/<? echo $pl->name(); ?>"><? echo $pl->name(); ?></a>
 			</div>
 			<div class="col-md-9">
 				<div class="pull-right"><? echo $pm['date']; ?></div>
@@ -14,7 +14,7 @@
 	<div class="tab-pane" id="launcher">
 		<div class="row">
 			<div class="col-md-3" align="center">
-				<a href="go/user/profile/<? echo $pl->name(); ?>"><img src="skin.php?mini=<? echo $pl->id(); ?>"
+				<a href="<?php echo BASE_URL ?>go/user/profile/<? echo $pl->name(); ?>"><img src="<?php echo BASE_URL ?>skin.php?mini=<? echo $pl->id(); ?>"
 				                                                       width="80%"
 				                                                       alt="<? echo $pl->name(); ?>"></a><br />
 				<? echo $pl->getGroupName(); ?><br />
@@ -25,7 +25,7 @@
 			</div>
 		</div>
 		<div class="pull-right">
-			<form class="form-inline" action="go/pm/write" method="POST">
+			<form class="form-inline" action="<?php echo BASE_URL ?>go/pm/write" method="POST">
 				<input type="hidden" name="name" value="<? echo $pl->name(); ?>">
 				<input type="hidden" name="topic" value="Re: <? echo $pm['topic']; ?>">
 				<input type="hidden" name="message" value='[quote="<? echo $pl->name(); ?>"]<? echo $pm['text']; ?>[/quote]'>

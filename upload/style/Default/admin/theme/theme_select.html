@@ -12,7 +12,7 @@
 
 	function TDownloadTheme() {
 
-		window.location = 'index.php?mode=control&do=gettheme&sid=' + T_current_select
+		window.location = '<?php echo BASE_URL ?>index.php?mode=control&do=gettheme&sid=' + T_current_select
 
 		return false
 	}

@@ -1,8 +1,8 @@
 <?php if (!empty($user) && $user->lvl() > 1 && $user->warnLVL() < 100) { ?>
-<a href="/go/forum/add/<?php echo $forum_id;?>" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">Новая тема</a><?php } ?>
+<a href="<?php echo BASE_URL ?>go/forum/add/<?php echo $forum_id;?>" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">Новая тема</a><?php } ?>
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<a href="/go/forum/"><?php echo lng('FORUM')?></a> &raquo; <?php echo $name;?>
+		<a href="<?php echo BASE_URL ?>go/forum/"><?php echo lng('FORUM')?></a> &raquo; <?php echo $name;?>
 	</div>
 	<table class="table table-bordered">
 		<tr>
@@ -13,7 +13,7 @@
 		<?php if(isset($topics_top) && count($topics_top) > 0) { foreach($topics_top as $toplist_top) { ?>
 		<tr class="active" style="border: 1px solid #000;">
 			<td class="td-main">
-				<a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
+				<a href="<?php echo BASE_URL ?>go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
 				<?php echo $toplist_top['title']; ?>
 				<i class="glyphicon glyphicon-pushpin pull-right" style="margin-left: 6px;" title="Тема закреплена"></i>
 				<?php if($toplist_top['closed'] == 'Y') { ?>
@@ -21,11 +21,11 @@
 				<span style="display: block; color: #7f8c8d;">Автор: <?php echo $toplist_top['author_name']; ?></span>
 			</td>
 			<td style="text-align: center;" class="td-main">
-				<a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
+				<a href="<?php echo BASE_URL ?>go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
 				<?php echo date("d.m.Y в H:i", $toplist_top['date']); ?>
 			</td>
 			<td style="text-align: center;" class="td-main">
-				<a href="/go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
+				<a href="<?php echo BASE_URL ?>go/forum/view/topic/<?php echo $toplist_top['id'];?>/1" class="forum-link"></a>
 				<?php echo date("d.m.Y в H:i", $toplist_top['lastdate']); ?>
 			</td>
 		</tr>
@@ -33,18 +33,18 @@
 		<?php if(isset($topics) && count($topics) > 0) { foreach($topics as $toplist) { ?>
 		<tr>
 			<td class="td-main">
-				<a href="/go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
+				<a href="<?php echo BASE_URL ?>go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
 				<?php if($toplist['closed'] == 'Y') { ?>
 				<i class="glyphicon glyphicon-lock pull-right" title="Тема закрыта"></i> <?php }?>
 				<?php echo $toplist['title']; ?>
 				<span style="display: block; color: #7f8c8d;">Автор: <?php echo $toplist['author_name']; ?></span>
 			</td>
 			<td style="text-align: center;" class="td-main">
-				<a href="/go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
+				<a href="<?php echo BASE_URL ?>go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
 				<?php echo date("d.m.Y в H:i", $toplist['date']); ?>
 			</td>
 			<td style="text-align: center;" class="td-main">
-				<a href="/go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
+				<a href="<?php echo BASE_URL ?>go/forum/view/topic/<?php echo $toplist['id'];?>/1" class="forum-link"></a>
 				<?php echo date("d.m.Y в H:i", $toplist['lastdate']); ?>
 			</td>
 		</tr>

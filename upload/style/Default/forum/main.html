@@ -1,5 +1,5 @@
 <?php if (!empty($user) && $user->lvl() > 13) { ?>
-<a href="/go/forum/mainadd/add" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">Создать категорию/форум</a><?php } ?>
+<a href="<?php echo BASE_URL ?>go/forum/mainadd/add" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">Создать категорию/форум</a><?php } ?>
 <div class="panel panel-default">
 	<table class="table table-bordered">
 		<?php foreach($parents as $prnts) { ?>
@@ -18,16 +18,16 @@
 		<?php if(count($prnts['forums'])) foreach($prnts['forums'] as $forum) { ?>
 		<tr>
 			<td class="td-main">
-				<a href="/go/forum/view/<?php echo $forum['id']; ?>/1" class="forum-link"></a>
+				<a href="<?php echo BASE_URL ?>go/forum/view/<?php echo $forum['id']; ?>/1" class="forum-link"></a>
 				<?php echo $forum['name']; ?>
 				<span style="display: block; color: #7f8c8d;"><?php echo $forum['description']; ?></span>
 			</td>
 			<td style="text-align: center;" class="td-main">
-				<a href="/go/forum/view/<?php echo $forum['id']; ?>/1" class="forum-link"></a>
+				<a href="<?php echo BASE_URL ?>go/forum/view/<?php echo $forum['id']; ?>/1" class="forum-link"></a>
 				<?php echo $forum['topic_count'];?> Тем<span style="display: block; color: #7f8c8d;"><?php echo $forum['message_count']; ?> Сообщений</span>
 			</td>
 			<td style="text-align: center;" class="td-main">
-				<a href="/go/forum/view/topic/<?php echo $forum['last_topic_id']; ?>/1" class="forum-link"></a>
+				<a href="<?php echo BASE_URL ?>go/forum/view/topic/<?php echo $forum['last_topic_id']; ?>/1" class="forum-link"></a>
 				<?php if(!$forum['last_author']) { ?>
 				Нет тем
 				<?php } else { ?>

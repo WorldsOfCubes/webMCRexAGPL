@@ -4,21 +4,22 @@
 	<ul class="nav nav-list">
 		<!--class="active"-->
 		<li><a href="<?php echo Rewrite::GetURL('news_add') ?>">Добавить новость</a></li>
+		<li><a href="<?php echo Rewrite::GetURL(array('control', 'page_add')) ?>">Добавить страницу</a></li>
 		<li><a href="<?php echo Rewrite::GetURL(array('control', 'category')) ?>">Категории новостей</a></li>
+		<li><a href="<?php echo Rewrite::GetURL(array('control', 'pages')) ?>">Управление страницами</a></li>
+		<li><a href="<?php echo Rewrite::GetURL(array('control', 'menu_add')) ?>">Добавить пункт меню</a></li>
+		<li><a href="<?php echo Rewrite::GetURL(array('control', 'menu')) ?>">Управление меню</a></li>
 		<li><a href="<?php echo Rewrite::GetURL(array('control', 'filelist')) ?>">Файлы</a></li>
-		<li class="divider"></li>
 		<li><a href="<?php echo Rewrite::GetURL(array('control', 'user')) ?>">Пользователи</a></li>
 		<li><a href="<?php echo Rewrite::GetURL('reqests') ?>">Заявки модераторов</a></li>
 		<li><a href="<?php echo Rewrite::GetURL(array('control', 'ipbans')) ?>">Регистрация</a></li>
 		<li><a href="<?php echo Rewrite::GetURL(array('control', 'group')) ?>">Группы</a></li>
-		<li class="divider"></li>
 		<li><a href="<?php echo Rewrite::GetURL(array('control', 'constants')) ?>">Настройки сайта</a></li>
 		<li><a href="<?php echo Rewrite::GetURL(array('control', 'forum')) ?>">Настройки форума</a></li>
 		<li><a href="<?php echo Rewrite::GetURL(array('control', 'donate')) ?>">Настройки доната</a></li>
-		<li class="divider"></li>
 		<li><a href="<?php echo Rewrite::GetURL(array('control', 'update')) ?>">Настройки лончера</a></li>
-		<li><a href="<?php echo Rewrite::GetURL(array('control', 'servers')) ?>">Мониторинг серверов</a></li>
 		<li><a href="<?php echo Rewrite::GetURL(array('control', 'rcon')) ?>">RCON</a></li>
+		<li><a href="<?php echo Rewrite::GetURL(array('control', 'servers')) ?>">Мониторинг серверов</a></li>
 	</ul>
 
 </div>

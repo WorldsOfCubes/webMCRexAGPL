@@ -1,24 +1,24 @@
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<a href="/go/forum/"><?php echo lng('FORUM')?></a> &raquo;
-		<a href="/go/forum/view/<?php echo $topic_info['part_id'];?>/1"><?php echo $topic_info['part_name'];?></a> &raquo; <?php echo $topic_info['title'];?>
+		<a href="<?php echo BASE_URL ?>go/forum/"><?php echo lng('FORUM')?></a> &raquo;
+		<a href="<?php echo BASE_URL ?>go/forum/view/<?php echo $topic_info['part_id'];?>/1"><?php echo $topic_info['part_name'];?></a> &raquo; <?php echo $topic_info['title'];?>
 
 		<?php if( $lock['closed'] == 'Y' ) { ?>
 		<div class="pull-right">
 			<?php if( $toped['top'] == 'N' && !empty($user) && $user->lvl() > 13 ) { ?>
-			<a href="/index.php?mode=forum&do=main&top=<?php echo $topic_id;?>">Закрепить тему</a> | <?php } ?>
+			<a href="<?php echo BASE_URL ?>index.php?mode=forum&do=main&top=<?php echo $topic_id;?>">Закрепить тему</a> | <?php } ?>
 			<?php if( $toped['top'] == 'Y' && !empty($user) && $user->lvl() > 13 ) { ?>
-			<a href="/index.php?mode=forum&do=main&down=<?php echo $topic_id;?>">Открепить тему</a> | <?php } ?>
+			<a href="<?php echo BASE_URL ?>index.php?mode=forum&do=main&down=<?php echo $topic_id;?>">Открепить тему</a> | <?php } ?>
 			<?php if(!empty($user) && $user->lvl() > 13 ) { ?>
-			<a href="/index.php?mode=forum&do=main&unlock=<?php echo $topic_id;?>">Открыть тему</a> | <?php } ?>
+			<a href="<?php echo BASE_URL ?>index.php?mode=forum&do=main&unlock=<?php echo $topic_id;?>">Открыть тему</a> | <?php } ?>
 			<i class="fa fa-lock" style="font-size:20px" title="Тема закрыта"></i></div>
 		<?php }?>
 		<?php if( $lock['closed'] == 'N' && !empty($user) && $user->lvl() > 13 ) { ?>
 		<div class="pull-right"><?php if( $toped['top'] == 'N' && !empty($user) && $user->lvl() > 13 ) { ?>
-			<a href="/index.php?mode=forum&do=main&top=<?php echo $topic_id;?>">Закрепить тему</a> |<?php } ?>
+			<a href="<?php echo BASE_URL ?>index.php?mode=forum&do=main&top=<?php echo $topic_id;?>">Закрепить тему</a> |<?php } ?>
 			<?php if( $toped['top'] == 'Y' && !empty($user) && $user->lvl() > 13 ) { ?>
-			<a href="/index.php?mode=forum&do=main&down=<?php echo $topic_id;?>">Открепить тему</a> |<?php } ?>
-			<a href="/index.php?mode=forum&do=main&lock=<?php echo $topic_id;?>">Закрыть тему</a> |
+			<a href="<?php echo BASE_URL ?>index.php?mode=forum&do=main&down=<?php echo $topic_id;?>">Открепить тему</a> |<?php } ?>
+			<a href="<?php echo BASE_URL ?>index.php?mode=forum&do=main&lock=<?php echo $topic_id;?>">Закрыть тему</a> |
 			<i class="fa fa-unlock-alt" style="font-size:20px" title="Тема открыта"></i></div>
 		<?php }?>
 	</div>
@@ -27,7 +27,7 @@
 		<div class="comment-container bg-info" style="width: 100%; margin-bottom: 0px; margin-left: 0px;">
 			<div class="comment-avatar" style="vertical-align: top; display: inline-block; position: relative;">
 				<a href="#" onclick="LoadProfile('customp',<?php echo $topmess['author_id'];?>); return false">
-					<img class="img-polaroid" src="skin.php?mini=<?php echo $topmess['author_id'];?>" width="64" height="64" alt="Пользователь <?php echo $topmess['author_name'];?>">
+					<img class="img-polaroid" src="<?php echo BASE_URL ?>skin.php?mini=<?php echo $topmess['author_id'];?>" width="64" height="64" alt="Пользователь <?php echo $topmess['author_name'];?>">
 				</a>
 			</div>
 			<div class="comment-self">
@@ -38,10 +38,10 @@
 					</button>
 
 					<ul class="dropdown-menu">
-						<form action="" method="POST">
+						<form method="POST">
 							<input type="hidden" name="mess_id" value="<?php echo $topmess['id'] ?>" />
 							<li>
-								<a href="/go/forum/edit/<?php echo $topmess['id'] ?>" style="background: none; border: none; color: #000; padding-left: 6px;"><i class="glyphicon glyphicon-pencil"></i> Редактировать</a>
+								<a href="<?php echo BASE_URL ?>go/forum/edit/<?php echo $topmess['id'] ?>" style="background: none; border: none; color: #000; padding-left: 6px;"><i class="glyphicon glyphicon-pencil"></i> Редактировать</a>
 							</li>
 							<li>
 								<button type="submit" style="background: none; border: none;">
@@ -61,7 +61,7 @@
 				<div class="comment-addition">&nbsp;<?php echo date("d.m.Y | H:i", $topmess['date']);?></div>
 			</div>
 			<div style="display: inline-block; vertical-align: top; padding-left: 4px; padding-top: 4px; text-align: right;">
-				<a href="#" style="float: right;  color: #555555;" onclick="return Quote(<?php echo $ftops['id'] ?>)">Цитировать</a>
+				<a href="#" style="float: right;  color: #555555;" onclick="return Quote(<?php echo $topmess['id'] ?>)">Цитировать</a>
 			</div>
 		</div>
 
@@ -73,7 +73,7 @@
 		<div class="comment-container" style="width: 100%; border-top: 5px solid #428bca; margin-left: 0px;">
 			<div class="comment-avatar" style="vertical-align: top; display: inline-block; position: relative;">
 				<a href="#" onclick="LoadProfile('customp',<?php echo $ftops['author_id'];?>); return false">
-					<img class="img-polaroid" src="skin.php?mini=<?php echo $ftops['author_id'];?>" width="64" height="64" alt="Пользователь <?php echo $ftops['author_name'];?>">
+					<img class="img-polaroid" src="<?php echo BASE_URL ?>skin.php?mini=<?php echo $ftops['author_id'];?>" width="64" height="64" alt="Пользователь <?php echo $ftops['author_name'];?>">
 				</a>
 			</div>
 			<div class="comment-self">
@@ -83,11 +83,11 @@
 						<span class="caret"></span>
 					</button>
 
-					<ul class="dropdown-menu">
-						<form action="" method="POST">
+					<ul class="dropdown dropdown-menu">
+						<form method="POST">
 							<input type="hidden" name="mess_id" value="<?php echo $ftops['id'] ?>" />
 							<li>
-								<a href="/go/forum/edit/<?php echo $ftops['id'] ?>" style="background: none; border: none; color: #000; padding-left: 6px;"><i class="glyphicon glyphicon-pencil"></i> Редактировать</a>
+								<a href="<?php echo BASE_URL ?>go/forum/edit/<?php echo $ftops['id'] ?>" style="background: none; border: none; color: #000; padding-left: 6px;"><i class="glyphicon glyphicon-pencil"></i> Редактировать</a>
 							</li>
 							<li>
 								<button type="submit" style="background: none; border: none;">
@@ -106,7 +106,7 @@
 					</button>
 
 					<ul class="dropdown-menu">
-						<form action="" method="POST">
+						<form method="POST">
 							<input type="hidden" name="mess_id" value="<?php echo $ftops['id'] ?>" />
 							<input type="hidden" name="mess_auth" value="<?php echo $ftops['author_id'] ?>" />
 							<li>

@@ -20,7 +20,7 @@ if (!isset($_POST['userid']) && !isset($_POST['answer'])) {
 	if ($answer != $check && $userid != $check) {
 		if ($answer != $check) {
 			$helperinfo = $db->execute('SELECT * FROM `reqests` WHERE `id`='.$userid.'');
-			$helperresult = $db->fetch_array($helperinfo, 0);
+			$helperresult = $db->fetch_array($helperinfo);
 			if ($helperresult['name'] != $check) {
 				if ($answer == 'yes') {
 					$content = View::Alert("Заявка успешно принята!</div>", 'success');
@@ -45,7 +45,7 @@ if (!isset($_POST['userid']) && !isset($_POST['answer'])) {
 }
 $sql = $db->execute('SELECT * FROM `reqests` WHERE `answer`=1 ORDER BY id DESC');
 $sql2 = $db->execute('SELECT name FROM `reqests` WHERE `answer`=1 ORDER BY id DESC');
-$checkanswers = $db->fetch_array($sql2, 0);
+$checkanswers = $db->fetch_array($sql2);
 //Определяем первое место
 $id = 1;
 
@@ -60,7 +60,7 @@ if ($checkanswers == $check) {
 
 $table_items = '';
 
-while ($reqests = $db->fetch_assoc($sql, 0)) {
+while ($reqests = $db->fetch_assoc($sql)) {
 
 	ob_start();
 	include View::Get('admin/team_table_item.html');
@@ -70,7 +70,7 @@ $sql = $db->execute('SELECT * FROM `reqests` WHERE `answer`=3 ORDER BY id DESC')
 
 $table_items2 = '';
 
-while ($reqests = $db->fetch_assoc($sql, 0)) {
+while ($reqests = $db->fetch_assoc($sql)) {
 
 	ob_start();
 	include View::Get('admin/team_table_item2.html');
@@ -80,7 +80,7 @@ $sql = $db->execute('SELECT * FROM `reqests` WHERE `answer`=2 ORDER BY id DESC')
 
 $table_items3 = '';
 
-while ($reqests = $db->fetch_assoc($sql, 0)) {
+while ($reqests = $db->fetch_assoc($sql)) {
 
 	ob_start();
 	include View::Get('admin/team_table_item3.html');

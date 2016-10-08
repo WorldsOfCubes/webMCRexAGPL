@@ -1,10 +1,10 @@
 <div class="newsItem">
 
-	<p class="title"><a class="news-link" href="/news/<?php echo $id; ?>"><?php echo $title; ?></a></p>
+	<p class="title"><a class="news-link" href="<?php echo BASE_URL ?>news/<?php echo $id; ?>"><?php echo $title; ?></a></p>
 	<hr />
 	<p class="text"><?php echo $text; ?></p>
 
-	<p style="text-align: right;"><a class="news-link" href="/news/<?php echo $id; ?>">Подробнее...</a> (
+	<p style="text-align: right;"><a class="news-link" href="<?php echo BASE_URL ?>news/<?php echo $id; ?>">Подробнее...</a> (
 		<img style="vertical-align: middle; margin-bottom: 2px;" src="<?php View::URL('launcher/img/comment.png') ?>" alt="Комментарии" width="12" height="12" />
 		<?php echo $comments; ?> )</p>
 

@@ -50,6 +50,7 @@ $config = array(/* MySQL connection */
 	'install' => true,
 	'p_logic' => 'usual',
 	'smtp' => false,
+	'cache_on' => true,
 	/* action limiter */
 
 	'action_log' => false,

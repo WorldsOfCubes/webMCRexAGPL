@@ -96,8 +96,8 @@
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<a href="/go/forum/"><?php echo lng('FORUM')?></a> &raquo;
-		<a href="/go/forum/view/<?php echo $forum_id; ?>/1"><?php echo $topic_info;?></a> &raquo; <?php echo lng('FORUM_TOPIC_NEW');?>
+		<a href="<?php echo BASE_URL ?>go/forum/"><?php echo lng('FORUM')?></a> &raquo;
+		<a href="<?php echo BASE_URL ?>go/forum/view/<?php echo $forum_id; ?>/1"><?php echo $topic_info;?></a> &raquo; <?php echo lng('FORUM_TOPIC_NEW');?>
 	</div>
 	<div class="inform-block" style="display: none;" id="comment-error">
 		<div class="alert alert-error" id="comment-error-text"></div>
@@ -145,7 +145,7 @@
 			<div class="pull-left" style="margin: 5px 10px;">
 				<span style="color: red;"><?php if(isset($info)) { echo $info;} ?></span></div>
 			<div style="float: right;height:24px;margin-bottom:5px">
-				<img id="comment-captcha" src="instruments/captcha/captcha.php?refresh=<?php echo rand(1337,31337) ?>" class="img-thumbnail" alt="Код подтверждения" width="70" height="24" style="margin:0px" />
+				<img id="comment-captcha" src="<?php echo BASE_URL ?>instruments/captcha/captcha.php?refresh=<?php echo rand(1337,31337) ?>" class="img-thumbnail" alt="Код подтверждения" width="70" height="24" style="margin:0px" />
 				<input id="antibot" type="text" name="antibot" placeholder="" maxlength="4" class="form-control" style="width: 88px;display:inline; margin-bottom: -10px;" />
 				<input id="comment-button" class="btn btn-default" type="submit" value="Добавить" />
 

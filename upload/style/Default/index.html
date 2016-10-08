@@ -4,10 +4,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title><?php echo $config['s_name'] ?> — <?php echo $page; ?> </title>
-
-	<base href="<?php echo BASE_URL ?>">
-
+	<title><?php echo $page; ?> — <?php echo $config['s_name'] ?></title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -65,7 +62,7 @@
 				</div>
 
 				<div class="col-md-3" style="padding-top: 30px;">
-					<p class="lead"><a href="go/start"><b>{LAUNCHER_DOWN_PAGE_LINK}</b></a></p>
+					<p class="lead"><a href="<?php echo BASE_URL ?>go/start"><b>{LAUNCHER_DOWN_PAGE_LINK}</b></a></p>
 				</div>
 
 			</div>

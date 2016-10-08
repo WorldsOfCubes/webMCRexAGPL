@@ -1,0 +1,52 @@
+<div class="block-header"><?php echo $what?> пункт меню</div>
+<div class="block-line"></div>
+<div class="tab-pane">
+	<form method="post" class="form-horizontal">
+		<div class="form-group">
+			<label class="control-label" for="name">Название:</label>
+			<input type="text" class="form-control" id="name" name="name" aria-describedby="name_h" placeholder="То, что видно пользователю" value="<?php echo TextBase::HTMLDestruct($name) ?>">
+			<span id="name_h" class="help-block">Любой текст, можно использовать HTML.</span>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="txtid">Системное название:</label>
+			<input type="text" class="form-control" id="txtid" name="txtid" aria-describedby="txtid_h" placeholder="Только латинские буквы" value="<?php echo $txtid ?>" <?php if($edit and $mi['system']) echo ' disabled="1"'?>>
+			<span id="txtid_h" class="help-block">Используется для активации через модули.</span>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="priority">Приоритет:</label>
+			<input type="number" class="form-control" id="priority" name="priority" aria-describedby="priority_h" placeholder="Только цифры" value="<?php echo $priority ?>">
+			<span id="priority_h" class="help-block">Чем выше тем выше в списке и пункт меню.</span>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="lvl">Уровень доступа:</label>
+			<input type="number" class="form-control" id="lvl" name="lvl" aria-describedby="lvl_h" placeholder="Только цифры" value="<?php echo $lvl ?>">
+			<span id="lvl_h" class="help-block">Минимальный уровень доступа при котором он виден. "-1" - для всех.</span>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="permission">Право доступа:</label>
+			<input type="text" class="form-control" id="permission" name="permission" aria-describedby="permission_h" value="-1" value="<?php echo $permission ?>">
+			<span id="permission_h" class="help-block">Право доступа при наличии которого пункт меню видно. "-1" - для всех.</span>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="url">Ссылка:</label>
+			<input type="text" class="form-control" id="url" name="url" aria-describedby="url_h" placeholder="Любой действительный URL" value="<?php echo $url ?>">
+			<span id="url_h" class="help-block">Собственно, куда попадает пользователь кликнув на него. Недействителен при наличии дочерних пунктов меню.</span>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="parent_id">Родительский пункт меню:</label>
+			<select class="form-control" id="parent_id" name="parent_id" aria-describedby="parent_id_h">
+				<option value="-1"<?php echo ($parent_id == '-1')? ' selected=""':'' ?>>Нет</option><?php echo $parent_options ?>
+			</select>
+			<span id="parent_id_h" class="help-block">Будет в выпадающем меню от этого пункта. Внимание! Родительский пункт меню теряет кликабельность.</span>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="align">Сторона:</label>
+			<select class="form-control" id="align" name="align" aria-describedby="align_h">
+				<option value="1"<?php echo ($align)? ' selected':'' ?>>Справа</option>
+				<option value="0"<?php echo ($align)? '':' selected' ?>>Слева</option>
+			</select>
+			<span id="align_h" class="help-block">Влияет на сторону в навбаре. Незначима при наличии родительского пункта меню.</span>
+		</div>
+		<p><input type="submit" class="btn btn-default" name="submit" value="<?php echo $what?>"></p>
+	</form>
+</div>

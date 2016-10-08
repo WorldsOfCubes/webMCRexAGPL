@@ -1,8 +1,39 @@
 <?php
-define('MCR', '2.1 R2');
+define('MCR', '2.5 R1');
+define('DEV', false);
 define('EX', '2');
 define('PROGNAME', 'webMCRex '.MCR);
-define('FEEDBACK', '<a href="http://webmcrex.com">'.PROGNAME.'</a> &copy; 2013-2015 <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.NET">WoC Team</a>');
+define('FEEDBACK', '<a href="http://webmcrex.com">'.PROGNAME.'</a> &copy; 2013-' . date("Y") . ' <a href="http://webmcr.com">NC22</a>&amp;<a href="http://WorldsOfCubes.NET">WoC Team</a>');
+
+class webMCRex {
+	const version = MCR;
+	const dev = DEV;
+	public static function checkVersion($force = false) {
+		global $checkverrunned;
+		if((time() - sqlConfigGet('latest-update-date') > 3600 or $force) and empty($checkverrunned)) {
+			$socket = curl_init();
+			$url = (self::dev)?'https://api.webmcrex.com/?ver=latest':'https://api.webmcrex.com/?ver=stable';
+			curl_setopt_array($socket, array(
+				CURLOPT_URL => $url,
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_SSL_VERIFYPEER => 0,
+				CURLOPT_SSL_VERIFYHOST => 0
+			));
+			$response = curl_exec($socket);
+			$error = curl_error($socket);
+			$http_code = curl_getinfo($socket, CURLINFO_HTTP_CODE);
+			curl_close($socket);
+			if ($http_code == 200) {
+				sqlConfigSet('latest-update-date', time());
+				$response = explode(':', $response);
+				sqlConfigSet('latest-version-tag', $response[0]);
+				sqlConfigSet('latest-version-name', $response[1]);
+			} else vtxtlog('Error: Unable to connect to webMCRex version server with error: ' . $http_code . ' ' . $error);
+			$checkverrunned = true;
+		}
+		return strtolower(self::version) == str_replace('_', ' ', sqlConfigGet('latest-version-tag'));
+	}
+}
 
 /* Base class for objects with Show method */
 
@@ -56,7 +87,7 @@ Class View {
 			return $current_st_url;
 
 		if (DEF_STYLE_URL === $current_st_url)
-			return DEF_STYLE_URL.$way; else return (file_exists(MCR_STYLE.$config['s_theme'].'/'.$way) ? $current_st_url : DEF_STYLE_URL).$way;
+			return BASE_URL . DEF_STYLE_URL.$way; else return (file_exists(MCR_STYLE.$config['s_theme'].'/'.$way) ? $current_st_url : DEF_STYLE_URL).$way;
 	}
 
 	public static function URL($way = false) {
@@ -229,23 +260,33 @@ class ItemType {  // stock types
 	const Comment = 2;
 	const Skin = 3;
 	const Server = 4;
+	const PM = 5;
 
 	/** @const */
 	public static $SQLConfigVar = array(
-
-		'rcon-port', 'rcon-serv', 'rcon-pass',
-
+		'rcon-port',
+		'rcon-serv',
+		'rcon-pass',
 		'next-reg-time',
-
-		'email-verification', 'email-verification-salt', 'email-name', 'email-mail',
-
+		'email-verification',
+		'email-verification-salt',
+		'email-name',
+		'email-mail',
 		'json-verification-salt',
-
-		'protection-key', 'launcher-version',
-
-		'game-link-win', 'game-link-osx', 'game-link-lin',
-
-		'smtp-user', 'smtp-pass', 'smtp-host', 'smtp-port', 'smtp-hello',);
+		'protection-key',
+		'launcher-version',
+		'game-link-win',
+		'game-link-osx',
+		'game-link-lin',
+		'smtp-user',
+		'smtp-pass',
+		'smtp-host',
+		'smtp-port',
+		'smtp-hello',
+		'latest-update-date',
+		'latest-version-tag',
+		'latest-version-name',
+	);
 }
 
 Class TextBase {
@@ -339,7 +380,7 @@ Class DB {
 	public function sql_config_get($property) {
 		if (!in_array($property, ItemType::$SQLConfigVar))
 			return false;
-		return $this->sql_config[$property];
+		return (isset($this->sql_config[$property]))?$this->sql_config[$property]:0;
 	}
 
 	public function sql_config_set($property, $value) {
@@ -394,14 +435,14 @@ Class DB {
 		}
 	}
 
-	public function fetch_array($query) {
+	public function fetch_array($query, $result_type = MYSQLI_BOTH) {
 		switch ($this->method) {
 			case 'mysql':
-				return mysql_fetch_array($query);
+				return mysql_fetch_array($query, $result_type);
 				break;
 			case 'mysqli':
 			default:
-				return mysqli_fetch_array($query);
+				return mysqli_fetch_array($query, $result_type);
 				break;
 		}
 	}
@@ -685,7 +726,7 @@ class ItemLike {
 			return 1;
 		} else {
 
-			$line = $db->fetch_array($result, MYSQL_NUM);
+			$line = $db->fetch_array($result, MYSQLI_NUM);
 
 			if ((int)$line[0] == (int)$var)
 				return 0;
@@ -706,7 +747,7 @@ Class Menu extends View {
 	private $menu_fname;
 
 	public function Menu($style_sd = false, $auto_load = true, $mfile = 'instruments/menu_items.php') {
-		global $config;
+		global $config, $db;
 
 		parent::View($style_sd);
 
@@ -714,10 +755,26 @@ Class Menu extends View {
 
 		if ($auto_load) {
 			$menu_items = array();
-			require(MCR_ROOT.$this->menu_fname);
+
+			if(file_exists(MCR_ROOT.$this->menu_fname)) $this->convert_file_to_db();
+
+			$query = $db->execute("SELECT * FROM `menu` ORDER BY `priority` DESC");
+			while ($item = $db->fetch_array($query)) {
+				$menu_items [$item['txtid']] = array(
+					'name' => str_replace('{PM_CHECKNEW}', CheckPMMenu(), $item['name']),
+					'align' => (int) $item['align'],
+					'url' => $item['url'],
+					'parent_id' => ($item['parent_id'] == "-1")? -1:$item['parent_id'],
+					'lvl' => (int) $item['lvl'],
+					'permission' => ($item['permission'] == "-1")? -1:$item['permission'],
+					'active' => (boolean) $item['active'],
+					'inner_html' => $item['inner_html'],
+					'priority' => $item['priority'],
+				);
+			}
 
 			$this->menu_items = $menu_items;
-		} else $this->menu_items = array(0 => array(), 1 => array());
+		} else $this->menu_items = array();
 	}
 
 	private static function array_insert_before(&$array, $var, $key_name) {
@@ -731,152 +788,91 @@ Class Menu extends View {
 		return true;
 	}
 
-	private function SaveMenu() {
+	private function SaveMenu() {}
 
-		$txt = "<?php if (!defined('MCR')) exit;".PHP_EOL;
-		$txt .= '$menu_items = '.var_export($this->menu_items, true).';'.PHP_EOL;
-
-		$result = file_put_contents(MCR_ROOT.$this->menu_fname, $txt);
+	private function convert_file_to_db() {
+		global $db;
+		$menu_items = array(0 => array(), 1 => array());
+		require(MCR_ROOT.$this->menu_fname);
+		unlink(MCR_ROOT.$this->menu_fname);
+		$this->menu_items = $menu_items;
+		$priority = 0;
+		$query = '';
+		$result = true;
+		for($c = 0; $c < 2; $c++)
+			foreach($this->menu_items[$c] as $txtid => $array){
+				$query = "INSERT INTO `menu` (`align`,`txtid`,`name`,`url`,`parent_id`,`lvl`,`permission`,`active`,`inner_html`,`system`,`priority`)"
+						. " VALUES ($c,'$txtid','{$array['name']}','{$array['url']}','{$array['parent_id']}','{$array['lvl']}','{$array['permission']}',0,'',0,$priority)"
+						. " ON DUPLICATE KEY UPDATE `name` = '{$array['name']}', `url` = '{$array['url']}', `parent_id` = '{$array['parent_id']}', `lvl` = '{$array['lvl']}', `permission` = '{$array['permission']}', `priority` = $priority;\n\n";
+				$priority--;
+				$result = $db->execute($query) and $result;
+			}
 
 		return (is_bool($result) and $result == false) ? false : true;
 	}
 
-	private function ShowItem(&$item) {
-
-		$button_name = $item['name'];
-		$button_url = $item['url'];
-
-		$button_class = ($item['active']) ? 'active' : 'not_active';
-
-		$button_links = (isset($item['inner_html'])) ? $item['inner_html'] : '';
-
-		$type = ($button_links) ? 'menu_dropdown_item' : 'menu_item';
-
-		ob_start();
-		include $this->GetView('menu/'.$type.'.html');
-
-		return ob_get_clean();
-	}
-
 	public function DeleteItem($menu, $key) {
+		global $db;
+//		if ($menu == 'left')
+//			$menu_id = 0;
 
-		$menu_id = 1;
-		if ($menu == 'left')
-			$menu_id = 0;
-
-		$index = array_search($key, array_keys($this->menu_items[$menu_id]));
+		$index = array_search($key, array_keys($this->menu_items));
 		if ($index === false)
 			return false;
 
-		array_splice($this->menu_items[$menu_id], $index, 1);
-		return $this->SaveMenu();
+		array_splice($this->menu_items, $index, 1);
+		return $db->execute("DELETE FROM `menu` WHERE `txtid`='{$db->safe($key)}'");
 	}
 
-	/* TODO -- add config trigger cheker */
+	/* TODO -- add config trigger checker */
 
-	public function Show() {
-		global $user, $config;
-
-		$menu_content = '';
-		$html_menu = '';
-
-		if (!empty($user))
-			$user_lvl = $user->lvl(); else $user_lvl = 0;
-
-		for ($i = 0; $i < 2; $i++) {
-
-			if (!sizeof($this->menu_items[$i]))
-				continue;
-
-			foreach ($this->menu_items[$i] as $key => $value) {
-
-				$this->menu_items[$i][$key]['access'] = true;
-
-				if ($user_lvl < $value['lvl'])
-
-					$this->menu_items[$i][$key]['access'] = false;
-
-				elseif (array_key_exists('config', $value) and $value['config'] != -1 and array_key_exists($value['config'], $config) and is_bool($config[$value['config']]) and !$config[$value['config']]
-				)
-
-					$this->menu_items[$i][$key]['access'] = false;
-
-				elseif ($value['permission'] != -1)
-
-					if (!empty($user) and !$user->getPermission($value['permission']))
-
-						$this->menu_items[$i][$key]['access'] = false;
-
-				if ($value['parent_id'] <= -1 or !$this->menu_items[$i][$key]['access'])
-					continue;
-
-				$this->menu_items[$i][$value['parent_id']]['inner_html'] .= $this->ShowItem($value);
-
-				if ($value['active'] and $value['parent_id'] > -1)
-
-					$this->menu_items[$i][$value['parent_id']]['active'] = true;
-			}
-
-			foreach ($this->menu_items[$i] as $key => $value) {
-
-				if ($value['parent_id'] > -1 or ($value['parent_id'] == -2 and !$value['inner_html']) or !$value['access'])
-					continue;
-
-				$menu_content .= $this->ShowItem($value, 'menu/menu_item');
-			}
-
-			$menu_align = ($i == 1) ? 'navbar-right' : 'navbar-left';
-
-			ob_start();
-			include $this->GetView('menu/menu.html');
-
-			$html_menu .= ob_get_clean();
-
-			$menu_content = '';
-			unset($key, $value);
-		}
-
-		return $html_menu;
-	}
 
 	public function SaveItem($id, $menu, $info, $insert_before = false) {
-
+		global $db;
 		$menu_id = 1;
 		if ($menu == 'left')
 			$menu_id = 0;
 
-		if (!is_array($info) or !$info['name'] or !is_int($info['lvl']) or (is_int($info['parent_id']) and $info['parent_id'] != -1) or (isset($info['config']) and is_int($info['config']) and $info['config'] != -1) or (is_int($info['permission']) and $info['permission'] != -1)
-		)
-
+		if (!is_array($info) or !$info['name'] or !is_int($info['lvl']) or (is_int($info['parent_id']) and $info['parent_id'] != -1) or (isset($info['config']) and is_int($info['config']) and $info['config'] != -1) or (is_int($info['permission']) and $info['permission'] != -1))
 			return false;
 
-		for ($i = 0; $i < 2; $i++)
-
-			if (array_key_exists($id, $this->menu_items[$i]))
-				return false;
+		if (array_key_exists($id, $this->menu_items))
+			return false;
 
 		$new_item = array(
 
-			'name' => $info['name'], 'url' => $info['url'], 'parent_id' => ($info['parent_id']) ? $info['parent_id'] : -1, 'lvl' => (is_int($info['parent_id'])) - 1, 'permission' => $info['permission'], 'config' => (isset($info['config'])) ? $info['config'] : -1, 'active' => (isset($info['active'])) ? $info['active'] : false, 'inner_html' => '',);
+			'name' => $info['name'],
+			'url' => $info['url'],
+			'parent_id' => ($info['parent_id']) ? $info['parent_id'] : -1,
+			'lvl' => (is_int($info['lvl']))? $info['lvl']: - 1,
+			'permission' => $info['permission'],
+			'config' => (isset($info['config'])) ? $info['config'] : -1,
+			'active' => (isset($info['active'])) ? $info['active'] : false,
+			'inner_html' => '',
+			'align' => $menu_id,
+			'priority' => ($insert_before)?$this->menu_items[$insert_before]['priority'] + 1: 0,
+		);
 
 		if ($insert_before) {
-
-			if (!self::array_insert_before($this->menu_items[$menu_id], array($id => $new_item), $insert_before))
-
-				$this->menu_items[$menu_id][$id] = $new_item;
+			$query = $db->execute("INSERT INTO `menu` (`align`, `txtid`, `name`, `url`, `parent_id`, `lvl`, `permission`, `active`, `inner_html`, `priority`)"
+				. " VALUES ('{$db->safe($menu_id)}','{$db->safe($id)}','{$db->safe($new_item['name'])}','{$db->safe($new_item['url'])}','{$db->safe($new_item['parent_id'])}','{$db->safe($new_item['lvl'])}','{$db->safe($new_item['permission'])}','{$db->safe($new_item['active'])}','{$db->safe($new_item['inner_html'])}','{$db->safe($new_item['priority'])}')");
+			if (!$query) return false;
+			if (!self::array_insert_before($this->menu_items, array($id => $new_item), $insert_before)) {
+				$this->menu_items[$id] = $new_item;
+			}
 		} else {
-
-			$this->menu_items[$menu_id][$id] = $new_item;
+			$query = $db->execute("INSERT INTO `menu` (`align`, `txtid`, `name`, `url`, `parent_id`, `lvl`, `permission`, `active`, `inner_html`, `system`)"
+								. " VALUES ('{$db->safe($menu_id)}','{$db->safe($id)}','{$db->safe($new_item['name'])}','{$db->safe($new_item['url'])}','{$db->safe($new_item['parent_id'])}','{$db->safe($new_item['lvl'])}','{$db->safe($new_item['permission'])}','{$db->safe($new_item['active'])}','{$db->safe($new_item['inner_html'])}')");
+			if (!$query) return false;
+			$this->menu_items[$id] = $new_item;
 		}
 
-		return $this->SaveMenu();
+		return true;
 	}
 
 	public function AddItem($name, $url, $active = false, $menu = 'left') {
 
-		for ($i = 0; $i < 2; $i++)
-
-			foreach ($this->menu_items[$i] as $key => $value)
+		foreach ($this->menu_items as $key => $value)
 
 				if ($value['name'] == $name)
 					return $key;
@@ -885,34 +881,62 @@ Class Menu extends View {
 		if ($menu == 'left')
 			$menu_id = 0;
 
-		$new_key = sizeof($this->menu_items[$menu_id]);
+		$new_key = sizeof($this->menu_items);
 
-		$this->menu_items[$menu_id][$new_key] = array(
+		$this->menu_items[$new_key] = array(
 
-			'name' => $name, 'url' => $url, 'parent_id' => -1, 'lvl' => -1, 'permission' => -1, 'active' => $active, 'inner_html' => '',);
+			'name' => $name, 'url' => $url, 'parent_id' => -1, 'lvl' => -1, 'permission' => -1, 'active' => $active, 'inner_html' => '', 'align' => $menu_id,);
 
 		return $new_key;
 	}
 
 	public function IsItemExists($item_key) {
 
-		if (array_key_exists($item_key, $this->menu_items[0]))
-			$menu_id = 0; elseif (array_key_exists($item_key, $this->menu_items[1]))
-			$menu_id = 1;
-		else return false;
+		if (!array_key_exists($item_key, $this->menu_items))
+			return false;
 
-		return $menu_id;
+		return $this->menu_items[$item_key]['align'];
 	}
 
 	public function SetItemActive($item_key) {
-		global $menu_items;
-
 		$menu_id = $this->IsItemExists($item_key);
 		if ($menu_id === false)
 			return false;
-
-		$this->menu_items[$menu_id][$item_key]['active'] = true;
+		$this->menu_items[$item_key]['active'] = true;
 		return true;
+	}
+
+	private function show_item ($id, &$item, $kid = false) {
+		global $user;
+		$c = 0; $sub = '';
+		if ((!$user and -1 != $item['lvl']) or ($user and $user->lvl() < $this->menu_items[$id]['lvl']) or ($this->menu_items[$id]['permission'] != '-1' and !$user) or ($this->menu_items[$id]['permission'] != '-1' and $user and !$user->getPermission($this->menu_items[$id]['permission'])))
+			return '';
+		foreach ($this->menu_items as $tmp_id => $tmp_item)
+			if ($tmp_item['parent_id'] and $tmp_item['parent_id'] == $id) {
+				$sub .= $this->show_item($tmp_id, $tmp_item, true);
+				if ($tmp_item['active'])
+					$item ['active'] = true;
+				$c++;
+			}
+		ob_start();
+		include View::Get(($c)?($kid)?'menu/item_subdropdown.html':'menu/item_dropdown.html':'menu/item.html');
+		return ob_get_clean();
+	}
+	public function Show() {
+		$menu = array("pull-left"=>'',"pull-right"=>'');
+		foreach ($this->menu_items as $id => $item)
+			if ($item['parent_id'] == -1 and $item['align'] == 1)
+				$menu["pull-right"] .= $this->show_item($id, $item);
+		foreach ($this->menu_items as $id => $item)
+			if ($item['parent_id'] == -1 and $item['align'] == 0)
+				$menu["pull-left"] .= $this->show_item($id, $item);
+		ob_start();
+		$menu_align = "pull-left";
+		include View::Get('menu/menu.html');
+		$menu_align = "pull-right";
+		include View::Get('menu/menu.html');
+//		var_dump($this->menu_items);
+		return ob_get_clean();
 	}
 }
 
@@ -956,6 +980,6 @@ Class Rewrite {
 			} else $str .= '?'.$get_params[0].'='.$url_data;
 		}
 
-		return $str;
+		return BASE_URL . $str;
 	}
 }

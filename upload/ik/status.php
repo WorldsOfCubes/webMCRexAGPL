@@ -20,13 +20,13 @@ function ikSign($params, $ikKey) {
 }
 
 
-$kassaId = trim($_REQUEST['ik_co_id']);
-$paymentId = trim(strip_tags($_REQUEST['ik_pm_no']));
-$summ = intval($_REQUEST['ik_am']);
-$paySystem = trim($_REQUEST['ik_pw_via']);
-$payStatus = trim($_REQUEST['ik_inv_st']);
-$sign = trim($_REQUEST['ik_sign']);
-$ik_payment_timestamp = trim($_REQUEST['ik_inv_prc']);
+$kassaId = trim($_POST['ik_co_id']);
+$paymentId = trim(strip_tags($_POST['ik_pm_no']));
+$summ = intval($_POST['ik_am']);
+$paySystem = trim($_POST['ik_pw_via']);
+$payStatus = trim($_POST['ik_inv_st']);
+$sign = trim($_POST['ik_sign']);
+$ik_payment_timestamp = trim($_POST['ik_inv_prc']);
 $secretKey = $donate['ik_secret_key'];
 // тестирование
 if ($donate['ik_testing'] and ($paySystem == "test_interkassa_test_xts")) {
@@ -38,7 +38,7 @@ if ($donate['ik_testing'] and ($paySystem == "test_interkassa_test_xts")) {
 
 if ($kassaId != $donate['ik_shop_id'])
 	exit("Неверный ID кассы");
-if ($sign != ikSign($_REQUEST, $secretKey)) {
+if ($sign != ikSign($_POST, $secretKey)) {
 	Logs::write($ik_payment_timestamp."\tНеверная подпись: $sign $summ ");
 	exit("Bad sign");
 }

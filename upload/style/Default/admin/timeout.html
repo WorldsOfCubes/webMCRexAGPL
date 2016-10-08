@@ -9,7 +9,7 @@
 		</div>
 		<div id="collapseOne" class="panel-collapse collapse in">
 			<div class="panel-body">
-				<form action="index.php?mode=control&do=ipbans" method="post">
+				<form action="<?php echo BASE_URL ?>index.php?mode=control&do=ipbans" method="post">
 					<fieldset>
 						<label>Таймаут: ( часы ) </label>
 						<span class="help-block">Время после которого посетитель сайта сможет повторно зарегистрироваться на сайте. 0 - без ограничений</span>
@@ -36,14 +36,14 @@
 		</div>
 		<div id="collapseTwo" class="panel-collapse collapse">
 			<div class="panel-body">
-				<form action="index.php?mode=control&do=ipbans" method="post" enctype="multipart/form-data">
+				<form action="<?php echo BASE_URL ?>index.php?mode=control&do=ipbans" method="post" enctype="multipart/form-data">
 					<fieldset>
 						<div class="skin-block">
-							<div id="profile-skin-front" style="background:url(skin.php?female=0); display:inline-block; height: 224px; width: 112px;"></div>
+							<div id="profile-skin-front" style="background:url(<?php echo BASE_URL ?>skin.php?female=0); display:inline-block; height: 224px; width: 112px;"></div>
 						</div>
 
 						<div class="skin-block">
-							<div id="profile-skin-back" style="background:url(skin.php?female=0); background-position: 112px 0px; display:inline-block; height: 224px; width: 112px;"></div>
+							<div id="profile-skin-back" style="background:url(<?php echo BASE_URL ?>skin.php?female=0); background-position: 112px 0px; display:inline-block; height: 224px; width: 112px;"></div>
 						</div>
 
 						<div class="control-group" style="padding-top: 12px;">
@@ -55,11 +55,11 @@
 						</div>
 
 						<div class="skin-block">
-							<div id="profile-skin-front" style="background:url(skin.php?female=1); display:inline-block; height: 224px; width: 112px;"></div>
+							<div id="profile-skin-front" style="background:url(<?php echo BASE_URL ?>skin.php?female=1); display:inline-block; height: 224px; width: 112px;"></div>
 						</div>
 
 						<div class="skin-block">
-							<div id="profile-skin-back" style="background:url(skin.php?female=1); background-position: 112px 0px; display:inline-block; height: 224px; width: 112px;"></div>
+							<div id="profile-skin-back" style="background:url(<?php echo BASE_URL ?>skin.php?female=1); background-position: 112px 0px; display:inline-block; height: 224px; width: 112px;"></div>
 						</div>
 
 						<div class="control-group">

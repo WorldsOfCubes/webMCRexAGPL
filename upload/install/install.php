@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 
 define('MCR_ROOT', dirname(dirname(__FILE__)).'/');
 define('BASE_URL', Root_url());
+define('MCR_LANG', 'ru_RU');
 include MCR_ROOT."instruments/locale/ru_RU.php";
 
 require_once(MCR_ROOT.'instruments/base.class.php');
@@ -77,6 +78,18 @@ $menu->AddItem($page, BASE_URL.'install/install.php', true);
 $create_ways = array("skins", "cloaks", "distrib");
 $content_menu = $menu->Show();
 
+if (!Mode_rewrite()) {
+	$content_main = View::ShowStaticPage('install_norewrite.html', $i_sd);
+	ob_start();
+	include View::Get('index.html');
+	$content_page = ob_get_clean();
+	require_once(MCR_ROOT.'instruments/template.class.php');
+	$temp = new TemplateParser();
+	$content_page = $temp->parse($content_page);
+	echo $content_page;
+	exit();
+}
+
 function checkBaseRequire() {
 	global $cErr, $site_ways, $create_ways;
 
@@ -120,7 +133,7 @@ function checkRWOut($fname, $create = false) {
 
 	$is_dir = substr_count($fname, '.');
 
-	if (!checkRW($fname, $create))
+	if (file_exists($fname) and !checkRW($fname, $create))
 
 		$cErr .= '<p>'.($is_dir ? 'Файл' : 'Папка').' '.$fname.' . Нет доступа для чтения \ записи </p>';
 }
@@ -241,7 +254,10 @@ function CreateAdmin($site_user) {
 
 		require_once(MCR_ROOT.'instruments/auth/'.$config['p_logic'].'.php');
 
-		BD("INSERT INTO `{$bd_names['users']}` ("."`{$bd_users['login']}`,"."`{$bd_users['password']}`,"."`{$bd_users['ip']}`,"."`{$bd_users['group']}`,"."`{$bd_users['ctime']}`,"."`{$bd_users['email']}`".",`{$bd_users['female']}`) "."VALUES('$site_user','".MCRAuth::createPass($site_password)."','".GetRealIp()."',3,NOW(),'$site_email',$site_gender)"."ON DUPLICATE KEY UPDATE `{$bd_users['group']}`='3',`{$bd_users['password']}`='".MCRAuth::createPass($site_password)."',`{$bd_users['email']}`='$site_email'");
+		BD("INSERT INTO `{$bd_names['users']}` ("."`{$bd_users['login']}`,"."`{$bd_users['password']}`,"."`{$bd_users['ip']}`,"
+			."`{$bd_users['group']}`,"."`{$bd_users['ctime']}`,"."`{$bd_users['email']}`".",`{$bd_users['female']}`) "
+			."VALUES('$site_user','".MCRAuth::createPass($site_password)."','".GetRealIp()."',3,NOW(),'$site_email',$site_gender)"
+			."ON DUPLICATE KEY UPDATE `{$bd_users['group']}`='3',`{$bd_users['password']}`='".MCRAuth::createPass($site_password)."',`{$bd_users['email']}`='$site_email'");
 		$result = true;
 	}
 
@@ -388,7 +404,7 @@ if ($cErr) {
 }
 switch ($step) {
 	case 1:
-		echo $mode;
+//		echo $mode;
 		include View::Get('install_method.html', $i_sd);
 		include View::Get('install.html', $i_sd);
 		break;

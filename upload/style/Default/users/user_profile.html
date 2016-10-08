@@ -3,13 +3,13 @@
 	<div class="block-line"></div>
 	<div class="tab-pane" id="launcher">
 		<div class="row">
-			<div class="col-md-4">
-				<img width="100%" src="skin.php?mini=<? echo $pl->id(); ?>">
+			<div class="col-md-4" align="center">
+				<div id="profile-skin-front" style="background:url(<?php echo BASE_URL ?>skin.php<?php echo $pl->getSkinLink().'&amp;refresh='.rand(1000, 9999) ?>); display:block; height: 224px; width: 112px;" onmouseover="this.style.backgroundPosition=&quot;112px 0px&quot;" onmouseout="this.style.backgroundPosition=&quot;0px 0px&quot;"></div>
 				<?php if($user and $user->lvl() > 0): ?>
-					<a href="/go/pm/write/<? echo $pl->name(); ?>" class="btn btn-primary btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-pencil"></i> Написать ЛС</a>
-						<a href="<?php echo (!$config['rewrite'])? '?mode=warnings&user=' . $pl->name(): 'go/warnings/' . $pl->name() ?>" class="btn btn-warning btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-warning-sign"></i> Предупреждения</a>
+					<a href="<?php echo BASE_URL ?>go/pm/write/<? echo $pl->name(); ?>" class="btn btn-primary btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-pencil"></i> Написать ЛС</a>
+						<a href="<?php echo BASE_URL .'go/warnings/' . $pl->name() ?>" class="btn btn-warning btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-warning-sign"></i> Предупреждения</a>
 					<?php if($user->lvl() >= 15): ?>
-						<a href="?mode=control&do=profile&user_id=<? echo $pl->id(); ?>" class="btn btn-danger btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-edit"></i> Править пользователя</a>
+						<a href="<?php echo BASE_URL ?>?mode=control&do=profile&user_id=<? echo $pl->id(); ?>" class="btn btn-danger btn-block" style="margin-top: 5px"><i class="glyphicon glyphicon-edit"></i> Править пользователя</a>
 					<?php endif ?>
 				<?php endif ?>
 			</div>

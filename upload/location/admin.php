@@ -108,6 +108,7 @@ if ($do) {
 			break;
 		case 'user':
 
+			$menu->SetItemActive('control');
 			$html .= View::ShowStaticPage('user_find.html', $st_subdir.'user/');
 
 			$controlManager = new ControlManager(false, 'index.php?mode=control&');
@@ -116,6 +117,7 @@ if ($do) {
 			$do = false;
 			break;
 		case 'search':
+			$menu->SetItemActive('control');
 
 			$html .= View::ShowStaticPage('user_find.html', $st_subdir.'user/');
 
@@ -132,6 +134,7 @@ if ($do) {
 			break;
 		case 'ipbans':
 
+			$menu->SetItemActive('reg_edit');
 			if (isset($_POST['timeout'])) {
 
 				if (isset($_POST['timeout']))
@@ -182,6 +185,7 @@ if ($do) {
 			break;
 		case 'servers':
 
+			$menu->SetItemActive('serv_edit');
 			$controlManager = new ControlManager(false, 'index.php?mode=control&do=servers&');
 			$html .= $controlManager->ShowServers($curlist);
 
@@ -200,6 +204,7 @@ if ($do) {
 
 		case 'ban':
 
+			$menu->SetItemActive('control');
 			if (isset($_POST['confirm']) and $ban_user) {
 				$ban_user->changeGroup(2);
 				$info .= lng('USER_BANNED');
@@ -210,6 +215,7 @@ if ($do) {
 
 			break;
 		case 'banip':
+			$menu->SetItemActive('control');
 			if (isset($_POST['confirm']) and $ban_user and !empty($_POST['banip_days'])) {
 
 				$ban_time = (int)$_POST['banip_days'];
@@ -231,6 +237,7 @@ if ($do) {
 				include View::Get('user_ban_ip.html', $st_subdir.'user/');
 			break;
 		case 'delete':
+			$menu->SetItemActive('control');
 			if (isset($_POST['confirm']) and $ban_user) {
 
 				$ban_user->Delete();
@@ -242,6 +249,7 @@ if ($do) {
 			break;
 		case 'rcon':
 
+			$menu->SetItemActive('rcon');
 			$save = true;
 			$ip = sqlConfigGet('rcon-serv');
 			if ($ip == 0) {
@@ -256,6 +264,7 @@ if ($do) {
 			break;
 		case 'update':
 
+			$menu->SetItemActive('game_edit');
 			$protection_key = (!empty($_POST['protection_key_set'])) ? $_POST['protection_key_set'] : false;
 			$new_version_l = (!empty($_POST['launcher_set'])) ? $_POST['launcher_set'] : false;
 
@@ -297,6 +306,7 @@ if ($do) {
 			break;
 		case 'category':
 
+			$menu->SetItemActive('category_news');
 			if (!$id and isset($_POST['name']) and isset($_POST['lvl']) and isset($_POST['desc'])) {
 				$new_category = new Category();
 				if ($new_category->Create($_POST['name'], $_POST['lvl'], $_POST['desc']))
@@ -339,6 +349,7 @@ if ($do) {
 
 			// Пустое название группы
 
+			$menu->SetItemActive('group_edit');
 			if (!$id and isset($_POST['name'])) {
 				$new_group = new Group();
 				if ($new_group->Create($_POST['name'], $_POST['pex_name'], $_POST))
@@ -384,6 +395,7 @@ if ($do) {
 			break;
 		case 'server_edit':
 
+			$menu->SetItemActive('serv_edit');
 			include View::Get('server_edit_header.html', $st_subdir.'server/');
 
 			/* POST data check */
@@ -502,10 +514,12 @@ if ($do) {
 			break;
 		case 'constants':
 
+			$menu->SetItemActive('site_edit');
 			if (isset($_POST['site_name'])) {
 
 				$site_name = InputGet('site_name', 'POST', 'str');
 				$site_offline = InputGet('site_offline', 'POST', 'bool');
+				$cache_on = InputGet('cache_on', 'POST', 'bool');
 				$site_install = InputGet('site_install', 'POST', 'bool');
 				$smtp = InputGet('smtp', 'POST', 'bool');
 				$smtp_tls = InputGet('smtp_tls', 'POST', 'bool');
@@ -602,6 +616,7 @@ if ($do) {
 				$config['comm_revers'] = $comm_revers;
 				$config['news_author'] = $news_author;
 				$config['offline'] = $site_offline;
+				$config['cache_on'] = $cache_on;
 				$config['install'] = $site_install;
 				$config['smtp'] = $smtp;
 				$config['smtp_tls'] = $smtp_tls;
@@ -650,6 +665,7 @@ if ($do) {
 			break;
 		case 'donate':
 
+			$menu->SetItemActive('donate_edit');
 			if (isset($_POST['new_unban'])) {
 				$donate['vipcash'] = InputGet('new_vipcash', 'POST', 'int');
 				$donate['premiumcash'] = InputGet('new_premiumcash', 'POST', 'int');
@@ -675,6 +691,7 @@ if ($do) {
 			include View::Get('donate.html', $st_subdir);
 			break;
 		case 'profile':
+			$menu->SetItemActive('control');
 			if ($ban_user) {
 				$group_list = GroupManager::GetList($ban_user->group());
 
@@ -701,6 +718,7 @@ if ($do) {
 		case 'forum':
 
 
+			$menu->SetItemActive('forum_edit');
 			if (!empty($_POST['id']) && !empty($_POST['prior'])) {
 
 				$id = intval($_POST['id']);
@@ -838,6 +856,7 @@ if ($do) {
 
 			break;
 		case 'delete_banip':
+			$menu->SetItemActive('reg_edit');
 			if (!empty($_GET['ip']) and preg_match("/[0-9.]+$/", $_GET['ip'])) {
 
 				$ip = $_GET['ip'];
@@ -846,9 +865,180 @@ if ($do) {
 				$info .= lng('IP_UNBANNED').' ( '.$ip.') ';
 			}
 			break;
+		case 'pages':
+			$menu->SetItemActive('pages');
+			if(isset($_GET['del_id'])) {
+				$db->execute("DELETE FROM `pages` WHERE `id`= {$db->safe($_GET['del_id'])}");
+			}
+			if(isset($_GET['l'])) $p = $_GET['l'];
+			else $p = 1;
+			$num_by_page = 25;
+			$first = ($p - 1) * $num_by_page;
+			$query = $db->execute("SELECT `pages`.*, `{$bd_names['users']}`.`{$bd_users['login']}` as name FROM `pages` LEFT JOIN `{$bd_names['users']}` ON `{$bd_names['users']}`.`{$bd_users['id']}`=`pages`.`author` LIMIT $first, $num_by_page");
+			include View::Get('pages_head.html', $st_subdir . 'pages/');
+			while ($tmp_page = $db->fetch_array($query)) {
+				include View::Get('pages_item.html', $st_subdir . 'pages/');
+			}
+			include View::Get('pages_foot.html', $st_subdir . 'pages/');
+			$result = $db->execute("SELECT COUNT(*) FROM `pages`");
+			$line = $db->fetch_array($result);
+			$view = new View("other/");
+			print $view->arrowsGenerator('?mode=admin&do=pages&', $p, $line[0], $num_by_page, "common");
+			break;
+		case 'page_add':
+		case 'page_edit':
+			if (isset($_GET['id'])) {
+				$menu->SetItemActive('pages');
+				$id = (int) $_GET['id'];
+				$p = $db->execute("SELECT * FROM `pages` WHERE `id`={$db->safe($id)}");
+				if($db->num_rows($p) != 1)
+					show_error('404', 'Страница не найдена');
+				$what = 'Отредактировать';
+				$p = $db->fetch_array($p);
+				$title = $p['title'];
+				$title_inbody = $p['title_inbody'];
+				$url = $p['url'];
+				$content = $p['content'];
+				$menu_item = $p['menu_item'];
+				$show_info = $p['show_info'];
+			} else {
+				$menu->SetItemActive('add_page');
+				$what = 'Добавить';
+				$title = '';
+				$title_inbody = '';
+				$url = '';
+				$content = '';
+				$menu_item = '';
+				$show_info = 1;
+			}
+			$menu_items = $db->execute("SELECT `menu`.*, `pages`.`title` FROM `menu` LEFT JOIN `pages` ON `menu`.`txtid`=`pages`.`menu_item`");
+			ob_start();
+			while ($menu_temp_item = $db->fetch_array($menu_items)) {
+				include View::Get("menu_option.html", $st_subdir . 'pages/');
+			}
+			$menu_items = ob_get_clean();
+			if(isset($_POST['submit'])) {
+				$title = $_POST['title'];
+				$title_inbody = $_POST['title_inbody'];
+				$url = $_POST['url'];
+				$content = $_POST['content'];
+				$menu_item = $_POST['menu_item'];
+				$show_info = (isset($_POST['show_info']))? 1:0;
+				$result = (isset($_GET['id']))?
+					$db->execute("UPDATE `pages` SET `title`='{$db->safe($title)}', `title_inbody`='{$db->safe($title_inbody)}',"
+								." `url`='{$db->safe($url)}', `content`='{$db->safe($content)}', `updated`=NOW(),"
+								." `menu_item`='{$db->safe($menu_item)}', `show_info`='{$db->safe($show_info)}' WHERE `id`={$db->safe($id)}"):
+					$db->execute("INSERT INTO `pages` (`author`, `title`, `title_inbody`, `url`, `content`, `menu_item`, `show_info`, `created`)"
+								." VALUES (" . $user->id() . ",'{$db->safe($title)}', '{$db->safe($title_inbody)}', '{$db->safe($url)}',"
+								." '{$db->safe($content)}', '{$db->safe($menu_item)}', '{$db->safe($show_info)}', NOW())");
+				if($result) {
+					print View::Alert("Успешно", 'success');
+					if (!isset($id)) break;
+				} else print View::Alert("Ошибка. Возможно, такой URL уже занят.");
+			}
+			LoadTinyMCE();
+			include View::Get('page_edit.html', $st_subdir . 'pages/');
+			break;
+		case 'menu_add':
+		case 'menu_edit':
+			$what = 'Добавить';
+			$edit = false;
+
+			if(isset($_GET['id'])) {
+				$query = $db->execute("SELECT * FROM `menu` WHERE `id`='{$db->safe($_GET['id'])}'");
+				if (!$query or !$db->num_rows($query))
+					show_error(404, 'Элемент меню не найден');
+				$what = 'Отредактировать';
+				$edit = true;
+				$mi = $db->fetch_array($query);
+			}
+
+			$name = (!isset($_POST['name']))?($edit)? $mi['name']:'':$_POST['name'];
+			$txtid = (!isset($_POST['txtid']) or $edit and $mi['system'])?($edit)? $mi['txtid']:'':$_POST['txtid'];
+			$priority = (!isset($_POST['priority']))?($edit)? $mi['priority']:'':$_POST['priority'];
+			$lvl = (!isset($_POST['lvl']))?($edit)? $mi['lvl']:-1:$_POST['lvl'];
+			$permission = (!isset($_POST['permission']))?($edit)? $mi['permission']:-1:$_POST['permission'];
+			$url = (!isset($_POST['url']))?($edit)? $mi['url']:'':$_POST['url'];
+			$parent_id = (!isset($_POST['parent_id']))?($edit)? $mi['parent_id']:-1:$_POST['parent_id'];
+			$align = (!isset($_POST['align']))?($edit)? $mi['align']:0:$_POST['align'];
+
+			if (isset($_POST['name'])) {
+				$query = $db->execute(
+					($edit)?
+						"UPDATE `menu` SET `name`='{$db->safe($name)}', `txtid`='{$db->safe($txtid)}', `priority`='{$db->safe($priority)}', `lvl`='{$db->safe($lvl)}', `permission`='{$db->safe($permission)}', `url`='{$db->safe($url)}', `parent_id`='{$db->safe($parent_id)}', `align`='{$db->safe($align)}' WHERE `id`={$mi['id']}":
+						"INSERT INTO `menu` (`name`,`txtid`,`priority`,`lvl`,`permission`,`url`,`parent_id`,`align`) VALUES ('{$db->safe($name)}','{$db->safe($txtid)}','{$db->safe($priority)}','{$db->safe($lvl)}','{$db->safe($permission)}','{$db->safe($url)}','{$db->safe($parent_id)}','{$db->safe($align)}')"
+				);
+				if ($edit and $mi['txtid'] != $txtid)
+					$db->execute("UPDATE `pages` SET `menu_item`='{$db->safe($txtid)}' WHERE `menu_item`='{$mi['txtid']}'");
+				echo ($query)? View::Alert("Успешно", 'success'):View::Alert('Похоже, такой системный id уже занят :(');
+			}
+
+			$a = array();
+			$where = ($edit)? "WHERE NOT `id`='{$db->safe($_GET['id'])}'":'';
+			$query = $db->execute("SELECT `menu`.* FROM `menu`$where ORDER BY `menu`.`align` ASC, `menu`.`priority` DESC");
+			while ($menu_item = $db->fetch_array($query)) {
+				array_push($a, $menu_item);
+			}
+			ob_start();
+			ShowMenu($a, 0, 'item_parent_option', $parent_id);
+			ShowMenu($a, 1, 'item_parent_option', $parent_id);
+			$parent_options = ob_get_clean();
+			include View::Get('item_edit.html', 'admin/menu/');
+			$menu = new Menu();
+			$menu->SetItemActive(($edit)?'menu':'menu_add');
+			break;
+		case 'menu':
+			if(isset($_POST['submit'])) {
+				$query = $db->execute("SELECT `txtid` FROM `menu`");
+				$success = true;
+				while ($item = $db->fetch_array($query)) {
+					$item = $item[0];
+					if (!isset($_POST['menu_item_' . $item]))
+						continue;
+					$success = ($success and $db->execute("UPDATE `menu` SET `priority`='{$db->safe($_POST['menu_item_' . $item])}' WHERE `txtid`='$item'"));
+				}
+				echo ($success)? View::Alert('Успешно', 'success'): View::Alert('Что-то пошло не так.');
+			}
+			if (isset($_POST['delete'])) {
+				$query = $db->execute("SELECT * FROM `menu` WHERE `id`='{$db->safe($_POST['delete'])}'");
+				if ($db->num_rows($query)) {
+					$query = $db->fetch_array($query);
+					if(!$query['system']){
+						$db->execute("DELETE FROM `menu` WHERE `txtid`='{$query['txtid']}'");
+						$db->execute((isset($_POST['delete_children']))?
+							"DELETE FROM `menu` WHERE `parent_id`='{$query['txtid']}'":
+							"UPDATE `menu` SET `parent_id`='{$query['parent_id']}' WHERE `parent_id`='{$query['txtid']}'"
+						);
+					}
+				}
+			}
+			$query = $db->execute("SELECT `menu`.*, `pages`.`title` FROM `menu` LEFT JOIN `pages` ON `pages`.`menu_item`=`menu`.`txtid` ORDER BY `menu`.`align` ASC, `menu`.`priority` DESC");
+			$i = 0;
+			$a = array();
+			while ($menu_item = $db->fetch_array($query)) {
+				array_push($a, $menu_item);
+			}
+			echo View::ShowStaticPage('list_start.html', $st_subdir . 'menu/');
+			ShowMenu($a, 0);
+			echo View::ShowStaticPage('list_middle.html', $st_subdir . 'menu/');
+			ShowMenu($a, 1);
+			echo View::ShowStaticPage('list_end.html', $st_subdir . 'menu/');
+			$menu = new Menu();
+			$menu->SetItemActive('menu');
+			break;
 	}
 
 	$html .= ob_get_clean();
+}
+
+function ShowMenu(&$menu, $align, $html = 'list_item', $add = false, $parent = '-1', $pre = ' ') {
+	for ($c = 0; $c < count($menu); $c++) {
+		if($menu[$c]['parent_id'] == $parent and ($menu[$c]['align'] == $align or $menu[$c]['parent_id'] != '-1')){
+			$menu_item = $menu[$c];
+			include View::Get($html . '.html', 'admin/menu/');
+			ShowMenu($menu, $align, $html, $add, $menu[$c]['txtid'], '-' . $pre);
+		}
+	}
 }
 
 if ($do == 'sign') {
@@ -878,4 +1068,3 @@ if ($info)
 include View::Get('admin.html', $st_subdir);
 
 $content_main .= ob_get_clean();
-?>

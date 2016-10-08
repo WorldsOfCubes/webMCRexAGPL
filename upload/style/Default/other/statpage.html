@@ -1,0 +1,16 @@
+<div class="form-block">
+	<div class="block-header"><?php echo $statpage['title_inbody']?></div>
+	<div class="block-line"></div>
+	<div class="tab-pane">
+		<?php echo $statpage['content']?>
+		<?php if ($statpage['show_info']):?>
+			<hr>
+			Автор: <a href="go/user/profile/<?php echo $statpage['name']?>"><?php echo $statpage['name']?></a>
+			<?php if ($statpage['updated']):?>
+				<div class="pull-right">
+					В последний раз обновлено: <?php echo $statpage['updated']?>
+				</div>
+			<?php endif ?>
+		<?php endif ?>
+	</div>
+</div>

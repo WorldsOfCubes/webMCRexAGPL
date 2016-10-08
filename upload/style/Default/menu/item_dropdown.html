@@ -1,0 +1,6 @@
+<li class="dropdown<?php if ($item['active']) { ?> active<?php } ?>">
+	<a href="<?php echo $item['url'] ?>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $item['name'] ?> <span class="caret"></span></a>
+	<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+		<?php echo $sub ?>
+	</ul>
+</li>

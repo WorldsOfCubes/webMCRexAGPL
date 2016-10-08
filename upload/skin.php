@@ -1,5 +1,6 @@
-<?php header("Content-type: image/png");
+<?php
 require('./system.php');
+header("Content-type: image/png");
 
 function ShowSkinWithBuff() { // auto generate default skin way if not enough params
 	global $uInfo, $config;

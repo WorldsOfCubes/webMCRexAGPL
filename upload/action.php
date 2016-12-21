@@ -271,7 +271,7 @@ switch ($method) {
 				$rcodes[] = $mod_user->changeEmail($_POST['new_email']);
 		}
 
-		if (!empty($_POST['new_login']))
+		if (!empty($_POST['new_login']) and ($user->getPermission("change_login") or $user->lvl() >= 15))
 			$rcodes[] = $mod_user->changeName($_POST['new_login']);
 		if (!empty($_POST['new_password'])) {
 
@@ -280,7 +280,9 @@ switch ($method) {
 			$newrepass = (!empty($_POST['new_repassword'])) ? $_POST['new_repassword'] : '';
 
 			if (($user->lvl() >= 15 and !empty($_POST['user_id'])) or !$mod_user->pass_set())
-				$rcodes[] = $mod_user->changePassword($newpass); else                    $rcodes[] = $mod_user->changePassword($newpass, $newrepass, $oldpass);
+				$rcodes[] = $mod_user->changePassword($newpass);
+			else
+				$rcodes[] = $mod_user->changePassword($newpass, $newrepass, $oldpass);
 		}
 
 		if (empty($_FILES['new_skin']['tmp_name']) and !empty($_POST['new_delete_skin']) and !$mod_user->defaultSkinTrigger() and $user->getPermission('change_skin'))
@@ -290,10 +292,10 @@ switch ($method) {
 			$mod_user->deleteCloak();
 			$rcodes[] = 1;
 		}
-		if (!empty($_FILES['new_skin']['tmp_name']))
+		if (!empty($_FILES['new_skin']['tmp_name']) and ($user->getPermission('change_skin') or $user->lvl() >= 15))
 			$rcodes[] = (int)$mod_user->changeVisual('new_skin', 'skin');
 
-		if (!empty($_FILES['new_cloak']['tmp_name']))
+		if (!empty($_FILES['new_cloak']['tmp_name']) and ($user->getPermission('change_skin') or $user->lvl() >= 15))
 			$rcodes[] = (int)$mod_user->changeVisual('new_cloak', 'cloak').'1';
 
 		$message = '';
@@ -357,10 +359,10 @@ switch ($method) {
 					$message .= lng('PERMISSION_FAIL');
 					break;
 				case 1610 :
-					$message .= lng('UPLOAD_FAIL');
 				case 16101 :
 				case 1611 :
 				case 16111 :
+				$message .= lng('UPLOAD_FAIL');
 					break;
 				case 1901 :
 					$message .= lng('INCORRECT').'. ('.lng('EMAIL').')';

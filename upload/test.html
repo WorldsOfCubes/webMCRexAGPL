@@ -1,0 +1,82 @@
+<meta charset="utf-8">
+<br><br><br>
+
+
+<form class="form-horizontal" id="profile-update" action="action.php" method="post" enctype="multipart/form-data">
+
+	<legend>Изменить профиль пользователя <a href="#" onclick="LoadProfile('customp', 1); return false">ZEnaR</a></legend>
+
+	<!-- Добавить вывод текущей информации -->
+
+	<div class="control-group">
+		<label class="control-label" for="inputLogin">Логин</label>
+		<div class="controls">
+			<input name="new_login" type="text" id="inputLogin" size="16" maxlength="16" placeholder="ZEnaR">
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="inputPass">Пароль</label>
+		<div class="controls">
+			<input name="new_password" type="text" id="inputPass" size="16" maxlength="16" placeholder="Пароль">
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="inputGroup">Группа</label>
+		<div class="controls">
+			<select id="inputGroup" name="new_group"><option value="1">Пользователь</option><option value="4">Непроверенный</option><option value="2">Заблокированный</option><option value="3" selected="">Администратор</option><option value="5">VIP Игрок</option></select>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="inputMail">Почта:</label>
+		<div class="controls">
+			<input id="inputMail" type="text" name="new_email" placeholder="">
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="inputGender">Пол:</label>
+		<div class="controls">
+			<select id="inputGender" name="new_gender">
+
+				<option value="0" selected="">Мальчик</option>
+				<option value="1">Девочка</option>
+
+			</select>
+		</div>
+	</div><div class="control-group">
+		<label class="control-label" for="profile-cloak-file">Образ</label>
+		<div class="controls">
+			<input id="profile-cloak-file" type="file" name="new_skin" size="20">
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="profile-cloak-file">Плащ</label>
+		<div class="controls">
+			<input id="profile-cloak-file" type="file" name="new_cloak" size="20">
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label" for="profile-cloak-file">Действия</label>
+		<div class="controls">
+			<a class="news-link" href="?mode=control&amp;user_id=1&amp;do=banip">Бан по IP</a> <br>
+			<a class="news-link" href="?mode=control&amp;user_id=1&amp;do=ban">Заблокировать</a> <br>
+			<a class="news-link" href="?mode=control&amp;user_id=1&amp;do=delete">Удалить</a> <br>
+		</div>
+	</div>
+
+	<div class="control-group">
+		<div class="controls">
+			<input id="profile-button" class="btn" type="submit" onclick="UpdateProfile(1); return false" value="Изменить">
+		</div>
+	</div>
+
+	<input type="hidden" name="user_id" value="1">
+
+	<input type="hidden" name="method" value="profile">
+
+</form>

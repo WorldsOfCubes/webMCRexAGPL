@@ -7,7 +7,7 @@
 
 ## License 
 
- [GNU General Public License v3](http://www.gnu.org/licenses/gpl.html) 
+ Affero General Public License
  
 ## Information
 
